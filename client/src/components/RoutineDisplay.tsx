@@ -10,8 +10,6 @@ interface RoutineDisplayProps {
     evening: Product[];
   };
   isPremiumUser?: boolean;
-  selectedPriceTier?: "budget" | "standard" | "premium";
-  onPriceTierChange?: (tier: "budget" | "standard" | "premium") => void;
 }
 
 export function RoutineDisplay({
@@ -19,8 +17,6 @@ export function RoutineDisplay({
   skinType,
   products,
   isPremiumUser = false,
-  selectedPriceTier = "standard",
-  onPriceTierChange,
 }: RoutineDisplayProps) {
   return (
     <div className="min-h-screen pt-20 pb-16">
@@ -42,56 +38,30 @@ export function RoutineDisplay({
           {!isPremiumUser && <PremiumUpsell />}
         </div>
 
-        <div className="mb-12">
-          <div className="flex items-center gap-4 mb-6">
-            <h2 className="font-serif text-2xl font-semibold">Select Your Budget</h2>
-          </div>
-          <div className="flex gap-2">
-            {["budget", "standard", "premium"].map((tier) => (
-              <button
-                key={tier}
-                onClick={() => onPriceTierChange?.(tier as any)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedPriceTier === tier
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary text-secondary-foreground hover-elevate"
-                }`}
-                data-testid={`tab-${tier}`}
-              >
-                {tier.charAt(0).toUpperCase() + tier.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-
         <div className="space-y-16">
           <div>
             <h3 className="font-serif text-3xl font-semibold mb-8" data-testid="tab-morning">Morning Routine</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {products.morning
-                .filter((p) => p.priceTier === selectedPriceTier)
-                .map((product, index) => (
-                  <ProductCard
-                    key={index}
-                    product={product}
-                    isPremiumUser={isPremiumUser}
-                  />
-                ))}
+              {products.morning.map((product, index) => (
+                <ProductCard
+                  key={index}
+                  product={product}
+                  isPremiumUser={isPremiumUser}
+                />
+              ))}
             </div>
           </div>
 
           <div>
             <h3 className="font-serif text-3xl font-semibold mb-8" data-testid="tab-evening">Evening Routine</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {products.evening
-                .filter((p) => p.priceTier === selectedPriceTier)
-                .map((product, index) => (
-                  <ProductCard
-                    key={index}
-                    product={product}
-                    isPremiumUser={isPremiumUser}
-                  />
-                ))}
+              {products.evening.map((product, index) => (
+                <ProductCard
+                  key={index}
+                  product={product}
+                  isPremiumUser={isPremiumUser}
+                />
+              ))}
             </div>
           </div>
         </div>

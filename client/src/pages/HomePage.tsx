@@ -13,7 +13,6 @@ export default function HomePage() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [routineData, setRoutineData] = useState<any>(null);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | null>(null);
-  const [priceTier, setPriceTier] = useState<"budget" | "standard" | "premium">("standard");
 
   const submitQuizMutation = useMutation({
     mutationFn: async (answers: QuizAnswers) => {
@@ -82,8 +81,6 @@ export default function HomePage() {
           skinType={quizAnswers.skinType}
           products={routineData.products}
           isPremiumUser={(user as any)?.isPremium || false}
-          selectedPriceTier={priceTier}
-          onPriceTierChange={setPriceTier}
         />
       </div>
     );
