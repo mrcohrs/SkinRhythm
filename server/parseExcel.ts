@@ -106,8 +106,9 @@ export function parseExcelFile() {
             ...(spfAlts.length > 0 ? [spfAlts[0]] : []),
           ],
           evening: [
-            ...(cleanserAlts.length > 1 ? [cleanserAlts[1]] : cleanserAlts.length > 0 ? [cleanserAlts[0]] : []),
-            ...(activeAlts.length > 1 ? [activeAlts[1]] : activeAlts.length > 0 ? [activeAlts[0]] : []),
+            ...(cleanserAlts.length > 0 ? [cleanserAlts[0]] : []),
+            ...(tonerAlts.length > 0 ? [tonerAlts[0]] : []),
+            ...(activeAlts.length > 0 ? [activeAlts[0]] : []),
             ...(spotBpoAlts.length > 0 ? [spotBpoAlts[0]] : []),
             ...(hydratorAlts.length > 0 ? [hydratorAlts[0]] : []),
             ...(moisturizerAlts.length > 0 ? [moisturizerAlts[0]] : []),
