@@ -16,7 +16,7 @@ Preferred communication style: Simple, everyday language.
 
 **UI Component System**: shadcn/ui with Radix UI primitives providing accessible, unstyled components that are customized with Tailwind CSS. The design follows a "New York" style variant with clinical healthcare aesthetics inspired by Curology, Hims & Hers, and Headspace.
 
-**Styling**: Tailwind CSS with custom design tokens supporting both light and dark modes. Color palette emphasizes clinical trust (medical blue primary) combined with calming wellness tones (teal accents). Typography uses Inter font family for professional, medical-grade appearance.
+**Styling**: Tailwind CSS with custom design tokens supporting both light and dark modes. Color palette uses dark forest green (#006652) primary color with warm beige backgrounds and yellow accents for a minimal, elegant aesthetic. Typography uses Playfair Display serif for headings and Inter for body text.
 
 **State Management**: TanStack Query (React Query) for server state management with custom query client configuration. Authentication state is managed through a custom `useAuth` hook that queries the `/api/auth/user` endpoint.
 
@@ -31,9 +31,13 @@ Preferred communication style: Simple, everyday language.
 **Authentication**: OpenID Connect (OIDC) integration with Replit Auth using Passport.js strategy. Session management via express-session with PostgreSQL session store (connect-pg-simple).
 
 **API Design**: RESTful endpoints including:
-- `/api/auth/user` - Get authenticated user profile
-- `/api/quiz/submit` - Submit quiz answers and receive routine recommendations
+- `/api/auth/user` - Get authenticated user profile (requires authentication)
+- `/api/login` - Initiates Replit Auth login flow
+- `/api/logout` - Logs out user
+- `/api/callback` - OAuth callback after successful login
+- `/api/quiz/submit` - Submit quiz answers and receive routine recommendations (no auth required for free tier)
 - `/api/routines/save` - Persist user routines (authenticated only)
+- `/api/routines` - Get user's saved routines (authenticated only)
 
 **Business Logic**: Excel-based product recommendation engine (`parseExcel.ts`) that loads skincare routine data from an XLSX file containing 60+ product combinations. Matching algorithm considers skin type, Fitzpatrick type, acne types array, and pregnancy/nursing status to return appropriate morning/evening product sets.
 
