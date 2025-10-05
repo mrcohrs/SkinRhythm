@@ -33,17 +33,17 @@ let routineData: RoutineRecommendation[] = [];
 
 export function parseExcelFile() {
   try {
-    const filePath = path.join(process.cwd(), 'attached_assets', 'Acne_Assist_Routines_60_With_Alternatives_1759622368076.xlsx');
+    const filePath = path.join(process.cwd(), 'attached_assets', 'Acne_Assist_Routines_60_With_Alternatives.xlsx - Not Pregnant or Nursing_1759626714930.csv');
     
     if (!fs.existsSync(filePath)) {
-      console.error('Excel file not found at:', filePath);
+      console.error('CSV file not found at:', filePath);
       return false;
     }
 
-    const workbook = XLSX.readFile(filePath);
+    const workbook = XLSX.readFile(filePath, { raw: false, cellDates: false });
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(worksheet);
+    const data = XLSX.utils.sheet_to_json(worksheet, { raw: false });
 
     console.log('Excel data loaded:', data.length, 'rows');
     console.log('Sample row:', data[0]);
@@ -85,9 +85,16 @@ export function parseExcelFile() {
       const hydratorAlts = extractProductsFromAlternatives(row['Hydrator/Support Alternatives'] || '', 'standard');
       const spotBpoAlts = extractProductsFromAlternatives(row['Spot/BPO Alternatives'] || '', 'standard');
 
+      // Normalize Fitz Group - handle CSV date parsing issues
+      let fitzGroup = row['Fitz Group'] || '1-3';
+      if (typeof fitzGroup === 'string' && fitzGroup.includes('/')) {
+        // If it was parsed as a date like "1/3/01", convert to "1-3"
+        fitzGroup = fitzGroup.startsWith('1/') ? '1-3' : '4+';
+      }
+
       return {
         skinType: (row['Skin Type'] || 'Normal').split('/')[0],
-        fitzpatrickType: row['Fitz Group'] || '1-3',
+        fitzpatrickType: fitzGroup,
         acneTypes,
         isPregnantOrNursing: row['P/N?'] === 'Yes',
         products: {
