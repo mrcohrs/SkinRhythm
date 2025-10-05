@@ -83,6 +83,7 @@ export function parseExcelFile() {
       const spfAlts = extractProductsFromAlternatives(row['SPF Alternatives'] || '', 'standard');
       const moisturizerAlts = extractProductsFromAlternatives(row['Moisturizer Alternatives'] || '', 'budget');
       const hydratorAlts = extractProductsFromAlternatives(row['Hydrator/Support Alternatives'] || '', 'standard');
+      const spotBpoAlts = extractProductsFromAlternatives(row['Spot/BPO Alternatives'] || '', 'standard');
 
       return {
         skinType: (row['Skin Type'] || 'Normal').split('/')[0],
@@ -94,11 +95,13 @@ export function parseExcelFile() {
             ...(cleanserAlts.length > 0 ? [cleanserAlts[0]] : []),
             ...(tonerAlts.length > 0 ? [tonerAlts[0]] : []),
             ...(activeAlts.length > 0 ? [activeAlts[0]] : []),
+            ...(moisturizerAlts.length > 0 ? [moisturizerAlts[0]] : []),
             ...(spfAlts.length > 0 ? [spfAlts[0]] : []),
           ],
           evening: [
             ...(cleanserAlts.length > 1 ? [cleanserAlts[1]] : cleanserAlts.length > 0 ? [cleanserAlts[0]] : []),
             ...(activeAlts.length > 1 ? [activeAlts[1]] : activeAlts.length > 0 ? [activeAlts[0]] : []),
+            ...(spotBpoAlts.length > 0 ? [spotBpoAlts[0]] : []),
             ...(hydratorAlts.length > 0 ? [hydratorAlts[0]] : []),
             ...(moisturizerAlts.length > 0 ? [moisturizerAlts[0]] : []),
           ],
@@ -131,12 +134,22 @@ export function getRoutineForAnswers(answers: {
     const fitzpatrickMatch = routine.fitzpatrickType === answers.fitzpatrickType;
     const pregnancyMatch = routine.isPregnantOrNursing === isPregnant;
     
-    const acneTypeMatch = answers.acneTypes.some(userType => 
-      routine.acneTypes.some(routineType => 
-        routineType.toLowerCase().includes(userType.toLowerCase()) ||
-        userType.toLowerCase().includes(routineType.toLowerCase())
-      )
-    );
+    // Acne type priority: acne-rosacea > inflamed > noninflamed
+    let acneTypeMatch = false;
+    
+    if (answers.acneTypes.length === 0) {
+      // If no acne types specified, match any routine
+      acneTypeMatch = true;
+    } else if (answers.acneTypes.includes('acne-rosacea')) {
+      // If user has acne rosacea, they ONLY get acne rosacea routine (trumps inflamed/noninflamed)
+      acneTypeMatch = routine.acneTypes.includes('acne-rosacea');
+    } else if (answers.acneTypes.includes('inflamed')) {
+      // If user has inflamed (but not acne rosacea), they get inflamed routines (inflamed trumps noninflamed)
+      acneTypeMatch = routine.acneTypes.includes('inflamed');
+    } else if (answers.acneTypes.includes('noninflamed')) {
+      // If user only has noninflamed, they get noninflamed routines
+      acneTypeMatch = routine.acneTypes.includes('noninflamed');
+    }
 
     return skinTypeMatch && fitzpatrickMatch && pregnancyMatch && acneTypeMatch;
   });
