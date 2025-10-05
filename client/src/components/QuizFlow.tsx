@@ -81,16 +81,16 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
   };
 
   return (
-    <div className="min-h-screen pt-16 pb-8 px-4">
+    <div className="min-h-screen pt-20 pb-8 px-4">
       <div className="max-w-3xl mx-auto pt-8">
         <Progress value={progress} className="mb-8" data-testid="progress-quiz" />
         
-        <Card className="p-8">
+        <Card className="p-8 md:p-12 border-border/50">
           {currentStep === 0 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-semibold mb-2">What's your name?</h2>
-                <p className="text-muted-foreground">Let's personalize your experience</p>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What's your name?</h2>
+                <p className="text-muted-foreground text-lg">Let's personalize your experience</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="name">Your Name</Label>
@@ -109,8 +109,8 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
           {currentStep === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-semibold mb-2">How old are you?</h2>
-                <p className="text-muted-foreground">Age helps us recommend the right products</p>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">How old are you?</h2>
+                <p className="text-muted-foreground text-lg">Age helps us recommend the right products</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="age">Your Age</Label>
@@ -130,8 +130,8 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
           {currentStep === 2 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-semibold mb-2">What's your skin type?</h2>
-                <p className="text-muted-foreground">This helps us choose the right formulations</p>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What's your skin type?</h2>
+                <p className="text-muted-foreground text-lg">This helps us choose the right formulations</p>
               </div>
               <RadioGroup
                 value={answers.skinType}
@@ -152,8 +152,8 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
           {currentStep === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-semibold mb-2">What's your Fitzpatrick skin type?</h2>
-                <p className="text-muted-foreground">This helps prevent hyperpigmentation and scarring</p>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What's your Fitzpatrick skin type?</h2>
+                <p className="text-muted-foreground text-lg">This helps prevent hyperpigmentation and scarring</p>
               </div>
               <RadioGroup
                 value={answers.fitzpatrickType}
@@ -178,8 +178,8 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
           {currentStep === 4 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-semibold mb-2">What type of acne do you have?</h2>
-                <p className="text-muted-foreground">Select all that apply</p>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What type of acne do you have?</h2>
+                <p className="text-muted-foreground text-lg">Select all that apply</p>
               </div>
               <div className="space-y-3">
                 {[
@@ -206,8 +206,8 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
           {currentStep === 5 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-semibold mb-2">Are you pregnant or nursing?</h2>
-                <p className="text-muted-foreground">Some ingredients aren't safe during pregnancy</p>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Are you pregnant or nursing?</h2>
+                <p className="text-muted-foreground text-lg">Some ingredients aren't safe during pregnancy</p>
               </div>
               <RadioGroup
                 value={answers.isPregnantOrNursing}

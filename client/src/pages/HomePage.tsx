@@ -164,22 +164,26 @@ export default function HomePage() {
       )}
 
       <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
-        <DialogContent data-testid="dialog-auth">
+        <DialogContent data-testid="dialog-auth" className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Create Your Account</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="font-serif text-2xl">Create Your Account</DialogTitle>
+            <DialogDescription className="text-base">
               Save your personalized routine and track your progress
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Sign up to save your personalized skincare routine and access it anytime.
             </p>
-            <div className="space-y-2">
-              <Button className="w-full" onClick={handleAuthComplete} data-testid="button-signup-demo">
+            <div className="space-y-3">
+              <Button 
+                className="w-full rounded-full" 
+                onClick={handleAuthComplete} 
+                data-testid="button-signup-demo"
+              >
                 Create Account (Demo)
               </Button>
-              <p className="text-xs text-center text-muted-foreground">
+              <p className="text-xs text-center text-muted-foreground leading-relaxed">
                 In the full app, you'll use Replit Auth to sign in with Google, GitHub, or email
               </p>
             </div>

@@ -1,9 +1,6 @@
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard, type Product } from "./ProductCard";
 import { PremiumUpsell } from "./PremiumUpsell";
-import { Sun, Moon } from "lucide-react";
 
 interface RoutineDisplayProps {
   userName: string;
@@ -26,50 +23,51 @@ export function RoutineDisplay({
   onPriceTierChange,
 }: RoutineDisplayProps) {
   return (
-    <div className="min-h-screen pt-16 pb-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
-        <div className="mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-greeting">
-            Welcome, {userName}! 👋
-          </h1>
-          <div className="flex items-center gap-2 mb-6">
-            <p className="text-lg text-muted-foreground">Your personalized routine for</p>
-            <Badge variant="secondary" data-testid="badge-skin-type">
-              {skinType} skin
+    <div className="min-h-screen pt-20 pb-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-16">
+        <div className="mb-16">
+          <div className="flex items-center gap-3 mb-4">
+            <Badge variant="secondary" className="rounded-full px-4 py-1 text-xs uppercase tracking-wide">
+              Your Routine
             </Badge>
           </div>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold mb-6" data-testid="text-greeting">
+            Welcome back, {userName}
+          </h1>
+          <p className="text-lg text-muted-foreground mb-8">
+            Your personalized skincare routine for{" "}
+            <span className="text-foreground font-medium" data-testid="badge-skin-type">{skinType} skin</span>
+          </p>
 
           {!isPremiumUser && <PremiumUpsell />}
         </div>
 
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Select Your Budget</h2>
-          <Tabs
-            value={selectedPriceTier}
-            onValueChange={(value) => onPriceTierChange?.(value as any)}
-          >
-            <TabsList className="grid w-full max-w-md grid-cols-3">
-              <TabsTrigger value="budget" data-testid="tab-budget">Budget</TabsTrigger>
-              <TabsTrigger value="standard" data-testid="tab-standard">Standard</TabsTrigger>
-              <TabsTrigger value="premium" data-testid="tab-premium">Premium</TabsTrigger>
-            </TabsList>
-          </Tabs>
+        <div className="mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <h2 className="font-serif text-2xl font-semibold">Select Your Budget</h2>
+          </div>
+          <div className="flex gap-2">
+            {["budget", "standard", "premium"].map((tier) => (
+              <button
+                key={tier}
+                onClick={() => onPriceTierChange?.(tier as any)}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedPriceTier === tier
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover-elevate"
+                }`}
+                data-testid={`tab-${tier}`}
+              >
+                {tier.charAt(0).toUpperCase() + tier.slice(1)}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <Tabs defaultValue="morning" className="space-y-8">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="morning" data-testid="tab-morning">
-              <Sun className="h-4 w-4 mr-2" />
-              Morning Routine
-            </TabsTrigger>
-            <TabsTrigger value="evening" data-testid="tab-evening">
-              <Moon className="h-4 w-4 mr-2" />
-              Evening Routine
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="morning" className="space-y-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-16">
+          <div>
+            <h3 className="font-serif text-3xl font-semibold mb-8" data-testid="tab-morning">Morning Routine</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {products.morning
                 .filter((p) => p.priceTier === selectedPriceTier)
                 .map((product, index) => (
@@ -80,10 +78,11 @@ export function RoutineDisplay({
                   />
                 ))}
             </div>
-          </TabsContent>
+          </div>
 
-          <TabsContent value="evening" className="space-y-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div>
+            <h3 className="font-serif text-3xl font-semibold mb-8" data-testid="tab-evening">Evening Routine</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {products.evening
                 .filter((p) => p.priceTier === selectedPriceTier)
                 .map((product, index) => (
@@ -94,8 +93,8 @@ export function RoutineDisplay({
                   />
                 ))}
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+        </div>
       </div>
     </div>
   );
