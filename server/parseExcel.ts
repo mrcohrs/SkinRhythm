@@ -79,11 +79,44 @@ export function parseExcelFile() {
 
       const cleanserAlts = extractProductsFromAlternatives(row['Cleanser Alternatives'] || '', 'budget');
       const tonerAlts = extractProductsFromAlternatives(row['Toner Alternatives'] || '', 'budget');
-      const activeAlts = extractProductsFromAlternatives(row['Actives/Serums Alternatives'] || '', 'standard');
+      let activeAlts = extractProductsFromAlternatives(row['Actives/Serums Alternatives'] || '', 'standard');
       const spfAlts = extractProductsFromAlternatives(row['SPF Alternatives'] || '', 'standard');
       const moisturizerAlts = extractProductsFromAlternatives(row['Moisturizer Alternatives'] || '', 'budget');
       const hydratorAlts = extractProductsFromAlternatives(row['Hydrator/Support Alternatives'] || '', 'standard');
       const spotBpoAlts = extractProductsFromAlternatives(row['Spot/BPO Alternatives'] || '', 'standard');
+
+      // Override: ALL acne rosacea patients should receive salicylic serum, not mandelic
+      if (acneTypes.includes('acne-rosacea')) {
+        activeAlts = [
+          {
+            name: "Paula's Choice 2% BHA Liquid Exfoliant",
+            brand: "Paula's Choice",
+            category: 'Exfoliant',
+            priceTier: 'standard',
+            price: 32.00,
+            benefits: ['Salicylic acid for acne rosacea', 'Gentle exfoliation', 'Reduces redness'],
+            affiliateLink: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-liquid-exfoliant/201.html',
+          },
+          {
+            name: "The Ordinary Salicylic Acid 2% Solution",
+            brand: "The Ordinary",
+            category: 'Exfoliant',
+            priceTier: 'budget',
+            price: 6.50,
+            benefits: ['Salicylic acid for acne rosacea', 'Affordable option', 'Clears pores'],
+            affiliateLink: 'https://theordinary.com/en-us/salicylic-acid-2-solution-100439.html',
+          },
+          {
+            name: "CeraVe SA Cleanser",
+            brand: "CeraVe",
+            category: 'Cleanser',
+            priceTier: 'budget',
+            price: 15.99,
+            benefits: ['Salicylic acid for acne rosacea', 'Gentle formula', 'Ceramides included'],
+            affiliateLink: 'https://www.cerave.com/skincare/cleansers/renewing-sa-cleanser',
+          }
+        ];
+      }
 
       // Normalize Fitz Group - handle CSV date parsing issues
       let fitzGroup = row['Fitz Group'] || '1-3';
