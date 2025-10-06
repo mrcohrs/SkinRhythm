@@ -85,11 +85,29 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
   };
 
   return (
-    <div className="min-h-screen pt-20 pb-8 px-4">
-      <div className="max-w-3xl mx-auto pt-8">
-        <Progress value={progress} className="mb-8" data-testid="progress-quiz" />
-        
-        <Card className="p-8 md:p-12 border-border/50">
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border/50">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16">
+          <div className="flex h-16 items-center justify-between">
+            <div className="font-serif text-2xl font-semibold text-foreground">SkinRhythm</div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handlePrevious}
+              data-testid="button-back"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              {currentStep === 0 ? 'Cancel' : 'Back'}
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 py-8">
+        <div className="max-w-3xl mx-auto">
+          <Progress value={progress} className="mb-8" data-testid="progress-quiz" />
+          
+          <Card className="p-8 md:p-12 border-card-border">
           {currentStep === 0 && (
             <div className="space-y-6">
               <div>
@@ -286,6 +304,7 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
           </div>
         </Card>
       </div>
+    </div>
     </div>
   );
 }

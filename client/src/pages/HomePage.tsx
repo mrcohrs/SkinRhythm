@@ -88,34 +88,42 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
-            <h1 className="font-playfair text-4xl font-bold text-foreground">
-              Welcome, {(user as any)?.firstName || 'there'}!
-            </h1>
+      <header className="border-b border-border/50">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16">
+          <div className="flex h-16 items-center justify-between">
+            <div className="font-serif text-2xl font-semibold text-foreground">SkinRhythm</div>
             <Button
-              variant="outline"
+              variant="ghost"
+              size="sm"
               onClick={() => window.location.href = '/api/logout'}
               data-testid="button-logout"
             >
               Logout
             </Button>
           </div>
+        </div>
+      </header>
 
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 py-20">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center space-y-8">
             <div className="space-y-4">
-              <h2 className="font-playfair text-3xl font-semibold">
+              <h1 className="font-serif text-4xl md:text-5xl font-semibold text-foreground">
+                Welcome, {(user as any)?.firstName || 'there'}!
+              </h1>
+              <h2 className="font-serif text-2xl md:text-3xl text-foreground/80">
                 Your Personalized Skincare Journey
               </h2>
-              <p className="text-lg text-muted-foreground">
-                Get started with our expert-curated acne skincare quiz
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Get started with our expert-curated skincare quiz to receive personalized 
+                product recommendations tailored to your unique skin needs.
               </p>
             </div>
 
             <Button
               size="lg"
               onClick={() => setShowQuiz(true)}
+              className="min-w-[200px]"
               data-testid="button-start-quiz"
             >
               Start Quiz
