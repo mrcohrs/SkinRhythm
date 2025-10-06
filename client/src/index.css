@@ -79,7 +79,7 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
-  --radius: 10rem; /* 8px */
+  --radius: 0.5rem; /* 8px */
   --shadow-2xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.04);
   --shadow-xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.06);
   --shadow-sm: 0px 2px 4px -1px hsl(220 15% 20% / 0.06), 0px 1px 2px -1px hsl(220 15% 20% / 0.08);
