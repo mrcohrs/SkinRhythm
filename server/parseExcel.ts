@@ -47,103 +47,103 @@ interface RoutineRow {
 
 let routineData: RoutineRow[] = [];
 
-const productAlternatives: { [key: string]: Array<{name: string, brand: string, price: number, tier: 'budget' | 'standard' | 'premium', link: string}> } = {
+const productAlternatives: { [key: string]: Array<{name: string, brand: string, price: number, tier: 'budget' | 'standard' | 'premium', link: string, imageUrl: string}> } = {
   'BARRIER BALANCE CREAMY CLEANSER': [
-    { name: 'La Roche-Posay Toleriane Hydrating Gentle Cleanser', brand: 'La Roche-Posay', price: 18.99, tier: 'standard', link: 'https://www.dermstore.com/p/la-roche-posay-toleriane-hydrating-gentle-cleanser-400ml/11429066/' },
-    { name: 'SkinCeuticals Gentle Cleanser', brand: 'SkinCeuticals', price: 38.00, tier: 'premium', link: 'https://www.skinceuticals.com/skincare/facial-cleansers/gentle-cleanser/S33.html' },
-    { name: 'Youth To The People Superfood Gentle Antioxidant Cleanser', brand: 'Youth To The People', price: 38.00, tier: 'premium', link: 'https://www.sephora.com/product/clean-clean-gentle-gel-foaming-cleanser-P514513' },
+    { name: 'La Roche-Posay Toleriane Hydrating Gentle Cleanser', brand: 'La Roche-Posay', price: 18.99, tier: 'standard', link: 'https://www.dermstore.com/p/la-roche-posay-toleriane-hydrating-gentle-cleanser-400ml/11429066/', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_86c69662.jpg' },
+    { name: 'SkinCeuticals Gentle Cleanser', brand: 'SkinCeuticals', price: 38.00, tier: 'premium', link: 'https://www.skinceuticals.com/skincare/facial-cleansers/gentle-cleanser/S33.html', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_e730bcb7.jpg' },
+    { name: 'Youth To The People Superfood Gentle Antioxidant Cleanser', brand: 'Youth To The People', price: 38.00, tier: 'premium', link: 'https://www.sephora.com/product/clean-clean-gentle-gel-foaming-cleanser-P514513', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_7f820e92.jpg' },
   ],
   'ULTRA GENTLE CLEANSER': [
-    { name: 'Youth To The People Superfood Gentle Antioxidant Cleanser', brand: 'Youth To The People', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/clean-clean-gentle-gel-foaming-cleanser-P514513' },
+    { name: 'Youth To The People Superfood Gentle Antioxidant Cleanser', brand: 'Youth To The People', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/clean-clean-gentle-gel-foaming-cleanser-P514513', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_86c69662.jpg' },
   ],
   'MANDELIC WASH': [
-    { name: 'Prequel Glycerin and Glycolic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'budget', link: 'https://prequelskin.com/products/gleanser-glycerin-and-glycolic-acid-cleanser' },
-    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'standard', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser' },
-    { name: 'Circadia Cleansing Gel with Mandelic Acid', brand: 'Circadia', price: 42.00, tier: 'premium', link: 'https://artofskincare.com/products/circadia-cleansing-gel-with-mandelic-acid' },
+    { name: 'Prequel Glycerin and Glycolic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'budget', link: 'https://prequelskin.com/products/gleanser-glycerin-and-glycolic-acid-cleanser', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_e730bcb7.jpg' },
+    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'standard', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_7f820e92.jpg' },
+    { name: 'Circadia Cleansing Gel with Mandelic Acid', brand: 'Circadia', price: 42.00, tier: 'premium', link: 'https://artofskincare.com/products/circadia-cleansing-gel-with-mandelic-acid', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_86c69662.jpg' },
   ],
   'ANTIOXIDANT SCRUB': [
-    { name: 'Paula\'s Choice The UnScrub', brand: 'Paula\'s Choice', price: 32.00, tier: 'budget', link: 'https://www.paulaschoice.com/the-unscrub/740-7400.html' },
-    { name: 'ClearStem VitaminScrub', brand: 'ClearStem', price: 48.00, tier: 'standard', link: 'https://clearstem.com/products/vitaminscrub' },
+    { name: 'Paula\'s Choice The UnScrub', brand: 'Paula\'s Choice', price: 32.00, tier: 'budget', link: 'https://www.paulaschoice.com/the-unscrub/740-7400.html', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_e730bcb7.jpg' },
+    { name: 'ClearStem VitaminScrub', brand: 'ClearStem', price: 48.00, tier: 'standard', link: 'https://clearstem.com/products/vitaminscrub', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_7f820e92.jpg' },
   ],
   'MANDELIC SCRUB': [
-    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'budget', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser' },
-    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'standard', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser' },
-    { name: 'Bibalo Mandelic Scrub', brand: 'Bibalo', price: 58.00, tier: 'premium', link: 'https://www.bibalosangeles.com/products/mandelic-scrub' },
+    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'budget', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_86c69662.jpg' },
+    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'standard', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_e730bcb7.jpg' },
+    { name: 'Bibalo Mandelic Scrub', brand: 'Bibalo', price: 58.00, tier: 'premium', link: 'https://www.bibalosangeles.com/products/mandelic-scrub', imageUrl: '/attached_assets/stock_images/facial_cleanser_bott_7f820e92.jpg' },
   ],
   'MOISTURE BALANCE TONER': [
-    { name: 'Klairs Supple Preparation Unscented Toner', brand: 'Klairs', price: 23.00, tier: 'budget', link: 'https://www.ulta.com/p/supple-preparation-unscented-toner-pimprod2023584' },
-    { name: 'Face Reality Moisture Balance Toner', brand: 'Face Reality', price: 28.00, tier: 'standard', link: 'https://facerealityskincare.com/products/moisture-balance-toner' },
-    { name: 'Biba Sousa Hydrating Toner with Phospholipids', brand: 'Biba Sousa', price: 45.00, tier: 'premium', link: 'https://www.amazon.com/Biba-Sousa-Hydrating-Toner-Phospholipids/dp/B0C5NNCMLT' },
+    { name: 'Klairs Supple Preparation Unscented Toner', brand: 'Klairs', price: 23.00, tier: 'budget', link: 'https://www.ulta.com/p/supple-preparation-unscented-toner-pimprod2023584', imageUrl: '/attached_assets/stock_images/facial_toner_skincar_ce97eb9a.jpg' },
+    { name: 'Face Reality Moisture Balance Toner', brand: 'Face Reality', price: 28.00, tier: 'standard', link: 'https://facerealityskincare.com/products/moisture-balance-toner', imageUrl: '/attached_assets/stock_images/facial_toner_skincar_834ee8fb.jpg' },
+    { name: 'Biba Sousa Hydrating Toner with Phospholipids', brand: 'Biba Sousa', price: 45.00, tier: 'premium', link: 'https://www.amazon.com/Biba-Sousa-Hydrating-Toner-Phospholipids/dp/B0C5NNCMLT', imageUrl: '/attached_assets/stock_images/facial_toner_skincar_ce97eb9a.jpg' },
   ],
   'CALMING TONER': [
-    { name: 'Paula\'s Choice Calm Nourishing Milky Toner', brand: 'Paula\'s Choice', price: 28.00, tier: 'budget', link: 'https://www.paulaschoice.com/calm-nourishing-milky-toner/9230-9230.html' },
-    { name: 'Face Reality Soothing Radiance Toner', brand: 'Face Reality', price: 32.00, tier: 'standard', link: 'https://facerealityskincare.com/products/soothing-radiance-toner' },
+    { name: 'Paula\'s Choice Calm Nourishing Milky Toner', brand: 'Paula\'s Choice', price: 28.00, tier: 'budget', link: 'https://www.paulaschoice.com/calm-nourishing-milky-toner/9230-9230.html', imageUrl: '/attached_assets/stock_images/facial_toner_skincar_834ee8fb.jpg' },
+    { name: 'Face Reality Soothing Radiance Toner', brand: 'Face Reality', price: 32.00, tier: 'standard', link: 'https://facerealityskincare.com/products/soothing-radiance-toner', imageUrl: '/attached_assets/stock_images/facial_toner_skincar_ce97eb9a.jpg' },
   ],
   'SAL-C TONER': [
-    { name: 'Cleen Beauty PHA Toner', brand: 'Cleen Beauty', price: 18.00, tier: 'budget', link: 'https://www.walmart.com/ip/cleen-beauty-PHA-Toner-alcohol-free-5-fl-oz/542088548' },
-    { name: 'Paula\'s Choice Skin Perfecting 2% BHA Liquid Exfoliant', brand: 'Paula\'s Choice', price: 32.00, tier: 'standard', link: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-liquid-exfoliant/201-2010.html' },
+    { name: 'Cleen Beauty PHA Toner', brand: 'Cleen Beauty', price: 18.00, tier: 'budget', link: 'https://www.walmart.com/ip/cleen-beauty-PHA-Toner-alcohol-free-5-fl-oz/542088548', imageUrl: '/attached_assets/stock_images/facial_toner_skincar_834ee8fb.jpg' },
+    { name: 'Paula\'s Choice Skin Perfecting 2% BHA Liquid Exfoliant', brand: 'Paula\'s Choice', price: 32.00, tier: 'standard', link: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-liquid-exfoliant/201-2010.html', imageUrl: '/attached_assets/stock_images/facial_toner_skincar_ce97eb9a.jpg' },
   ],
   'Vitamin A corrective serum': [
-    { name: 'Good Molecules Gentle Retinol Cream', brand: 'Good Molecules', price: 14.00, tier: 'standard', link: 'https://www.goodmolecules.com/s/good-molecules-gentle-retinol-cream-single' },
+    { name: 'Good Molecules Gentle Retinol Cream', brand: 'Good Molecules', price: 14.00, tier: 'standard', link: 'https://www.goodmolecules.com/s/good-molecules-gentle-retinol-cream-single', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_b7fb2228.jpg' },
   ],
   'MANDELIC 5%': [
-    { name: 'Paula\'s Choice Skin Perfecting 6% Mandelic Acid + 2% Lactic Acid Liquid Exfoliant', brand: 'Paula\'s Choice', price: 38.00, tier: 'budget', link: 'https://www.sephora.com/product/mini-skin-perfecting-6-mandelic-acid-2-lactic-acid-liquid-exfoliant-P514579' },
-    { name: 'Paula\'s Choice Skin Perfecting 6% Mandelic Acid + 2% Lactic Acid Liquid Exfoliant', brand: 'Paula\'s Choice', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/mini-skin-perfecting-6-mandelic-acid-2-lactic-acid-liquid-exfoliant-P514579' },
-    { name: 'Sofie Pavitt Mandelic Clearing Serum', brand: 'Sofie Pavitt', price: 85.00, tier: 'premium', link: 'https://www.sofiepavittface.com/products/mandelic-clearing-serum' },
+    { name: 'Paula\'s Choice Skin Perfecting 6% Mandelic Acid + 2% Lactic Acid Liquid Exfoliant', brand: 'Paula\'s Choice', price: 38.00, tier: 'budget', link: 'https://www.sephora.com/product/mini-skin-perfecting-6-mandelic-acid-2-lactic-acid-liquid-exfoliant-P514579', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_962cce7b.jpg' },
+    { name: 'Paula\'s Choice Skin Perfecting 6% Mandelic Acid + 2% Lactic Acid Liquid Exfoliant', brand: 'Paula\'s Choice', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/mini-skin-perfecting-6-mandelic-acid-2-lactic-acid-liquid-exfoliant-P514579', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_262f8247.jpg' },
+    { name: 'Sofie Pavitt Mandelic Clearing Serum', brand: 'Sofie Pavitt', price: 85.00, tier: 'premium', link: 'https://www.sofiepavittface.com/products/mandelic-clearing-serum', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_b7fb2228.jpg' },
   ],
   'MANDELIC 8%': [
-    { name: 'Good Molecules Mandelic Acid Serum', brand: 'Good Molecules', price: 12.00, tier: 'standard', link: 'https://www.goodmolecules.com/s/good-molecules-mandelic-acid-serum-single' },
-    { name: 'Sofie Pavitt Mandelic Clearing Serum', brand: 'Sofie Pavitt', price: 85.00, tier: 'premium', link: 'https://www.sofiepavittface.com/products/mandelic-clearing-serum' },
+    { name: 'Good Molecules Mandelic Acid Serum', brand: 'Good Molecules', price: 12.00, tier: 'standard', link: 'https://www.goodmolecules.com/s/good-molecules-mandelic-acid-serum-single', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_962cce7b.jpg' },
+    { name: 'Sofie Pavitt Mandelic Clearing Serum', brand: 'Sofie Pavitt', price: 85.00, tier: 'premium', link: 'https://www.sofiepavittface.com/products/mandelic-clearing-serum', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_262f8247.jpg' },
   ],
   'SALICYLIC SERUM': [
-    { name: 'Naturium Salicylic Acid Serum 2%', brand: 'Naturium', price: 19.99, tier: 'standard', link: 'https://naturium.com/products/salicylic-acid-serum-2' },
+    { name: 'Naturium Salicylic Acid Serum 2%', brand: 'Naturium', price: 19.99, tier: 'standard', link: 'https://naturium.com/products/salicylic-acid-serum-2', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_b7fb2228.jpg' },
   ],
   'HYDRABALANCE': [
-    { name: 'Good Molecules Hyaluronic Acid Serum', brand: 'Good Molecules', price: 12.00, tier: 'budget', link: 'https://www.goodmolecules.com/s/good-molecules-hyaluronic-acid-serum-30-ml' },
-    { name: 'Youth To The People Super Saturated Hydrating Barrier Serum', brand: 'Youth To The People', price: 48.00, tier: 'standard', link: 'https://www.sephora.com/product/super-saturated-hydrating-barrier-serum-P518192' },
-    { name: 'Prequel Multi-Quench Polyglutamic Acid Serum', brand: 'Prequel', price: 38.00, tier: 'premium', link: 'https://prequelskin.com/products/multi-quench-polyglutamic-acid-serum' },
+    { name: 'Good Molecules Hyaluronic Acid Serum', brand: 'Good Molecules', price: 12.00, tier: 'budget', link: 'https://www.goodmolecules.com/s/good-molecules-hyaluronic-acid-serum-30-ml', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_962cce7b.jpg' },
+    { name: 'Youth To The People Super Saturated Hydrating Barrier Serum', brand: 'Youth To The People', price: 48.00, tier: 'standard', link: 'https://www.sephora.com/product/super-saturated-hydrating-barrier-serum-P518192', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_262f8247.jpg' },
+    { name: 'Prequel Multi-Quench Polyglutamic Acid Serum', brand: 'Prequel', price: 38.00, tier: 'premium', link: 'https://prequelskin.com/products/multi-quench-polyglutamic-acid-serum', imageUrl: '/attached_assets/stock_images/facial_serum_dropper_b7fb2228.jpg' },
   ],
   'CRAN-PEPTIDE CREAM': [
-    { name: 'Vanicream Daily Facial Moisturizer', brand: 'Vanicream', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/vanicream-daily-facial-moisturizer-for-sensitive-skin-3-fl-oz/-/A-80038093' },
-    { name: 'Medik8 Total Moisture Daily Facial Cream', brand: 'Medik8', price: 52.00, tier: 'standard', link: 'https://us.medik8.com/products/total-moisture-daily-facial-cream' },
-    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow' },
+    { name: 'Vanicream Daily Facial Moisturizer', brand: 'Vanicream', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/vanicream-daily-facial-moisturizer-for-sensitive-skin-3-fl-oz/-/A-80038093', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_052fd29e.jpg' },
+    { name: 'Medik8 Total Moisture Daily Facial Cream', brand: 'Medik8', price: 52.00, tier: 'standard', link: 'https://us.medik8.com/products/total-moisture-daily-facial-cream', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_197d472f.jpg' },
+    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_052fd29e.jpg' },
   ],
   'CRAN PEPTIDE CREAM': [
-    { name: 'Vanicream Daily Facial Moisturizer', brand: 'Vanicream', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/vanicream-daily-facial-moisturizer-for-sensitive-skin-3-fl-oz/-/A-80038093' },
-    { name: 'Medik8 Total Moisture Daily Facial Cream', brand: 'Medik8', price: 52.00, tier: 'standard', link: 'https://us.medik8.com/products/total-moisture-daily-facial-cream' },
-    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow' },
+    { name: 'Vanicream Daily Facial Moisturizer', brand: 'Vanicream', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/vanicream-daily-facial-moisturizer-for-sensitive-skin-3-fl-oz/-/A-80038093', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_052fd29e.jpg' },
+    { name: 'Medik8 Total Moisture Daily Facial Cream', brand: 'Medik8', price: 52.00, tier: 'standard', link: 'https://us.medik8.com/products/total-moisture-daily-facial-cream', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_197d472f.jpg' },
+    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_052fd29e.jpg' },
   ],
   'CLEARDERMA': [
-    { name: 'Byoma Blemish & Acne Control Moisturizer', brand: 'Byoma', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/byoma-blemish-acne-control-moisturizer-1-69-fl-oz/-/A-94468812' },
-    { name: 'Prequel AM/PM Face Moisturizer', brand: 'Prequel', price: 38.00, tier: 'standard', link: 'https://prequelskin.com/products/am-pm-face-moisturizer' },
-    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow' },
+    { name: 'Byoma Blemish & Acne Control Moisturizer', brand: 'Byoma', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/byoma-blemish-acne-control-moisturizer-1-69-fl-oz/-/A-94468812', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_197d472f.jpg' },
+    { name: 'Prequel AM/PM Face Moisturizer', brand: 'Prequel', price: 38.00, tier: 'standard', link: 'https://prequelskin.com/products/am-pm-face-moisturizer', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_052fd29e.jpg' },
+    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow', imageUrl: '/attached_assets/stock_images/facial_moisturizer_j_197d472f.jpg' },
   ],
   'Daily SPF 30': [
-    { name: 'Supergoop Unseen Sunscreen SPF 40', brand: 'Supergoop', price: 36.00, tier: 'budget', link: 'https://martie.com/products/unseen-sunscreen-invisible-broad-spectrum-spf-40-pa-2' },
-    { name: 'Supergoop Every Single Face Watery Lotion SPF 50', brand: 'Supergoop', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/supergoop-every-single-face-watery-lotion-spf-50-P482325' },
-    { name: 'Prequel Solar Shade Chemical Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/solar-shade-chemical-sunscreen' },
+    { name: 'Supergoop Unseen Sunscreen SPF 40', brand: 'Supergoop', price: 36.00, tier: 'budget', link: 'https://martie.com/products/unseen-sunscreen-invisible-broad-spectrum-spf-40-pa-2', imageUrl: '/attached_assets/stock_images/sunscreen_spf_skinca_c522b4eb.jpg' },
+    { name: 'Supergoop Every Single Face Watery Lotion SPF 50', brand: 'Supergoop', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/supergoop-every-single-face-watery-lotion-spf-50-P482325', imageUrl: '/attached_assets/stock_images/sunscreen_spf_skinca_76945004.jpg' },
+    { name: 'Prequel Solar Shade Chemical Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/solar-shade-chemical-sunscreen', imageUrl: '/attached_assets/stock_images/sunscreen_spf_skinca_c522b4eb.jpg' },
   ],
   'DAILY SPF 30': [
-    { name: 'Supergoop Unseen Sunscreen SPF 40', brand: 'Supergoop', price: 36.00, tier: 'budget', link: 'https://martie.com/products/unseen-sunscreen-invisible-broad-spectrum-spf-40-pa-2' },
-    { name: 'Supergoop Every Single Face Watery Lotion SPF 50', brand: 'Supergoop', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/supergoop-every-single-face-watery-lotion-spf-50-P482325' },
-    { name: 'Prequel Solar Shade Chemical Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/solar-shade-chemical-sunscreen' },
+    { name: 'Supergoop Unseen Sunscreen SPF 40', brand: 'Supergoop', price: 36.00, tier: 'budget', link: 'https://martie.com/products/unseen-sunscreen-invisible-broad-spectrum-spf-40-pa-2', imageUrl: '/attached_assets/stock_images/sunscreen_spf_skinca_c522b4eb.jpg' },
+    { name: 'Supergoop Every Single Face Watery Lotion SPF 50', brand: 'Supergoop', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/supergoop-every-single-face-watery-lotion-spf-50-P482325', imageUrl: '/attached_assets/stock_images/sunscreen_spf_skinca_76945004.jpg' },
+    { name: 'Prequel Solar Shade Chemical Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/solar-shade-chemical-sunscreen', imageUrl: '/attached_assets/stock_images/sunscreen_spf_skinca_c522b4eb.jpg' },
   ],
   'Ultimate SPF 28': [
-    { name: 'Prequel Sun Barrier Mineral Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/sun-barrier-mineral-sunscreen' },
+    { name: 'Prequel Sun Barrier Mineral Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/sun-barrier-mineral-sunscreen', imageUrl: '/attached_assets/stock_images/sunscreen_spf_skinca_76945004.jpg' },
   ],
   'ULTIMATE SPF 28': [
-    { name: 'Prequel Sun Barrier Mineral Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/sun-barrier-mineral-sunscreen' },
+    { name: 'Prequel Sun Barrier Mineral Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/sun-barrier-mineral-sunscreen', imageUrl: '/attached_assets/stock_images/sunscreen_spf_skinca_76945004.jpg' },
   ],
   'ACNE MED 2.5%': [
-    { name: 'Dr. Song Benzoyl Peroxide 2.5%', brand: 'Dr. Song', price: 12.99, tier: 'budget', link: 'https://www.amazon.com/dp/B00DFEGDVS/' },
-    { name: 'MDacne Treatment Cream with Benzoyl Peroxide', brand: 'MDacne', price: 24.99, tier: 'standard', link: 'https://www.amazon.com/MDacne-Treatment-Blemishes-Plant-Based-Ingredients/dp/B0917KL3V7/' },
-    { name: 'Sofie Pavitt 5% Benzoyl Peroxide Acne Treatment Mask', brand: 'Sofie Pavitt', price: 48.00, tier: 'premium', link: 'https://www.sephora.com/product/sofie-pavitt-face-5-benzoyl-peroxide-acne-treatment-mask-with-glycolic-acid-P515840' },
+    { name: 'Dr. Song Benzoyl Peroxide 2.5%', brand: 'Dr. Song', price: 12.99, tier: 'budget', link: 'https://www.amazon.com/dp/B00DFEGDVS/', imageUrl: '/attached_assets/stock_images/acne_treatment_cream_64d4f60e.jpg' },
+    { name: 'MDacne Treatment Cream with Benzoyl Peroxide', brand: 'MDacne', price: 24.99, tier: 'standard', link: 'https://www.amazon.com/MDacne-Treatment-Blemishes-Plant-Based-Ingredients/dp/B0917KL3V7/', imageUrl: '/attached_assets/stock_images/acne_treatment_cream_d65bb3e4.jpg' },
+    { name: 'Sofie Pavitt 5% Benzoyl Peroxide Acne Treatment Mask', brand: 'Sofie Pavitt', price: 48.00, tier: 'premium', link: 'https://www.sephora.com/product/sofie-pavitt-face-5-benzoyl-peroxide-acne-treatment-mask-with-glycolic-acid-P515840', imageUrl: '/attached_assets/stock_images/acne_treatment_cream_64d4f60e.jpg' },
   ],
   'ACNE MED 5%': [
-    { name: 'MDacne Acne Treatment Gel 5%', brand: 'MDacne', price: 24.99, tier: 'budget', link: 'https://www.amazon.com/dp/B0917LKT7B/' },
+    { name: 'MDacne Acne Treatment Gel 5%', brand: 'MDacne', price: 24.99, tier: 'budget', link: 'https://www.amazon.com/dp/B0917LKT7B/', imageUrl: '/attached_assets/stock_images/acne_treatment_cream_d65bb3e4.jpg' },
   ],
   'ACNE MED 10%': [
-    { name: 'AcneFree Terminator 10 Acne Spot Treatment', brand: 'AcneFree', price: 9.99, tier: 'budget', link: 'https://www.amazon.com/AcneFree-Terminator-Treatment-Peroxide-Strength/dp/B0014VTOAQ/' },
+    { name: 'AcneFree Terminator 10 Acne Spot Treatment', brand: 'AcneFree', price: 9.99, tier: 'budget', link: 'https://www.amazon.com/AcneFree-Terminator-Treatment-Peroxide-Strength/dp/B0014VTOAQ/', imageUrl: '/attached_assets/stock_images/acne_treatment_cream_64d4f60e.jpg' },
   ],
 };
 
@@ -198,6 +198,7 @@ function getProductAlternatives(productName: string, category: string) {
     price: alt.price,
     benefits: [`Recommended for your skin type`],
     affiliateLink: alt.link,
+    imageUrl: alt.imageUrl,
   }));
 }
 
