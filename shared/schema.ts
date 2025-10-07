@@ -46,7 +46,7 @@ export const routines = pgTable("routines", {
   skinType: varchar("skin_type").notNull(),
   fitzpatrickType: varchar("fitzpatrick_type").notNull(),
   acneTypes: text("acne_types").array().notNull(),
-  acneSeverity: varchar("acne_severity"),
+  acneSeverity: varchar("acne_severity").notNull(),
   isPregnantOrNursing: boolean("is_pregnant_or_nursing").notNull(),
   routineData: jsonb("routine_data").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
@@ -67,6 +67,7 @@ export const quizAnswersSchema = z.object({
   skinType: z.enum(["dry", "normal", "oily"]),
   fitzpatrickType: z.enum(["1-3", "4+"]),
   acneTypes: z.array(z.enum(["inflamed", "noninflamed", "acne-rosacea"])).min(1, "Select at least one acne type"),
+  acneSeverity: z.enum(["mild", "moderate", "severe"]),
   isPregnantOrNursing: z.enum(["yes", "no"]),
 });
 

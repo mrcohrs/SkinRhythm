@@ -134,7 +134,7 @@ const productAlternatives: { [key: string]: Array<{name: string, brand: string, 
 
 export function parseExcelFile() {
   try {
-    const filePath = path.join(process.cwd(), 'attached_assets', 'Acne_Assist_TreeWorkbook_NotPN FINAL.xlsx - Noninflamed (12)_1759809897750.csv');
+    const filePath = path.join(process.cwd(), 'attached_assets', 'Acne_Assist_TreeWorkbook_NotPN FINAL.xlsx - Noninflamed (12) (1)_1759810721493.csv');
     
     if (!fs.existsSync(filePath)) {
       console.error('CSV file not found at:', filePath);
@@ -249,6 +249,7 @@ export function getRoutineForAnswers(answers: {
   skinType: string;
   fitzpatrickType: string;
   acneTypes: string[];
+  acneSeverity: string;
   isPregnantOrNursing: string;
 }): RoutineRecommendation | null {
   if (routineData.length === 0) {
@@ -269,6 +270,22 @@ export function getRoutineForAnswers(answers: {
     primaryAcneType = 'Noninflamed';
   }
 
+  // Helper function to check if severity matches
+  const severityMatches = (csvSeverity: string, userSeverity: string) => {
+    if (csvSeverity === 'All') return true;
+    
+    const userSev = userSeverity.toLowerCase();
+    const csvSev = csvSeverity.toLowerCase();
+    
+    // Handle compound severity values like "Mild, Moderate" or "Moderate, Severe"
+    if (csvSev.includes(',')) {
+      const severities = csvSev.split(',').map(s => s.trim());
+      return severities.includes(userSev);
+    }
+    
+    return csvSev === userSev;
+  };
+
   // Find matching routine with exact match first
   let matchingRow = routineData.find(row => {
     // Pregnant/Nursing match
@@ -276,6 +293,9 @@ export function getRoutineForAnswers(answers: {
     
     // Acne type match
     const acneTypeMatch = row.acneType === primaryAcneType;
+    
+    // Severity match
+    const sevMatch = severityMatches(row.severityGroup, answers.acneSeverity);
     
     // Fitz group match (1-3 or 4+ or All)
     const userFitz = answers.fitzpatrickType;
@@ -286,7 +306,7 @@ export function getRoutineForAnswers(answers: {
                           row.skinType.toLowerCase() === answers.skinType.toLowerCase() ||
                           row.skinType.toLowerCase().includes(answers.skinType.toLowerCase());
     
-    return pregnancyMatch && acneTypeMatch && fitzMatch && skinTypeMatch;
+    return pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch && skinTypeMatch;
   });
 
   // If no exact match, try relaxing skin type constraint
@@ -294,20 +314,22 @@ export function getRoutineForAnswers(answers: {
     matchingRow = routineData.find(row => {
       const pregnancyMatch = row.pregnantNursing === isPregnant;
       const acneTypeMatch = row.acneType === primaryAcneType;
+      const sevMatch = severityMatches(row.severityGroup, answers.acneSeverity);
       const userFitz = answers.fitzpatrickType;
       const fitzMatch = row.fitzGroup === 'All' || row.fitzGroup === userFitz;
       
-      return pregnancyMatch && acneTypeMatch && fitzMatch;
+      return pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch;
     });
   }
 
-  // If still no match, try with "All" mature status
+  // If still no match, try with "All" values
   if (!matchingRow) {
     matchingRow = routineData.find(row => {
       const pregnancyMatch = row.pregnantNursing === isPregnant;
       const acneTypeMatch = row.acneType === primaryAcneType;
+      const sevMatch = severityMatches(row.severityGroup, answers.acneSeverity);
       
-      return pregnancyMatch && acneTypeMatch && row.mature === 'All';
+      return pregnancyMatch && acneTypeMatch && sevMatch && (row.fitzGroup === 'All' || row.skinType === 'All' || row.mature === 'All');
     });
   }
 

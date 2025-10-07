@@ -14,6 +14,7 @@ export interface QuizAnswers {
   skinType: "dry" | "normal" | "oily" | "";
   fitzpatrickType: "1-3" | "4+" | "";
   acneTypes: string[];
+  acneSeverity: "mild" | "moderate" | "severe" | "";
   isPregnantOrNursing: "yes" | "no" | "";
 }
 
@@ -30,10 +31,11 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
     skinType: "",
     fitzpatrickType: "",
     acneTypes: [],
+    acneSeverity: "",
     isPregnantOrNursing: "",
   });
 
-  const totalSteps = 6;
+  const totalSteps = 7;
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
   const handleNext = () => {
@@ -65,6 +67,8 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
       case 4:
         return answers.acneTypes.length > 0;
       case 5:
+        return answers.acneSeverity !== "";
+      case 6:
         return answers.isPregnantOrNursing !== "";
       default:
         return false;
@@ -222,6 +226,38 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
           )}
 
           {currentStep === 5 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">How severe is your acne?</h2>
+                <p className="text-muted-foreground text-lg">This helps us find the right treatment strength</p>
+              </div>
+              <RadioGroup
+                value={answers.acneSeverity}
+                onValueChange={(value) => setAnswers({ ...answers, acneSeverity: value as any })}
+              >
+                <div className="flex items-center space-x-3 p-4 rounded-md hover-elevate border">
+                  <RadioGroupItem value="mild" id="mild" data-testid="radio-severity-mild" />
+                  <Label htmlFor="mild" className="text-lg cursor-pointer flex-1">
+                    Mild (Occasional breakouts, few blemishes)
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-3 p-4 rounded-md hover-elevate border">
+                  <RadioGroupItem value="moderate" id="moderate" data-testid="radio-severity-moderate" />
+                  <Label htmlFor="moderate" className="text-lg cursor-pointer flex-1">
+                    Moderate (Regular breakouts, noticeable blemishes)
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-3 p-4 rounded-md hover-elevate border">
+                  <RadioGroupItem value="severe" id="severe" data-testid="radio-severity-severe" />
+                  <Label htmlFor="severe" className="text-lg cursor-pointer flex-1">
+                    Severe (Persistent breakouts, widespread blemishes)
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+          )}
+
+          {currentStep === 6 && (
             <div className="space-y-6">
               <div>
                 <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Are you pregnant or nursing?</h2>

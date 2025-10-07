@@ -29,6 +29,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         skinType: validatedAnswers.skinType,
         fitzpatrickType: validatedAnswers.fitzpatrickType,
         acneTypes: validatedAnswers.acneTypes,
+        acneSeverity: validatedAnswers.acneSeverity,
         isPregnantOrNursing: validatedAnswers.isPregnantOrNursing,
       });
 
@@ -49,7 +50,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/routines/save', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { name, age, skinType, fitzpatrickType, acneTypes, isPregnantOrNursing, routineData } = req.body;
+      const { name, age, skinType, fitzpatrickType, acneTypes, acneSeverity, isPregnantOrNursing, routineData } = req.body;
 
       const savedRoutine = await storage.saveRoutine({
         userId,
@@ -58,6 +59,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         skinType,
         fitzpatrickType,
         acneTypes,
+        acneSeverity,
         isPregnantOrNursing,
         routineData,
       });
