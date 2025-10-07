@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupLocalAuth } from "./localAuth";
 import { parseExcelFile, getRoutineForAnswers } from "./parseExcel";
 import { quizAnswersSchema } from "@shared/schema";
 
@@ -9,6 +10,7 @@ parseExcelFile();
 
 export async function registerRoutes(app: Express): Promise<Server> {
   await setupAuth(app);
+  setupLocalAuth(app);
 
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
