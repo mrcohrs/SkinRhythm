@@ -47,94 +47,109 @@ interface RoutineRow {
 
 let routineData: RoutineRow[] = [];
 
-// Product alternatives mapping with real affiliate links
 const productAlternatives: { [key: string]: Array<{name: string, brand: string, price: number, tier: 'budget' | 'standard' | 'premium', link: string}> } = {
   'BARRIER BALANCE CREAMY CLEANSER': [
-    { name: 'CeraVe Hydrating Facial Cleanser', brand: 'CeraVe', price: 15.99, tier: 'budget', link: 'https://www.cerave.com/skincare/cleansers/hydrating-facial-cleanser' },
-    { name: 'La Roche-Posay Toleriane Cleanser', brand: 'La Roche-Posay', price: 18.99, tier: 'standard', link: 'https://www.laroche-posay.us/face-and-body-skin-care/face-products/face-wash/toleriane-hydrating-gentle-face-cleanser-tolerianehydratinggentlefacecleanser.html' },
+    { name: 'La Roche-Posay Toleriane Hydrating Gentle Cleanser', brand: 'La Roche-Posay', price: 18.99, tier: 'standard', link: 'https://www.dermstore.com/p/la-roche-posay-toleriane-hydrating-gentle-cleanser-400ml/11429066/' },
+    { name: 'SkinCeuticals Gentle Cleanser', brand: 'SkinCeuticals', price: 38.00, tier: 'premium', link: 'https://www.skinceuticals.com/skincare/facial-cleansers/gentle-cleanser/S33.html' },
+    { name: 'Youth To The People Superfood Gentle Antioxidant Cleanser', brand: 'Youth To The People', price: 38.00, tier: 'premium', link: 'https://www.sephora.com/product/clean-clean-gentle-gel-foaming-cleanser-P514513' },
   ],
   'ULTRA GENTLE CLEANSER': [
-    { name: 'Cetaphil Gentle Skin Cleanser', brand: 'Cetaphil', price: 14.99, tier: 'budget', link: 'https://www.cetaphil.com/us/cleansers/gentle-skin-cleanser/302993927228.html' },
-    { name: 'Vanicream Gentle Facial Cleanser', brand: 'Vanicream', price: 12.99, tier: 'budget', link: 'https://www.vanicream.com/product/vanicream-gentle-facial-cleanser' },
-  ],
-  'ANTIOXIDANT SCRUB': [
-    { name: 'Paula\'s Choice Skin Perfecting 2% BHA Gel Exfoliant', brand: 'Paula\'s Choice', price: 32.00, tier: 'standard', link: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-gel-exfoliant/3210.html' },
-    { name: 'The Ordinary AHA 30% + BHA 2% Peeling Solution', brand: 'The Ordinary', price: 8.00, tier: 'budget', link: 'https://theordinary.com/en-us/aha-30-bha-2-peeling-solution-100063.html' },
-  ],
-  'MANDELIC SCRUB': [
-    { name: 'By Wishtrend Mandelic Acid 5% Prep Water', brand: 'Wishtrend', price: 23.00, tier: 'standard', link: 'https://wishtrend.com/products/by-wishtrend-mandelic-acid-5-skin-prep-water' },
-    { name: 'The Ordinary Mandelic Acid 10% + HA', brand: 'The Ordinary', price: 6.80, tier: 'budget', link: 'https://theordinary.com/en-us/mandelic-acid-10-ha-100438.html' },
+    { name: 'Youth To The People Superfood Gentle Antioxidant Cleanser', brand: 'Youth To The People', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/clean-clean-gentle-gel-foaming-cleanser-P514513' },
   ],
   'MANDELIC WASH': [
-    { name: 'Vivant Skincare Mandelic Acid 3-in-1 Wash', brand: 'Vivant', price: 42.00, tier: 'premium', link: 'https://www.vivantskincare.com/products/mandelic-acid-3-in-1-wash' },
-    { name: 'The Ordinary Mandelic Acid 10% + HA', brand: 'The Ordinary', price: 6.80, tier: 'budget', link: 'https://theordinary.com/en-us/mandelic-acid-10-ha-100438.html' },
+    { name: 'Prequel Glycerin and Glycolic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'budget', link: 'https://prequelskin.com/products/gleanser-glycerin-and-glycolic-acid-cleanser' },
+    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'standard', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser' },
+    { name: 'Circadia Cleansing Gel with Mandelic Acid', brand: 'Circadia', price: 42.00, tier: 'premium', link: 'https://artofskincare.com/products/circadia-cleansing-gel-with-mandelic-acid' },
+  ],
+  'ANTIOXIDANT SCRUB': [
+    { name: 'Paula\'s Choice The UnScrub', brand: 'Paula\'s Choice', price: 32.00, tier: 'budget', link: 'https://www.paulaschoice.com/the-unscrub/740-7400.html' },
+    { name: 'ClearStem VitaminScrub', brand: 'ClearStem', price: 48.00, tier: 'standard', link: 'https://clearstem.com/products/vitaminscrub' },
+  ],
+  'MANDELIC SCRUB': [
+    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'budget', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser' },
+    { name: 'Prequel Glycerin and Salicylic Acid Cleanser', brand: 'Prequel', price: 24.00, tier: 'standard', link: 'https://prequelskin.com/products/gleanser-glycerin-and-salicylic-acid-cleanser' },
+    { name: 'Bibalo Mandelic Scrub', brand: 'Bibalo', price: 58.00, tier: 'premium', link: 'https://www.bibalosangeles.com/products/mandelic-scrub' },
   ],
   'MOISTURE BALANCE TONER': [
-    { name: 'Paula\'s Choice Skin Recovery Toner', brand: 'Paula\'s Choice', price: 29.00, tier: 'standard', link: 'https://www.paulaschoice.com/skin-recovery-enriched-calming-toner/145.html' },
-    { name: 'Isntree Hyaluronic Acid Toner', brand: 'Isntree', price: 18.00, tier: 'budget', link: 'https://www.isntree.com/product/hyaluronic-acid-toner-200ml/62/' },
+    { name: 'Klairs Supple Preparation Unscented Toner', brand: 'Klairs', price: 23.00, tier: 'budget', link: 'https://www.ulta.com/p/supple-preparation-unscented-toner-pimprod2023584' },
+    { name: 'Face Reality Moisture Balance Toner', brand: 'Face Reality', price: 28.00, tier: 'standard', link: 'https://facerealityskincare.com/products/moisture-balance-toner' },
+    { name: 'Biba Sousa Hydrating Toner with Phospholipids', brand: 'Biba Sousa', price: 45.00, tier: 'premium', link: 'https://www.amazon.com/Biba-Sousa-Hydrating-Toner-Phospholipids/dp/B0C5NNCMLT' },
   ],
   'CALMING TONER': [
-    { name: 'Klairs Supple Preparation Unscented Toner', brand: 'Klairs', price: 21.00, tier: 'standard', link: 'https://www.klairscosmetics.com/product/supple-preparation-unscented-toner' },
-    { name: 'COSRX Centella Water Alcohol-Free Toner', brand: 'COSRX', price: 17.00, tier: 'budget', link: 'https://www.cosrx.com/products/centella-water-alcohol-free-toner' },
+    { name: 'Paula\'s Choice Calm Nourishing Milky Toner', brand: 'Paula\'s Choice', price: 28.00, tier: 'budget', link: 'https://www.paulaschoice.com/calm-nourishing-milky-toner/9230-9230.html' },
+    { name: 'Face Reality Soothing Radiance Toner', brand: 'Face Reality', price: 32.00, tier: 'standard', link: 'https://facerealityskincare.com/products/soothing-radiance-toner' },
   ],
   'SAL-C TONER': [
-    { name: 'Paula\'s Choice 2% BHA Liquid Exfoliant', brand: 'Paula\'s Choice', price: 32.00, tier: 'standard', link: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-liquid-exfoliant/201.html' },
-    { name: 'The Ordinary Salicylic Acid 2% Solution', brand: 'The Ordinary', price: 6.50, tier: 'budget', link: 'https://theordinary.com/en-us/salicylic-acid-2-solution-100439.html' },
+    { name: 'Cleen Beauty PHA Toner', brand: 'Cleen Beauty', price: 18.00, tier: 'budget', link: 'https://www.walmart.com/ip/cleen-beauty-PHA-Toner-alcohol-free-5-fl-oz/542088548' },
+    { name: 'Paula\'s Choice Skin Perfecting 2% BHA Liquid Exfoliant', brand: 'Paula\'s Choice', price: 32.00, tier: 'standard', link: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-liquid-exfoliant/201-2010.html' },
   ],
   'Vitamin A corrective serum': [
-    { name: 'The Ordinary Retinol 0.5% in Squalane', brand: 'The Ordinary', price: 6.50, tier: 'budget', link: 'https://theordinary.com/en-us/retinol-0-5-in-squalane-100066.html' },
-    { name: 'Paula\'s Choice 1% Retinol Treatment', brand: 'Paula\'s Choice', price: 58.00, tier: 'premium', link: 'https://www.paulaschoice.com/clinical-1pct-retinol-treatment/8510.html' },
+    { name: 'Good Molecules Gentle Retinol Cream', brand: 'Good Molecules', price: 14.00, tier: 'standard', link: 'https://www.goodmolecules.com/s/good-molecules-gentle-retinol-cream-single' },
   ],
   'MANDELIC 5%': [
-    { name: 'The Ordinary Mandelic Acid 10% + HA', brand: 'The Ordinary', price: 6.80, tier: 'budget', link: 'https://theordinary.com/en-us/mandelic-acid-10-ha-100438.html' },
-    { name: 'By Wishtrend Mandelic Acid 5% Prep Water', brand: 'Wishtrend', price: 23.00, tier: 'standard', link: 'https://wishtrend.com/products/by-wishtrend-mandelic-acid-5-skin-prep-water' },
+    { name: 'Paula\'s Choice Skin Perfecting 6% Mandelic Acid + 2% Lactic Acid Liquid Exfoliant', brand: 'Paula\'s Choice', price: 38.00, tier: 'budget', link: 'https://www.sephora.com/product/mini-skin-perfecting-6-mandelic-acid-2-lactic-acid-liquid-exfoliant-P514579' },
+    { name: 'Paula\'s Choice Skin Perfecting 6% Mandelic Acid + 2% Lactic Acid Liquid Exfoliant', brand: 'Paula\'s Choice', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/mini-skin-perfecting-6-mandelic-acid-2-lactic-acid-liquid-exfoliant-P514579' },
+    { name: 'Sofie Pavitt Mandelic Clearing Serum', brand: 'Sofie Pavitt', price: 85.00, tier: 'premium', link: 'https://www.sofiepavittface.com/products/mandelic-clearing-serum' },
   ],
   'MANDELIC 8%': [
-    { name: 'The Ordinary Mandelic Acid 10% + HA', brand: 'The Ordinary', price: 6.80, tier: 'budget', link: 'https://theordinary.com/en-us/mandelic-acid-10-ha-100438.html' },
-    { name: 'Vivant Skincare 8% Mandelic Acid Serum', brand: 'Vivant', price: 68.00, tier: 'premium', link: 'https://www.vivantskincare.com/products/mandelic-acid-serum-8' },
+    { name: 'Good Molecules Mandelic Acid Serum', brand: 'Good Molecules', price: 12.00, tier: 'standard', link: 'https://www.goodmolecules.com/s/good-molecules-mandelic-acid-serum-single' },
+    { name: 'Sofie Pavitt Mandelic Clearing Serum', brand: 'Sofie Pavitt', price: 85.00, tier: 'premium', link: 'https://www.sofiepavittface.com/products/mandelic-clearing-serum' },
   ],
   'SALICYLIC SERUM': [
-    { name: 'Paula\'s Choice 2% BHA Liquid Exfoliant', brand: 'Paula\'s Choice', price: 32.00, tier: 'standard', link: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-liquid-exfoliant/201.html' },
-    { name: 'The Ordinary Salicylic Acid 2% Solution', brand: 'The Ordinary', price: 6.50, tier: 'budget', link: 'https://theordinary.com/en-us/salicylic-acid-2-solution-100439.html' },
-    { name: 'Paula\'s Choice SKIN PERFECTING 2% BHA Gel', brand: 'Paula\'s Choice', price: 32.00, tier: 'premium', link: 'https://www.paulaschoice.com/skin-perfecting-2pct-bha-gel-exfoliant/3210.html' },
-  ],
-  'Daily SPF 30': [
-    { name: 'EltaMD UV Clear SPF 46', brand: 'EltaMD', price: 39.00, tier: 'premium', link: 'https://eltamd.com/products/uv-clear-broad-spectrum-spf-46' },
-    { name: 'CeraVe AM Facial Moisturizing Lotion SPF 30', brand: 'CeraVe', price: 16.99, tier: 'budget', link: 'https://www.cerave.com/skincare/moisturizers/am-facial-moisturizing-lotion-with-sunscreen' },
-  ],
-  'Ultimate SPF 28': [
-    { name: 'La Roche-Posay Anthelios Mineral SPF 50', brand: 'La Roche-Posay', price: 34.99, tier: 'standard', link: 'https://www.laroche-posay.us/anthelios-mineral-sunscreen-spf-50-3337875546407.html' },
-    { name: 'Neutrogena Ultra Sheer Dry-Touch SPF 55', brand: 'Neutrogena', price: 11.99, tier: 'budget', link: 'https://www.neutrogena.com/products/sun/ultra-sheer-dry-touch-sunscreen-broad-spectrum-spf-55/6811047.html' },
+    { name: 'Naturium Salicylic Acid Serum 2%', brand: 'Naturium', price: 19.99, tier: 'standard', link: 'https://naturium.com/products/salicylic-acid-serum-2' },
   ],
   'HYDRABALANCE': [
-    { name: 'The Ordinary Hyaluronic Acid 2% + B5', brand: 'The Ordinary', price: 7.90, tier: 'budget', link: 'https://theordinary.com/en-us/hyaluronic-acid-2-b5-100422.html' },
-    { name: 'La Roche-Posay Hyalu B5 Pure Hyaluronic Acid Serum', brand: 'La Roche-Posay', price: 39.99, tier: 'premium', link: 'https://www.laroche-posay.us/hyalu-b5-pure-hyaluronic-acid-serum-3337875774598.html' },
+    { name: 'Good Molecules Hyaluronic Acid Serum', brand: 'Good Molecules', price: 12.00, tier: 'budget', link: 'https://www.goodmolecules.com/s/good-molecules-hyaluronic-acid-serum-30-ml' },
+    { name: 'Youth To The People Super Saturated Hydrating Barrier Serum', brand: 'Youth To The People', price: 48.00, tier: 'standard', link: 'https://www.sephora.com/product/super-saturated-hydrating-barrier-serum-P518192' },
+    { name: 'Prequel Multi-Quench Polyglutamic Acid Serum', brand: 'Prequel', price: 38.00, tier: 'premium', link: 'https://prequelskin.com/products/multi-quench-polyglutamic-acid-serum' },
   ],
   'CRAN-PEPTIDE CREAM': [
-    { name: 'CeraVe PM Facial Moisturizing Lotion', brand: 'CeraVe', price: 14.99, tier: 'budget', link: 'https://www.cerave.com/skincare/moisturizers/pm-facial-moisturizing-lotion' },
-    { name: 'Olay Regenerist Micro-Sculpting Cream', brand: 'Olay', price: 32.99, tier: 'standard', link: 'https://www.olay.com/en-us/skin-care-products/regenerist-micro-sculpting-cream' },
+    { name: 'Vanicream Daily Facial Moisturizer', brand: 'Vanicream', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/vanicream-daily-facial-moisturizer-for-sensitive-skin-3-fl-oz/-/A-80038093' },
+    { name: 'Medik8 Total Moisture Daily Facial Cream', brand: 'Medik8', price: 52.00, tier: 'standard', link: 'https://us.medik8.com/products/total-moisture-daily-facial-cream' },
+    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow' },
+  ],
+  'CRAN PEPTIDE CREAM': [
+    { name: 'Vanicream Daily Facial Moisturizer', brand: 'Vanicream', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/vanicream-daily-facial-moisturizer-for-sensitive-skin-3-fl-oz/-/A-80038093' },
+    { name: 'Medik8 Total Moisture Daily Facial Cream', brand: 'Medik8', price: 52.00, tier: 'standard', link: 'https://us.medik8.com/products/total-moisture-daily-facial-cream' },
+    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow' },
   ],
   'CLEARDERMA': [
-    { name: 'Cetaphil Pro Oil Absorbing Moisturizer', brand: 'Cetaphil', price: 16.99, tier: 'budget', link: 'https://www.cetaphil.com/us/moisturizers/pro-oil-absorbing-moisturizer-spf-30/302994124917.html' },
-    { name: 'La Roche-Posay Effaclar Mat', brand: 'La Roche-Posay', price: 24.99, tier: 'standard', link: 'https://www.laroche-posay.us/effaclar-mat-3337872414084.html' },
+    { name: 'Byoma Blemish & Acne Control Moisturizer', brand: 'Byoma', price: 14.99, tier: 'budget', link: 'https://www.target.com/p/byoma-blemish-acne-control-moisturizer-1-69-fl-oz/-/A-94468812' },
+    { name: 'Prequel AM/PM Face Moisturizer', brand: 'Prequel', price: 38.00, tier: 'standard', link: 'https://prequelskin.com/products/am-pm-face-moisturizer' },
+    { name: 'ClearStem HydraGlow', brand: 'ClearStem', price: 78.00, tier: 'premium', link: 'https://clearstem.com/products/hydraglow' },
+  ],
+  'Daily SPF 30': [
+    { name: 'Supergoop Unseen Sunscreen SPF 40', brand: 'Supergoop', price: 36.00, tier: 'budget', link: 'https://martie.com/products/unseen-sunscreen-invisible-broad-spectrum-spf-40-pa-2' },
+    { name: 'Supergoop Every Single Face Watery Lotion SPF 50', brand: 'Supergoop', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/supergoop-every-single-face-watery-lotion-spf-50-P482325' },
+    { name: 'Prequel Solar Shade Chemical Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/solar-shade-chemical-sunscreen' },
+  ],
+  'DAILY SPF 30': [
+    { name: 'Supergoop Unseen Sunscreen SPF 40', brand: 'Supergoop', price: 36.00, tier: 'budget', link: 'https://martie.com/products/unseen-sunscreen-invisible-broad-spectrum-spf-40-pa-2' },
+    { name: 'Supergoop Every Single Face Watery Lotion SPF 50', brand: 'Supergoop', price: 38.00, tier: 'standard', link: 'https://www.sephora.com/product/supergoop-every-single-face-watery-lotion-spf-50-P482325' },
+    { name: 'Prequel Solar Shade Chemical Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/solar-shade-chemical-sunscreen' },
+  ],
+  'Ultimate SPF 28': [
+    { name: 'Prequel Sun Barrier Mineral Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/sun-barrier-mineral-sunscreen' },
+  ],
+  'ULTIMATE SPF 28': [
+    { name: 'Prequel Sun Barrier Mineral Sunscreen', brand: 'Prequel', price: 42.00, tier: 'premium', link: 'https://prequelskin.com/products/sun-barrier-mineral-sunscreen' },
   ],
   'ACNE MED 2.5%': [
-    { name: 'PanOxyl Acne Creamy Wash 4% Benzoyl Peroxide', brand: 'PanOxyl', price: 9.99, tier: 'budget', link: 'https://www.panoxyl.com/products/creamy-wash-4-benzoyl-peroxide/' },
-    { name: 'CeraVe Acne Foaming Cream Cleanser', brand: 'CeraVe', price: 14.99, tier: 'standard', link: 'https://www.cerave.com/skincare/cleansers/acne-foaming-cream-cleanser' },
+    { name: 'Dr. Song Benzoyl Peroxide 2.5%', brand: 'Dr. Song', price: 12.99, tier: 'budget', link: 'https://www.amazon.com/dp/B00DFEGDVS/' },
+    { name: 'MDacne Treatment Cream with Benzoyl Peroxide', brand: 'MDacne', price: 24.99, tier: 'standard', link: 'https://www.amazon.com/MDacne-Treatment-Blemishes-Plant-Based-Ingredients/dp/B0917KL3V7/' },
+    { name: 'Sofie Pavitt 5% Benzoyl Peroxide Acne Treatment Mask', brand: 'Sofie Pavitt', price: 48.00, tier: 'premium', link: 'https://www.sephora.com/product/sofie-pavitt-face-5-benzoyl-peroxide-acne-treatment-mask-with-glycolic-acid-P515840' },
   ],
   'ACNE MED 5%': [
-    { name: 'PanOxyl Acne Foaming Wash 10% Benzoyl Peroxide', brand: 'PanOxyl', price: 11.99, tier: 'budget', link: 'https://www.panoxyl.com/products/foaming-wash-10-benzoyl-peroxide/' },
-    { name: 'La Roche-Posay Effaclar Duo Acne Treatment', brand: 'La Roche-Posay', price: 22.99, tier: 'standard', link: 'https://www.laroche-posay.us/effaclar-duo-dual-acne-treatment-3337872414099.html' },
+    { name: 'MDacne Acne Treatment Gel 5%', brand: 'MDacne', price: 24.99, tier: 'budget', link: 'https://www.amazon.com/dp/B0917LKT7B/' },
   ],
   'ACNE MED 10%': [
-    { name: 'PanOxyl Acne Foaming Wash 10% Benzoyl Peroxide', brand: 'PanOxyl', price: 11.99, tier: 'budget', link: 'https://www.panoxyl.com/products/foaming-wash-10-benzoyl-peroxide/' },
-    { name: 'Neutrogena Stubborn Acne AM Treatment', brand: 'Neutrogena', price: 15.99, tier: 'standard', link: 'https://www.neutrogena.com/products/acne/stubborn-acne-am-treatment-with-benzoyl-peroxide/6814701.html' },
+    { name: 'AcneFree Terminator 10 Acne Spot Treatment', brand: 'AcneFree', price: 9.99, tier: 'budget', link: 'https://www.amazon.com/AcneFree-Terminator-Treatment-Peroxide-Strength/dp/B0014VTOAQ/' },
   ],
 };
 
 export function parseExcelFile() {
   try {
-    const filePath = path.join(process.cwd(), 'attached_assets', 'Acne_Assist_TreeWorkbook_NotPN FINAL.xlsx - Noninflamed (12) (1)_1759810721493.csv');
+    const filePath = path.join(process.cwd(), 'attached_assets', 'Acne_Assist_TreeWorkbook_NotPN FINAL.xlsx - Noninflamed (12) (1)_1759814958965.csv');
     
     if (!fs.existsSync(filePath)) {
       console.error('CSV file not found at:', filePath);
@@ -151,7 +166,7 @@ export function parseExcelFile() {
     routineData = data.map((row: any) => ({
       pregnantNursing: row['Pregnant/Nursing?'] === 'Yes',
       acneType: row['Acne Type'] || '',
-      severityGroup: row['Severity Group'] || '',
+      severityGroup: row['Severity'] || '',
       mature: row['Mature?'] || '',
       fitzGroup: row['Fitz Group'] || '',
       skinType: row['Skin Type'] || '',
@@ -190,7 +205,6 @@ function buildProductsFromRow(row: RoutineRow) {
   const morningProducts = [];
   const eveningProducts = [];
 
-  // Morning routine: Cleanser → Toner → Actives → SPF → Hydrator → Moisturizer
   if (row.cleanser && row.cleanser !== 'None') {
     const alts = getProductAlternatives(row.cleanser, 'Cleanser');
     if (alts.length > 0) morningProducts.push(alts[0]);
@@ -216,7 +230,6 @@ function buildProductsFromRow(row: RoutineRow) {
     if (alts.length > 0) morningProducts.push(alts[0]);
   }
 
-  // Evening routine: Cleanser → Toner → Actives → Spot/BPO → Hydrator → Moisturizer
   if (row.cleanser && row.cleanser !== 'None') {
     const alts = getProductAlternatives(row.cleanser, 'Cleanser');
     if (alts.length > 0) eveningProducts.push(alts[0]);
@@ -258,9 +271,7 @@ export function getRoutineForAnswers(answers: {
 
   const isPregnant = answers.isPregnantOrNursing === 'yes';
 
-  // Determine the highest priority acne type
-  // Hierarchy: acne-rosacea > inflamed > noninflamed
-  let primaryAcneType = 'Noninflamed'; // default
+  let primaryAcneType = 'Noninflamed';
   
   if (answers.acneTypes.includes('acne-rosacea')) {
     primaryAcneType = 'Acne Rosacea';
@@ -270,14 +281,12 @@ export function getRoutineForAnswers(answers: {
     primaryAcneType = 'Noninflamed';
   }
 
-  // Helper function to check if severity matches
   const severityMatches = (csvSeverity: string, userSeverity: string) => {
     if (csvSeverity === 'All') return true;
     
     const userSev = userSeverity.toLowerCase();
     const csvSev = csvSeverity.toLowerCase();
     
-    // Handle compound severity values like "Mild, Moderate" or "Moderate, Severe"
     if (csvSev.includes(',')) {
       const severities = csvSev.split(',').map(s => s.trim());
       return severities.includes(userSev);
@@ -286,22 +295,12 @@ export function getRoutineForAnswers(answers: {
     return csvSev === userSev;
   };
 
-  // Find matching routine with exact match first
   let matchingRow = routineData.find(row => {
-    // Pregnant/Nursing match
     const pregnancyMatch = row.pregnantNursing === isPregnant;
-    
-    // Acne type match
     const acneTypeMatch = row.acneType === primaryAcneType;
-    
-    // Severity match
     const sevMatch = severityMatches(row.severityGroup, answers.acneSeverity);
-    
-    // Fitz group match (1-3 or 4+ or All)
     const userFitz = answers.fitzpatrickType;
     const fitzMatch = row.fitzGroup === 'All' || row.fitzGroup === userFitz;
-    
-    // Skin type match (exact or All)
     const skinTypeMatch = row.skinType === 'All' || 
                           row.skinType.toLowerCase() === answers.skinType.toLowerCase() ||
                           row.skinType.toLowerCase().includes(answers.skinType.toLowerCase());
@@ -309,7 +308,6 @@ export function getRoutineForAnswers(answers: {
     return pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch && skinTypeMatch;
   });
 
-  // If no exact match, try relaxing skin type constraint
   if (!matchingRow) {
     matchingRow = routineData.find(row => {
       const pregnancyMatch = row.pregnantNursing === isPregnant;
@@ -322,7 +320,6 @@ export function getRoutineForAnswers(answers: {
     });
   }
 
-  // If still no match, try with "All" values
   if (!matchingRow) {
     matchingRow = routineData.find(row => {
       const pregnancyMatch = row.pregnantNursing === isPregnant;
@@ -333,7 +330,6 @@ export function getRoutineForAnswers(answers: {
     });
   }
 
-  // Last resort: use first matching acne type and pregnancy status
   if (!matchingRow) {
     matchingRow = routineData.find(row => {
       const pregnancyMatch = row.pregnantNursing === isPregnant;
