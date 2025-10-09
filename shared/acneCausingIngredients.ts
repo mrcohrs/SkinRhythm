@@ -353,8 +353,9 @@ export function normalizeIngredient(ingredient: string): string {
   return ingredient
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, ' ');
+    .replace(/[^a-z0-9\s]/g, ' ') // Replace all non-alphanumeric (including hyphens) with spaces
+    .replace(/\s+/g, ' ') // Normalize multiple spaces
+    .trim();
 }
 
 export function checkIngredients(inputText: string): {
@@ -374,7 +375,44 @@ export function checkIngredients(inputText: string): {
 
   lines.forEach(line => {
     const normalizedLine = normalizeIngredient(line);
-    const isAcneCausing = normalizedAcneCausingIngredients.includes(normalizedLine);
+    
+    // Check for common negative patterns that indicate absence of ingredients
+    // These patterns mean the ingredient is explicitly NOT present
+    const negativePatterns = [
+      /\bfree\s+of\b/,     // "free of"
+      /\bwithout\s+any\b/, // "without any"
+      /\bno\s+/,           // "no [ingredient]"
+      /\b\w+\s+free\b/,    // "[ingredient] free"
+    ];
+    
+    const hasNegativePattern = negativePatterns.some(pattern => pattern.test(normalizedLine));
+    
+    // If this line is explicitly stating absence of ingredients, mark as safe
+    if (hasNegativePattern) {
+      safeIngredients.push(line);
+      return;
+    }
+    
+    // Split the input ingredient into words for word-boundary matching
+    const inputWords = normalizedLine.split(/\s+/).filter(w => w.length > 0);
+    
+    // Check if the ingredient matches any acne-causing ingredient
+    const isAcneCausing = normalizedAcneCausingIngredients.some(acneIngredient => {
+      // Split acne-causing ingredient into words
+      const acneWords = acneIngredient.split(/\s+/).filter(w => w.length > 0);
+      
+      // Exact match - entire ingredient matches
+      if (normalizedLine === acneIngredient) return true;
+      
+      // Word-level matching with EXACT word equality only
+      // Check if all words from the acne ingredient exist as complete words in the input
+      const allAcneWordsInInput = acneWords.every(acneWord => 
+        inputWords.includes(acneWord)
+      );
+      
+      // If all words from acne ingredient are present as exact words, it's a match
+      return allAcneWordsInInput && acneWords.length > 0;
+    });
     
     if (isAcneCausing) {
       foundIngredients.push(line);
