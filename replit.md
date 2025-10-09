@@ -71,3 +71,23 @@ Preferred communication style: Simple, everyday language.
 **Google Fonts**: Inter and Playfair Display fonts loaded via Google Fonts CDN
 
 **Development Integrations**: Replit-specific plugins for Vite including runtime error overlay, cartographer, and dev banner (development environment only)
+
+### Ingredient Checker Feature
+
+**Purpose**: Allow authenticated users to paste product ingredient lists and check for acne-causing ingredients from a database of 348 known comedogenic substances.
+
+**Access**: Available to all authenticated users via flask icon button in header (route: `/ingredient-checker`)
+
+**Matching Algorithm**: 
+- Word-boundary matching using exact word equality
+- Normalizes ingredients by converting to lowercase and removing special characters
+- Checks if all words from an acne-causing ingredient appear as complete words in the input
+- Example: "Coconut Oil" input matches "Coconut" in database; "Cyclopentasiloxane" does NOT match "SLO"
+
+**Design Limitations**:
+- Designed for standard ingredient list formats (one ingredient per line from product labels)
+- Does NOT handle complex marketing language like "paraben-free formula" or "free of coconut oil"
+- Users should enter only ingredient names from product labels, not marketing descriptions
+- Edge cases with mixed marketing/ingredient text may produce unexpected results
+
+**Data Source**: `shared/acneCausingIngredients.ts` containing 348 acne-causing ingredients with normalization and checking logic

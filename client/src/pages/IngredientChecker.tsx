@@ -55,7 +55,7 @@ export default function IngredientChecker() {
               Ingredient <span className="bg-yellow-300 dark:bg-yellow-400 px-2 text-foreground">Checker</span>
             </h1>
             <p className="text-lg text-muted-foreground">
-              Paste your product's ingredient list below to check for acne-causing ingredients. Each ingredient should be on a new line or separated by commas.
+              Paste your product's ingredient list below to check for acne-causing ingredients. Enter one ingredient per line - use only ingredient names from product labels, not marketing descriptions.
             </p>
           </div>
 

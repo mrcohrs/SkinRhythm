@@ -376,23 +376,6 @@ export function checkIngredients(inputText: string): {
   lines.forEach(line => {
     const normalizedLine = normalizeIngredient(line);
     
-    // Check for common negative patterns that indicate absence of ingredients
-    // These patterns mean the ingredient is explicitly NOT present
-    const negativePatterns = [
-      /\bfree\s+of\b/,     // "free of"
-      /\bwithout\s+any\b/, // "without any"
-      /\bno\s+/,           // "no [ingredient]"
-      /\b\w+\s+free\b/,    // "[ingredient] free"
-    ];
-    
-    const hasNegativePattern = negativePatterns.some(pattern => pattern.test(normalizedLine));
-    
-    // If this line is explicitly stating absence of ingredients, mark as safe
-    if (hasNegativePattern) {
-      safeIngredients.push(line);
-      return;
-    }
-    
     // Split the input ingredient into words for word-boundary matching
     const inputWords = normalizedLine.split(/\s+/).filter(w => w.length > 0);
     
