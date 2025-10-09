@@ -7,11 +7,13 @@ import { QuizFlow, type QuizAnswers } from "@/components/QuizFlow";
 import { RoutineDisplay } from "@/components/RoutineDisplay";
 import { AccountCreationModal } from "@/components/AccountCreationModal";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, User } from "lucide-react";
+import { ArrowRight, User, FlaskConical } from "lucide-react";
+import { useLocation } from "wouter";
 
 export default function HomePage() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const [showQuiz, setShowQuiz] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [routineData, setRoutineData] = useState<any>(null);
@@ -128,25 +130,39 @@ export default function HomePage() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
             <div className="font-serif text-3xl font-normal text-foreground">free skin</div>
-            {user ? (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => window.location.href = '/api/logout'}
-                data-testid="button-logout"
-              >
-                <User className="h-5 w-5" />
-              </Button>
-            ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.location.href = '/api/login'}
-                data-testid="button-login"
-              >
-                login
-              </Button>
-            )}
+            <div className="flex items-center gap-4">
+              {user && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => setLocation('/ingredient-checker')}
+                  data-testid="button-ingredient-checker"
+                >
+                  <FlaskConical className="h-4 w-4" />
+                  ingredient checker
+                </Button>
+              )}
+              {user ? (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => window.location.href = '/api/logout'}
+                  data-testid="button-logout"
+                >
+                  <User className="h-5 w-5" />
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => window.location.href = '/api/login'}
+                  data-testid="button-login"
+                >
+                  login
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </header>

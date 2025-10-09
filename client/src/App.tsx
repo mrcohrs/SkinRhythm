@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { useAuth } from "@/hooks/useAuth";
 import HomePage from "@/pages/HomePage";
 import Landing from "@/pages/Landing";
+import IngredientChecker from "@/pages/IngredientChecker";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -23,7 +24,10 @@ function Router() {
   return (
     <Switch>
       {isAuthenticated ? (
-        <Route path="/" component={HomePage} />
+        <>
+          <Route path="/" component={HomePage} />
+          <Route path="/ingredient-checker" component={IngredientChecker} />
+        </>
       ) : (
         <Route path="/" component={Landing} />
       )}
