@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weeklyRoutines";
 import { Product } from "./ProductCard";
-import { Clock, Sun, Moon, Info } from "lucide-react";
+import { Clock, Sun, Moon, Info, Snowflake } from "lucide-react";
 
 interface WeeklyRoutineProps {
   routineType: RoutineType;
@@ -63,11 +63,11 @@ export function WeeklyRoutine({ routineType, products }: WeeklyRoutineProps) {
                       <Badge
                         key={stepIndex}
                         variant={product ? "default" : "secondary"}
-                        className="text-sm py-1 px-3"
+                        className="text-sm py-1 px-3 flex items-center gap-1"
                         data-testid={`morning-step-${stepIndex}`}
                       >
                         {stepIndex + 1}. {step}
-                        {isIce && " 🧊"}
+                        {isIce && <Snowflake className="w-3 h-3" />}
                       </Badge>
                     );
                   })}
@@ -100,11 +100,11 @@ export function WeeklyRoutine({ routineType, products }: WeeklyRoutineProps) {
                       <Badge
                         key={stepIndex}
                         variant={product ? "default" : "secondary"}
-                        className="text-sm py-1 px-3"
+                        className="text-sm py-1 px-3 flex items-center gap-1"
                         data-testid={`evening-step-${stepIndex}`}
                       >
                         {stepIndex + 1}. {step}
-                        {isIce && " 🧊"}
+                        {isIce && <Snowflake className="w-3 h-3" />}
                       </Badge>
                     );
                   })}
