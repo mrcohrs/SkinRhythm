@@ -1,10 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { ProductCard, type Product } from "./ProductCard";
 import { PremiumUpsell } from "./PremiumUpsell";
+import { WeeklyRoutine } from "./WeeklyRoutine";
+import type { RoutineType } from "@shared/weeklyRoutines";
 
 interface RoutineDisplayProps {
   userName: string;
   skinType: string;
+  routineType?: RoutineType;
   products: {
     morning: Product[];
     evening: Product[];
@@ -15,6 +18,7 @@ interface RoutineDisplayProps {
 export function RoutineDisplay({
   userName,
   skinType,
+  routineType,
   products,
   isPremiumUser = false,
 }: RoutineDisplayProps) {
@@ -37,6 +41,12 @@ export function RoutineDisplay({
 
           {!isPremiumUser && <PremiumUpsell />}
         </div>
+
+        {isPremiumUser && routineType && (
+          <div className="mb-16">
+            <WeeklyRoutine routineType={routineType} products={products} />
+          </div>
+        )}
 
         <div className="space-y-16">
           <div>

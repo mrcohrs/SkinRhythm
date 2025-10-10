@@ -116,6 +116,7 @@ export default function Quiz() {
         <RoutineDisplay
           userName={quizAnswers.name}
           skinType={quizAnswers.skinType}
+          routineType={routineData.routineType}
           products={routineData.products}
           isPremiumUser={(user as any)?.isPremium || false}
         />
