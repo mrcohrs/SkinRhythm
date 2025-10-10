@@ -292,7 +292,7 @@ export function getRoutineForAnswers(answers: {
     fitzpatrickType: answers.fitzpatrickType,
     skinType: answers.skinType,
     age: answers.age,
-    isMature: parseInt(answers.age || '0') >= 40,
+    isMature: parseInt(answers.age || '0') >= 45,
     isPregnant
   });
 
@@ -310,9 +310,9 @@ export function getRoutineForAnswers(answers: {
     return csvSev === userSev;
   };
 
-  // Determine if user is mature (40+ years old)
+  // Determine if user is mature (45+ years old)
   const userAge = parseInt(answers.age || '0') || 0;
-  const isMature = userAge >= 40;
+  const isMature = userAge >= 45;
 
   let matchingRow = routineData.find((row, index) => {
     const pregnancyMatch = row.pregnantNursing === isPregnant;
