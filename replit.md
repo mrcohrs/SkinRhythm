@@ -39,7 +39,7 @@ Preferred communication style: Simple, everyday language.
 - `/api/routines/save` - Persist user routines (authenticated only)
 - `/api/routines` - Get user's saved routines (authenticated only)
 
-**Business Logic**: Excel-based product recommendation engine (`parseExcel.ts`) that loads skincare routine data from an XLSX file containing 60+ product combinations. Matching algorithm considers skin type, Fitzpatrick type, acne types array, and pregnancy/nursing status to return appropriate morning/evening product sets.
+**Business Logic**: Excel-based product recommendation engine (`parseExcel.ts`) that loads skincare routine data from an XLSX file containing 60+ product combinations. Matching algorithm considers skin type, Fitzpatrick type, acne types array, age (mature status for 40+), and pregnancy/nursing status to return appropriate morning/evening product sets. **XLSX Parsing**: Uses `raw: true` with `defval: ''` to preserve Fitzpatrick values like "1-3" as text (prevents auto-conversion to dates "1/3/01"). All fields are normalized with `String().trim()` for consistent matching.
 
 **Development Tools**: Vite middleware integration for HMR in development, separate production build pipeline using esbuild for server bundle.
 
