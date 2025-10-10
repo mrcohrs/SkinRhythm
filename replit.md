@@ -91,3 +91,32 @@ Preferred communication style: Simple, everyday language.
 - Edge cases with mixed marketing/ingredient text may produce unexpected results
 
 **Data Source**: `shared/acneCausingIngredients.ts` containing 348 acne-causing ingredients with normalization and checking logic
+
+### Premium 6-Week Treatment Routines
+
+**Purpose**: Provide premium users with detailed week-by-week treatment schedules based on their specific acne type, offering progressive skincare guidance over the first 6 weeks of treatment.
+
+**Access**: Exclusive to premium users (isPremium=true), displayed above product recommendations on routine results page
+
+**Routine Types**:
+- **Inflamed**: For users with cystic, nodular, papular, or pustular acne. Includes ice therapy and timed benzoyl peroxide application with gradual progression (15min→30min→60min→overnight)
+- **Non-inflamed Mild**: For mild comedonal acne (whiteheads/blackheads). Gentle routine without benzoyl peroxide, focuses on chemical exfoliation
+- **Non-inflamed Moderate/Severe**: For moderate-severe comedonal acne. Includes timed benzoyl peroxide with progressive application
+- **Rosacea**: For acne rosacea. Includes gentle timed benzoyl peroxide approach similar to inflamed routine
+
+**Product Categories**: Products are mapped to specific routine steps - Cleanser, Toner, Serum (actives), Hydrator (hyaluronic/peptide serums), Moisturizer, Sunscreen (SPF), Acne Med (benzoyl peroxide treatments)
+
+**Price Tiers**: All products are categorized as budget (<$25), midrange/standard ($25-50), or luxury (>$50) based on actual retail pricing
+
+**Weekly Schedule Structure**:
+- Weeks 1-2: Introduction phase with every-other-day actives, ice therapy (inflamed types), timed acne med application
+- Weeks 3-4: Building tolerance with daily actives, continued ice therapy, transition to leave-on acne med
+- Weeks 5-6: Full routine with PM actives added, overnight acne med (if tolerated)
+
+**Routine Determination Logic**: Algorithm in `determineRoutineType()` analyzes user's acne types and severity:
+- Rosacea mentioned → 'rosacea' routine
+- Cysts/nodules/papules/pustules → 'inflamed' routine  
+- Otherwise with mild severity → 'noninflamed-mild' routine
+- Otherwise → 'noninflamed-moderate-severe' routine
+
+**Implementation**: `WeeklyRoutine` component displays 3 cards (Weeks 1-2, 3-4, 5-6) with morning/evening routines, step-by-step badges, product mappings, and treatment notes. Component only renders when user has premium status and routine type is provided by backend.
