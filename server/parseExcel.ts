@@ -158,27 +158,27 @@ export function parseExcelFile() {
       return false;
     }
 
-    const workbook = XLSX.readFile(filePath, { raw: false, cellDates: false });
+    const workbook = XLSX.readFile(filePath, { raw: true, cellDates: false });
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(worksheet, { raw: false });
+    const data = XLSX.utils.sheet_to_json(worksheet, { raw: true, defval: '' });
 
     console.log('Excel data loaded:', data.length, 'rows');
 
     routineData = data.map((row: any) => ({
       pregnantNursing: row['Pregnant/Nursing?'] === 'Yes',
-      acneType: row['Acne Type'] || '',
-      severityGroup: row['Severity'] || '',
-      mature: row['Mature?'] || '',
-      fitzGroup: row['Fitz Group'] || '',
-      skinType: row['Skin Type'] || '',
-      cleanser: row['Cleanser'] || '',
-      toner: row['Toner'] || '',
-      actives: row['Actives/Serums'] || '',
-      spf: row['SPF'] || '',
-      hydrator: row['Hydrator/Support'] || '',
-      moisturizer: row['Moisturizer'] || '',
-      spotBpo: row['Spot/BPO'] || 'None',
+      acneType: String(row['Acne Type'] || '').trim(),
+      severityGroup: String(row['Severity'] || '').trim(),
+      mature: String(row['Mature?'] || '').trim(),
+      fitzGroup: String(row['Fitz Group'] || '').trim(),
+      skinType: String(row['Skin Type'] || '').trim(),
+      cleanser: String(row['Cleanser'] || '').trim(),
+      toner: String(row['Toner'] || '').trim(),
+      actives: String(row['Actives/Serums'] || '').trim(),
+      spf: String(row['SPF'] || '').trim(),
+      hydrator: String(row['Hydrator/Support'] || '').trim(),
+      moisturizer: String(row['Moisturizer'] || '').trim(),
+      spotBpo: String(row['Spot/BPO'] || 'None').trim(),
     }));
 
     console.log('Parsed routine data:', routineData.length, 'routines');
@@ -291,6 +291,8 @@ export function getRoutineForAnswers(answers: {
     acneSeverity: answers.acneSeverity,
     fitzpatrickType: answers.fitzpatrickType,
     skinType: answers.skinType,
+    age: answers.age,
+    isMature: parseInt(answers.age || '0') >= 40,
     isPregnant
   });
 
@@ -312,7 +314,7 @@ export function getRoutineForAnswers(answers: {
   const userAge = parseInt(answers.age || '0') || 0;
   const isMature = userAge >= 40;
 
-  let matchingRow = routineData.find(row => {
+  let matchingRow = routineData.find((row, index) => {
     const pregnancyMatch = row.pregnantNursing === isPregnant;
     const acneTypeMatch = row.acneType === primaryAcneType;
     const sevMatch = severityMatches(row.severityGroup, answers.acneSeverity);
@@ -323,7 +325,22 @@ export function getRoutineForAnswers(answers: {
                           row.skinType.toLowerCase().includes(answers.skinType.toLowerCase());
     const matureMatch = row.mature === 'All' || (row.mature === 'Yes') === isMature;
     
-    return pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch && skinTypeMatch && matureMatch;
+    const isMatch = pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch && skinTypeMatch && matureMatch;
+    
+    if (isMatch) {
+      console.log(`FOUND MATCH at index ${index}:`, {
+        mature: row.mature,
+        matureMatch,
+        isMature,
+        acneType: row.acneType,
+        severity: row.severityGroup,
+        fitzGroup: row.fitzGroup,
+        skinType: row.skinType,
+        spotBpo: row.spotBpo
+      });
+    }
+    
+    return isMatch;
   });
 
   if (!matchingRow) {
@@ -333,8 +350,9 @@ export function getRoutineForAnswers(answers: {
       const sevMatch = severityMatches(row.severityGroup, answers.acneSeverity);
       const userFitz = answers.fitzpatrickType;
       const fitzMatch = row.fitzGroup === 'All' || row.fitzGroup === userFitz;
+      const matureMatch = row.mature === 'All' || (row.mature === 'Yes') === isMature;
       
-      return pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch;
+      return pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch && matureMatch;
     });
   }
 
@@ -343,8 +361,9 @@ export function getRoutineForAnswers(answers: {
       const pregnancyMatch = row.pregnantNursing === isPregnant;
       const acneTypeMatch = row.acneType === primaryAcneType;
       const sevMatch = severityMatches(row.severityGroup, answers.acneSeverity);
+      const matureMatch = row.mature === 'All' || (row.mature === 'Yes') === isMature;
       
-      return pregnancyMatch && acneTypeMatch && sevMatch && (row.fitzGroup === 'All' || row.skinType === 'All' || row.mature === 'All');
+      return pregnancyMatch && acneTypeMatch && sevMatch && matureMatch && (row.fitzGroup === 'All' || row.skinType === 'All' || row.mature === 'All');
     });
   }
 
@@ -352,8 +371,9 @@ export function getRoutineForAnswers(answers: {
     matchingRow = routineData.find(row => {
       const pregnancyMatch = row.pregnantNursing === isPregnant;
       const acneTypeMatch = row.acneType === primaryAcneType;
+      const matureMatch = row.mature === 'All' || (row.mature === 'Yes') === isMature;
       
-      return pregnancyMatch && acneTypeMatch;
+      return pregnancyMatch && acneTypeMatch && matureMatch;
     });
   }
 
