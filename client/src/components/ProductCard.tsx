@@ -5,6 +5,7 @@ import { ArrowRight, Lock } from "lucide-react";
 export interface Product {
   name: string;
   brand: string;
+  category: string;
   price: number;
   priceTier: "budget" | "standard" | "premium";
   benefits: string[];
