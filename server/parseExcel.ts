@@ -1,12 +1,14 @@
 import XLSX from 'xlsx';
 import fs from 'fs';
 import path from 'path';
+import { determineRoutineType, weeklyRoutines, type RoutineType } from '@shared/weeklyRoutines';
 
 export interface RoutineRecommendation {
   skinType: string;
   fitzpatrickType: string;
   acneTypes: string[];
   isPregnantOrNursing: boolean;
+  routineType: RoutineType;
   products: {
     morning: Array<{
       name: string;
@@ -346,12 +348,14 @@ export function getRoutineForAnswers(answers: {
   }
 
   const products = buildProductsFromRow(matchingRow);
+  const routineType = determineRoutineType(answers.acneTypes, answers.acneSeverity);
 
   return {
     skinType: answers.skinType,
     fitzpatrickType: answers.fitzpatrickType,
     acneTypes: answers.acneTypes,
     isPregnantOrNursing: isPregnant,
+    routineType,
     products,
   };
 }
