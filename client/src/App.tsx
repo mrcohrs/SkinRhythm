@@ -7,23 +7,25 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { useAuth } from "@/hooks/useAuth";
 import HomePage from "@/pages/HomePage";
 import Landing from "@/pages/Landing";
+import Quiz from "@/pages/Quiz";
 import IngredientChecker from "@/pages/IngredientChecker";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">Loading...</div>
-      </div>
-    );
-  }
-
   return (
     <Switch>
-      {isAuthenticated ? (
+      <Route path="/quiz" component={Quiz} />
+      {isLoading ? (
+        <Route path="/">
+          {() => (
+            <div className="flex items-center justify-center min-h-screen">
+              <div className="text-lg">Loading...</div>
+            </div>
+          )}
+        </Route>
+      ) : isAuthenticated ? (
         <>
           <Route path="/" component={HomePage} />
           <Route path="/ingredient-checker" component={IngredientChecker} />

@@ -41,7 +41,7 @@ export default function Landing() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Button
                 size="lg"
-                onClick={() => window.location.href = '/api/login'}
+                onClick={() => window.location.href = '/quiz'}
                 className="gap-2 min-w-[200px]"
                 data-testid="button-get-started"
               >
