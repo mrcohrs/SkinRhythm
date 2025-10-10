@@ -33,6 +33,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         acneTypes: validatedAnswers.acneTypes,
         acneSeverity: validatedAnswers.acneSeverity,
         isPregnantOrNursing: validatedAnswers.isPregnantOrNursing,
+        age: validatedAnswers.age,
       });
 
       if (!routine) {

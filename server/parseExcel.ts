@@ -267,6 +267,7 @@ export function getRoutineForAnswers(answers: {
   acneTypes: string[];
   acneSeverity: string;
   isPregnantOrNursing: string;
+  age?: string;
 }): RoutineRecommendation | null {
   if (routineData.length === 0) {
     parseExcelFile();
@@ -284,6 +285,15 @@ export function getRoutineForAnswers(answers: {
     primaryAcneType = 'Noninflamed';
   }
 
+  console.log('=== MATCHING DEBUG ===');
+  console.log('Input:', {
+    primaryAcneType,
+    acneSeverity: answers.acneSeverity,
+    fitzpatrickType: answers.fitzpatrickType,
+    skinType: answers.skinType,
+    isPregnant
+  });
+
   const severityMatches = (csvSeverity: string, userSeverity: string) => {
     if (csvSeverity === 'All') return true;
     
@@ -298,6 +308,10 @@ export function getRoutineForAnswers(answers: {
     return csvSev === userSev;
   };
 
+  // Determine if user is mature (40+ years old)
+  const userAge = parseInt(answers.age || '0') || 0;
+  const isMature = userAge >= 40;
+
   let matchingRow = routineData.find(row => {
     const pregnancyMatch = row.pregnantNursing === isPregnant;
     const acneTypeMatch = row.acneType === primaryAcneType;
@@ -307,8 +321,9 @@ export function getRoutineForAnswers(answers: {
     const skinTypeMatch = row.skinType === 'All' || 
                           row.skinType.toLowerCase() === answers.skinType.toLowerCase() ||
                           row.skinType.toLowerCase().includes(answers.skinType.toLowerCase());
+    const matureMatch = row.mature === 'All' || (row.mature === 'Yes') === isMature;
     
-    return pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch && skinTypeMatch;
+    return pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch && skinTypeMatch && matureMatch;
   });
 
   if (!matchingRow) {
@@ -346,6 +361,14 @@ export function getRoutineForAnswers(answers: {
     console.error('No matching routine found for:', answers);
     return null;
   }
+
+  console.log('Found matching row:', {
+    acneType: matchingRow.acneType,
+    severity: matchingRow.severityGroup,
+    fitzGroup: matchingRow.fitzGroup,
+    skinType: matchingRow.skinType,
+    spotBpo: matchingRow.spotBpo
+  });
 
   const products = buildProductsFromRow(matchingRow);
   const routineType = determineRoutineType(answers.acneTypes, answers.acneSeverity);
