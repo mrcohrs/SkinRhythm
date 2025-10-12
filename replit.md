@@ -109,9 +109,9 @@ Preferred communication style: Simple, everyday language.
 **Price Tiers**: All products are categorized as budget (<$25), midrange/standard ($25-50), or luxury (>$50) based on actual retail pricing
 
 **Weekly Schedule Structure**:
-- Weeks 1-2: Introduction phase with every-other-day actives, ice therapy (inflamed types), timed acne med application
-- Weeks 3-4: Building tolerance with daily actives, continued ice therapy, transition to leave-on acne med
-- Weeks 5-6: Full routine with PM actives added, overnight acne med (if tolerated)
+- Weeks 1-2: Introduction phase with every-other-day actives, ice therapy (inflamed types), timed acne med application (Week 1: 15 min, Week 2: 30-45 min)
+- Weeks 3-4: Building tolerance with daily actives, continued ice therapy, transition to leave-on acne med (overnight)
+- Weeks 5-6: Full routine with PM actives added, overnight acne med
 
 **Routine Determination Logic**: Algorithm in `determineRoutineType()` analyzes user's acne types and severity:
 - Rosacea mentioned → 'rosacea' routine
