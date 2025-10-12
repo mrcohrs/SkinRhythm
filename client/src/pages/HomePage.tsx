@@ -20,6 +20,9 @@ export default function HomePage() {
   const [routineData, setRoutineData] = useState<any>(null);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | null>(null);
 
+  // Check if user wants to retake quiz
+  const isRetakingQuiz = new URLSearchParams(window.location.search).get('retake') === 'true';
+
   // Check if user has saved routines and redirect to dashboard
   const { data: routines } = useQuery<Routine[]>({
     queryKey: ['/api/routines'],
@@ -27,10 +30,10 @@ export default function HomePage() {
   });
 
   useEffect(() => {
-    if (user && routines && routines.length > 0 && !showQuiz && !routineData) {
+    if (user && routines && routines.length > 0 && !showQuiz && !routineData && !isRetakingQuiz) {
       setLocation('/dashboard');
     }
-  }, [user, routines, showQuiz, routineData, setLocation]);
+  }, [user, routines, showQuiz, routineData, isRetakingQuiz, setLocation]);
 
   const submitQuizMutation = useMutation({
     mutationFn: async (answers: QuizAnswers) => {

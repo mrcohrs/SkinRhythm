@@ -28,7 +28,7 @@ export default function Dashboard() {
   const isPremium = (user as any)?.isPremium || false;
 
   const handleRetakeQuiz = () => {
-    setLocation('/');
+    setLocation('/?retake=true');
   };
 
   const handleReferFriend = () => {
