@@ -2,7 +2,7 @@
 
 ## Overview
 
-SkinRhythm is a personalized acne skincare application that helps users discover customized skincare routines through an interactive quiz system. The application analyzes user skin type, Fitzpatrick type, acne concerns, and pregnancy status to recommend appropriate morning and evening skincare products across different price tiers (budget, standard, premium). Users can authenticate via Replit Auth, save their routines, and access product recommendations with affiliate links.
+SkinRhythm is a personalized acne skincare application that helps users discover customized skincare routines through an interactive quiz system. The application analyzes user skin type, Fitzpatrick type, acne concerns, and pregnancy status to recommend appropriate morning and evening skincare products across different price tiers (budget, standard, premium). Users can authenticate via Replit Auth, save their routines, and access their personalized dashboard with product recommendations and detailed treatment plans.
 
 ## User Preferences
 
@@ -20,7 +20,11 @@ Preferred communication style: Simple, everyday language.
 
 **State Management**: TanStack Query (React Query) for server state management with custom query client configuration. Authentication state is managed through a custom `useAuth` hook that queries the `/api/auth/user` endpoint.
 
-**Routing**: Wouter for lightweight client-side routing with conditional rendering based on authentication status (authenticated users see HomePage, unauthenticated see Landing).
+**Routing**: Wouter for lightweight client-side routing with conditional rendering based on authentication status:
+- Unauthenticated users see Landing page
+- Authenticated users without saved routines see HomePage (landing with quiz option)
+- Authenticated users with saved routines are automatically redirected to Dashboard
+- Query parameter `?retake=true` bypasses dashboard redirect to allow quiz retaking
 
 **Theme System**: Custom ThemeProvider context with localStorage persistence supporting light/dark mode toggling.
 
@@ -71,6 +75,39 @@ Preferred communication style: Simple, everyday language.
 **Google Fonts**: Inter and Playfair Display fonts loaded via Google Fonts CDN
 
 **Development Integrations**: Replit-specific plugins for Vite including runtime error overlay, cartographer, and dev banner (development environment only)
+
+### Premium User Dashboard
+
+**Purpose**: Provide authenticated users with a personalized dashboard to view their saved skincare routine, access premium treatment plans, and manage their account.
+
+**Access**: Available at `/dashboard` route for authenticated users with saved routines. Users are automatically redirected from `/` to `/dashboard` when they have saved routines.
+
+**Dashboard Components**:
+- **Header**: "free skin" branding, ingredient checker link, logout button
+- **User Info Section**: Displays "Your Routine, {name}" with skin type, acne severity, and premium badge (if applicable)
+- **Action Buttons**: 
+  - "Retake Quiz": Navigates to `/?retake=true` to bypass dashboard redirect and allow quiz retaking
+  - "Refer a Friend": Copies site URL to clipboard for sharing
+- **Tabbed Interface**:
+  - "My Products" tab (default): Shows morning and evening routine products in order
+  - "Detailed Treatment Plan" tab: Premium-only access to WeeklyRoutine component
+
+**My Products Tab**:
+- Morning Routine card: Ordered list of AM products with step numbers
+- Evening Routine card: Ordered list of PM products with step numbers
+- Each product displays: name, category, tier badge (budget/midrange/luxury), "Buy Now" button with affiliate link
+- Premium upsell card for non-premium users at bottom
+
+**Detailed Treatment Plan Tab**:
+- Disabled for non-premium users (shows "Treatment Plan (Premium)" label)
+- Premium users see WeeklyRoutine component with 3 cards (Weeks 1-2, 3-4, 5-6)
+- Displays step-by-step AM/PM routines with product mappings and treatment notes
+
+**Retake Quiz Flow**:
+- Dashboard "Retake Quiz" button navigates to `/?retake=true`
+- HomePage checks for `retake` query parameter
+- If present, skips automatic dashboard redirect and shows landing page content
+- User can then click "free skin quiz" button to start new quiz
 
 ### Ingredient Checker Feature
 
