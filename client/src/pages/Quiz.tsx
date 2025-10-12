@@ -58,10 +58,16 @@ export default function Quiz() {
       return await response.json();
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/routines'] });
       toast({
         title: "Success",
         description: "Your routine has been saved!",
       });
+      // Redirect to dashboard if user is logged in
+      if (user) {
+        setLocation('/dashboard');
+      }
     },
   });
 
@@ -100,6 +106,7 @@ export default function Quiz() {
       <QuizFlow
         onComplete={handleQuizComplete}
         onBack={handleBack}
+        userName={user ? `${(user as any).firstName || ''} ${(user as any).lastName || ''}`.trim() : undefined}
       />
     );
   }

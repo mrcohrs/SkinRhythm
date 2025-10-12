@@ -61,7 +61,7 @@ export default function Dashboard() {
   });
 
   const handleRetakeQuiz = () => {
-    setLocation('/?retake=true');
+    setLocation('/quiz');
   };
 
   const handleReferFriend = () => {

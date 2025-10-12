@@ -1,16 +1,28 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Redirect } from "wouter";
 import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { useAuth } from "@/hooks/useAuth";
-import HomePage from "@/pages/HomePage";
 import Landing from "@/pages/Landing";
 import Quiz from "@/pages/Quiz";
 import Dashboard from "@/pages/Dashboard";
 import IngredientChecker from "@/pages/IngredientChecker";
 import NotFound from "@/pages/not-found";
+import type { Routine } from "@shared/schema";
+
+function AuthenticatedHome() {
+  const { data: currentRoutine } = useQuery<Routine>({
+    queryKey: ['/api/routines/current'],
+  });
+
+  if (currentRoutine) {
+    return <Redirect to="/dashboard" />;
+  }
+
+  return <Redirect to="/quiz" />;
+}
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -28,7 +40,7 @@ function Router() {
         </Route>
       ) : isAuthenticated ? (
         <>
-          <Route path="/" component={HomePage} />
+          <Route path="/" component={AuthenticatedHome} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/ingredient-checker" component={IngredientChecker} />
         </>

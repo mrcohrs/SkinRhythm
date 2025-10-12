@@ -21,10 +21,10 @@ Preferred communication style: Simple, everyday language.
 **State Management**: TanStack Query (React Query) for server state management with custom query client configuration. Authentication state is managed through a custom `useAuth` hook that queries the `/api/auth/user` endpoint.
 
 **Routing**: Wouter for lightweight client-side routing with conditional rendering based on authentication status:
-- Unauthenticated users see Landing page
-- Authenticated users without saved routines see HomePage (landing with quiz option)
-- Authenticated users with saved routines are automatically redirected to Dashboard
-- Query parameter `?retake=true` bypasses dashboard redirect to allow quiz retaking
+- Unauthenticated users see Landing page at "/"
+- Authenticated users at "/" are automatically redirected to /dashboard if they have a saved routine, otherwise to /quiz
+- Quiz available at "/quiz" route for both logged-in and non-logged-in users
+- Retake quiz navigates directly to /quiz (no intermediate landing page)
 
 **Theme System**: Custom ThemeProvider context with localStorage persistence supporting light/dark mode toggling.
 
@@ -115,11 +115,10 @@ Preferred communication style: Simple, everyday language.
 - After switching, queries invalidated and UI updates to reflect new current routine
 
 **Retake Quiz Flow**:
-- Dashboard "Retake Quiz" button navigates to `/?retake=true`
-- HomePage checks for `retake` query parameter
-- If present, skips automatic dashboard redirect and shows landing page content
+- Dashboard "Retake Quiz" button navigates directly to `/quiz`
 - Logged-in users skip name question (starts at age) with name pre-filled from OIDC
-- After quiz completion and save, user redirected to /dashboard with new routine set as current
+- After quiz completion, routine auto-saves and user redirected to /dashboard with new routine set as current
+- No intermediate landing page - users go straight to quiz
 
 **Current Routine Management**:
 - Only one routine per user has isCurrent=true at any time
