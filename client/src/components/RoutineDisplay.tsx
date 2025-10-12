@@ -60,6 +60,14 @@ export function RoutineDisplay({
                 />
               ))}
             </div>
+            {!isPremiumUser && (
+              <div className="mt-8">
+                <PremiumUpsell 
+                  title="Get Your Detailed 6-Week Treatment Plan"
+                  description="Upgrade to premium for step-by-step guidance on properly ramping up on actives to best treat your acne. Includes week-by-week instructions with timing for benzoyl peroxide application and serum usage."
+                />
+              </div>
+            )}
           </div>
 
           <div>
@@ -73,6 +81,14 @@ export function RoutineDisplay({
                 />
               ))}
             </div>
+            {!isPremiumUser && (
+              <div className="mt-8">
+                <PremiumUpsell 
+                  title="Unlock Your Progressive Treatment Schedule"
+                  description="Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

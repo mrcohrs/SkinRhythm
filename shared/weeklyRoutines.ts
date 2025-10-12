@@ -22,33 +22,30 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: ''
+      notes: 'No moisturizer before or after acne med'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: ''
+      notes: 'No moisturizer before or after acne med'
     }
   ],
   'noninflamed-mild': [
     {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: ''
+      pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer']
     },
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: ''
+      pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer']
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer'],
-      notes: ''
+      pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer']
     }
   ],
   'noninflamed-moderate-severe': [
@@ -62,13 +59,13 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: ''
+      notes: 'No moisturizer before or after acne med'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: ''
+      notes: 'No moisturizer before or after acne med'
     }
   ],
   'rosacea': [
@@ -82,13 +79,13 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: ''
+      notes: 'No moisturizer before or after acne med'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: ''
+      notes: 'No moisturizer before or after acne med'
     }
   ]
 };
