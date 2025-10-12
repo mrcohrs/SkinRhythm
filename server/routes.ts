@@ -105,8 +105,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { id } = req.params;
       const updatedRoutine = await storage.setCurrentRoutine(userId, id);
       res.json(updatedRoutine);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error setting current routine:", error);
+      if (error.message === "Routine not found or access denied") {
+        return res.status(404).json({ message: "Routine not found" });
+      }
       res.status(500).json({ message: "Failed to set current routine" });
     }
   });

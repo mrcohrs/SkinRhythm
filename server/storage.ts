@@ -91,7 +91,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async setCurrentRoutine(userId: string, routineId: string): Promise<Routine> {
-    // Set all routines to not current
+    // First verify the routine belongs to the user
+    const [routine] = await db
+      .select()
+      .from(routines)
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)));
+
+    if (!routine) {
+      throw new Error("Routine not found or access denied");
+    }
+
+    // Set all user's routines to not current
     await db
       .update(routines)
       .set({ isCurrent: false })
@@ -101,7 +111,7 @@ export class DatabaseStorage implements IStorage {
     const [updatedRoutine] = await db
       .update(routines)
       .set({ isCurrent: true })
-      .where(eq(routines.id, routineId))
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)))
       .returning();
 
     return updatedRoutine;
