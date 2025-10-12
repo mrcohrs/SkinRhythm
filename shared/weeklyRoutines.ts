@@ -16,19 +16,19 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Ice', 'Timed Acne Med', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: 'Week 1: Apply benzoyl peroxide and leave on for 15 minutes, then rinse and proceed with cleanser, toner, hydrator, and moisturizer. Week 2: Apply benzoyl peroxide and leave on for 30-45 minutes, then rinse and proceed with same routine.'
+      notes: 'Timed Acne Med schedule: Week 1 = 15 min then rinse; Week 2 = 30 min then rinse; Week 3 = 60 min then rinse; Week 4+ = leave on overnight if tolerated.'
     },
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave acne med on overnight. No moisturizer before or after acne med.'
+      notes: 'No moisturizer before or after acne med'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave acne med on overnight. No moisturizer before or after acne med.'
+      notes: 'No moisturizer before or after acne med'
     }
   ],
   'noninflamed-mild': [
@@ -53,19 +53,19 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Timed Acne Med', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: 'Week 1: Apply benzoyl peroxide and leave on for 15 minutes, then rinse and proceed with cleanser, toner, hydrator, and moisturizer. Week 2: Apply benzoyl peroxide and leave on for 30-45 minutes, then rinse and proceed with same routine.'
+      notes: 'Timed Acne Med schedule: Week 1 = 15 min then rinse; Week 2 = 30 min then rinse; Week 3 = 60 min then rinse; Week 4+ = leave on overnight if tolerated.'
     },
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave acne med on overnight. No moisturizer before or after acne med.'
+      notes: 'No moisturizer before or after acne med'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave acne med on overnight. No moisturizer before or after acne med.'
+      notes: 'No moisturizer before or after acne med'
     }
   ],
   'rosacea': [
@@ -73,19 +73,19 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Timed Acne Med', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: 'Week 1: Apply benzoyl peroxide and leave on for 15 minutes, then rinse and proceed with cleanser, toner, hydrator, and moisturizer. Week 2: Apply benzoyl peroxide and leave on for 30-45 minutes, then rinse and proceed with same routine.'
+      notes: 'Timed Acne Med schedule: Week 1 = 15 min then rinse; Week 2 = 30 min then rinse; Week 3 = 60 min then rinse; Week 4+ = leave on overnight if tolerated.'
     },
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave acne med on overnight. No moisturizer before or after acne med.'
+      notes: 'No moisturizer before or after acne med'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave acne med on overnight. No moisturizer before or after acne med.'
+      notes: 'No moisturizer before or after acne med'
     }
   ]
 };

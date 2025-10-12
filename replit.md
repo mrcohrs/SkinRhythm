@@ -135,20 +135,20 @@ Preferred communication style: Simple, everyday language.
 
 **Access**: Exclusive to premium users (isPremium=true), displayed above product recommendations on routine results page
 
-**Routine Types**:
-- **Inflamed**: For users with cystic, nodular, papular, or pustular acne. Includes ice therapy and timed benzoyl peroxide application with gradual progression (15min→30min→60min→overnight)
-- **Non-inflamed Mild**: For mild comedonal acne (whiteheads/blackheads). Gentle routine without benzoyl peroxide, focuses on chemical exfoliation
-- **Non-inflamed Moderate/Severe**: For moderate-severe comedonal acne. Includes timed benzoyl peroxide with progressive application
-- **Rosacea**: For acne rosacea. Includes gentle timed benzoyl peroxide approach similar to inflamed routine
+**Routine Types** (applies to both pregnant/nursing and non-pregnant users):
+- **Inflamed**: For users with cystic, nodular, papular, or pustular acne. Includes ice therapy and timed acne med (Week 1=15min, Week 2=30min, Week 3=60min, Week 4+=overnight)
+- **Non-inflamed Mild**: For mild comedonal acne (whiteheads/blackheads). No ice therapy, no acne med, focuses on chemical exfoliation only
+- **Non-inflamed Moderate/Severe**: For moderate-severe comedonal acne. No ice therapy, includes timed acne med (Week 1=15min, Week 2=30min, Week 3=60min, Week 4+=overnight)
+- **Rosacea**: For acne rosacea. No ice therapy, includes gentle timed acne med (Week 1=15min, Week 2=30min, Week 3=60min, Week 4+=overnight)
 
 **Product Categories**: Products are mapped to specific routine steps - Cleanser, Toner, Serum (actives), Hydrator (hyaluronic/peptide serums), Moisturizer, Sunscreen (SPF), Acne Med (benzoyl peroxide treatments)
 
 **Price Tiers**: All products are categorized as budget (<$25), midrange/standard ($25-50), or luxury (>$50) based on actual retail pricing
 
 **Weekly Schedule Structure**:
-- Weeks 1-2: Introduction phase with every-other-day actives, ice therapy (inflamed types), timed acne med application (Week 1: 15 min, Week 2: 30-45 min)
-- Weeks 3-4: Building tolerance with daily actives, continued ice therapy, transition to leave-on acne med (overnight)
-- Weeks 5-6: Full routine with PM actives added, overnight acne med
+- Weeks 1-2: Introduction phase with every-other-day AM serums, ice therapy (inflamed only), timed acne med in PM (Week 1=15min rinse, Week 2=30min rinse per CSV notes)
+- Weeks 3-4: Daily AM serums, ice therapy continues (inflamed only), transition to overnight acne med in PM with no moisturizer
+- Weeks 5-6: Daily AM serums, PM serums added, ice therapy continues (inflamed only), overnight acne med with no moisturizer
 
 **Routine Determination Logic**: Algorithm in `determineRoutineType()` analyzes user's acne types and severity:
 - Rosacea mentioned → 'rosacea' routine
