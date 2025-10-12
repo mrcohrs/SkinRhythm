@@ -18,15 +18,56 @@ function extractProductNameFromURL(url: string): string {
     
     // Extract from path (e.g., /products/vanicream-facial-cleanser)
     const pathParts = urlObj.pathname.split('/').filter(Boolean);
-    const lastPart = pathParts[pathParts.length - 1];
+    
+    // Find the best product name segment (skip numeric-only and common path prefixes)
+    const skipPrefixes = ['product', 'products', 'p', 's', 'dp', 'ip'];
+    let productSlug = '';
+    
+    for (let i = pathParts.length - 1; i >= 0; i--) {
+      const part = pathParts[i];
+      // Skip if it's a file extension, numeric-only, or common prefix
+      const cleanPart = part.split('.')[0].split('?')[0].split('#')[0]; // Remove extensions, query params, anchors
+      
+      if (cleanPart === '-' || cleanPart.length < 2) continue; // Skip dashes and very short segments
+      
+      const isNumericOnly = /^\d+$/.test(cleanPart);
+      const isShortPrefix = skipPrefixes.includes(cleanPart.toLowerCase());
+      const isSingleChar = cleanPart.length === 1;
+      
+      // Test what the final product name would be after filtering numeric parts
+      const testWords = cleanPart.split('-')
+        .filter(word => !/^\d+$/.test(word) || word.length <= 2)
+        .filter(word => word.length > 0);
+      
+      const finalProductName = testWords.join(' ').trim();
+      const isSubstantial = finalProductName.length > 3 && testWords.length > 1; // Need at least 2 words and 4+ chars
+      
+      if (!isNumericOnly && !isShortPrefix && !isSingleChar && isSubstantial) {
+        productSlug = cleanPart;
+        break;
+      }
+    }
+    
+    if (!productSlug) {
+      return 'Product';
+    }
     
     // Convert kebab-case to Title Case
-    const productSlug = lastPart.split('?')[0]; // Remove query params
+    // Also handle cases like "retinol-05" -> "Retinol 05" or "100440" at end -> removed
     const words = productSlug.split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .filter(word => !/^\d+$/.test(word) || word.length <= 2) // Keep numbers only if short (like "05", "2")
+      .map(word => {
+        // Handle numeric words specially
+        if (/^\d/.test(word)) {
+          return word; // Keep as-is for version numbers like "05"
+        }
+        // Title Case: capitalize first letter, lowercase the rest
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(' ')
+      .trim();
     
-    return words;
+    return words || 'Product';
   } catch (e) {
     return 'Product';
   }
