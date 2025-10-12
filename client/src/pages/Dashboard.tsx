@@ -1,22 +1,33 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FlaskConical, RefreshCw, Share2, ExternalLink, User } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check } from "lucide-react";
 import { useLocation } from "wouter";
 import { WeeklyRoutine } from "@/components/WeeklyRoutine";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("products");
+  const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
+  const [showRoutineModal, setShowRoutineModal] = useState(false);
 
   const { data: currentRoutine, isLoading } = useQuery<Routine>({
     queryKey: ['/api/routines/current'],
+    enabled: !!user,
+  });
+
+  const { data: allRoutines } = useQuery<Routine[]>({
+    queryKey: ['/api/routines'],
     enabled: !!user,
   });
 
@@ -25,6 +36,29 @@ export default function Dashboard() {
   const routineType = routineData?.routineType;
 
   const isPremium = (user as any)?.isPremium || false;
+
+  const makeCurrentMutation = useMutation({
+    mutationFn: async (routineId: string) => {
+      const response = await apiRequest('POST', `/api/routines/${routineId}/set-current`, {});
+      return await response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/routines'] });
+      setShowRoutineModal(false);
+      toast({
+        title: "Success",
+        description: "Routine updated successfully!",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update routine",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleRetakeQuiz = () => {
     setLocation('/?retake=true');
@@ -154,15 +188,16 @@ export default function Dashboard() {
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-md grid-cols-2" data-testid="tabs-dashboard">
+            <TabsList className="grid w-full max-w-2xl grid-cols-3" data-testid="tabs-dashboard">
               <TabsTrigger value="products" data-testid="tab-products">My Products</TabsTrigger>
               <TabsTrigger 
                 value="treatment" 
                 disabled={!isPremium}
                 data-testid="tab-treatment"
               >
-                {isPremium ? 'Detailed Treatment Plan' : 'Treatment Plan (Premium)'}
+                {isPremium ? 'Treatment Plan' : 'Treatment Plan (Premium)'}
               </TabsTrigger>
+              <TabsTrigger value="library" data-testid="tab-library">Routine Library</TabsTrigger>
             </TabsList>
 
             {/* My Products Tab */}
@@ -276,9 +311,152 @@ export default function Dashboard() {
                 />
               )}
             </TabsContent>
+
+            {/* Routine Library Tab */}
+            <TabsContent value="library" className="space-y-6 mt-6">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {allRoutines && allRoutines.length > 0 ? (
+                  allRoutines.map((routine) => {
+                    const isCurrent = routine.isCurrent;
+                    const routineProducts = (routine.routineData as any)?.products;
+                    const totalProducts = (routineProducts?.morning?.length || 0) + (routineProducts?.evening?.length || 0);
+                    
+                    return (
+                      <Card
+                        key={routine.id}
+                        className={`cursor-pointer hover-elevate ${isCurrent ? 'border-primary' : ''}`}
+                        onClick={() => {
+                          setSelectedRoutine(routine);
+                          setShowRoutineModal(true);
+                        }}
+                        data-testid={`routine-card-${routine.id}`}
+                      >
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div className="space-y-1">
+                              <CardTitle className="text-lg">
+                                {routine.name ? `${routine.name}'s Routine` : 'My Routine'}
+                              </CardTitle>
+                              <CardDescription className="flex items-center gap-2">
+                                <Calendar className="h-3 w-3" />
+                                {new Date(routine.createdAt!).toLocaleDateString()}
+                              </CardDescription>
+                            </div>
+                            {isCurrent && (
+                              <Badge className="gap-1">
+                                <Check className="h-3 w-3" />
+                                Current
+                              </Badge>
+                            )}
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2 text-sm text-muted-foreground">
+                            <p>{routine.skinType} skin • {routine.acneSeverity} acne</p>
+                            <p>{totalProducts} products total</p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })
+                ) : (
+                  <div className="col-span-full text-center py-12">
+                    <p className="text-muted-foreground">No routines in your library yet</p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
           </Tabs>
         </div>
       </div>
+
+      {/* Routine Details Modal */}
+      <Dialog open={showRoutineModal} onOpenChange={setShowRoutineModal}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {selectedRoutine?.name ? `${selectedRoutine.name}'s Routine` : 'Routine Details'}
+            </DialogTitle>
+            <DialogDescription>
+              Created {selectedRoutine?.createdAt && new Date(selectedRoutine.createdAt).toLocaleDateString()}
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedRoutine && (
+            <div className="space-y-6">
+              {/* Routine Info */}
+              <div className="flex gap-2">
+                <Badge variant="secondary">{selectedRoutine.skinType} skin</Badge>
+                <Badge variant="secondary">{selectedRoutine.acneSeverity} acne</Badge>
+                {selectedRoutine.isCurrent && (
+                  <Badge>Current Routine</Badge>
+                )}
+              </div>
+
+              {/* Morning Products */}
+              <div className="space-y-3">
+                <h3 className="font-medium">Morning Routine</h3>
+                <div className="space-y-2">
+                  {((selectedRoutine.routineData as any)?.products?.morning || []).map((product: any, index: number) => (
+                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">
+                        {index + 1}
+                      </span>
+                      <div className="flex-1">
+                        <p className="font-medium">{product.name}</p>
+                        <p className="text-muted-foreground text-xs">{product.category}</p>
+                      </div>
+                      {product.tier && (
+                        <Badge variant="outline" className="text-xs">{product.tier}</Badge>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Evening Products */}
+              <div className="space-y-3">
+                <h3 className="font-medium">Evening Routine</h3>
+                <div className="space-y-2">
+                  {((selectedRoutine.routineData as any)?.products?.evening || []).map((product: any, index: number) => (
+                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">
+                        {index + 1}
+                      </span>
+                      <div className="flex-1">
+                        <p className="font-medium">{product.name}</p>
+                        <p className="text-muted-foreground text-xs">{product.category}</p>
+                      </div>
+                      {product.tier && (
+                        <Badge variant="outline" className="text-xs">{product.tier}</Badge>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowRoutineModal(false)}
+              data-testid="button-cancel-routine"
+            >
+              Cancel
+            </Button>
+            {selectedRoutine && !selectedRoutine.isCurrent && (
+              <Button
+                onClick={() => makeCurrentMutation.mutate(selectedRoutine.id)}
+                disabled={makeCurrentMutation.isPending}
+                data-testid="button-make-current"
+              >
+                {makeCurrentMutation.isPending ? 'Updating...' : 'Make Current'}
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

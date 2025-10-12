@@ -76,10 +76,16 @@ export default function HomePage() {
       return await response.json();
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/routines'] });
       toast({
         title: "Success",
         description: "Your routine has been saved!",
       });
+      // Redirect to dashboard if user is logged in
+      if (user) {
+        setLocation('/dashboard');
+      }
     },
   });
 
