@@ -54,7 +54,7 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
                 {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground">{product.brand}</p>
+            {product.brand && <p className="text-sm text-muted-foreground">{product.brand}</p>}
           </div>
           
           <p className="text-sm text-muted-foreground leading-relaxed">

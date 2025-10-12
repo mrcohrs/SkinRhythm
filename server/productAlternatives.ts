@@ -5,10 +5,32 @@ interface ProductAlternative {
   faceRealityProduct: string;
   category: string;
   defaultProductLink: string;
+  defaultProductName: string; // Extracted product name from URL
   premiumOptions: string[];
 }
 
 let productAlternativesMap: Map<string, ProductAlternative> = new Map();
+
+// Extract product name from URL
+function extractProductNameFromURL(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    
+    // Extract from path (e.g., /products/vanicream-facial-cleanser)
+    const pathParts = urlObj.pathname.split('/').filter(Boolean);
+    const lastPart = pathParts[pathParts.length - 1];
+    
+    // Convert kebab-case to Title Case
+    const productSlug = lastPart.split('?')[0]; // Remove query params
+    const words = productSlug.split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    
+    return words;
+  } catch (e) {
+    return 'Product';
+  }
+}
 
 export function parseProductAlternativesCSV() {
   const csvPath = path.join(process.cwd(), 'attached_assets', 'Face Reality Product Replacements.xlsx - Alternatives (1)_1760303030045.csv');
@@ -50,6 +72,9 @@ export function parseProductAlternativesCSV() {
     const category = columns[1];
     const defaultProductLink = columns[2];
     
+    // Extract product name from default product URL
+    const defaultProductName = extractProductNameFromURL(defaultProductLink);
+    
     // Collect premium options (columns 3-7, may have empty values)
     const premiumOptions: string[] = [];
     for (let j = 3; j < Math.min(8, columns.length); j++) {
@@ -65,6 +90,7 @@ export function parseProductAlternativesCSV() {
       faceRealityProduct,
       category,
       defaultProductLink,
+      defaultProductName,
       premiumOptions
     });
   }

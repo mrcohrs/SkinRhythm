@@ -238,13 +238,13 @@ function getProductAlternatives(productName: string, category: string) {
   const csvAlt = getProductAlternative(productName);
   
   if (csvAlt) {
-    // Use generic AcneAgent product name
-    const genericName = getGenericProductName(productName);
+    // Use the actual product name extracted from CSV URL
+    // NOT the generic AcneAgent name, NOT the Face Reality name
     
     // Return default product with premium options
     return [{
-      name: genericName, // Use generic AcneAgent product name
-      brand: 'AcneAgent',
+      name: csvAlt.defaultProductName, // Use real product name from CSV
+      brand: '', // No brand display needed
       category,
       priceTier: 'standard' as const,
       price: 0, // Price not specified in CSV
