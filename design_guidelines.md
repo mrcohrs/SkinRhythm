@@ -1,4 +1,4 @@
-# SkinRhythm Design Guidelines
+# AcneAgent Design Guidelines
 
 ## Design Approach: Reference-Based (Skincare & Health Tech)
 **Primary References:** Curology, Hims & Hers, Headspace (for quiz flow)
