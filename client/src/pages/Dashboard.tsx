@@ -122,7 +122,7 @@ export default function Dashboard() {
       <header className="border-b border-border/50">
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
-            <div className="font-serif text-3xl font-normal text-foreground">free skin</div>
+            <div className="font-serif text-3xl font-normal text-foreground">AcneAgent</div>
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
