@@ -190,6 +190,26 @@ export function parseExcelFile() {
 }
 
 function getProductAlternatives(productName: string, category: string) {
+  // First try to get from new CSV-based system
+  const { getProductAlternative } = require('./productAlternatives');
+  const csvAlt = getProductAlternative(productName);
+  
+  if (csvAlt) {
+    // Return default product with premium options
+    return [{
+      name: productName, // Use Face Reality product name as display name
+      brand: 'Face Reality',
+      category,
+      priceTier: 'standard' as const,
+      price: 0, // Price not specified in CSV
+      benefits: [`Recommended for your skin type`],
+      affiliateLink: csvAlt.defaultProductLink,
+      imageUrl: '/attached_assets/stock_images/facial_serum_dropper_262f8247.jpg', // Default image
+      premiumOptions: csvAlt.premiumOptions,
+    }];
+  }
+  
+  // Fallback to hardcoded alternatives if not in CSV
   const alternatives = productAlternatives[productName] || [];
   
   return alternatives.map(alt => ({

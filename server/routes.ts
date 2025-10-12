@@ -5,6 +5,7 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { setupLocalAuth } from "./localAuth";
 import { parseExcelFile, getRoutineForAnswers } from "./parseExcel";
 import { quizAnswersSchema } from "@shared/schema";
+import "./productAlternatives"; // Load product alternatives CSV
 
 parseExcelFile();
 

@@ -12,6 +12,7 @@ export interface Product {
   affiliateLink: string;
   imageUrl?: string;
   isPremiumOnly?: boolean;
+  premiumOptions?: string[]; // Alternative product links for premium users
 }
 
 interface ProductCardProps {
