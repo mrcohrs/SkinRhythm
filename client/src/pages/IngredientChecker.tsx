@@ -40,7 +40,7 @@ export default function IngredientChecker() {
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
-              <div className="font-serif text-3xl font-normal text-foreground">free skin</div>
+              <div className="font-serif text-3xl font-normal text-foreground">AcneAgent</div>
             </div>
           </div>
         </div>

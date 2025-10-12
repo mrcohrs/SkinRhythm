@@ -1,8 +1,8 @@
-# SkinRhythm - Personalized Acne Skincare Application
+# AcneAgent - Personalized Acne Skincare Application
 
 ## Overview
 
-SkinRhythm is a personalized acne skincare application that helps users discover customized skincare routines through an interactive quiz system. The application analyzes user skin type, Fitzpatrick type, acne concerns, and pregnancy status to recommend appropriate morning and evening skincare products across different price tiers (budget, standard, premium). Users can authenticate via Replit Auth, save their routines, and access their personalized dashboard with product recommendations and detailed treatment plans.
+AcneAgent is a personalized acne skincare application that helps users discover customized skincare routines through an interactive quiz system. The application analyzes user skin type, Fitzpatrick type, acne concerns, and pregnancy status to recommend appropriate morning and evening skincare products across different price tiers (budget, standard, premium). Users can authenticate via Replit Auth, save their routines, and access their personalized dashboard with product recommendations and detailed treatment plans.
 
 ## User Preferences
 
@@ -43,7 +43,7 @@ Preferred communication style: Simple, everyday language.
 - `/api/routines/save` - Persist user routines (authenticated only)
 - `/api/routines` - Get user's saved routines (authenticated only)
 
-**Business Logic**: Excel-based product recommendation engine (`parseExcel.ts`) that loads skincare routine data from an XLSX file containing 60+ product combinations. Matching algorithm considers skin type, Fitzpatrick type, acne types array, age (mature status for 45+), and pregnancy/nursing status to return appropriate morning/evening product sets. **XLSX Parsing**: Uses `raw: true` with `defval: ''` to preserve Fitzpatrick values like "1-3" as text (prevents auto-conversion to dates "1/3/01"). All fields are normalized with `String().trim()` for consistent matching. **Premium Alternatives**: Product alternatives CSV provides default product links plus up to 5 premium alternative options per Face Reality product. premiumOptions are ALWAYS included in saved routines (backend), but frontend conditionally displays them only to users with isPremium=true. This allows users who upgrade to premium to immediately see alternatives without retaking quiz.
+**Business Logic**: Excel-based product recommendation engine (`parseExcel.ts`) that loads skincare routine data from an XLSX file containing 60+ product combinations. Matching algorithm considers skin type, Fitzpatrick type, acne types array, age (mature status for 45+), and pregnancy/nursing status to return appropriate morning/evening product sets. **XLSX Parsing**: Uses `raw: true` with `defval: ''` to preserve Fitzpatrick values like "1-3" as text (prevents auto-conversion to dates "1/3/01"). All fields are normalized with `String().trim()` for consistent matching. **Premium Alternatives**: Product alternatives CSV provides default product links plus up to 5 premium alternative options per AcneAgent product. premiumOptions are ALWAYS included in saved routines (backend), but frontend conditionally displays them only to users with isPremium=true. This allows users who upgrade to premium to immediately see alternatives without retaking quiz. **Product Branding**: All Face Reality products are rebranded as "AcneAgent" with generic names (e.g., "Gentlest Cleanser", "BPO 2.5%", "Chemical SPF") for white-label distribution.
 
 **Development Tools**: Vite middleware integration for HMR in development, separate production build pipeline using esbuild for server bundle.
 
@@ -66,7 +66,7 @@ Preferred communication style: Simple, everyday language.
 
 **Database Service**: Neon serverless PostgreSQL with connection pooling
 
-**Product Data Source**: Excel file (`Acne_Assist_Routines_60_With_Alternatives_1759622368076.xlsx`) containing curated skincare product recommendations parsed via SheetJS (XLSX library)
+**Product Data Source**: Excel file (`Acne_Assist_Routines_60_With_Alternatives_1759622368076.xlsx`) containing curated skincare product recommendations parsed via SheetJS (XLSX library). Products from the Excel file are mapped to generic AcneAgent names before display.
 
 **UI Component Library**: Radix UI primitives (@radix-ui/*) for accessible components including dialogs, dropdowns, tooltips, radio groups, checkboxes, progress bars, and more
 
@@ -83,7 +83,7 @@ Preferred communication style: Simple, everyday language.
 **Access**: Available at `/dashboard` route for authenticated users with saved routines. Users are automatically redirected from `/` to `/dashboard` when they have saved routines.
 
 **Dashboard Components**:
-- **Header**: "free skin" branding, ingredient checker link, logout button
+- **Header**: "AcneAgent" branding, ingredient checker link, logout button
 - **User Info Section**: Displays "Your Routine, {name}" with skin type, acne severity, and premium badge (if applicable)
 - **Action Buttons**: 
   - "Retake Quiz": Navigates to `/?retake=true` to bypass dashboard redirect and allow quiz retaking

@@ -4,6 +4,49 @@ import path from 'path';
 import { determineRoutineType, weeklyRoutines, type RoutineType } from '@shared/weeklyRoutines';
 import { getProductAlternative } from './productAlternatives';
 
+// Map Face Reality product names to AcneAgent generic names
+const productNameMapping: Record<string, string> = {
+  // Cleansers
+  'BARRIER BALANCE CREAMY CLEANSER': 'Gentlest Cleanser',
+  'ULTRA GENTLE CLEANSER': 'Gentle Cleanser',
+  'MANDELIC WASH': 'Active Cleanser',
+  'ANTIOXIDANT SCRUB': 'Vitamin Scrub',
+  'MANDELIC SCRUB': 'Active Scrub',
+  
+  // Toners
+  'MOISTURE BALANCE TONER': 'Moisturizing Toner',
+  'CALMING TONER': 'Soothing Toner',
+  'SAL-C TONER': 'Active Toner',
+  
+  // Serums
+  'VITAMIN A CORRECTIVE SERUM': 'Retinol Serum',
+  'MANDELIC 5%': 'Mandelic 5%',
+  'MANDELIC 8%': 'Mandelic 8%',
+  'SALICYLIC SERUM': 'Salicylic Serum',
+  
+  // Hydrators
+  'HYDRABALANCE': 'Hydrator',
+  
+  // Moisturizers
+  'CRAN-PEPTIDE CREAM': 'Heavy Moisturizer',
+  'CRAN PEPTIDE CREAM': 'Heavy Moisturizer',
+  'CLEARDERMA': 'Light Moisturizer',
+  
+  // SPF
+  'DAILY SPF 30': 'Chemical SPF',
+  'ULTIMATE SPF 28': 'Mineral SPF',
+  
+  // BPO Treatments
+  'ACNE MED 2.5%': 'BPO 2.5%',
+  'ACNE MED 5%': 'BPO 5%',
+  'ACNE MED 10%': 'BPO 10%',
+};
+
+function getGenericProductName(faceRealityName: string): string {
+  const key = faceRealityName.toUpperCase().trim();
+  return productNameMapping[key] || faceRealityName;
+}
+
 export interface RoutineRecommendation {
   skinType: string;
   fitzpatrickType: string;
@@ -195,10 +238,13 @@ function getProductAlternatives(productName: string, category: string) {
   const csvAlt = getProductAlternative(productName);
   
   if (csvAlt) {
+    // Use generic AcneAgent product name
+    const genericName = getGenericProductName(productName);
+    
     // Return default product with premium options
     return [{
-      name: productName, // Use Face Reality product name as display name
-      brand: 'Face Reality',
+      name: genericName, // Use generic AcneAgent product name
+      brand: 'AcneAgent',
       category,
       priceTier: 'standard' as const,
       price: 0, // Price not specified in CSV

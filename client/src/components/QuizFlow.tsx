@@ -90,7 +90,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
       <header className="border-b border-border/50">
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
-            <div className="font-serif text-3xl font-normal text-foreground">free skin</div>
+            <div className="font-serif text-3xl font-normal text-foreground">AcneAgent</div>
             <Button
               variant="ghost"
               size="sm"

@@ -11,7 +11,7 @@ export function Header({ onLoginClick, isAuthenticated = false }: HeaderProps) {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border/50">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 h-20 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="font-serif text-3xl font-normal">free skin</span>
+          <span className="font-serif text-3xl font-normal">AcneAgent</span>
         </div>
         
         <div className="flex items-center gap-4">
