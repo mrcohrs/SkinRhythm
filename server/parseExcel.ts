@@ -2,6 +2,7 @@ import XLSX from 'xlsx';
 import fs from 'fs';
 import path from 'path';
 import { determineRoutineType, weeklyRoutines, type RoutineType } from '@shared/weeklyRoutines';
+import { getProductAlternative } from './productAlternatives';
 
 export interface RoutineRecommendation {
   skinType: string;
@@ -191,7 +192,6 @@ export function parseExcelFile() {
 
 function getProductAlternatives(productName: string, category: string) {
   // First try to get from new CSV-based system
-  const { getProductAlternative } = require('./productAlternatives');
   const csvAlt = getProductAlternative(productName);
   
   if (csvAlt) {
@@ -281,6 +281,22 @@ function buildProductsFromRow(row: RoutineRow) {
   return { morning: morningProducts, evening: eveningProducts };
 }
 
+function stripPremiumOptions(routine: RoutineRecommendation): RoutineRecommendation {
+  return {
+    ...routine,
+    products: {
+      morning: routine.products.morning.map(p => {
+        const { premiumOptions, ...rest } = p as any;
+        return rest;
+      }),
+      evening: routine.products.evening.map(p => {
+        const { premiumOptions, ...rest } = p as any;
+        return rest;
+      }),
+    },
+  };
+}
+
 export function getRoutineForAnswers(answers: {
   skinType: string;
   fitzpatrickType: string;
@@ -288,6 +304,7 @@ export function getRoutineForAnswers(answers: {
   acneSeverity: string;
   isPregnantOrNursing: string;
   age?: string;
+  isPremiumUser?: boolean;
 }): RoutineRecommendation | null {
   if (routineData.length === 0) {
     parseExcelFile();
@@ -413,7 +430,7 @@ export function getRoutineForAnswers(answers: {
   const products = buildProductsFromRow(matchingRow);
   const routineType = determineRoutineType(answers.acneTypes, answers.acneSeverity);
 
-  return {
+  const routine = {
     skinType: answers.skinType,
     fitzpatrickType: answers.fitzpatrickType,
     acneTypes: answers.acneTypes,
@@ -421,4 +438,8 @@ export function getRoutineForAnswers(answers: {
     routineType,
     products,
   };
+
+  // Always return routine with premiumOptions
+  // Frontend will control display based on user's current premium status
+  return routine;
 }

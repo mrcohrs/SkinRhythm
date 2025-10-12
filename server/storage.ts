@@ -45,19 +45,61 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
+    // OIDC always provides an ID (sub claim), but check anyway
+    if (userData.id) {
+      // First try to find existing user by ID
+      const existing = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, userData.id))
+        .limit(1);
+
+      if (existing.length > 0) {
+        // Update existing user
+        const [user] = await db
+          .update(users)
+          .set({
+            email: userData.email,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            profileImageUrl: userData.profileImageUrl,
+            updatedAt: new Date(),
+          })
+          .where(eq(users.id, userData.id))
+          .returning();
+        return user;
+      }
+    }
+
+    // Check if email exists (handles test scenarios where email exists with different ID)
+    if (userData.email) {
+      const emailExists = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, userData.email))
+        .limit(1);
+
+      if (emailExists.length > 0) {
+        // Update existing user (including ID if provided)
+        const [user] = await db
+          .update(users)
+          .set({
+            ...(userData.id && { id: userData.id }),
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            profileImageUrl: userData.profileImageUrl,
+            updatedAt: new Date(),
+          })
+          .where(eq(users.email, userData.email))
+          .returning();
+        return user;
+      }
+    }
+
+    // Insert new user
     const [user] = await db
       .insert(users)
       .values(userData)
-      .onConflictDoUpdate({
-        target: users.id,
-        set: {
-          email: userData.email,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          profileImageUrl: userData.profileImageUrl,
-          updatedAt: new Date(),
-        },
-      })
       .returning();
     return user;
   }

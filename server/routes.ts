@@ -24,9 +24,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/quiz/submit', async (req, res) => {
+  app.post('/api/quiz/submit', async (req: any, res) => {
     try {
       const validatedAnswers = quizAnswersSchema.parse(req.body);
+      
+      // Check if user is authenticated and premium
+      let isPremiumUser = false;
+      if (req.user && req.user.claims && req.user.claims.sub) {
+        try {
+          const user = await storage.getUser(req.user.claims.sub);
+          isPremiumUser = user?.isPremium || false;
+          console.log(`[Quiz Submit] User ${req.user.claims.sub} - isPremium: ${user?.isPremium}, will get premiumOptions: ${isPremiumUser}`);
+        } catch (e) {
+          console.log(`[Quiz Submit] Error getting user, treating as non-premium:`, e);
+        }
+      } else {
+        console.log(`[Quiz Submit] No authenticated user, treating as non-premium`);
+      }
       
       const routine = getRoutineForAnswers({
         skinType: validatedAnswers.skinType,
@@ -35,11 +49,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         acneSeverity: validatedAnswers.acneSeverity,
         isPregnantOrNursing: validatedAnswers.isPregnantOrNursing,
         age: validatedAnswers.age,
+        isPremiumUser,
       });
 
       if (!routine) {
         return res.status(404).json({ message: "No routine found for your answers" });
       }
+
+      // Log if premiumOptions are in the response
+      const hasPremiumOptions = routine.products.morning.some((p: any) => p.premiumOptions?.length > 0) || 
+                                routine.products.evening.some((p: any) => p.premiumOptions?.length > 0);
+      console.log(`[Quiz Submit] Routine has premiumOptions: ${hasPremiumOptions}`);
 
       res.json({
         routine,
