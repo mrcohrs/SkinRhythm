@@ -36,10 +36,8 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
     isPregnantOrNursing: "",
   });
 
-  const totalSteps = userName ? 6 : 7;
-  const progress = userName 
-    ? ((currentStep) / totalSteps) * 100
-    : ((currentStep + 1) / totalSteps) * 100;
+  const totalSteps = 7; // Always 7 steps (name, age, skin, fitzpatrick, acne types, severity, pregnancy)
+  const progress = ((currentStep + 1) / totalSteps) * 100;
 
   const handleNext = () => {
     if (currentStep < totalSteps - 1) {

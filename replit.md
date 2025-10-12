@@ -76,9 +76,9 @@ Preferred communication style: Simple, everyday language.
 
 **Development Integrations**: Replit-specific plugins for Vite including runtime error overlay, cartographer, and dev banner (development environment only)
 
-### Premium User Dashboard
+### Premium User Dashboard & Routine Library
 
-**Purpose**: Provide authenticated users with a personalized dashboard to view their saved skincare routine, access premium treatment plans, and manage their account.
+**Purpose**: Provide authenticated users with a personalized dashboard to view their saved skincare routines, access premium treatment plans, and manage multiple routines over time.
 
 **Access**: Available at `/dashboard` route for authenticated users with saved routines. Users are automatically redirected from `/` to `/dashboard` when they have saved routines.
 
@@ -89,10 +89,12 @@ Preferred communication style: Simple, everyday language.
   - "Retake Quiz": Navigates to `/?retake=true` to bypass dashboard redirect and allow quiz retaking
   - "Refer a Friend": Copies site URL to clipboard for sharing
 - **Tabbed Interface**:
-  - "My Products" tab (default): Shows morning and evening routine products in order
-  - "Detailed Treatment Plan" tab: Premium-only access to WeeklyRoutine component
+  - "My Products" tab (default): Shows current routine's morning and evening products in order
+  - "Detailed Treatment Plan" tab: Premium-only access to WeeklyRoutine component for current routine
+  - "Routine Library" tab: Shows all saved routines with ability to switch current routine
 
 **My Products Tab**:
+- Shows current routine's products (isCurrent=true)
 - Morning Routine card: Ordered list of AM products with step numbers
 - Evening Routine card: Ordered list of PM products with step numbers
 - Each product displays: name, category, tier badge (budget/midrange/luxury), "Buy Now" button with affiliate link
@@ -100,14 +102,31 @@ Preferred communication style: Simple, everyday language.
 
 **Detailed Treatment Plan Tab**:
 - Disabled for non-premium users (shows "Treatment Plan (Premium)" label)
-- Premium users see WeeklyRoutine component with 3 cards (Weeks 1-2, 3-4, 5-6)
+- Premium users see WeeklyRoutine component with 3 cards (Weeks 1-2, 3-4, 5-6) for current routine
 - Displays step-by-step AM/PM routines with product mappings and treatment notes
+
+**Routine Library Tab**:
+- Displays all user's saved routines as clickable cards in grid layout
+- Each card shows: user name, creation date, skin type, acne severity, total product count
+- Current routine marked with "Current" badge and highlighted border
+- Click card to open modal with routine details
+- Modal displays: routine info badges, morning products list, evening products list
+- "Make Current" button appears for non-current routines to switch active routine
+- After switching, queries invalidated and UI updates to reflect new current routine
 
 **Retake Quiz Flow**:
 - Dashboard "Retake Quiz" button navigates to `/?retake=true`
 - HomePage checks for `retake` query parameter
 - If present, skips automatic dashboard redirect and shows landing page content
-- User can then click "free skin quiz" button to start new quiz
+- Logged-in users skip name question (starts at age) with name pre-filled from OIDC
+- After quiz completion and save, user redirected to /dashboard with new routine set as current
+
+**Current Routine Management**:
+- Only one routine per user has isCurrent=true at any time
+- New quiz submissions automatically set new routine as current
+- GET /api/routines/current returns the current routine
+- POST /api/routines/:id/set-current switches which routine is current (with userId authorization)
+- All routine operations properly scoped by userId to prevent cross-user access
 
 ### Ingredient Checker Feature
 
