@@ -85,6 +85,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/routines/current', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const currentRoutine = await storage.getCurrentRoutine(userId);
+      if (!currentRoutine) {
+        return res.status(404).json({ message: "No current routine found" });
+      }
+      res.json(currentRoutine);
+    } catch (error) {
+      console.error("Error fetching current routine:", error);
+      res.status(500).json({ message: "Failed to fetch current routine" });
+    }
+  });
+
+  app.post('/api/routines/:id/set-current', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { id } = req.params;
+      const updatedRoutine = await storage.setCurrentRoutine(userId, id);
+      res.json(updatedRoutine);
+    } catch (error) {
+      console.error("Error setting current routine:", error);
+      res.status(500).json({ message: "Failed to set current routine" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

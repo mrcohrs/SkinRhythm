@@ -7,7 +7,7 @@ import {
   type InsertRoutine,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -17,6 +17,8 @@ export interface IStorage {
   
   saveRoutine(routine: InsertRoutine): Promise<Routine>;
   getUserRoutines(userId: string): Promise<Routine[]>;
+  getCurrentRoutine(userId: string): Promise<Routine | undefined>;
+  setCurrentRoutine(userId: string, routineId: string): Promise<Routine>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -58,9 +60,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   async saveRoutine(routine: InsertRoutine): Promise<Routine> {
+    // Set all existing routines to not current
+    await db
+      .update(routines)
+      .set({ isCurrent: false })
+      .where(eq(routines.userId, routine.userId));
+
+    // Insert new routine as current
     const [savedRoutine] = await db
       .insert(routines)
-      .values(routine)
+      .values({ ...routine, isCurrent: true })
       .returning();
     return savedRoutine;
   }
@@ -71,6 +80,31 @@ export class DatabaseStorage implements IStorage {
       .from(routines)
       .where(eq(routines.userId, userId))
       .orderBy(desc(routines.createdAt));
+  }
+
+  async getCurrentRoutine(userId: string): Promise<Routine | undefined> {
+    const [routine] = await db
+      .select()
+      .from(routines)
+      .where(and(eq(routines.userId, userId), eq(routines.isCurrent, true)));
+    return routine;
+  }
+
+  async setCurrentRoutine(userId: string, routineId: string): Promise<Routine> {
+    // Set all routines to not current
+    await db
+      .update(routines)
+      .set({ isCurrent: false })
+      .where(eq(routines.userId, userId));
+
+    // Set specified routine as current
+    const [updatedRoutine] = await db
+      .update(routines)
+      .set({ isCurrent: true })
+      .where(eq(routines.id, routineId))
+      .returning();
+
+    return updatedRoutine;
   }
 }
 

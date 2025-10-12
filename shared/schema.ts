@@ -50,6 +50,7 @@ export const routines = pgTable("routines", {
   acneSeverity: varchar("acne_severity").notNull(),
   isPregnantOrNursing: boolean("is_pregnant_or_nursing").notNull(),
   routineData: jsonb("routine_data").notNull(),
+  isCurrent: boolean("is_current").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

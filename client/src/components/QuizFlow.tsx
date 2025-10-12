@@ -21,12 +21,13 @@ export interface QuizAnswers {
 interface QuizFlowProps {
   onComplete: (answers: QuizAnswers) => void;
   onBack?: () => void;
+  userName?: string;
 }
 
-export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
-  const [currentStep, setCurrentStep] = useState(0);
+export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
+  const [currentStep, setCurrentStep] = useState(userName ? 1 : 0);
   const [answers, setAnswers] = useState<QuizAnswers>({
-    name: "",
+    name: userName || "",
     age: "",
     skinType: "",
     fitzpatrickType: "",
@@ -35,8 +36,10 @@ export function QuizFlow({ onComplete, onBack }: QuizFlowProps) {
     isPregnantOrNursing: "",
   });
 
-  const totalSteps = 7;
-  const progress = ((currentStep + 1) / totalSteps) * 100;
+  const totalSteps = userName ? 6 : 7;
+  const progress = userName 
+    ? ((currentStep) / totalSteps) * 100
+    : ((currentStep + 1) / totalSteps) * 100;
 
   const handleNext = () => {
     if (currentStep < totalSteps - 1) {

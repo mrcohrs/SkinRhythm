@@ -115,6 +115,7 @@ export default function HomePage() {
         <QuizFlow
           onComplete={handleQuizComplete}
           onBack={() => setShowQuiz(false)}
+          userName={user ? `${(user as any).firstName || ''} ${(user as any).lastName || ''}`.trim() : undefined}
         />
       </div>
     );
