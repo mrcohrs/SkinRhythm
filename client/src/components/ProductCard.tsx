@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Lock } from "lucide-react";
 
 export interface Product {
@@ -45,9 +46,14 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
 
         <div className="p-6 space-y-3">
           <div>
-            <h3 className="font-serif text-xl font-semibold text-foreground mb-1" data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
-              {product.name}
-            </h3>
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <h3 className="font-serif text-xl font-semibold text-foreground" data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
+                {product.name}
+              </h3>
+              <Badge variant="secondary" className="text-xs" data-testid={`badge-tier-${product.priceTier}`}>
+                {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
+              </Badge>
+            </div>
             <p className="text-sm text-muted-foreground">{product.brand}</p>
           </div>
           
