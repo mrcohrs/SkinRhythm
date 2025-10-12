@@ -120,3 +120,9 @@ Preferred communication style: Simple, everyday language.
 - Otherwise → 'noninflamed-moderate-severe' routine
 
 **Implementation**: `WeeklyRoutine` component displays 3 cards (Weeks 1-2, 3-4, 5-6) with morning/evening routines, step-by-step badges, product mappings, and treatment notes. Component only renders when user has premium status and routine type is provided by backend.
+
+**Premium CTAs for Non-Premium Users**: 
+- Displayed at the end of both morning and evening routine product sections
+- Morning CTA: "Get Your Detailed 6-Week Treatment Plan" - emphasizes step-by-step guidance for ramping up on actives
+- Evening CTA: "Unlock Your Progressive Treatment Schedule" - highlights the timing and tolerance-building approach
+- CTAs use the `PremiumUpsell` component with custom title and description props
