@@ -55,7 +55,7 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
             {product.benefits[0]}
           </p>
           
-          <div className="pt-2">
+          <div className="pt-2 space-y-3">
             {isLocked ? (
               <Button
                 variant="ghost"
@@ -70,18 +70,43 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
                 </span>
               </Button>
             ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="group-hover:translate-x-1 transition-transform p-0 h-auto text-foreground no-default-hover-elevate"
-                asChild
-                data-testid={`button-view-product-${product.name.replace(/\s/g, '-')}`}
-              >
-                <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium">
-                  View Product
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-              </Button>
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="group-hover:translate-x-1 transition-transform p-0 h-auto text-foreground no-default-hover-elevate"
+                  asChild
+                  data-testid={`button-buy-now-${product.name.replace(/\s/g, '-')}`}
+                >
+                  <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium">
+                    Buy Now
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                </Button>
+                
+                {isPremiumUser && product.premiumOptions && product.premiumOptions.length > 0 && (
+                  <div className="pt-2 border-t">
+                    <p className="text-xs text-muted-foreground mb-2">Premium Alternatives:</p>
+                    <div className="space-y-1">
+                      {product.premiumOptions.map((link, index) => (
+                        <Button
+                          key={index}
+                          variant="ghost"
+                          size="sm"
+                          className="w-full justify-start p-0 h-auto text-muted-foreground hover:text-foreground no-default-hover-elevate"
+                          asChild
+                          data-testid={`button-alternative-${index}`}
+                        >
+                          <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs">
+                            Option {index + 1}
+                            <ArrowRight className="h-3 w-3" />
+                          </a>
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

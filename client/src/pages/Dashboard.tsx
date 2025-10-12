@@ -224,17 +224,38 @@ export default function Dashboard() {
                           <h3 className="font-medium text-foreground">{product.name}</h3>
                           <p className="text-sm text-muted-foreground">{product.category}</p>
                         </div>
-                        {product.purchaseLink && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="gap-2"
-                            onClick={() => window.open(product.purchaseLink, '_blank')}
-                            data-testid={`button-buy-morning-${index}`}
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                            Buy Now
-                          </Button>
+                        {product.affiliateLink && (
+                          <div className="space-y-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="gap-2"
+                              onClick={() => window.open(product.affiliateLink, '_blank')}
+                              data-testid={`button-buy-morning-${index}`}
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              Buy Now
+                            </Button>
+                            
+                            {isPremium && product.premiumOptions && product.premiumOptions.length > 0 && (
+                              <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Premium Alternatives:</p>
+                                {product.premiumOptions.map((link: string, altIndex: number) => (
+                                  <Button
+                                    key={altIndex}
+                                    variant="ghost"
+                                    size="sm"
+                                    className="gap-1 h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
+                                    onClick={() => window.open(link, '_blank')}
+                                    data-testid={`button-alternative-morning-${index}-${altIndex}`}
+                                  >
+                                    Option {altIndex + 1}
+                                    <ExternalLink className="h-3 w-3" />
+                                  </Button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </div>
                       {product.tier && (
@@ -266,17 +287,38 @@ export default function Dashboard() {
                           <h3 className="font-medium text-foreground">{product.name}</h3>
                           <p className="text-sm text-muted-foreground">{product.category}</p>
                         </div>
-                        {product.purchaseLink && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="gap-2"
-                            onClick={() => window.open(product.purchaseLink, '_blank')}
-                            data-testid={`button-buy-evening-${index}`}
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                            Buy Now
-                          </Button>
+                        {product.affiliateLink && (
+                          <div className="space-y-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="gap-2"
+                              onClick={() => window.open(product.affiliateLink, '_blank')}
+                              data-testid={`button-buy-evening-${index}`}
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              Buy Now
+                            </Button>
+                            
+                            {isPremium && product.premiumOptions && product.premiumOptions.length > 0 && (
+                              <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Premium Alternatives:</p>
+                                {product.premiumOptions.map((link: string, altIndex: number) => (
+                                  <Button
+                                    key={altIndex}
+                                    variant="ghost"
+                                    size="sm"
+                                    className="gap-1 h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
+                                    onClick={() => window.open(link, '_blank')}
+                                    data-testid={`button-alternative-evening-${index}-${altIndex}`}
+                                  >
+                                    Option {altIndex + 1}
+                                    <ExternalLink className="h-3 w-3" />
+                                  </Button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </div>
                       {product.tier && (
