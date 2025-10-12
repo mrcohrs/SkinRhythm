@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import HomePage from "@/pages/HomePage";
 import Landing from "@/pages/Landing";
 import Quiz from "@/pages/Quiz";
+import Dashboard from "@/pages/Dashboard";
 import IngredientChecker from "@/pages/IngredientChecker";
 import NotFound from "@/pages/not-found";
 
@@ -28,6 +29,7 @@ function Router() {
       ) : isAuthenticated ? (
         <>
           <Route path="/" component={HomePage} />
+          <Route path="/dashboard" component={Dashboard} />
           <Route path="/ingredient-checker" component={IngredientChecker} />
         </>
       ) : (

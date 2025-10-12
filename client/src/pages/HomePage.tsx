@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { QuizFlow, type QuizAnswers } from "@/components/QuizFlow";
@@ -9,6 +9,7 @@ import { AccountCreationModal } from "@/components/AccountCreationModal";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight, User, FlaskConical } from "lucide-react";
 import { useLocation } from "wouter";
+import type { Routine } from "@shared/schema";
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -18,6 +19,18 @@ export default function HomePage() {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [routineData, setRoutineData] = useState<any>(null);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | null>(null);
+
+  // Check if user has saved routines and redirect to dashboard
+  const { data: routines } = useQuery<Routine[]>({
+    queryKey: ['/api/routines'],
+    enabled: !!user,
+  });
+
+  useEffect(() => {
+    if (user && routines && routines.length > 0 && !showQuiz && !routineData) {
+      setLocation('/dashboard');
+    }
+  }, [user, routines, showQuiz, routineData, setLocation]);
 
   const submitQuizMutation = useMutation({
     mutationFn: async (answers: QuizAnswers) => {
