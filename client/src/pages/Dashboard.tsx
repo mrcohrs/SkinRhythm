@@ -21,7 +21,7 @@ export default function Dashboard() {
   const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
   const [showRoutineModal, setShowRoutineModal] = useState(false);
 
-  const { data: currentRoutine, isLoading } = useQuery<Routine>({
+  const { data: currentRoutine, isLoading, isFetching } = useQuery<Routine>({
     queryKey: ['/api/routines/current'],
     enabled: !!user,
   });
@@ -36,6 +36,7 @@ export default function Dashboard() {
   const routineType = routineData?.routineType;
 
   const isPremium = (user as any)?.isPremium || false;
+  const isRoutineLoading = isLoading || isFetching;
 
   const makeCurrentMutation = useMutation({
     mutationFn: async (routineId: string) => {
@@ -304,12 +305,21 @@ export default function Dashboard() {
 
             {/* Detailed Treatment Plan Tab */}
             <TabsContent value="treatment" className="space-y-6 mt-6">
-              {isPremium && routineType && (
+              {isRoutineLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="text-muted-foreground">Loading treatment plan...</div>
+                </div>
+              ) : isPremium && routineType && products ? (
                 <WeeklyRoutine
                   routineType={routineType}
                   products={products}
                 />
-              )}
+              ) : isPremium && !routineType ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+                  <p className="text-muted-foreground">No treatment plan available for this routine.</p>
+                  <p className="text-sm text-muted-foreground">This routine may have been created before treatment plans were available.</p>
+                </div>
+              ) : null}
             </TabsContent>
 
             {/* Routine Library Tab */}
