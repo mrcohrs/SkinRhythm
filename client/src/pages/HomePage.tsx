@@ -23,17 +23,17 @@ export default function HomePage() {
   // Check if user wants to retake quiz
   const isRetakingQuiz = new URLSearchParams(window.location.search).get('retake') === 'true';
 
-  // Check if user has saved routines and redirect to dashboard
-  const { data: routines } = useQuery<Routine[]>({
-    queryKey: ['/api/routines'],
+  // Check if user has current routine and redirect to dashboard
+  const { data: currentRoutine } = useQuery<Routine>({
+    queryKey: ['/api/routines/current'],
     enabled: !!user,
   });
 
   useEffect(() => {
-    if (user && routines && routines.length > 0 && !showQuiz && !routineData && !isRetakingQuiz) {
+    if (user && currentRoutine && !showQuiz && !routineData && !isRetakingQuiz) {
       setLocation('/dashboard');
     }
-  }, [user, routines, showQuiz, routineData, isRetakingQuiz, setLocation]);
+  }, [user, currentRoutine, showQuiz, routineData, isRetakingQuiz, setLocation]);
 
   const submitQuizMutation = useMutation({
     mutationFn: async (answers: QuizAnswers) => {

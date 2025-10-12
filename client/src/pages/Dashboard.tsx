@@ -15,13 +15,12 @@ export default function Dashboard() {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("products");
 
-  const { data: routines, isLoading } = useQuery<Routine[]>({
-    queryKey: ['/api/routines'],
+  const { data: currentRoutine, isLoading } = useQuery<Routine>({
+    queryKey: ['/api/routines/current'],
     enabled: !!user,
   });
 
-  const latestRoutine = routines?.[0];
-  const routineData = latestRoutine?.routineData as any;
+  const routineData = currentRoutine?.routineData as any;
   const products = routineData?.products;
   const routineType = routineData?.routineType;
 
@@ -45,7 +44,7 @@ export default function Dashboard() {
     );
   }
 
-  if (!latestRoutine || !products) {
+  if (!currentRoutine || !products) {
     return (
       <div className="min-h-screen bg-background">
         <header className="border-b border-border/50">
@@ -121,10 +120,10 @@ export default function Dashboard() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="font-serif text-3xl md:text-4xl text-foreground">
-                Your Routine{latestRoutine.name ? `, ${latestRoutine.name}` : ''}
+                Your Routine{currentRoutine.name ? `, ${currentRoutine.name}` : ''}
               </h1>
               <p className="text-muted-foreground mt-1">
-                {latestRoutine.skinType} skin • {latestRoutine.acneSeverity} acne
+                {currentRoutine.skinType} skin • {currentRoutine.acneSeverity} acne
                 {isPremium && <Badge className="ml-2" variant="secondary">Premium</Badge>}
               </p>
             </div>
