@@ -34,8 +34,8 @@ export default function Landing() {
               AcneAgent Takes the Guesswork Out of Acne Treatment.
             </h1>
             
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-              Treating acne can feel like an endless cycle of trial and error. End the cycle with AcneAgent. Answer 7 questions about your skin and your acne to get a personalized skincare routine that is clinically validated to clear your skin, for free. No more expensive appointments or prescriptions that don't work. Just affordable, effective products and a routine that really works.
+            <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto">
+              Treating acne can feel like an endless cycle of trial and error. End the cycle with AcneAgent. Answer 7 questions about your skin and your acne to get a personalized skincare routine that is clinically validated to clear your skin, for free. 
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
