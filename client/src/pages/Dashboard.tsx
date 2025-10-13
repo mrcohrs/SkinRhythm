@@ -15,6 +15,24 @@ import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 
+import cleanserImg from "@assets/Cleanser_1760341831448.png";
+import tonerImg from "@assets/Toner_1760341831459.png";
+import serumImg from "@assets/serum_1760341636653.png";
+import hydratorImg from "@assets/hydrator_1760341831459.png";
+import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
+import spfImg from "@assets/SPF_1760341636654.png";
+import spotTreatmentImg from "@assets/BPO_1760341850620.png";
+
+const categoryImages: Record<string, string> = {
+  "Cleanser": cleanserImg,
+  "Toner": tonerImg,
+  "Serum": serumImg,
+  "Hydrator": hydratorImg,
+  "Moisturizer": moisturizerImg,
+  "SPF": spfImg,
+  "Spot Treatment": spotTreatmentImg,
+};
+
 export default function Dashboard() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -355,20 +373,26 @@ export default function Dashboard() {
               <div className="space-y-3">
                 <h3 className="font-medium">Morning Routine</h3>
                 <div className="space-y-2">
-                  {((selectedRoutine.routineData as any)?.products?.morning || []).map((product: any, index: number) => (
-                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
-                        {index + 1}
-                      </span>
-                      <div className="flex-1">
-                        <p className="font-medium">{product.name}</p>
-                        <p className="text-muted-foreground text-xs">{product.category}</p>
+                  {((selectedRoutine.routineData as any)?.products?.morning || []).map((product: any, index: number) => {
+                    const productImage = categoryImages[product.category] || categoryImages["Serum"];
+                    return (
+                      <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                          {index + 1}
+                        </span>
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+                          <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium">{product.name}</p>
+                          <p className="text-muted-foreground text-xs">{product.category}</p>
+                        </div>
+                        {product.tier && (
+                          <Badge variant="outline" className="text-xs">{product.tier}</Badge>
+                        )}
                       </div>
-                      {product.tier && (
-                        <Badge variant="outline" className="text-xs">{product.tier}</Badge>
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
@@ -376,20 +400,26 @@ export default function Dashboard() {
               <div className="space-y-3">
                 <h3 className="font-medium">Evening Routine</h3>
                 <div className="space-y-2">
-                  {((selectedRoutine.routineData as any)?.products?.evening || []).map((product: any, index: number) => (
-                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
-                        {index + 1}
-                      </span>
-                      <div className="flex-1">
-                        <p className="font-medium">{product.name}</p>
-                        <p className="text-muted-foreground text-xs">{product.category}</p>
+                  {((selectedRoutine.routineData as any)?.products?.evening || []).map((product: any, index: number) => {
+                    const productImage = categoryImages[product.category] || categoryImages["Serum"];
+                    return (
+                      <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                          {index + 1}
+                        </span>
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+                          <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium">{product.name}</p>
+                          <p className="text-muted-foreground text-xs">{product.category}</p>
+                        </div>
+                        {product.tier && (
+                          <Badge variant="outline" className="text-xs">{product.tier}</Badge>
+                        )}
                       </div>
-                      {product.tier && (
-                        <Badge variant="outline" className="text-xs">{product.tier}</Badge>
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
