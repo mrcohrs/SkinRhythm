@@ -48,14 +48,6 @@ export default function Landing() {
                 <Sparkles className="w-5 h-5" />
                 Get Started
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="min-w-[200px]"
-                data-testid="button-learn-more"
-              >
-                Learn More
-              </Button>
             </div>
           </div>
         </div>
@@ -130,27 +122,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="py-20 md:py-32">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
-          <div className="max-w-5xl mx-auto text-center space-y-8">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground">
-              Scan your face to uncover its true beauty.
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Utilize AI technology to analyze your skin, unveiling personalized insights 
-              and recommendations for a healthier, radiant complexion.
-            </p>
-            <Button
-              size="lg"
-              onClick={() => window.location.href = '/api/login'}
-              className="gap-2"
-              data-testid="button-start-analysis"
-            >
-              Start Analysis
-            </Button>
-          </div>
-        </div>
-      </section>
+     
     </div>
   );
 }
