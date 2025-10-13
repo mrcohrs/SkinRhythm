@@ -63,7 +63,7 @@ export function RoutineDisplay({
             {!isPremiumUser && (
               <div className="mt-8">
                 <PremiumUpsell 
-                  title="Get Your Detailed 6-Week Treatment Plan"
+                  title="Premium users see better results  6-Week Treatment Plan"
                   description="Upgrade to premium for step-by-step guidance on properly ramping up on actives to best treat your acne. Includes week-by-week instructions with timing for benzoyl peroxide application and serum usage."
                 />
               </div>
