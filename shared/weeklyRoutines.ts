@@ -15,20 +15,20 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
     {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Ice', 'Timed Acne Med', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: 'Timed Acne Med schedule: Week 1 = 15 min then rinse; Week 2 = 30 min then rinse; Week 3 = 60 min then rinse; Week 4+ = leave on overnight if tolerated.'
+      pmRoutine: ['Cleanser', 'Ice', 'Benzoyl Peroxide Mask', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
+      notes: 'Benzoyl Peroxide mask schedule: Week 1 = apply BPO for 15-30 min then continue with cleanser, toner, hydrator (optional), and moisturizer; Week 2 = apply BPO for 30-45 min then continue with cleanser, toner, hydrator (optional), and moisturizer. '
     },
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'No moisturizer before or after acne med'
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'No moisturizer before or after acne med'
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
     }
   ],
   'noninflamed-mild': [
@@ -52,40 +52,40 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
     {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Timed Acne Med', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: 'Timed Acne Med schedule: Week 1 = 15 min then rinse; Week 2 = 30 min then rinse; Week 3 = 60 min then rinse; Week 4+ = leave on overnight if tolerated.'
+      pmRoutine: ['Cleanser', 'Benzoyl Peroxide Mask', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
+      notes: 'Benzoyl Peroxide mask schedule: Week 1 = apply BPO for 15-30 min then continue with cleanser, toner, hydrator (optional), and moisturizer; Week 2 = apply BPO for 30-45 min then continue with cleanser, toner, hydrator (optional), and moisturizer.'
     },
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'No moisturizer before or after acne med'
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'No moisturizer before or after acne med'
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
     }
   ],
   'rosacea': [
     {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Timed Acne Med', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: 'Timed Acne Med schedule: Week 1 = 15 min then rinse; Week 2 = 30 min then rinse; Week 3 = 60 min then rinse; Week 4+ = leave on overnight if tolerated.'
+      pmRoutine: ['Cleanser', 'Benzoyl Peroxide Mask', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
+      notes: 'Benzoyl Peroxide mask schedule: Week 1 = apply BPO for 15-30 min then continue with cleanser, toner, hydrator (optional), and moisturizer; Week 2 = apply BPO for 30-45 min then continue with cleanser, toner, hydrator (optional), and moisturizer.'
     },
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'No moisturizer before or after acne med'
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'No moisturizer before or after acne med'
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
     }
   ]
 };
@@ -128,5 +128,5 @@ export const categoryMapping: Record<string, string> = {
   'Moisturizer': 'Moisturizer',
   'Sunscreen': 'SPF',
   'Acne Med': 'Spot Treatment',
-  'Timed Acne Med': 'Spot Treatment',
+  'Benzoyl Peroxide Mask': 'Spot Treatment',
 };
