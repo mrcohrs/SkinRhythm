@@ -63,8 +63,8 @@ export function RoutineDisplay({
             {!isPremiumUser && (
               <div className="mt-8">
                 <PremiumUpsell 
-                  title="Premium users see better results  6-Week Treatment Plan"
-                  description="Upgrade to premium for step-by-step guidance on properly ramping up on actives to best treat your acne. Includes week-by-week instructions with timing for benzoyl peroxide application and serum usage."
+                  title="Premium users see better results"
+                  description="Upgrade to AcneAgent Premium ($2.99/month) for step-by-step guidance on how to properly ramp up on actives to best treat your acne. Includes personalized, weekly routine instructions with timing for benzoyl peroxide application and serum usage, access to premium product alternatives, and tools like an acne-safe ingredient checker to make sure you get clear and stay clear."
                 />
               </div>
             )}
@@ -85,7 +85,7 @@ export function RoutineDisplay({
               <div className="mt-8">
                 <PremiumUpsell 
                   title="Unlock Your Progressive Treatment Schedule"
-                  description="Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
+                  description="AcneAgent Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
                 />
               </div>
             )}
