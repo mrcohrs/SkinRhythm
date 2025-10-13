@@ -41,7 +41,8 @@ const categoryImages: Record<string, string> = {
 
 export function ProductCard({ product, isPremiumUser = false }: ProductCardProps) {
   const isLocked = product.isPremiumOnly && !isPremiumUser;
-  const productImage = product.imageUrl || categoryImages[product.category] || categoryImages["Serum"];
+  // Always use category-based images, ignore any imageUrl from backend
+  const productImage = categoryImages[product.category] || categoryImages["Serum"];
 
   return (
     <Card className={`group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
