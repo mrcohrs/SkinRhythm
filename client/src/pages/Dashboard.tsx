@@ -357,7 +357,7 @@ export default function Dashboard() {
                 <div className="space-y-2">
                   {((selectedRoutine.routineData as any)?.products?.morning || []).map((product: any, index: number) => (
                     <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
                         {index + 1}
                       </span>
                       <div className="flex-1">
@@ -378,7 +378,7 @@ export default function Dashboard() {
                 <div className="space-y-2">
                   {((selectedRoutine.routineData as any)?.products?.evening || []).map((product: any, index: number) => (
                     <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
                         {index + 1}
                       </span>
                       <div className="flex-1">
