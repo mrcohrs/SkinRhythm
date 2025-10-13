@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Lock } from "lucide-react";
 
-import cleanserImg from "@assets/Cleanser_1760341636651.png";
-import tonerImg from "@assets/Toner_1760341636655.png";
+import cleanserImg from "@assets/Cleanser_1760341831448.png";
+import tonerImg from "@assets/Toner_1760341831459.png";
 import serumImg from "@assets/serum_1760341636653.png";
-import hydratorImg from "@assets/hydrator_1760341636652.png";
+import hydratorImg from "@assets/hydrator_1760341831459.png";
 import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
 import spfImg from "@assets/SPF_1760341636654.png";
-import spotTreatmentImg from "@assets/BPO_1760341636635.png";
+import spotTreatmentImg from "@assets/BPO_1760341850620.png";
 
 export interface Product {
   name: string;
