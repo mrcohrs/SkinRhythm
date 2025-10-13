@@ -30,12 +30,11 @@ export default function Landing() {
             </Badge>
             
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground leading-tight">
-              Smart AI-Powered Skin Analysis for Healthier and Radiant Skin
+              AcneAgent Takes the Guesswork Out of Acne Treatment.
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-              Receive skincare assessments, personalized recommendations, and expert insights for tailoring 
-              healthy to youthful, radiant complexion.
+              Treating acne can feel like an endless cycle of trial and error. End the cycle with AcneAgent. Answer 7 questions about your skin and your acne to get a personalized skincare routine that is clinically validated to clear your skin, for free. No more expensive appointments or prescriptions that don't work. Just affordable, effective products and a routine that really works.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
