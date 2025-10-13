@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Lock } from "lucide-react";
 
-import cleanserImg from "@assets/stock_images/professional_skincar_e11cba60.jpg";
-import tonerImg from "@assets/stock_images/professional_skincar_106405b3.jpg";
-import serumImg from "@assets/stock_images/professional_skincar_6788d6b5.jpg";
-import hydratorImg from "@assets/stock_images/professional_skincar_61e79aee.jpg";
-import moisturizerImg from "@assets/stock_images/professional_skincar_ad445c0b.jpg";
-import spfImg from "@assets/stock_images/professional_sunscre_a437abe6.jpg";
-import spotTreatmentImg from "@assets/stock_images/professional_acne_tr_f843950a.jpg";
+import cleanserImg from "@assets/Cleanser_1760341636651.png";
+import tonerImg from "@assets/Toner_1760341636655.png";
+import serumImg from "@assets/serum_1760341636653.png";
+import hydratorImg from "@assets/hydrator_1760341636652.png";
+import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
+import spfImg from "@assets/SPF_1760341636654.png";
+import spotTreatmentImg from "@assets/BPO_1760341636635.png";
 
 export interface Product {
   name: string;
