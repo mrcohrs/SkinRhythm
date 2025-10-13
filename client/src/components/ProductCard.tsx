@@ -3,6 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Lock } from "lucide-react";
 
+import cleanserImg from "@assets/stock_images/professional_skincar_e11cba60.jpg";
+import tonerImg from "@assets/stock_images/professional_skincar_106405b3.jpg";
+import serumImg from "@assets/stock_images/professional_skincar_6788d6b5.jpg";
+import hydratorImg from "@assets/stock_images/professional_skincar_61e79aee.jpg";
+import moisturizerImg from "@assets/stock_images/professional_skincar_ad445c0b.jpg";
+import spfImg from "@assets/stock_images/professional_sunscre_a437abe6.jpg";
+import spotTreatmentImg from "@assets/stock_images/professional_acne_tr_f843950a.jpg";
+
 export interface Product {
   name: string;
   brand: string;
@@ -21,8 +29,19 @@ interface ProductCardProps {
   isPremiumUser?: boolean;
 }
 
+const categoryImages: Record<string, string> = {
+  "Cleanser": cleanserImg,
+  "Toner": tonerImg,
+  "Serum": serumImg,
+  "Hydrator": hydratorImg,
+  "Moisturizer": moisturizerImg,
+  "SPF": spfImg,
+  "Spot Treatment": spotTreatmentImg,
+};
+
 export function ProductCard({ product, isPremiumUser = false }: ProductCardProps) {
   const isLocked = product.isPremiumOnly && !isPremiumUser;
+  const productImage = product.imageUrl || categoryImages[product.category] || categoryImages["Serum"];
 
   return (
     <Card className={`group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
@@ -36,21 +55,26 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
       )}
       
       <CardContent className="p-0">
-        <div className="aspect-square bg-muted/30 flex items-center justify-center overflow-hidden">
-          {product.imageUrl ? (
-            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-20 h-20 bg-muted/50 rounded-lg" />
-          )}
+        <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8">
+          <img 
+            src={productImage} 
+            alt={product.name} 
+            className="w-full h-full object-contain drop-shadow-lg"
+          />
         </div>
 
         <div className="p-6 space-y-3">
           <div>
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <h3 className="font-serif text-xl font-semibold text-foreground" data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
-                {product.name}
-              </h3>
-              <Badge variant="secondary" className="text-xs" data-testid={`badge-tier-${product.priceTier}`}>
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <div className="flex-1">
+                <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
+                  {product.category}
+                </Badge>
+                <h3 className="font-serif text-xl font-semibold text-foreground leading-tight" data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
+                  {product.name}
+                </h3>
+              </div>
+              <Badge variant="secondary" className="text-xs whitespace-nowrap" data-testid={`badge-tier-${product.priceTier}`}>
                 {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
               </Badge>
             </div>
@@ -78,14 +102,13 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
             ) : (
               <>
                 <Button
-                  variant="ghost"
                   size="sm"
-                  className="group-hover:translate-x-1 transition-transform p-0 h-auto text-foreground no-default-hover-elevate"
+                  className="w-full gap-2"
                   asChild
                   data-testid={`button-buy-now-${product.name.replace(/\s/g, '-')}`}
                 >
-                  <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium">
-                    Buy Now
+                  <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer">
+                    Shop Now
                     <ArrowRight className="h-4 w-4" />
                   </a>
                 </Button>

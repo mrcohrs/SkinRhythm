@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check } from "lucide-react";
 import { useLocation } from "wouter";
 import { WeeklyRoutine } from "@/components/WeeklyRoutine";
+import { ProductCard } from "@/components/ProductCard";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
@@ -203,132 +204,36 @@ export default function Dashboard() {
             </TabsList>
 
             {/* My Products Tab */}
-            <TabsContent value="products" className="space-y-6 mt-6">
+            <TabsContent value="products" className="space-y-8 mt-6">
               {/* Morning Routine */}
-              <Card data-testid="card-morning-routine">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Morning Routine</CardTitle>
-                  <CardDescription>Start your day with these products</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div>
+                <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-morning-routine">Morning Routine</h3>
+                <p className="text-muted-foreground mb-6">Start your day with these products</p>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {morningProducts.map((product: any, index: number) => (
-                    <div 
+                    <ProductCard
                       key={index}
-                      className="flex items-start gap-4 p-4 rounded-lg border border-border hover-elevate"
-                      data-testid={`product-morning-${index}`}
-                    >
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span className="text-sm font-medium text-primary">{index + 1}</span>
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        <div>
-                          <h3 className="font-medium text-foreground">{product.name}</h3>
-                          <p className="text-sm text-muted-foreground">{product.category}</p>
-                        </div>
-                        {product.affiliateLink && (
-                          <div className="space-y-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="gap-2"
-                              onClick={() => window.open(product.affiliateLink, '_blank')}
-                              data-testid={`button-buy-morning-${index}`}
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                              Buy Now
-                            </Button>
-                            
-                            {isPremium && product.premiumOptions && product.premiumOptions.length > 0 && (
-                              <div className="space-y-1">
-                                <p className="text-xs text-muted-foreground">Premium Alternatives:</p>
-                                {product.premiumOptions.map((link: string, altIndex: number) => (
-                                  <Button
-                                    key={altIndex}
-                                    variant="ghost"
-                                    size="sm"
-                                    className="gap-1 h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
-                                    onClick={() => window.open(link, '_blank')}
-                                    data-testid={`button-alternative-morning-${index}-${altIndex}`}
-                                  >
-                                    Option {altIndex + 1}
-                                    <ExternalLink className="h-3 w-3" />
-                                  </Button>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      {product.tier && (
-                        <Badge variant="secondary">{product.tier}</Badge>
-                      )}
-                    </div>
+                      product={product}
+                      isPremiumUser={isPremium}
+                    />
                   ))}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
               {/* Evening Routine */}
-              <Card data-testid="card-evening-routine">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Evening Routine</CardTitle>
-                  <CardDescription>Wind down with your PM skincare</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+              <div>
+                <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-evening-routine">Evening Routine</h3>
+                <p className="text-muted-foreground mb-6">Wind down with your PM skincare</p>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {eveningProducts.map((product: any, index: number) => (
-                    <div 
+                    <ProductCard
                       key={index}
-                      className="flex items-start gap-4 p-4 rounded-lg border border-border hover-elevate"
-                      data-testid={`product-evening-${index}`}
-                    >
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span className="text-sm font-medium text-primary">{index + 1}</span>
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        <div>
-                          <h3 className="font-medium text-foreground">{product.name}</h3>
-                          <p className="text-sm text-muted-foreground">{product.category}</p>
-                        </div>
-                        {product.affiliateLink && (
-                          <div className="space-y-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="gap-2"
-                              onClick={() => window.open(product.affiliateLink, '_blank')}
-                              data-testid={`button-buy-evening-${index}`}
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                              Buy Now
-                            </Button>
-                            
-                            {isPremium && product.premiumOptions && product.premiumOptions.length > 0 && (
-                              <div className="space-y-1">
-                                <p className="text-xs text-muted-foreground">Premium Alternatives:</p>
-                                {product.premiumOptions.map((link: string, altIndex: number) => (
-                                  <Button
-                                    key={altIndex}
-                                    variant="ghost"
-                                    size="sm"
-                                    className="gap-1 h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
-                                    onClick={() => window.open(link, '_blank')}
-                                    data-testid={`button-alternative-evening-${index}-${altIndex}`}
-                                  >
-                                    Option {altIndex + 1}
-                                    <ExternalLink className="h-3 w-3" />
-                                  </Button>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      {product.tier && (
-                        <Badge variant="secondary">{product.tier}</Badge>
-                      )}
-                    </div>
+                      product={product}
+                      isPremiumUser={isPremium}
+                    />
                   ))}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
               {/* Premium Upsell if not premium */}
               {!isPremium && (
