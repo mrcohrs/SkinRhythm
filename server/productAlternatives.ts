@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 interface ProductAlternative {
-  faceRealityProduct: string;
+  acneAgentProduct: string;
   category: string;
   defaultProductLink: string;
   defaultProductName: string; // Extracted product name from URL
@@ -109,7 +109,7 @@ export function parseProductAlternativesCSV() {
     
     if (columns.length < 3) continue;
     
-    const faceRealityProduct = columns[0];
+    const acneAgentProduct = columns[0];
     const category = columns[1];
     const defaultProductLink = columns[2];
     
@@ -126,9 +126,9 @@ export function parseProductAlternativesCSV() {
     }
     
     // Store in map using normalized key
-    const key = faceRealityProduct.toUpperCase().trim();
+    const key = acneAgentProduct.toUpperCase().trim();
     productAlternativesMap.set(key, {
-      faceRealityProduct,
+      acneAgentProduct,
       category,
       defaultProductLink,
       defaultProductName,

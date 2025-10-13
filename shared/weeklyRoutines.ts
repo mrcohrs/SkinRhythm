@@ -21,14 +21,14 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
+      pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Hydrator (optional)', 'Benzoyl Peroxide'],
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after Benzoyl Peroxide.'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
+      pmRoutine: ['Cleanser', 'Ice', 'Toner', 'Serum', 'Hydrator (optional)', 'Benzoyl Peroxide'],
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after Benzoyl Peroxide.'
     }
   ],
   'noninflamed-mild': [
@@ -58,14 +58,14 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
+      pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Benzoyl Peroxide'],
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after Benzoyl Peroxide.'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
+      pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Benzoyl Peroxide'],
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after Benzoyl Peroxide.'
     }
   ],
   'rosacea': [
@@ -78,14 +78,14 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
     {
       weekRange: 'Weeks 3–4',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
+      pmRoutine: ['Cleanser', 'Toner', 'Hydrator (optional)', 'Benzoyl Peroxide'],
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after Benzoyl Peroxide.'
     },
     {
       weekRange: 'Weeks 5–6',
       amRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
-      pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Acne Med'],
-      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after acne med.'
+      pmRoutine: ['Cleanser', 'Toner', 'Serum', 'Hydrator (optional)', 'Benzoyl Peroxide'],
+      notes: 'Leave Benzoyl Peroxide on overnight. No moisturizer before or after Benzoyl Peroxide.'
     }
   ]
 };
@@ -127,6 +127,6 @@ export const categoryMapping: Record<string, string> = {
   'Hydrator (optional)': 'Hydrator',
   'Moisturizer': 'Moisturizer',
   'Sunscreen': 'SPF',
-  'Acne Med': 'Spot Treatment',
+  'Benzoyl Peroxide': 'Spot Treatment',
   'Benzoyl Peroxide Mask': 'Spot Treatment',
 };

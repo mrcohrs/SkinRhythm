@@ -42,9 +42,9 @@ const productNameMapping: Record<string, string> = {
   'ACNE MED 10%': 'BPO 10%',
 };
 
-function getGenericProductName(faceRealityName: string): string {
-  const key = faceRealityName.toUpperCase().trim();
-  return productNameMapping[key] || faceRealityName;
+function getGenericProductName(acneAgentName: string): string {
+  const key = acneAgentName.toUpperCase().trim();
+  return productNameMapping[key] || acneAgentName;
 }
 
 export interface RoutineRecommendation {
