@@ -250,7 +250,6 @@ function getProductAlternatives(productName: string, category: string) {
       price: 0, // Price not specified in CSV
       benefits: [`Recommended for your skin type`],
       affiliateLink: csvAlt.defaultProductLink,
-      imageUrl: '/attached_assets/stock_images/facial_serum_dropper_262f8247.jpg', // Default image
       premiumOptions: csvAlt.premiumOptions,
     }];
   }
@@ -266,7 +265,6 @@ function getProductAlternatives(productName: string, category: string) {
     price: alt.price,
     benefits: [`Recommended for your skin type`],
     affiliateLink: alt.link,
-    imageUrl: alt.imageUrl,
   }));
 }
 
