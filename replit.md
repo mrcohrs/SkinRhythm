@@ -76,6 +76,8 @@ Preferred communication style: Simple, everyday language.
 
 **Development Integrations**: Replit-specific plugins for Vite including runtime error overlay, cartographer, and dev banner (development environment only)
 
+**Branding Assets**: AcneAgent brand logo (`acne agent brand logo_1760328618927.png`) displayed in all page headers at 40px height. Favicon uses AcneAgent icon (`acne agent icon_1760328618939.png`) configured in index.html. Logo imported via Vite's @assets alias for consistent branding across Landing, Quiz, Dashboard, and IngredientChecker pages.
+
 ### Premium User Dashboard & Routine Library
 
 **Purpose**: Provide authenticated users with a personalized dashboard to view their saved skincare routines, access premium treatment plans, and manage multiple routines over time.
@@ -83,7 +85,7 @@ Preferred communication style: Simple, everyday language.
 **Access**: Available at `/dashboard` route for authenticated users with saved routines. Users are automatically redirected from `/` to `/dashboard` when they have saved routines.
 
 **Dashboard Components**:
-- **Header**: "AcneAgent" branding, ingredient checker link, logout button
+- **Header**: AcneAgent logo image, ingredient checker link, logout button
 - **User Info Section**: Displays "Your Routine, {name}" with skin type, acne severity, and premium badge (if applicable)
 - **Action Buttons**: 
   - "Retake Quiz": Navigates to `/?retake=true` to bypass dashboard redirect and allow quiz retaking
