@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Star, Zap, Shield } from "lucide-react";
+import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 
 export default function Landing() {
   return (
@@ -9,7 +10,7 @@ export default function Landing() {
       <header className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
-            <div className="font-serif text-3xl font-normal text-foreground">AcneAgent</div>
+            <img src={logoPath} alt="AcneAgent" className="h-10" />
             <Button
               variant="ghost"
               size="sm"

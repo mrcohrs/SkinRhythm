@@ -12,6 +12,7 @@ import { WeeklyRoutine } from "@/components/WeeklyRoutine";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
+import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -85,7 +86,7 @@ export default function Dashboard() {
         <header className="border-b border-border/50">
           <div className="container mx-auto px-4 md:px-8 lg:px-16">
             <div className="flex h-16 items-center justify-between">
-              <div className="font-serif text-3xl font-normal text-foreground">AcneAgent</div>
+              <img src={logoPath} alt="AcneAgent" className="h-10" />
               <div className="flex items-center gap-4">
                 <Button
                   variant="ghost"
@@ -122,7 +123,7 @@ export default function Dashboard() {
       <header className="border-b border-border/50">
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
-            <div className="font-serif text-3xl font-normal text-foreground">AcneAgent</div>
+            <img src={logoPath} alt="AcneAgent" className="h-10" />
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"

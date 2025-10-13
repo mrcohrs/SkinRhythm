@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
 import { checkIngredients } from "@shared/acneCausingIngredients";
 import { Link } from "wouter";
+import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 
 export default function IngredientChecker() {
   const [inputText, setInputText] = useState("");
@@ -40,7 +41,7 @@ export default function IngredientChecker() {
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
-              <div className="font-serif text-3xl font-normal text-foreground">AcneAgent</div>
+              <img src={logoPath} alt="AcneAgent" className="h-10" />
             </div>
           </div>
         </div>
