@@ -1,12 +1,18 @@
 import fs from 'fs';
 import path from 'path';
+import { getAffiliateLink } from './affiliateLinks';
 
 interface ProductAlternative {
   acneAgentProduct: string;
   category: string;
   defaultProductLink: string;
   defaultProductName: string; // Extracted product name from URL
-  premiumOptions: string[];
+  affiliateLink: string; // Affiliate link for shop/buy CTA (falls back to original if no affiliate)
+  premiumOptions: Array<{
+    originalLink: string;
+    affiliateLink: string;
+    productName: string;
+  }>;
 }
 
 let productAlternativesMap: Map<string, ProductAlternative> = new Map();
@@ -86,7 +92,7 @@ function extractProductNameFromURL(url: string): string {
 }
 
 export function parseProductAlternativesCSV() {
-  const csvPath = path.join(process.cwd(), 'attached_assets', 'Product Links for Acne Agent Routine Product Options.xlsx - Alternatives_1760647720507.csv');
+  const csvPath = path.join(process.cwd(), 'attached_assets', 'Product Links for Acne Agent Routine Product Options.xlsx - Alternatives (1)_1760657834377.csv');
   
   if (!fs.existsSync(csvPath)) {
     console.error('Product alternatives CSV not found at:', csvPath);
@@ -128,12 +134,24 @@ export function parseProductAlternativesCSV() {
     // Extract product name from default product URL
     const defaultProductName = extractProductNameFromURL(defaultProductLink);
     
+    // Get affiliate link for default product (falls back to original if not found)
+    const affiliateLink = getAffiliateLink(defaultProductLink);
+    
     // Collect premium options (columns 3-7, may have empty values)
-    const premiumOptions: string[] = [];
+    const premiumOptions: Array<{
+      originalLink: string;
+      affiliateLink: string;
+      productName: string;
+    }> = [];
+    
     for (let j = 3; j < Math.min(8, columns.length); j++) {
       const link = columns[j]?.trim();
       if (link && link.startsWith('http')) {
-        premiumOptions.push(link);
+        premiumOptions.push({
+          originalLink: link,
+          affiliateLink: getAffiliateLink(link),
+          productName: extractProductNameFromURL(link)
+        });
       }
     }
     
@@ -144,6 +162,7 @@ export function parseProductAlternativesCSV() {
       category,
       defaultProductLink,
       defaultProductName,
+      affiliateLink,
       premiumOptions
     });
   }

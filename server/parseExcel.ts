@@ -105,7 +105,8 @@ function getProductAlternatives(productName: string, category: string) {
       priceTier: 'standard' as const,
       price: 0,
       benefits: [`Recommended for your skin type`],
-      affiliateLink: csvAlt.defaultProductLink,
+      affiliateLink: csvAlt.affiliateLink, // Use affiliate link for shop/buy CTA
+      originalLink: csvAlt.defaultProductLink, // Keep original link for reference
       premiumOptions: csvAlt.premiumOptions,
     }];
   }
