@@ -19,10 +19,15 @@ export interface Product {
   price: number;
   priceTier: "budget" | "standard" | "premium";
   benefits: string[];
-  affiliateLink: string;
+  affiliateLink: string; // Affiliate link for shop/buy CTA (falls back to original if no affiliate)
+  originalLink?: string; // Original product link (for reference)
   imageUrl?: string;
   isPremiumOnly?: boolean;
-  premiumOptions?: string[]; // Alternative product links for premium users
+  premiumOptions?: Array<{
+    originalLink: string;
+    affiliateLink: string;
+    productName: string;
+  }>; // Alternative products for premium users
 }
 
 interface ProductCardProps {
@@ -119,8 +124,7 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
                   <div className="pt-2 border-t">
                     <p className="text-xs text-muted-foreground mb-2">Premium Alternatives:</p>
                     <div className="space-y-1">
-                      {product.premiumOptions.map((link, index) => {
-                        const productName = extractProductName(link);
+                      {product.premiumOptions.map((option, index) => {
                         return (
                           <Button
                             key={index}
@@ -130,8 +134,8 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
                             asChild
                             data-testid={`button-alternative-${index}`}
                           >
-                            <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs">
-                              {productName}
+                            <a href={option.affiliateLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs">
+                              {option.productName}
                               <ArrowRight className="h-3 w-3 flex-shrink-0" />
                             </a>
                           </Button>
