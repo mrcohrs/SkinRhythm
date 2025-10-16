@@ -11,6 +11,7 @@ import Quiz from "@/pages/Quiz";
 import Dashboard from "@/pages/Dashboard";
 import IngredientChecker from "@/pages/IngredientChecker";
 import AffiliateDisclosure from "@/pages/AffiliateDisclosure";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import NotFound from "@/pages/not-found";
 import type { Routine } from "@shared/schema";
 
@@ -66,6 +67,7 @@ function Router() {
     <Switch>
       <Route path="/quiz" component={Quiz} />
       <Route path="/affiliate-disclosure" component={AffiliateDisclosure} />
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
       {isLoading ? (
         <Route path="/">
           {() => (
