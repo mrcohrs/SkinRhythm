@@ -21,6 +21,7 @@ function extractProductNameFromURL(url: string): string {
     
     // Find the best product name segment (skip numeric-only and common path prefixes)
     const skipPrefixes = ['product', 'products', 'p', 's', 'dp', 'ip'];
+    const productIdPatterns = /^(pimprod|sku|pid|item|id|ref)-?\d+$/i; // Product ID patterns
     let productSlug = '';
     
     for (let i = pathParts.length - 1; i >= 0; i--) {
@@ -33,16 +34,21 @@ function extractProductNameFromURL(url: string): string {
       const isNumericOnly = /^\d+$/.test(cleanPart);
       const isShortPrefix = skipPrefixes.includes(cleanPart.toLowerCase());
       const isSingleChar = cleanPart.length === 1;
+      const isProductId = productIdPatterns.test(cleanPart);
       
-      // Test what the final product name would be after filtering numeric parts
+      // Test what the final product name would be after filtering product IDs and numeric parts
       const testWords = cleanPart.split('-')
-        .filter(word => !/^\d+$/.test(word) || word.length <= 2)
-        .filter(word => word.length > 0);
+        .filter(word => {
+          // Filter out: product ID patterns, pure numbers (except short ones like version numbers)
+          if (productIdPatterns.test(word)) return false;
+          if (/^\d+$/.test(word) && word.length > 2) return false;
+          return word.length > 0;
+        });
       
       const finalProductName = testWords.join(' ').trim();
       const isSubstantial = finalProductName.length > 3 && testWords.length > 1; // Need at least 2 words and 4+ chars
       
-      if (!isNumericOnly && !isShortPrefix && !isSingleChar && isSubstantial) {
+      if (!isNumericOnly && !isShortPrefix && !isSingleChar && !isProductId && isSubstantial) {
         productSlug = cleanPart;
         break;
       }
@@ -54,8 +60,14 @@ function extractProductNameFromURL(url: string): string {
     
     // Convert kebab-case to Title Case
     // Also handle cases like "retinol-05" -> "Retinol 05" or "100440" at end -> removed
+    const productIdPatterns2 = /^(pimprod|sku|pid|item|id|ref)\d*$/i;
     const words = productSlug.split('-')
-      .filter(word => !/^\d+$/.test(word) || word.length <= 2) // Keep numbers only if short (like "05", "2")
+      .filter(word => {
+        // Filter out product ID patterns and long numbers
+        if (productIdPatterns2.test(word)) return false;
+        if (/^\d+$/.test(word) && word.length > 2) return false;
+        return word.length > 0;
+      })
       .map(word => {
         // Handle numeric words specially
         if (/^\d/.test(word)) {
@@ -74,10 +86,10 @@ function extractProductNameFromURL(url: string): string {
 }
 
 export function parseProductAlternativesCSV() {
-  const csvPath = path.join(process.cwd(), 'attached_assets', 'Face Reality Product Replacements.xlsx - Alternatives (1)_1760303030045.csv');
+  const csvPath = path.join(process.cwd(), 'attached_assets', 'Product Links for Acne Agent Routine Product Options.xlsx - Alternatives_1760647720507.csv');
   
   if (!fs.existsSync(csvPath)) {
-    console.error('Product alternatives CSV not found');
+    console.error('Product alternatives CSV not found at:', csvPath);
     return;
   }
 
