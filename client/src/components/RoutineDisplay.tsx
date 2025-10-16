@@ -1,8 +1,15 @@
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ProductCard, type Product } from "./ProductCard";
 import { PremiumUpsell } from "./PremiumUpsell";
 import { WeeklyRoutine } from "./WeeklyRoutine";
 import type { RoutineType } from "@shared/weeklyRoutines";
+import { ThemeToggle } from "./ThemeToggle";
+import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import { Home, RefreshCw, LogIn, Mail } from "lucide-react";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 interface RoutineDisplayProps {
   userName: string;
@@ -13,6 +20,10 @@ interface RoutineDisplayProps {
     evening: Product[];
   };
   isPremiumUser?: boolean;
+  isAuthenticated?: boolean;
+  onRetakeQuiz?: () => void;
+  onLoginClick?: () => void;
+  onHomeClick?: () => void;
 }
 
 export function RoutineDisplay({
@@ -21,10 +32,74 @@ export function RoutineDisplay({
   routineType,
   products,
   isPremiumUser = false,
+  isAuthenticated = false,
+  onRetakeQuiz,
+  onLoginClick,
+  onHomeClick,
 }: RoutineDisplayProps) {
+  const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleMailingListSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubmitting(true);
+    // Simulate API call - in real implementation, connect to mailing list service
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    toast({
+      title: "Success!",
+      description: "You've been added to our mailing list for acne-safe tips and tricks.",
+    });
+    setEmail("");
+    setIsSubmitting(false);
+  };
+
   return (
-    <div className="min-h-screen pt-20 pb-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-16">
+    <div className="min-h-screen">
+      {/* Navigation Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border/50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 h-20 flex items-center justify-between">
+          <button 
+            onClick={onHomeClick}
+            className="flex items-center gap-2 hover-elevate active-elevate-2 rounded-md transition-colors"
+            data-testid="button-home"
+          >
+            <img src={logoPath} alt="AcneAgent" className="h-10" />
+          </button>
+          
+          <div className="flex items-center gap-3">
+            {!isAuthenticated && (
+              <>
+                <Button
+                  variant="ghost"
+                  onClick={onRetakeQuiz}
+                  className="rounded-full gap-2"
+                  data-testid="button-retake-quiz"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Retake Quiz
+                </Button>
+                <Button
+                  variant="default"
+                  onClick={onLoginClick}
+                  className="rounded-full gap-2"
+                  data-testid="button-login-nav"
+                >
+                  <LogIn className="h-4 w-4" />
+                  Create Account
+                </Button>
+              </>
+            )}
+            <ThemeToggle />
+          </div>
+        </div>
+      </header>
+
+      <div className="pt-20 pb-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-16">
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-4">
             <Badge variant="secondary" className="rounded-full px-4 py-1 text-xs uppercase tracking-wide">
@@ -90,6 +165,41 @@ export function RoutineDisplay({
               </div>
             )}
           </div>
+        </div>
+
+        {/* Mailing List Signup - Only for non-authenticated users */}
+        {!isAuthenticated && (
+          <div className="mt-16 p-8 rounded-lg bg-muted/50 border border-border">
+            <div className="max-w-2xl mx-auto text-center">
+              <Mail className="h-12 w-12 mx-auto mb-4 text-primary" />
+              <h3 className="font-serif text-2xl font-semibold mb-2">
+                Get Acne-Safe Tips & Tricks
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                Join our mailing list for expert skincare advice, ingredient insights, and exclusive offers.
+              </p>
+              <form onSubmit={handleMailingListSignup} className="flex gap-3 max-w-md mx-auto">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="flex-1"
+                  data-testid="input-email-signup"
+                />
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="rounded-full"
+                  data-testid="button-subscribe"
+                >
+                  {isSubmitting ? "Subscribing..." : "Subscribe"}
+                </Button>
+              </form>
+            </div>
+          </div>
+        )}
         </div>
       </div>
     </div>

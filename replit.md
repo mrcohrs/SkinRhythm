@@ -16,6 +16,7 @@ Preferred communication style: Simple, everyday language.
 - **Theming**: Custom ThemeProvider with localStorage persistence for light/dark mode.
 - **Dashboard**: Provides authenticated users a personalized view of saved routines, detailed treatment plans (premium), and a routine library. Features include routine switching, retake quiz flow, and current routine management.
 - **Ingredient Checker**: Allows authenticated users to paste ingredient lists to identify 348 known acne-causing ingredients using word-boundary matching.
+- **Post-Quiz Navigation**: Non-authenticated users see navigation header with logo (home link), retake quiz button, create account button, theme toggle, and mailing list signup section.
 
 ### Backend
 - **Server**: Express.js with TypeScript (Node.js).

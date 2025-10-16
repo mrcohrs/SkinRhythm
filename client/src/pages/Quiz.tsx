@@ -111,6 +111,20 @@ export default function Quiz() {
     );
   }
 
+  const handleRetakeQuiz = () => {
+    setShowQuiz(true);
+    setRoutineData(null);
+    setQuizAnswers(null);
+  };
+
+  const handleLoginClick = () => {
+    setShowAccountModal(true);
+  };
+
+  const handleHomeClick = () => {
+    setLocation('/');
+  };
+
   if (routineData && quizAnswers) {
     return (
       <>
@@ -126,6 +140,10 @@ export default function Quiz() {
           routineType={routineData.routineType}
           products={routineData.products}
           isPremiumUser={(user as any)?.isPremium || false}
+          isAuthenticated={!!user}
+          onRetakeQuiz={handleRetakeQuiz}
+          onLoginClick={handleLoginClick}
+          onHomeClick={handleHomeClick}
         />
       </>
     );
