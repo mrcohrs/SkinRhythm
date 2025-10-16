@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Lock } from "lucide-react";
+import { extractProductName } from "@/lib/extractProductName";
 
 import cleanserImg from "@assets/Cleanser_1760341831448.png";
 import tonerImg from "@assets/Toner_1760341831459.png";
@@ -118,21 +119,24 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
                   <div className="pt-2 border-t">
                     <p className="text-xs text-muted-foreground mb-2">Premium Alternatives:</p>
                     <div className="space-y-1">
-                      {product.premiumOptions.map((link, index) => (
-                        <Button
-                          key={index}
-                          variant="ghost"
-                          size="sm"
-                          className="w-full justify-start p-0 h-auto text-muted-foreground hover:text-foreground no-default-hover-elevate"
-                          asChild
-                          data-testid={`button-alternative-${index}`}
-                        >
-                          <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs">
-                            Option {index + 1}
-                            <ArrowRight className="h-3 w-3" />
-                          </a>
-                        </Button>
-                      ))}
+                      {product.premiumOptions.map((link, index) => {
+                        const productName = extractProductName(link);
+                        return (
+                          <Button
+                            key={index}
+                            variant="ghost"
+                            size="sm"
+                            className="w-full justify-start p-0 h-auto text-muted-foreground hover:text-foreground no-default-hover-elevate"
+                            asChild
+                            data-testid={`button-alternative-${index}`}
+                          >
+                            <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs">
+                              {productName}
+                              <ArrowRight className="h-3 w-3 flex-shrink-0" />
+                            </a>
+                          </Button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
