@@ -6,10 +6,12 @@ import { WeeklyRoutine } from "./WeeklyRoutine";
 import type { RoutineType } from "@shared/weeklyRoutines";
 import { ThemeToggle } from "./ThemeToggle";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
-import { Home, RefreshCw, LogIn, Mail } from "lucide-react";
+import { Home, RefreshCw, LogIn, Mail, Info } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
+import { Footer } from "./Footer";
 
 interface RoutineDisplayProps {
   userName: string;
@@ -98,7 +100,28 @@ export function RoutineDisplay({
         </div>
       </header>
 
-      <div className="pt-20 pb-16">
+      {/* Affiliate Disclosure Notice */}
+      <div className="pt-20">
+        <div className="bg-muted/30 border-b border-border/50">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-3">
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Info className="h-4 w-4 flex-shrink-0" />
+              <span>
+                Some links on this page are affiliate links.{" "}
+                <Link 
+                  href="/affiliate-disclosure"
+                  className="text-foreground underline hover:no-underline"
+                  data-testid="link-affiliate-disclosure"
+                >
+                  Learn more
+                </Link>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="pb-16">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-16">
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-4">
@@ -202,6 +225,8 @@ export function RoutineDisplay({
         )}
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }

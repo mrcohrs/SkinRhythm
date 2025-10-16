@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Star, Zap, Shield } from "lucide-react";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import { Footer } from "@/components/Footer";
 
 export default function Landing() {
   return (
@@ -122,7 +123,7 @@ export default function Landing() {
         </div>
       </section>
 
-     
+      <Footer />
     </div>
   );
 }

@@ -14,6 +14,9 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import { Footer } from "@/components/Footer";
+import { Info } from "lucide-react";
+import { Link } from "wouter";
 
 import cleanserImg from "@assets/Cleanser_1760341831448.png";
 import tonerImg from "@assets/Toner_1760341831459.png";
@@ -166,6 +169,25 @@ export default function Dashboard() {
           </div>
         </div>
       </header>
+
+      {/* Affiliate Disclosure Notice */}
+      <div className="bg-muted/30 border-b border-border/50">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 py-3">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <Info className="h-4 w-4 flex-shrink-0" />
+            <span>
+              Some links on this page are affiliate links.{" "}
+              <Link 
+                href="/affiliate-disclosure"
+                className="text-foreground underline hover:no-underline"
+                data-testid="link-affiliate-disclosure-dashboard"
+              >
+                Learn more
+              </Link>
+            </span>
+          </div>
+        </div>
+      </div>
 
       {/* Main Content */}
       <div className="container mx-auto px-4 md:px-8 lg:px-16 py-8">
@@ -445,6 +467,8 @@ export default function Dashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      
+      <Footer />
     </div>
   );
 }
