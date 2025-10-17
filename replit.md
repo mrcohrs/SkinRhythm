@@ -25,6 +25,7 @@ Preferred communication style: Simple, everyday language.
 - **Authentication**: OpenID Connect (OIDC) via Replit Auth and Passport.js, using `express-session` with a PostgreSQL store.
 - **API**: RESTful endpoints for authentication, quiz submission, routine saving/retrieval, and current routine management.
 - **Business Logic**: CSV-based product recommendation engine. Matches skin type, Fitzpatrick type, acne types, age (mature status), and pregnancy status to recommend product sets. Extracts real product names from URLs, filtering out IDs and converting to Title Case. Supports premium product alternatives.
+- **Affiliate Links System**: Integrated affiliate link mapping system (37 affiliate links) that automatically uses affiliate URLs for shop/buy CTAs when available, while maintaining original product links for name extraction. Falls back to original links when no affiliate mapping exists.
 - **Premium Features**: 6-week progressive treatment routines (Inflamed, Non-inflamed Mild/Moderate/Severe, Rosacea) for premium users, detailing step-by-step AM/PM routines, product mappings, and treatment notes.
 
 ### Data Storage
@@ -36,7 +37,10 @@ Preferred communication style: Simple, everyday language.
 ## External Dependencies
 - **Authentication**: Replit OIDC provider.
 - **Database**: Neon serverless PostgreSQL.
-- **Product Data**: Excel file (`Acne_Assist_Routines_60_With_Alternatives_1759622368076.xlsx`) parsed via SheetJS for product recommendations.
+- **Product Data**: 
+  - Product links CSV (`Product Links for Acne Agent Routine Product Options.xlsx - Alternatives (1)_1760657834377.csv`) for product recommendations
+  - Affiliate links CSV (`Affiliate Links - Sheet1_1760657834370.csv`) for affiliate link mappings
+  - Routine logic CSV (`Acne Agent Routine Logic.xlsx - Noninflamed (12)_1760647720504.csv`) for matching logic
 - **UI Components**: Radix UI primitives (`@radix-ui/*`).
 - **Form Management**: React Hook Form with Zod resolver.
 - **Fonts**: Inter and Playfair Display from Google Fonts CDN.
