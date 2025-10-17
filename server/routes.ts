@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { setupLocalAuth } from "./localAuth";
 import { parseExcelFile, getRoutineForAnswers } from "./parseExcel";
+import { resolveRoutineProducts } from "./routineResolver";
 import { quizAnswersSchema } from "@shared/schema";
 import "./productAlternatives"; // Load product alternatives CSV
 import { transformRoutineWithAffiliateLinks } from "./routineTransformer";
@@ -57,13 +58,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "No routine found for your answers" });
       }
 
+      // Resolve product IDs to full product objects
+      const resolvedRoutine = resolveRoutineProducts(routine, isPremiumUser);
+
       // Log if premiumOptions are in the response
-      const hasPremiumOptions = routine.products.morning.some((p: any) => p.premiumOptions?.length > 0) || 
-                                routine.products.evening.some((p: any) => p.premiumOptions?.length > 0);
+      const hasPremiumOptions = resolvedRoutine.products!.morning.some((p: any) => p.premiumOptions?.length > 0) || 
+                                resolvedRoutine.products!.evening.some((p: any) => p.premiumOptions?.length > 0);
       console.log(`[Quiz Submit] Routine has premiumOptions: ${hasPremiumOptions}`);
 
       res.json({
-        routine,
+        routine: resolvedRoutine,
         answers: validatedAnswers,
       });
     } catch (error) {

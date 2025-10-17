@@ -2,7 +2,7 @@ import XLSX from 'xlsx';
 import fs from 'fs';
 import path from 'path';
 import { determineRoutineType, weeklyRoutines, type RoutineType } from '@shared/weeklyRoutines';
-import { getProductAlternative } from './productAlternatives';
+import { getProductByCsvKey } from '@shared/productLibrary';
 
 export interface RoutineRecommendation {
   skinType: string;
@@ -10,7 +10,12 @@ export interface RoutineRecommendation {
   acneTypes: string[];
   isPregnantOrNursing: boolean;
   routineType: RoutineType;
-  products: {
+  productIds: {
+    morning: string[];
+    evening: string[];
+  };
+  // Temporary: keep for backward compatibility during migration
+  products?: {
     morning: Array<{
       name: string;
       brand: string;
@@ -90,105 +95,62 @@ export function parseExcelFile() {
   }
 }
 
-function getProductAlternatives(productName: string, category: string) {
-  // Get product info from CSV-based system
-  const csvAlt = getProductAlternative(productName);
+function getProductIdFromCsvKey(csvKey: string): string | null {
+  if (!csvKey || csvKey === 'None') return null;
   
-  if (csvAlt) {
-    // Use the actual product name extracted from CSV URL
-    // NEVER use generic names like "Active Cleanser" or Face Reality names
-    
-    return [{
-      name: csvAlt.defaultProductName, // Real product name from URL
-      brand: '', // No brand display needed
-      category,
-      priceTier: 'standard' as const,
-      price: 0,
-      benefits: [`Recommended for your skin type`],
-      affiliateLink: csvAlt.affiliateLink, // Use affiliate link for shop/buy CTA
-      originalLink: csvAlt.defaultProductLink, // Keep original link for reference
-      premiumOptions: csvAlt.premiumOptions,
-    }];
+  const product = getProductByCsvKey(csvKey.toUpperCase().trim());
+  
+  if (!product) {
+    console.error(`Product not found in library for CSV key: ${csvKey}`);
+    return null;
   }
   
-  // If not found in CSV, log error and return empty
-  console.error(`Product not found in CSV: ${productName}`);
-  return [];
+  return product.id;
 }
 
-function buildProductsFromRow(row: RoutineRow) {
-  const morningProducts = [];
-  const eveningProducts = [];
+function buildProductIdsFromRow(row: RoutineRow): { morning: string[]; evening: string[] } {
+  const morningProductIds: string[] = [];
+  const eveningProductIds: string[] = [];
 
   // Morning routine
-  if (row.cleanser && row.cleanser !== 'None') {
-    const alts = getProductAlternatives(row.cleanser, 'Cleanser');
-    if (alts.length > 0) morningProducts.push(alts[0]);
-  }
-  if (row.toner && row.toner !== 'None') {
-    const alts = getProductAlternatives(row.toner, 'Toner');
-    if (alts.length > 0) morningProducts.push(alts[0]);
-  }
-  if (row.serum && row.serum !== 'None') {
-    const alts = getProductAlternatives(row.serum, 'Serum');
-    if (alts.length > 0) morningProducts.push(alts[0]);
-  }
-  if (row.hydrator && row.hydrator !== 'None') {
-    const alts = getProductAlternatives(row.hydrator, 'Hydrator');
-    if (alts.length > 0) morningProducts.push(alts[0]);
-  }
-  if (row.moisturizer && row.moisturizer !== 'None') {
-    const alts = getProductAlternatives(row.moisturizer, 'Moisturizer');
-    if (alts.length > 0) morningProducts.push(alts[0]);
-  }
-  if (row.sunscreen && row.sunscreen !== 'None') {
-    const alts = getProductAlternatives(row.sunscreen, 'SPF');
-    if (alts.length > 0) morningProducts.push(alts[0]);
-  }
+  const morningCleanser = getProductIdFromCsvKey(row.cleanser);
+  if (morningCleanser) morningProductIds.push(morningCleanser);
+  
+  const morningToner = getProductIdFromCsvKey(row.toner);
+  if (morningToner) morningProductIds.push(morningToner);
+  
+  const morningSerum = getProductIdFromCsvKey(row.serum);
+  if (morningSerum) morningProductIds.push(morningSerum);
+  
+  const morningHydrator = getProductIdFromCsvKey(row.hydrator);
+  if (morningHydrator) morningProductIds.push(morningHydrator);
+  
+  const morningMoisturizer = getProductIdFromCsvKey(row.moisturizer);
+  if (morningMoisturizer) morningProductIds.push(morningMoisturizer);
+  
+  const morningSunscreen = getProductIdFromCsvKey(row.sunscreen);
+  if (morningSunscreen) morningProductIds.push(morningSunscreen);
 
-  // Evening routine
-  if (row.cleanser && row.cleanser !== 'None') {
-    const alts = getProductAlternatives(row.cleanser, 'Cleanser');
-    if (alts.length > 0) eveningProducts.push(alts[0]);
-  }
-  if (row.toner && row.toner !== 'None') {
-    const alts = getProductAlternatives(row.toner, 'Toner');
-    if (alts.length > 0) eveningProducts.push(alts[0]);
-  }
-  if (row.serum && row.serum !== 'None') {
-    const alts = getProductAlternatives(row.serum, 'Serum');
-    if (alts.length > 0) eveningProducts.push(alts[0]);
-  }
-  if (row.hydrator && row.hydrator !== 'None') {
-    const alts = getProductAlternatives(row.hydrator, 'Hydrator');
-    if (alts.length > 0) eveningProducts.push(alts[0]);
-  }
-  if (row.moisturizer && row.moisturizer !== 'None') {
-    const alts = getProductAlternatives(row.moisturizer, 'Moisturizer');
-    if (alts.length > 0) eveningProducts.push(alts[0]);
-  }
-  if (row.treatment && row.treatment !== 'None') {
-    const alts = getProductAlternatives(row.treatment, 'Spot Treatment');
-    if (alts.length > 0) eveningProducts.push(alts[0]);
-  }
+  // Evening routine (reuse some products, add treatment)
+  const eveningCleanser = getProductIdFromCsvKey(row.cleanser);
+  if (eveningCleanser) eveningProductIds.push(eveningCleanser);
+  
+  const eveningToner = getProductIdFromCsvKey(row.toner);
+  if (eveningToner) eveningProductIds.push(eveningToner);
+  
+  const eveningSerum = getProductIdFromCsvKey(row.serum);
+  if (eveningSerum) eveningProductIds.push(eveningSerum);
+  
+  const eveningHydrator = getProductIdFromCsvKey(row.hydrator);
+  if (eveningHydrator) eveningProductIds.push(eveningHydrator);
+  
+  const eveningMoisturizer = getProductIdFromCsvKey(row.moisturizer);
+  if (eveningMoisturizer) eveningProductIds.push(eveningMoisturizer);
+  
+  const eveningTreatment = getProductIdFromCsvKey(row.treatment);
+  if (eveningTreatment) eveningProductIds.push(eveningTreatment);
 
-  return { morning: morningProducts, evening: eveningProducts };
-}
-
-function stripPremiumOptions(routine: RoutineRecommendation): RoutineRecommendation {
-  return {
-    ...routine,
-    products: {
-      morning: routine.products.morning.map(p => {
-        const { premiumOptions, ...rest } = p as any;
-        return rest;
-      }),
-      evening: routine.products.evening.map(p => {
-        const { premiumOptions, ...rest } = p as any;
-        return rest;
-      }),
-    },
-  };
+  return { morning: morningProductIds, evening: eveningProductIds };
 }
 
 export function getRoutineForAnswers(answers: {
@@ -280,7 +242,7 @@ export function getRoutineForAnswers(answers: {
 
   console.log('Matched row:', matchingRow);
 
-  const products = buildProductsFromRow(matchingRow);
+  const productIds = buildProductIdsFromRow(matchingRow);
 
   const routineType = determineRoutineType(answers.acneTypes, answers.acneSeverity);
 
@@ -290,13 +252,8 @@ export function getRoutineForAnswers(answers: {
     acneTypes: answers.acneTypes,
     isPregnantOrNursing: isPregnant,
     routineType,
-    products,
+    productIds,
   };
-
-  // Only return premium options if user is premium
-  if (!answers.isPremiumUser) {
-    return stripPremiumOptions(recommendation);
-  }
 
   return recommendation;
 }
