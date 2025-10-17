@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { setupLocalAuth } from "./localAuth";
 import { parseExcelFile, getRoutineForAnswers } from "./parseExcel";
-import { resolveRoutineProducts } from "./routineResolver";
+import { resolveRoutineProducts, resolveSavedRoutineProducts } from "./routineResolver";
 import { quizAnswersSchema } from "@shared/schema";
 import "./productAlternatives"; // Load product alternatives CSV
 
@@ -104,7 +104,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const userRoutines = await storage.getUserRoutines(userId);
       
-      // Return saved routines as-is - they already have correct product data
+      // Saved routines already have correct product data - return as-is
       res.json(userRoutines);
     } catch (error) {
       console.error("Error fetching routines:", error);
@@ -120,7 +120,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "No current routine found" });
       }
       
-      // Return saved routine as-is - it already has correct product data
+      // Saved routine already has correct product data - return as-is
       res.json(currentRoutine);
     } catch (error) {
       console.error("Error fetching current routine:", error);

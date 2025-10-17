@@ -71,16 +71,14 @@ export function resolveSavedRoutineProducts(routineData: any, isPremiumUser: boo
   const resolveProduct = (oldProduct: any) => {
     if (!oldProduct) return oldProduct;
 
-    // Find matching product in library by affiliate link or product link
-    const savedLink = oldProduct.affiliateLink || oldProduct.originalLink || oldProduct.link;
-    
+    // Find matching product in library by product name or general name
     const libraryProduct = Object.values(PRODUCT_LIBRARY).find(p => {
-      // Match by affiliate link or default product link
-      return p.affiliateLink === savedLink || p.defaultProductLink === savedLink;
+      // Match by actual product name OR by general name
+      return p.defaultProductName === oldProduct.name || p.generalName === oldProduct.name;
     });
     
     if (!libraryProduct) {
-      console.warn(`No library product found for link: ${savedLink}`);
+      console.warn(`No library product found for product name: ${oldProduct.name}`);
       return oldProduct;
     }
 
