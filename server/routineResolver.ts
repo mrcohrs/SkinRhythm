@@ -71,19 +71,16 @@ export function resolveSavedRoutineProducts(routineData: any, isPremiumUser: boo
   const resolveProduct = (oldProduct: any) => {
     if (!oldProduct) return oldProduct;
 
-    // Map old category names to new ones
-    const categoryMap: Record<string, string> = {
-      'Sunscreen': 'SPF',
-      'Treatment': 'Spot Treatment',
-    };
+    // Find matching product in library by affiliate link or product link
+    const savedLink = oldProduct.affiliateLink || oldProduct.originalLink || oldProduct.link;
     
-    const normalizedCategory = categoryMap[oldProduct.category] || oldProduct.category;
-
-    // Find matching product in library by category
-    const libraryProduct = Object.values(PRODUCT_LIBRARY).find(p => p.category === normalizedCategory);
+    const libraryProduct = Object.values(PRODUCT_LIBRARY).find(p => {
+      // Match by affiliate link or default product link
+      return p.affiliateLink === savedLink || p.defaultProductLink === savedLink;
+    });
     
     if (!libraryProduct) {
-      console.warn(`No library product found for category: ${normalizedCategory}`);
+      console.warn(`No library product found for link: ${savedLink}`);
       return oldProduct;
     }
 
