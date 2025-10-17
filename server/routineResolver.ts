@@ -3,6 +3,8 @@ import type { RoutineRecommendation } from './parseExcel';
 
 // Resolve product IDs to full product objects for backward compatibility
 export function resolveRoutineProducts(routine: RoutineRecommendation, isPremiumUser: boolean = false): RoutineRecommendation {
+  console.log('[Resolver] Resolving product IDs:', routine.productIds);
+  
   const morningProducts = routine.productIds.morning
     .map(id => {
       const product = getProductById(id);
@@ -10,6 +12,8 @@ export function resolveRoutineProducts(routine: RoutineRecommendation, isPremium
         console.error(`Product not found for ID: ${id}`);
         return null;
       }
+      
+      console.log(`[Resolver] Resolved ${id} -> ${product.defaultProductName || product.generalName}`);
       
       return {
         name: product.defaultProductName || product.generalName,
@@ -67,11 +71,19 @@ export function resolveSavedRoutineProducts(routineData: any, isPremiumUser: boo
   const resolveProduct = (oldProduct: any) => {
     if (!oldProduct) return oldProduct;
 
+    // Map old category names to new ones
+    const categoryMap: Record<string, string> = {
+      'Sunscreen': 'SPF',
+      'Treatment': 'Spot Treatment',
+    };
+    
+    const normalizedCategory = categoryMap[oldProduct.category] || oldProduct.category;
+
     // Find matching product in library by category
-    const libraryProduct = Object.values(PRODUCT_LIBRARY).find(p => p.category === oldProduct.category);
+    const libraryProduct = Object.values(PRODUCT_LIBRARY).find(p => p.category === normalizedCategory);
     
     if (!libraryProduct) {
-      console.warn(`No library product found for category: ${oldProduct.category}`);
+      console.warn(`No library product found for category: ${normalizedCategory}`);
       return oldProduct;
     }
 

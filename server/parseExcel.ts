@@ -243,6 +243,7 @@ export function getRoutineForAnswers(answers: {
   console.log('Matched row:', matchingRow);
 
   const productIds = buildProductIdsFromRow(matchingRow);
+  console.log('Built product IDs:', productIds);
 
   const routineType = determineRoutineType(answers.acneTypes, answers.acneSeverity);
 
