@@ -48,7 +48,7 @@
 
   --popover-border: 0 0% 93%;
 
-  --primary: 162.99deg 100% 61.96%;
+  --primary: 169.89deg 91.35% 59.22%;
 
   --primary-foreground: 0deg 0% 3.14%;
 
@@ -56,13 +56,13 @@
 
   --secondary-foreground: 0deg 0% 100%;
 
-  --muted: 0 0% 96%;
+  --muted: 0deg 0% 94.9%;
 
-  --muted-foreground: 0 0% 45%;
+  --muted-foreground: 0deg 0% 34.12%;
 
-  --accent: 160 60% 45%;
+  --accent: 43.89deg 91.35% 59.22%;
 
-  --accent-foreground: 0 0% 100%;
+  --accent-foreground: 0deg 0% 0%;
 
   --destructive: 0 65% 50%;
 
@@ -77,9 +77,9 @@
   --chart-5: 30 80% 55%;
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-serif: 'Playfair Display', serif;
   --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
-  --radius: 0.5rem; /* 8px */
+  --radius: 0.7rem; /* 8px */
   --shadow-2xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.04);
   --shadow-xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.06);
   --shadow-sm: 0px 2px 4px -1px hsl(220 15% 20% / 0.06), 0px 1px 2px -1px hsl(220 15% 20% / 0.08);

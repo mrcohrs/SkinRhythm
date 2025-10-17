@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +7,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import veryFairImg from "@assets/Very Fair_1760686161679.png";
+import fairLightImg from "@assets/Fair-Light_1760686161678.png";
+import lightMediumImg from "@assets/Light Medium_1760686161678.png";
+import tanOliveImg from "@assets/Tan Olive_1760686161678.png";
+import mediumBrownImg from "@assets/Medium Brown_1760686161678.png";
+import deepBrownImg from "@assets/Deep Brown_1760686161673.png";
 
 export interface QuizAnswers {
   name: string;
@@ -35,12 +41,84 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
     acneSeverity: "",
     isPregnantOrNursing: "",
   });
+  
+  // State for two-step Fitzpatrick determination
+  const [skinTone, setSkinTone] = useState<number>(0); // 1-6
+  const [sunReaction, setSunReaction] = useState<string>(""); // A, B, or C
+  
+  // Calculate total steps - always 8 steps, but step 4 (sun reaction) is conditionally shown
+  // Steps: name(0), age(1), skin(2), skinTone(3), sunReaction(4 - conditional), acneTypes(5), severity(6), pregnancy(7)
+  const needsSunReaction = skinTone === 3 || skinTone === 4;
+  const totalSteps = 8;
+  
+  // Calculate visible step number for progress bar
+  const getVisibleStepNumber = () => {
+    if (currentStep <= 3) {
+      return currentStep + 1; // Steps 0-3 are always shown
+    }
+    if (currentStep === 4) {
+      return 5; // Step 4 (sun reaction) is the 5th visible step
+    }
+    // For steps 5, 6, 7
+    if (needsSunReaction) {
+      return currentStep + 1; // All 8 steps are visible
+    } else {
+      return currentStep; // Step 4 is skipped, so step 5 becomes the 5th visible step, etc.
+    }
+  };
+  
+  const visibleSteps = needsSunReaction ? 8 : 7;
+  const visibleStepNumber = getVisibleStepNumber();
+  const progress = (visibleStepNumber / visibleSteps) * 100;
 
-  const totalSteps = 7; // Always 7 steps (name, age, skin, fitzpatrick, acne types, severity, pregnancy)
-  const progress = ((currentStep + 1) / totalSteps) * 100;
+  // Calculate Fitzpatrick type based on skin tone and sun reaction
+  const calculateFitzpatrickType = (): "1-3" | "4+" => {
+    // If skin tone is 1 or 2 → Fitz 1-3
+    if (skinTone === 1 || skinTone === 2) {
+      return "1-3";
+    }
+    
+    // If skin tone is 5 or 6 → Fitz 4+
+    if (skinTone === 5 || skinTone === 6) {
+      return "4+";
+    }
+    
+    // If skin tone is 3 or 4, use sun reaction
+    if (skinTone === 3 || skinTone === 4) {
+      // If burns (A or B) → Fitz 1-3
+      if (sunReaction === "A" || sunReaction === "B") {
+        return "1-3";
+      }
+      // If tans easily (C) → Fitz 4+
+      if (sunReaction === "C") {
+        return "4+";
+      }
+    }
+    
+    return "1-3"; // Default fallback
+  };
 
   const handleNext = () => {
-    if (currentStep < totalSteps - 1) {
+    // Step 3: Skin tone selection
+    if (currentStep === 3) {
+      const fitzType = calculateFitzpatrickType();
+      setAnswers({ ...answers, fitzpatrickType: fitzType });
+      
+      // If skin tone is 1, 2, 5, or 6, skip step 4 (sun reaction)
+      if (skinTone === 1 || skinTone === 2 || skinTone === 5 || skinTone === 6) {
+        setCurrentStep(5); // Skip to acne types (step 5)
+      } else {
+        // Proceed to sun reaction question (step 4)
+        setCurrentStep(4);
+      }
+    }
+    // Step 4: Sun reaction (only if skin tone is 3 or 4)
+    else if (currentStep === 4) {
+      const fitzType = calculateFitzpatrickType();
+      setAnswers({ ...answers, fitzpatrickType: fitzType });
+      setCurrentStep(5); // Go to acne types (step 5)
+    }
+    else if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
     } else {
       onComplete(answers);
@@ -48,7 +126,21 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
   };
 
   const handlePrevious = () => {
-    if (currentStep > 0) {
+    // Handle going back from acne types (step 5)
+    if (currentStep === 5) {
+      // If we skipped sun reaction, go back to skin tone (step 3)
+      if (skinTone === 1 || skinTone === 2 || skinTone === 5 || skinTone === 6) {
+        setCurrentStep(3);
+      } else {
+        // Otherwise go back to sun reaction (step 4)
+        setCurrentStep(4);
+      }
+    } 
+    // Handle going back from step 4 (sun reaction)
+    else if (currentStep === 4) {
+      setCurrentStep(3); // Go back to skin tone
+    }
+    else if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
       onBack?.();
@@ -64,12 +156,14 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
       case 2:
         return answers.skinType !== "";
       case 3:
-        return answers.fitzpatrickType !== "";
+        return skinTone > 0; // Skin tone selected
       case 4:
-        return answers.acneTypes.length > 0;
+        return sunReaction !== ""; // Sun reaction selected
       case 5:
-        return answers.acneSeverity !== "";
+        return answers.acneTypes.length > 0;
       case 6:
+        return answers.acneSeverity !== "";
+      case 7:
         return answers.isPregnantOrNursing !== "";
       default:
         return false;
@@ -175,30 +269,74 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What's your Fitzpatrick skin type?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Which of these looks closest to your natural skin tone?</h2>
                 <p className="text-muted-foreground text-lg">This helps prevent hyperpigmentation and scarring</p>
               </div>
-              <RadioGroup
-                value={answers.fitzpatrickType}
-                onValueChange={(value) => setAnswers({ ...answers, fitzpatrickType: value as any })}
-              >
-                <div className="flex items-center space-x-3 p-4 rounded-md hover-elevate border">
-                  <RadioGroupItem value="1-3" id="1-3" data-testid="radio-fitzpatrick-1-3" />
-                  <Label htmlFor="1-3" className="text-lg cursor-pointer flex-1">
-                    Type 1-3 (Lighter skin tones)
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-3 p-4 rounded-md hover-elevate border">
-                  <RadioGroupItem value="4+" id="4+" data-testid="radio-fitzpatrick-4+" />
-                  <Label htmlFor="4+" className="text-lg cursor-pointer flex-1">
-                    Type 4+ (Darker skin tones)
-                  </Label>
-                </div>
-              </RadioGroup>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {[
+                  { value: 1, label: "Very Fair", img: veryFairImg },
+                  { value: 2, label: "Fair Light", img: fairLightImg },
+                  { value: 3, label: "Light Medium", img: lightMediumImg },
+                  { value: 4, label: "Tan Olive", img: tanOliveImg },
+                  { value: 5, label: "Medium Brown", img: mediumBrownImg },
+                  { value: 6, label: "Deep Brown", img: deepBrownImg },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setSkinTone(option.value)}
+                    className={`p-4 rounded-lg border-2 hover-elevate transition-all ${
+                      skinTone === option.value
+                        ? "border-primary bg-primary/5"
+                        : "border-border"
+                    }`}
+                    data-testid={`button-skin-tone-${option.value}`}
+                  >
+                    <div className="aspect-square mb-3 bg-muted rounded-lg overflow-hidden flex items-center justify-center">
+                      <img 
+                        src={option.img} 
+                        alt={option.label} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <p className="text-sm font-medium text-center">{option.label}</p>
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
           {currentStep === 4 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">When you're in the sun without SPF, what usually happens?</h2>
+                <p className="text-muted-foreground text-lg">This helps us determine your skin's sensitivity</p>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { value: "A", label: "I burn easily and rarely tan" },
+                  { value: "B", label: "I burn sometimes, then tan" },
+                  { value: "C", label: "I tan easily and rarely burn" },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setSunReaction(option.value)}
+                    className={`w-full p-4 rounded-md border hover-elevate text-left transition-all ${
+                      sunReaction === option.value
+                        ? "border-primary bg-primary/5"
+                        : "border-border"
+                    }`}
+                    data-testid={`button-sun-reaction-${option.value}`}
+                  >
+                    <p className="text-lg">{option.label}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {currentStep === 5 && (
             <div className="space-y-6">
               <div>
                 <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What type of acne do you have?</h2>
@@ -226,7 +364,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
             </div>
           )}
 
-          {currentStep === 5 && (
+          {currentStep === 6 && (
             <div className="space-y-6">
               <div>
                 <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">How severe is your acne?</h2>
@@ -258,7 +396,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
             </div>
           )}
 
-          {currentStep === 6 && (
+          {currentStep === 7 && (
             <div className="space-y-6">
               <div>
                 <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Are you pregnant or nursing?</h2>
