@@ -142,7 +142,7 @@ function buildProductsFromRow(row: RoutineRow) {
     if (alts.length > 0) morningProducts.push(alts[0]);
   }
   if (row.sunscreen && row.sunscreen !== 'None') {
-    const alts = getProductAlternatives(row.sunscreen, 'Sunscreen');
+    const alts = getProductAlternatives(row.sunscreen, 'SPF');
     if (alts.length > 0) morningProducts.push(alts[0]);
   }
 
@@ -168,7 +168,7 @@ function buildProductsFromRow(row: RoutineRow) {
     if (alts.length > 0) eveningProducts.push(alts[0]);
   }
   if (row.treatment && row.treatment !== 'None') {
-    const alts = getProductAlternatives(row.treatment, 'Treatment');
+    const alts = getProductAlternatives(row.treatment, 'Spot Treatment');
     if (alts.length > 0) eveningProducts.push(alts[0]);
   }
 
