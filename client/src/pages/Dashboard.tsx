@@ -6,7 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check } from "lucide-react";
+import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useLocation } from "wouter";
 import { WeeklyRoutine } from "@/components/WeeklyRoutine";
 import { ProductCard } from "@/components/ProductCard";
@@ -43,6 +45,15 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("products");
   const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
   const [showRoutineModal, setShowRoutineModal] = useState(false);
+  
+  // Ingredient checker state
+  const [ingredientInput, setIngredientInput] = useState("");
+  const [ingredientResults, setIngredientResults] = useState<{
+    foundIngredients: string[];
+    safeIngredients: string[];
+    totalChecked: number;
+  } | null>(null);
+  const [hasCheckedIngredients, setHasCheckedIngredients] = useState(false);
 
   const { data: currentRoutine, isLoading, isFetching } = useQuery<Routine>({
     queryKey: ['/api/routines/current'],
@@ -94,6 +105,18 @@ export default function Dashboard() {
     alert('Referral link copied to clipboard!');
   };
 
+  const handleCheckIngredients = () => {
+    const checkResults = checkIngredients(ingredientInput);
+    setIngredientResults(checkResults);
+    setHasCheckedIngredients(true);
+  };
+
+  const handleClearIngredients = () => {
+    setIngredientInput("");
+    setIngredientResults(null);
+    setHasCheckedIngredients(false);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -112,11 +135,13 @@ export default function Dashboard() {
               <div className="flex items-center gap-4">
                 <Button
                   variant="ghost"
-                  size="icon"
+                  size="sm"
+                  className="gap-2"
                   onClick={() => window.location.href = '/api/logout'}
                   data-testid="button-logout"
                 >
-                  <User className="h-5 w-5" />
+                  <LogOut className="h-4 w-4" />
+                  Log Out
                 </Button>
               </div>
             </div>
@@ -151,19 +176,11 @@ export default function Dashboard() {
                 variant="ghost"
                 size="sm"
                 className="gap-2"
-                onClick={() => setLocation('/ingredient-checker')}
-                data-testid="button-ingredient-checker"
-              >
-                <FlaskConical className="h-4 w-4" />
-                ingredient checker
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
                 onClick={() => window.location.href = '/api/logout'}
                 data-testid="button-logout"
               >
-                <User className="h-5 w-5" />
+                <LogOut className="h-4 w-4" />
+                Log Out
               </Button>
             </div>
           </div>
@@ -200,7 +217,9 @@ export default function Dashboard() {
                 Your Routine{currentRoutine.name ? `, ${currentRoutine.name}` : ''}
               </h1>
               <p className="text-muted-foreground mt-1">
-                {currentRoutine.skinType} skin • {currentRoutine.acneSeverity} acne
+                {currentRoutine.skinType} skin • {currentRoutine.acneTypes && currentRoutine.acneTypes.length > 0 
+                  ? currentRoutine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
+                  : 'acne'} ({currentRoutine.acneSeverity})
                 {isPremium && <Badge className="ml-2" variant="secondary">Premium</Badge>}
               </p>
             </div>
@@ -231,7 +250,7 @@ export default function Dashboard() {
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-2xl grid-cols-3" data-testid="tabs-dashboard">
+            <TabsList className="grid w-full max-w-3xl grid-cols-4" data-testid="tabs-dashboard">
               <TabsTrigger value="products" data-testid="tab-products">My Products</TabsTrigger>
               <TabsTrigger 
                 value="treatment" 
@@ -240,6 +259,7 @@ export default function Dashboard() {
               >
                 {isPremium ? 'Treatment Plan' : 'Treatment Plan (Premium)'}
               </TabsTrigger>
+              <TabsTrigger value="ingredient-checker" data-testid="tab-ingredient-checker">Ingredient Checker</TabsTrigger>
               <TabsTrigger value="library" data-testid="tab-library">Routine Library</TabsTrigger>
             </TabsList>
 
@@ -310,6 +330,178 @@ export default function Dashboard() {
               ) : null}
             </TabsContent>
 
+            {/* Ingredient Checker Tab */}
+            <TabsContent value="ingredient-checker" className="space-y-6 mt-6">
+              <div className="max-w-4xl mx-auto space-y-6">
+                {/* Input Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Ingredient List</CardTitle>
+                    <CardDescription>
+                      Copy and paste the ingredients from your product label to check for acne-causing ingredients
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Textarea
+                      placeholder="Example:
+Water
+Glycerin
+Niacinamide
+Coconut Oil
+Hyaluronic Acid"
+                      value={ingredientInput}
+                      onChange={(e) => setIngredientInput(e.target.value)}
+                      className="min-h-[200px] font-mono text-sm"
+                      data-testid="textarea-ingredients"
+                    />
+                    <div className="flex gap-3">
+                      <Button
+                        onClick={handleCheckIngredients}
+                        disabled={!ingredientInput.trim()}
+                        className="flex-1"
+                        data-testid="button-check-ingredients"
+                      >
+                        Check Ingredients
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={handleClearIngredients}
+                        disabled={!ingredientInput && !hasCheckedIngredients}
+                        data-testid="button-clear"
+                      >
+                        Clear
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Results Section */}
+                {hasCheckedIngredients && ingredientResults && (
+                  <div className="space-y-6">
+                    {/* Summary */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Results Summary</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="text-center p-4 rounded-lg bg-muted/50">
+                            <div className="text-3xl font-bold text-foreground">
+                              {ingredientResults.totalChecked}
+                            </div>
+                            <div className="text-sm text-muted-foreground mt-1">
+                              Total Checked
+                            </div>
+                          </div>
+                          <div className="text-center p-4 rounded-lg bg-destructive/10">
+                            <div className="text-3xl font-bold text-destructive">
+                              {ingredientResults.foundIngredients.length}
+                            </div>
+                            <div className="text-sm text-muted-foreground mt-1">
+                              Acne-Causing
+                            </div>
+                          </div>
+                          <div className="text-center p-4 rounded-lg bg-primary/10">
+                            <div className="text-3xl font-bold text-primary">
+                              {ingredientResults.safeIngredients.length}
+                            </div>
+                            <div className="text-sm text-muted-foreground mt-1">
+                              Safe
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Acne-Causing Ingredients */}
+                    {ingredientResults.foundIngredients.length > 0 && (
+                      <Card className="border-destructive/50">
+                        <CardHeader>
+                          <div className="flex items-start gap-3">
+                            <AlertCircle className="h-6 w-6 text-destructive mt-1" />
+                            <div>
+                              <CardTitle className="text-destructive">
+                                Acne-Causing Ingredients Found
+                              </CardTitle>
+                              <CardDescription>
+                                These ingredients may clog pores and cause breakouts
+                              </CardDescription>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex flex-wrap gap-2">
+                            {ingredientResults.foundIngredients.map((ingredient, index) => (
+                              <Badge
+                                key={index}
+                                variant="destructive"
+                                className="text-sm"
+                                data-testid={`badge-acne-causing-${index}`}
+                              >
+                                {ingredient}
+                              </Badge>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                    {/* Safe Ingredients */}
+                    {ingredientResults.safeIngredients.length > 0 && (
+                      <Card className="border-primary/50">
+                        <CardHeader>
+                          <div className="flex items-start gap-3">
+                            <CheckCircle className="h-6 w-6 text-primary mt-1" />
+                            <div>
+                              <CardTitle className="text-primary">
+                                Safe Ingredients
+                              </CardTitle>
+                              <CardDescription>
+                                These ingredients are not known to cause acne
+                              </CardDescription>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex flex-wrap gap-2">
+                            {ingredientResults.safeIngredients.map((ingredient, index) => (
+                              <Badge
+                                key={index}
+                                variant="secondary"
+                                className="text-sm"
+                                data-testid={`badge-safe-${index}`}
+                              >
+                                {ingredient}
+                              </Badge>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                    {/* All Clear Message */}
+                    {ingredientResults.foundIngredients.length === 0 && ingredientResults.totalChecked > 0 && (
+                      <Card className="border-primary/50 bg-primary/5">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center gap-3">
+                            <CheckCircle className="h-8 w-8 text-primary flex-shrink-0" />
+                            <div>
+                              <h3 className="font-semibold text-lg text-primary">
+                                All Clear!
+                              </h3>
+                              <p className="text-muted-foreground">
+                                No acne-causing ingredients detected in this product.
+                              </p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+
             {/* Routine Library Tab */}
             <TabsContent value="library" className="space-y-6 mt-6">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -350,7 +542,11 @@ export default function Dashboard() {
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-2 text-sm text-muted-foreground">
-                            <p>{routine.skinType} skin • {routine.acneSeverity} acne</p>
+                            <p>
+                              {routine.skinType} skin • {routine.acneTypes && routine.acneTypes.length > 0 
+                                ? routine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
+                                : 'acne'} ({routine.acneSeverity})
+                            </p>
                             <p>{totalProducts} products total</p>
                           </div>
                         </CardContent>

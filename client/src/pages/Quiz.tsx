@@ -5,6 +5,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { QuizFlow, type QuizAnswers } from "@/components/QuizFlow";
 import { RoutineDisplay } from "@/components/RoutineDisplay";
 import { AccountCreationModal } from "@/components/AccountCreationModal";
+import { LoginModal } from "@/components/LoginModal";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 
@@ -14,8 +15,10 @@ export default function Quiz() {
   const [, setLocation] = useLocation();
   const [showQuiz, setShowQuiz] = useState(true);
   const [showAccountModal, setShowAccountModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [routineData, setRoutineData] = useState<any>(null);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | null>(null);
+  const [justCreatedAccount, setJustCreatedAccount] = useState(false);
 
   const submitQuizMutation = useMutation({
     mutationFn: async (answers: QuizAnswers) => {
@@ -80,6 +83,9 @@ export default function Quiz() {
     // Refresh user data
     await queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
     
+    // Mark that account was just created
+    setJustCreatedAccount(true);
+    
     // Save routine after account creation
     if (routineData && quizAnswers) {
       saveRoutineMutation.mutate({
@@ -118,16 +124,46 @@ export default function Quiz() {
   };
 
   const handleLoginClick = () => {
-    setShowAccountModal(true);
+    setShowLoginModal(true);
+  };
+
+  const handleLoginSuccess = async (loggedInUser: any) => {
+    // Refresh user data
+    await queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
+    
+    // Save routine after login
+    if (routineData && quizAnswers) {
+      saveRoutineMutation.mutate({
+        name: quizAnswers.name,
+        age: quizAnswers.age,
+        skinType: quizAnswers.skinType,
+        fitzpatrickType: quizAnswers.fitzpatrickType,
+        acneTypes: quizAnswers.acneTypes,
+        acneSeverity: quizAnswers.acneSeverity,
+        isPregnantOrNursing: quizAnswers.isPregnantOrNursing === 'yes',
+        routineData: routineData,
+      });
+    }
+    
+    setShowLoginModal(false);
   };
 
   const handleHomeClick = () => {
     setLocation('/');
   };
 
+  const handleCreateAccountClick = () => {
+    setShowAccountModal(true);
+  };
+
   if (routineData && quizAnswers) {
     return (
       <>
+        <LoginModal
+          open={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          onSuccess={handleLoginSuccess}
+        />
         <AccountCreationModal
           open={showAccountModal}
           onClose={() => setShowAccountModal(false)}
@@ -137,12 +173,16 @@ export default function Quiz() {
         <RoutineDisplay
           userName={quizAnswers.name}
           skinType={quizAnswers.skinType}
+          acneTypes={quizAnswers.acneTypes}
+          acneSeverity={quizAnswers.acneSeverity}
           routineType={routineData.routineType}
           products={routineData.products}
           isPremiumUser={(user as any)?.isPremium || false}
           isAuthenticated={!!user}
+          justCreatedAccount={justCreatedAccount}
           onRetakeQuiz={handleRetakeQuiz}
           onLoginClick={handleLoginClick}
+          onCreateAccountClick={handleCreateAccountClick}
           onHomeClick={handleHomeClick}
         />
       </>

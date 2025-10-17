@@ -130,13 +130,13 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
                             key={index}
                             variant="ghost"
                             size="sm"
-                            className="w-full justify-start p-0 h-auto text-muted-foreground hover:text-foreground no-default-hover-elevate"
+                            className="w-full justify-start p-0 h-auto text-muted-foreground hover:text-foreground no-default-hover-elevate whitespace-normal"
                             asChild
                             data-testid={`button-alternative-${index}`}
                           >
-                            <a href={option.affiliateLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs">
-                              {option.productName}
-                              <ArrowRight className="h-3 w-3 flex-shrink-0" />
+                            <a href={option.affiliateLink} target="_blank" rel="noopener noreferrer" className="flex items-start gap-1 text-xs">
+                              <span className="flex-1">{option.productName}</span>
+                              <ArrowRight className="h-3 w-3 flex-shrink-0 mt-0.5" />
                             </a>
                           </Button>
                         );

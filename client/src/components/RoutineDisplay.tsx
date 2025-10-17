@@ -4,7 +4,6 @@ import { ProductCard, type Product } from "./ProductCard";
 import { PremiumUpsell } from "./PremiumUpsell";
 import { WeeklyRoutine } from "./WeeklyRoutine";
 import type { RoutineType } from "@shared/weeklyRoutines";
-import { ThemeToggle } from "./ThemeToggle";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import { Home, RefreshCw, LogIn, Mail, Info } from "lucide-react";
 import { useState } from "react";
@@ -16,6 +15,8 @@ import { Footer } from "./Footer";
 interface RoutineDisplayProps {
   userName: string;
   skinType: string;
+  acneTypes?: string[];
+  acneSeverity?: string;
   routineType?: RoutineType;
   products: {
     morning: Product[];
@@ -23,20 +24,26 @@ interface RoutineDisplayProps {
   };
   isPremiumUser?: boolean;
   isAuthenticated?: boolean;
+  justCreatedAccount?: boolean;
   onRetakeQuiz?: () => void;
   onLoginClick?: () => void;
+  onCreateAccountClick?: () => void;
   onHomeClick?: () => void;
 }
 
 export function RoutineDisplay({
   userName,
   skinType,
+  acneTypes = [],
+  acneSeverity,
   routineType,
   products,
   isPremiumUser = false,
   isAuthenticated = false,
+  justCreatedAccount = false,
   onRetakeQuiz,
   onLoginClick,
+  onCreateAccountClick,
   onHomeClick,
 }: RoutineDisplayProps) {
   const { toast } = useToast();
@@ -73,29 +80,35 @@ export function RoutineDisplay({
           </button>
           
           <div className="flex items-center gap-3">
-            {!isAuthenticated && (
+            {!isAuthenticated ? (
               <>
                 <Button
                   variant="ghost"
-                  onClick={onRetakeQuiz}
-                  className="rounded-full gap-2"
-                  data-testid="button-retake-quiz"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                  Retake Quiz
-                </Button>
-                <Button
-                  variant="default"
                   onClick={onLoginClick}
                   className="rounded-full gap-2"
                   data-testid="button-login-nav"
                 >
                   <LogIn className="h-4 w-4" />
+                  Log In
+                </Button>
+                <Button
+                  variant="default"
+                  onClick={onCreateAccountClick}
+                  className="rounded-full gap-2"
+                  data-testid="button-create-account-nav"
+                >
                   Create Account
                 </Button>
               </>
-            )}
-            <ThemeToggle />
+            ) : justCreatedAccount && !isPremiumUser ? (
+              <Button
+                variant="default"
+                className="rounded-full gap-2"
+                data-testid="button-upgrade-premium"
+              >
+                Upgrade to Premium
+              </Button>
+            ) : null}
           </div>
         </div>
       </header>
@@ -104,10 +117,10 @@ export function RoutineDisplay({
       <div className="pt-20">
         <div className="bg-muted/30 border-b border-border/50">
           <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-3">
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground text-center">
               <Info className="h-4 w-4 flex-shrink-0" />
               <span>
-                Some links on this page are affiliate links.{" "}
+                We recommend products through affiliate links. When you purchase using these links, you support our free service at no extra cost to you.{" "}
                 <Link 
                   href="/affiliate-disclosure"
                   className="text-foreground underline hover:no-underline"
@@ -130,12 +143,39 @@ export function RoutineDisplay({
             </Badge>
           </div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold mb-6" data-testid="text-greeting">
-            Welcome back, {userName}
+            Clear is near, {userName}
           </h1>
           <p className="text-lg text-muted-foreground mb-8">
             Your personalized skincare routine for{" "}
             <span className="text-foreground font-medium" data-testid="badge-skin-type">{skinType} skin</span>
+            {acneTypes && acneTypes.length > 0 && (
+              <>
+                {" "}with{" "}
+                <span className="text-foreground font-medium">
+                  {acneTypes.map(type => type.replace('-', ' ')).join(', ')}
+                </span>
+              </>
+            )}
+            {acneSeverity && (
+              <>
+                {" "}({" "}
+                <span className="text-foreground font-medium">{acneSeverity}</span>
+                {" "}severity)
+              </>
+            )}
           </p>
+
+          <div className="mb-8">
+            <Button
+              variant="outline"
+              onClick={onRetakeQuiz}
+              className="gap-2"
+              data-testid="button-retake-quiz"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Retake Quiz
+            </Button>
+          </div>
 
           {!isPremiumUser && <PremiumUpsell />}
         </div>
