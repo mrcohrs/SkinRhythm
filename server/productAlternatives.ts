@@ -1,21 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { getAffiliateLink } from './affiliateLinks';
-
-interface ProductAlternative {
-  acneAgentProduct: string;
-  category: string;
-  defaultProductLink: string;
-  defaultProductName: string; // Extracted product name from URL
-  affiliateLink: string; // Affiliate link for shop/buy CTA (falls back to original if no affiliate)
-  premiumOptions: Array<{
-    originalLink: string;
-    affiliateLink: string;
-    productName: string;
-  }>;
-}
-
-let productAlternativesMap: Map<string, ProductAlternative> = new Map();
+import { PRODUCT_LIBRARY, getProductByCsvKey } from '@shared/productLibrary';
 
 // Extract product name from URL
 function extractProductNameFromURL(url: string): string {
@@ -91,7 +77,7 @@ function extractProductNameFromURL(url: string): string {
   }
 }
 
-export function parseProductAlternativesCSV() {
+export function enrichProductLibraryFromCSV() {
   const csvPath = path.join(process.cwd(), 'attached_assets', 'Product Links for Acne Agent Routine Product Options.xlsx - Alternatives (1)_1760657834377.csv');
   
   if (!fs.existsSync(csvPath)) {
@@ -101,6 +87,8 @@ export function parseProductAlternativesCSV() {
 
   const csvContent = fs.readFileSync(csvPath, 'utf-8');
   const lines = csvContent.split('\n');
+  
+  let enrichedCount = 0;
   
   // Skip header row
   for (let i = 1; i < lines.length; i++) {
@@ -127,9 +115,17 @@ export function parseProductAlternativesCSV() {
     
     if (columns.length < 3) continue;
     
-    const acneAgentProduct = columns[0];
-    const category = columns[1];
+    const csvProductName = columns[0];
     const defaultProductLink = columns[2];
+    
+    // Find product in library by CSV name
+    const csvKey = csvProductName.toUpperCase().trim();
+    const product = getProductByCsvKey(csvKey);
+    
+    if (!product) {
+      console.warn(`Product not found in library: ${csvProductName}`);
+      continue;
+    }
     
     // Extract product name from default product URL
     const defaultProductName = extractProductNameFromURL(defaultProductLink);
@@ -155,25 +151,36 @@ export function parseProductAlternativesCSV() {
       }
     }
     
-    // Store in map using normalized key
-    const key = acneAgentProduct.toUpperCase().trim();
-    productAlternativesMap.set(key, {
-      acneAgentProduct,
-      category,
-      defaultProductLink,
-      defaultProductName,
-      affiliateLink,
-      premiumOptions
-    });
+    // Enrich the product library entry
+    product.defaultProductLink = defaultProductLink;
+    product.defaultProductName = defaultProductName;
+    product.affiliateLink = affiliateLink;
+    product.premiumOptions = premiumOptions;
+    
+    enrichedCount++;
   }
   
-  console.log(`Loaded ${productAlternativesMap.size} product alternatives`);
+  console.log(`Enriched ${enrichedCount} products in library with URLs and affiliate links`);
 }
 
-export function getProductAlternative(productName: string): ProductAlternative | null {
-  const key = productName.toUpperCase().trim();
-  return productAlternativesMap.get(key) || null;
+// Backward compatibility function for existing code
+export function getProductAlternative(productName: string) {
+  const csvKey = productName.toUpperCase().trim();
+  const product = getProductByCsvKey(csvKey);
+  
+  if (!product) {
+    return null;
+  }
+  
+  return {
+    acneAgentProduct: productName,
+    category: product.category,
+    defaultProductLink: product.defaultProductLink || '',
+    defaultProductName: product.defaultProductName || '',
+    affiliateLink: product.affiliateLink || '',
+    premiumOptions: product.premiumOptions || []
+  };
 }
 
-// Parse on module load
-parseProductAlternativesCSV();
+// Enrich library on module load
+enrichProductLibraryFromCSV();

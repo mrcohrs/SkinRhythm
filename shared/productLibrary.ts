@@ -177,9 +177,9 @@ export const PRODUCT_LIBRARY: Record<string, ProductDefinition> = {
   },
 };
 
-// Reverse lookup: CSV key to product ID
+// Reverse lookup: CSV key to product ID (uppercase keys for case-insensitive lookup)
 export const CSV_KEY_TO_PRODUCT_ID: Record<string, string> = Object.values(PRODUCT_LIBRARY).reduce((acc, product) => {
-  acc[product.csvKey] = product.id;
+  acc[product.csvKey.toUpperCase()] = product.id;
   return acc;
 }, {} as Record<string, string>);
 
