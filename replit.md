@@ -26,6 +26,8 @@ Preferred communication style: Simple, everyday language.
 - **API**: RESTful endpoints for authentication, quiz submission, routine saving/retrieval, and current routine management.
 - **Business Logic**: CSV-based product recommendation engine. Matches skin type, Fitzpatrick type, acne types, age (mature status), and pregnancy status to recommend product sets. Extracts real product names from URLs, filtering out IDs and converting to Title Case. Supports premium product alternatives.
 - **Affiliate Links System**: Integrated affiliate link mapping system (37 affiliate links) that automatically uses affiliate URLs for shop/buy CTAs when available, while maintaining original product links for name extraction. Falls back to original links when no affiliate mapping exists.
+  - **Runtime Transformation**: `server/routineTransformer.ts` provides backwards compatibility by transforming old routine data to include affiliate links at runtime
+  - **Dashboard Integration**: Both `/api/routines/current` and `/api/routines` endpoints transform routine data to ensure Dashboard displays affiliate links for all saved routines
 - **Premium Features**: 6-week progressive treatment routines (Inflamed, Non-inflamed Mild/Moderate/Severe, Rosacea) for premium users, detailing step-by-step AM/PM routines, product mappings, and treatment notes.
 
 ### Data Storage
