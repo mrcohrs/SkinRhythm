@@ -104,8 +104,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const userRoutines = await storage.getUserRoutines(userId);
       
-      // Saved routines already have correct product data - return as-is
-      res.json(userRoutines);
+      // Get user's premium status
+      let isPremiumUser = false;
+      try {
+        const user = await storage.getUser(userId);
+        isPremiumUser = user?.isPremium || false;
+      } catch (e) {
+        console.log(`[Routines] Error getting user, treating as non-premium:`, e);
+      }
+      
+      // Resolve all products from centralized library
+      const resolvedRoutines = userRoutines.map(routine => ({
+        ...routine,
+        routineData: resolveSavedRoutineProducts(routine.routineData, isPremiumUser),
+      }));
+      
+      res.json(resolvedRoutines);
     } catch (error) {
       console.error("Error fetching routines:", error);
       res.status(500).json({ message: "Failed to fetch routines" });
@@ -120,8 +134,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "No current routine found" });
       }
       
-      // Saved routine already has correct product data - return as-is
-      res.json(currentRoutine);
+      // Get user's premium status
+      let isPremiumUser = false;
+      try {
+        const user = await storage.getUser(userId);
+        isPremiumUser = user?.isPremium || false;
+      } catch (e) {
+        console.log(`[Current Routine] Error getting user, treating as non-premium:`, e);
+      }
+      
+      // Resolve all products from centralized library
+      const resolvedRoutine = {
+        ...currentRoutine,
+        routineData: resolveSavedRoutineProducts(currentRoutine.routineData, isPremiumUser),
+      };
+      
+      res.json(resolvedRoutine);
     } catch (error) {
       console.error("Error fetching current routine:", error);
       res.status(500).json({ message: "Failed to fetch current routine" });
