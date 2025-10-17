@@ -16,6 +16,7 @@ export function resolveRoutineProducts(routine: RoutineRecommendation, isPremium
         brand: '',
         category: product.category,
         priceTier: product.priceTier,
+        priceRange: product.priceRange,
         price: 0,
         benefits: ['Recommended for your skin type'],
         affiliateLink: product.affiliateLink || '',
@@ -38,6 +39,7 @@ export function resolveRoutineProducts(routine: RoutineRecommendation, isPremium
         brand: '',
         category: product.category,
         priceTier: product.priceTier,
+        priceRange: product.priceRange,
         price: 0,
         benefits: ['Recommended for your skin type'],
         affiliateLink: product.affiliateLink || '',
@@ -52,6 +54,47 @@ export function resolveRoutineProducts(routine: RoutineRecommendation, isPremium
     products: {
       morning: morningProducts as any,
       evening: eveningProducts as any,
+    },
+  };
+}
+
+// Resolve saved routine data to use centralized product library
+export function resolveSavedRoutineProducts(routineData: any, isPremiumUser: boolean = false): any {
+  if (!routineData || !routineData.products) {
+    return routineData;
+  }
+
+  const resolveProduct = (oldProduct: any) => {
+    if (!oldProduct) return oldProduct;
+
+    // Find matching product in library by category
+    const libraryProduct = Object.values(PRODUCT_LIBRARY).find(p => p.category === oldProduct.category);
+    
+    if (!libraryProduct) {
+      console.warn(`No library product found for category: ${oldProduct.category}`);
+      return oldProduct;
+    }
+
+    // Use centralized product data
+    return {
+      name: libraryProduct.defaultProductName || libraryProduct.generalName,
+      brand: '',
+      category: libraryProduct.category,
+      priceTier: libraryProduct.priceTier,
+      priceRange: libraryProduct.priceRange,
+      price: 0,
+      benefits: ['Recommended for your skin type'],
+      affiliateLink: libraryProduct.affiliateLink || '',
+      originalLink: libraryProduct.defaultProductLink,
+      premiumOptions: isPremiumUser ? libraryProduct.premiumOptions : undefined,
+    };
+  };
+
+  return {
+    ...routineData,
+    products: {
+      morning: (routineData.products.morning || []).map(resolveProduct),
+      evening: (routineData.products.evening || []).map(resolveProduct),
     },
   };
 }

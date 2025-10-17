@@ -4,10 +4,9 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { setupLocalAuth } from "./localAuth";
 import { parseExcelFile, getRoutineForAnswers } from "./parseExcel";
-import { resolveRoutineProducts } from "./routineResolver";
+import { resolveRoutineProducts, resolveSavedRoutineProducts } from "./routineResolver";
 import { quizAnswersSchema } from "@shared/schema";
 import "./productAlternatives"; // Load product alternatives CSV
-import { transformRoutineWithAffiliateLinks } from "./routineTransformer";
 
 parseExcelFile();
 
@@ -105,13 +104,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const userRoutines = await storage.getUserRoutines(userId);
       
-      // Transform all routines to include affiliate links for backwards compatibility
-      const transformedRoutines = userRoutines.map(routine => ({
+      // Get user's premium status
+      let isPremiumUser = false;
+      try {
+        const user = await storage.getUser(userId);
+        isPremiumUser = user?.isPremium || false;
+      } catch (e) {
+        console.log(`[Routines] Error getting user, treating as non-premium:`, e);
+      }
+      
+      // Resolve all routines to use centralized product library
+      const resolvedRoutines = userRoutines.map(routine => ({
         ...routine,
-        routineData: transformRoutineWithAffiliateLinks(routine.routineData),
+        routineData: resolveSavedRoutineProducts(routine.routineData, isPremiumUser),
       }));
       
-      res.json(transformedRoutines);
+      res.json(resolvedRoutines);
     } catch (error) {
       console.error("Error fetching routines:", error);
       res.status(500).json({ message: "Failed to fetch routines" });
@@ -126,13 +134,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "No current routine found" });
       }
       
-      // Transform routine data to include affiliate links for backwards compatibility
-      const transformedRoutine = {
+      // Get user's premium status
+      let isPremiumUser = false;
+      try {
+        const user = await storage.getUser(userId);
+        isPremiumUser = user?.isPremium || false;
+      } catch (e) {
+        console.log(`[Current Routine] Error getting user, treating as non-premium:`, e);
+      }
+      
+      // Resolve routine to use centralized product library
+      const resolvedRoutine = {
         ...currentRoutine,
-        routineData: transformRoutineWithAffiliateLinks(currentRoutine.routineData),
+        routineData: resolveSavedRoutineProducts(currentRoutine.routineData, isPremiumUser),
       };
       
-      res.json(transformedRoutine);
+      res.json(resolvedRoutine);
     } catch (error) {
       console.error("Error fetching current routine:", error);
       res.status(500).json({ message: "Failed to fetch current routine" });
