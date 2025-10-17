@@ -80,11 +80,10 @@ export class DatabaseStorage implements IStorage {
         .limit(1);
 
       if (emailExists.length > 0) {
-        // Update existing user (including ID if provided)
+        // Update existing user (but NEVER update ID - it's immutable due to foreign key constraints)
         const [user] = await db
           .update(users)
           .set({
-            ...(userData.id && { id: userData.id }),
             firstName: userData.firstName,
             lastName: userData.lastName,
             profileImageUrl: userData.profileImageUrl,

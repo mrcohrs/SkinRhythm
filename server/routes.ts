@@ -6,6 +6,7 @@ import { setupLocalAuth } from "./localAuth";
 import { parseExcelFile, getRoutineForAnswers } from "./parseExcel";
 import { quizAnswersSchema } from "@shared/schema";
 import "./productAlternatives"; // Load product alternatives CSV
+import { transformRoutineWithAffiliateLinks } from "./routineTransformer";
 
 parseExcelFile();
 
@@ -99,7 +100,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const userRoutines = await storage.getUserRoutines(userId);
-      res.json(userRoutines);
+      
+      // Transform all routines to include affiliate links for backwards compatibility
+      const transformedRoutines = userRoutines.map(routine => ({
+        ...routine,
+        routineData: transformRoutineWithAffiliateLinks(routine.routineData),
+      }));
+      
+      res.json(transformedRoutines);
     } catch (error) {
       console.error("Error fetching routines:", error);
       res.status(500).json({ message: "Failed to fetch routines" });
@@ -113,7 +121,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!currentRoutine) {
         return res.status(404).json({ message: "No current routine found" });
       }
-      res.json(currentRoutine);
+      
+      // Transform routine data to include affiliate links for backwards compatibility
+      const transformedRoutine = {
+        ...currentRoutine,
+        routineData: transformRoutineWithAffiliateLinks(currentRoutine.routineData),
+      };
+      
+      res.json(transformedRoutine);
     } catch (error) {
       console.error("Error fetching current routine:", error);
       res.status(500).json({ message: "Failed to fetch current routine" });
