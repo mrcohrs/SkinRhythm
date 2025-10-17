@@ -3,6 +3,16 @@
 ## Overview
 AcneAgent is a personalized acne skincare application designed to provide users with customized skincare routines. It analyzes user skin type, Fitzpatrick type, acne concerns, and pregnancy status through an interactive quiz to recommend morning and evening skincare products across budget, standard, and premium price tiers. Users can authenticate, save their routines, and access a personalized dashboard with product recommendations and detailed treatment plans. The application aims to offer a clinical yet elegant user experience, guiding users towards effective acne management.
 
+### Two-Step Fitzpatrick Determination
+The quiz uses an intuitive two-step visual flow to determine Fitzpatrick type:
+1. **Visual Skin Tone Selection**: Users select from 6 skin tone options displayed as face images in a 2x3 grid (Very Fair, Fair Light, Light Medium, Tan Olive, Medium Brown, Deep Brown)
+2. **Conditional Sun Reaction Question**: Only shown for Light Medium and Tan Olive skin tones (tones 3-4)
+   - Tones 1-2 (Very Fair, Fair Light) → Automatically assigned Fitz 1-3
+   - Tones 5-6 (Medium Brown, Deep Brown) → Automatically assigned Fitz 4+
+   - Tones 3-4 → Ask sun reaction:
+     - Burns/tans minimally (A/B) → Fitz 1-3
+     - Tans easily (C) → Fitz 4+
+
 ## User Preferences
 Preferred communication style: Simple, everyday language.
 
@@ -16,6 +26,10 @@ Preferred communication style: Simple, everyday language.
 - **Theming**: Custom ThemeProvider with localStorage persistence for light/dark mode.
 - **Dashboard**: Provides authenticated users a personalized view of saved routines, detailed treatment plans (premium), and a routine library. Features include routine switching, retake quiz flow, and current routine management.
 - **Ingredient Checker**: Allows authenticated users to paste ingredient lists to identify 348 known acne-causing ingredients using word-boundary matching.
+- **Quiz Flow**: 8-step questionnaire with conditional logic and accurate progress tracking:
+  - Steps: Name → Age → Skin Type → Skin Tone (visual) → Sun Reaction (conditional) → Acne Types → Severity → Pregnancy
+  - Progress bar calculation uses `getVisibleStepNumber()` to accurately reflect visible steps (7 or 8 depending on skip logic)
+  - All mandatory questions are answered before completion
 - **Post-Quiz Navigation**: Non-authenticated users see navigation header with logo (home link), retake quiz button, create account button, theme toggle, and mailing list signup section.
 - **Affiliate Disclosure**: Dedicated disclosure page at `/affiliate-disclosure` with FTC-compliant language. Disclosure notice banner appears at top of product recommendation pages, with footer links on all major pages.
 - **Privacy Policy**: Dedicated privacy policy page at `/privacy-policy` explaining data collection practices, third-party services, and contact information. Accessible via footer on all major pages (Landing, Dashboard, RoutineDisplay, AffiliateDisclosure, PrivacyPolicy).
