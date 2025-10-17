@@ -18,6 +18,7 @@ export interface Product {
   category: string;
   price: number;
   priceTier: "budget" | "standard" | "premium";
+  priceRange?: string; // Optional price range to display (e.g., "$10-$15")
   benefits: string[];
   affiliateLink: string; // Affiliate link for shop/buy CTA (falls back to original if no affiliate)
   originalLink?: string; // Original product link (for reference)
@@ -86,6 +87,7 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
               </Badge>
             </div>
             {product.brand && <p className="text-sm text-muted-foreground">{product.brand}</p>}
+            {product.priceRange && <p className="text-sm font-medium text-foreground" data-testid="text-price-range">{product.priceRange}</p>}
           </div>
           
           <p className="text-sm text-muted-foreground leading-relaxed">
