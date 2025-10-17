@@ -116,11 +116,11 @@ export function RoutineDisplay({
       {/* Affiliate Disclosure Notice */}
       <div className="pt-20">
         <div className="bg-muted/30 border-b border-border/50">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-3">
+          <div className="max-w-4xl mx-auto px-4 md:px-8 lg:px-16 py-3">
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground text-center">
               <Info className="h-4 w-4 flex-shrink-0" />
               <span>
-                We recommend products through affiliate links. When you purchase using these links, you support our free service at no extra cost to you.{" "}
+                We strive for clear skin and transparent business practices. Please note that AcneAgent recommends some products through affiliate links. The small commission we receive when you purchase using these links allows us to provide our personalized, evidence-based acne treatment at no extra cost to you.{" "}
                 <Link 
                   href="/affiliate-disclosure"
                   className="text-foreground underline hover:no-underline"
@@ -143,7 +143,7 @@ export function RoutineDisplay({
             </Badge>
           </div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold mb-6" data-testid="text-greeting">
-            Clear is near, {userName}
+            {userName}'s Personal AcneAgent Recommends This AM & PM Routine for Clearer, Healthier Skin
           </h1>
           <p className="text-lg text-muted-foreground mb-8">
             Your personalized skincare routine for{" "}
@@ -176,8 +176,15 @@ export function RoutineDisplay({
               Retake Quiz
             </Button>
           </div>
-
-          {!isPremiumUser && <PremiumUpsell />}
+          {!isPremiumUser && (
+            <div className="mt-8">
+              <PremiumUpsell 
+                title="Premium users see better results"
+                description="Upgrade to AcneAgent Premium (/month) for step-by-step guidance on how to properly ramp up on actives to best treat your acne. Includes personalized, weekly routine instructions with timing for benzoyl peroxide application and serum usage, access to premium product alternatives, and tools like an acne-safe ingredient checker to make sure you get clear and stay clear."
+              />
+            </div>
+          )}
+          
         </div>
 
         {isPremiumUser && routineType && (
@@ -198,14 +205,7 @@ export function RoutineDisplay({
                 />
               ))}
             </div>
-            {!isPremiumUser && (
-              <div className="mt-8">
-                <PremiumUpsell 
-                  title="Premium users see better results"
-                  description="Upgrade to AcneAgent Premium ($2.99/month) for step-by-step guidance on how to properly ramp up on actives to best treat your acne. Includes personalized, weekly routine instructions with timing for benzoyl peroxide application and serum usage, access to premium product alternatives, and tools like an acne-safe ingredient checker to make sure you get clear and stay clear."
-                />
-              </div>
-            )}
+            {!isPremiumUser && <PremiumUpsell />}
           </div>
 
           <div>
