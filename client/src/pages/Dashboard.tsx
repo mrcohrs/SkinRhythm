@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useLocation } from "wouter";
 import { WeeklyRoutine } from "@/components/WeeklyRoutine";
 import { ProductCard } from "@/components/ProductCard";
+import { ConsentModal } from "@/components/ConsentModal";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
@@ -46,6 +47,10 @@ export default function Dashboard() {
   const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
   const [showRoutineModal, setShowRoutineModal] = useState(false);
   
+  // Consent modal state
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [hasCheckedConsent, setHasCheckedConsent] = useState(false);
+  
   // Ingredient checker state
   const [ingredientInput, setIngredientInput] = useState("");
   const [ingredientResults, setIngredientResults] = useState<{
@@ -63,6 +68,52 @@ export default function Dashboard() {
   const { data: allRoutines } = useQuery<Routine[]>({
     queryKey: ['/api/routines'],
     enabled: !!user,
+  });
+
+  // Check consent status
+  const { data: consentData } = useQuery<{
+    dataCollectionConsent: boolean;
+    aiTrainingConsent: boolean;
+    consentDate: string | null;
+    consentVersion: string | null;
+  }>({
+    queryKey: ['/api/user/consent'],
+    enabled: !!user,
+  });
+
+  // Show consent modal if user has a routine but hasn't been asked about consent yet
+  useEffect(() => {
+    if (user && currentRoutine && consentData && !hasCheckedConsent) {
+      // If user has never been asked (no consentDate), show modal
+      // If they HAVE been asked (consentDate exists), respect their choice regardless of values
+      const hasBeenAsked = !!consentData.consentDate;
+      if (!hasBeenAsked) {
+        setShowConsentModal(true);
+      }
+      setHasCheckedConsent(true);
+    }
+  }, [user, currentRoutine, consentData, hasCheckedConsent]);
+
+  const consentMutation = useMutation({
+    mutationFn: async ({ dataCollectionConsent, aiTrainingConsent }: { dataCollectionConsent: boolean; aiTrainingConsent: boolean }) => {
+      const response = await apiRequest('POST', '/api/user/consent', { dataCollectionConsent, aiTrainingConsent });
+      return await response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/user/consent'] });
+      setShowConsentModal(false);
+      toast({
+        title: "Preferences saved",
+        description: "Your privacy preferences have been saved.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to save preferences",
+        variant: "destructive",
+      });
+    },
   });
 
   const routineData = currentRoutine?.routineData as any;
@@ -665,6 +716,19 @@ Hyaluronic Acid"
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Consent Modal */}
+      <ConsentModal
+        open={showConsentModal}
+        onConsent={(dataCollection, aiTraining) => {
+          consentMutation.mutate({
+            dataCollectionConsent: dataCollection,
+            aiTrainingConsent: aiTraining,
+          });
+        }}
+        onSkip={() => setShowConsentModal(false)}
+        allowSkip={true}
+      />
       
       <Footer />
     </div>

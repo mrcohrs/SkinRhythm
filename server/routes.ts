@@ -171,6 +171,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Consent endpoints
+  app.post('/api/user/consent', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { dataCollectionConsent, aiTrainingConsent } = req.body;
+      
+      const consentVersion = "1.0"; // Track consent version for future updates
+      
+      const updatedUser = await storage.updateUserConsent(
+        userId,
+        dataCollectionConsent,
+        aiTrainingConsent,
+        consentVersion
+      );
+      
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating consent:", error);
+      res.status(500).json({ message: "Failed to update consent" });
+    }
+  });
+
+  app.get('/api/user/consent', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      res.json({
+        dataCollectionConsent: user.dataCollectionConsent,
+        aiTrainingConsent: user.aiTrainingConsent,
+        consentDate: user.consentDate,
+        consentVersion: user.consentVersion,
+      });
+    } catch (error) {
+      console.error("Error fetching consent:", error);
+      res.status(500).json({ message: "Failed to fetch consent" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

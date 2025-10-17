@@ -47,8 +47,55 @@ Preferred communication style: Simple, everyday language.
 ### Data Storage
 - **Database**: PostgreSQL (Neon serverless driver).
 - **ORM**: Drizzle ORM for type-safe operations.
-- **Schema**: `sessions` (Replit Auth), `users` (profiles, `isPremium` flag), `routines` (user-specific routines including demographic and product data).
+- **Schema**: 
+  - `sessions` (Replit Auth)
+  - `users` (profiles, `isPremium` flag, consent fields)
+  - `routines` (user-specific routines including demographic and product data)
 - **Migrations**: Drizzle Kit.
+
+### Consent & Privacy Infrastructure
+- **User Consent System**: Comprehensive consent management for data collection and AI training
+  - `dataCollectionConsent`: Boolean flag for storing user skincare data
+  - `aiTrainingConsent`: Boolean flag for using anonymized data in AI model training
+  - `consentDate`: Timestamp of when consent was provided
+  - `consentVersion`: Tracks consent version for future policy updates (currently "1.0")
+- **Consent Modal**: Shown to authenticated users when they have a routine but haven't provided consent preferences
+  - Clear explanations of data usage for personalization and AI training
+  - Optional checkboxes for both consent types
+  - Links to Privacy Policy for full details
+  - Can be skipped or completed at user's discretion
+- **API Endpoints**: 
+  - `POST /api/user/consent` - Record user consent preferences
+  - `GET /api/user/consent` - Retrieve current consent status
+- **Privacy Policy**: Comprehensive privacy policy at `/privacy-policy` detailing:
+  - Data collection practices (quiz responses, routines, usage data)
+  - AI training data usage and anonymization practices
+  - Third-party services and affiliate link tracking
+  - User rights (access, deletion, consent withdrawal, data export)
+  - GDPR and CCPA compliance
+
+### Future AI Training Architecture
+**North Star Vision**: Build an AI recommendation engine that learns from real user results to provide increasingly accurate skincare recommendations.
+
+**Data Pipeline (Future Implementation)**:
+1. **Photo Analysis**: Users upload skin photos for AI-powered acne assessment
+   - Track pustule count, severity, affected areas
+   - Store before/after comparison data
+2. **Product Correlation**: Link skin improvement data to specific product usage
+   - Track which products user was using between photo analyses
+   - Measure time intervals and usage patterns
+   - Correlate product combinations with skin improvements
+3. **Model Training**: Feed anonymized data into AI model
+   - Input: Skin type, Fitzpatrick type, acne concerns, product usage, demographics
+   - Output: Treatment effectiveness scores, product recommendations
+   - Continuous improvement as more user data is collected
+4. **Expansion**: Extend beyond acne to address aging concerns with acne-safe products
+
+**Current Foundation (Implemented)**:
+- Consent infrastructure to legally collect and use anonymized data
+- Database schema supports user routine history
+- Privacy policy establishes transparency and user rights
+- All routines are saved per user, creating historical data for future analysis
 
 ## External Dependencies
 - **Authentication**: Replit OIDC provider.

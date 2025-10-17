@@ -31,6 +31,11 @@ export const users = pgTable("users", {
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
   isPremium: boolean("is_premium").default(false),
+  // Consent fields for AI training and data collection
+  dataCollectionConsent: boolean("data_collection_consent").default(false),
+  aiTrainingConsent: boolean("ai_training_consent").default(false),
+  consentDate: timestamp("consent_date"),
+  consentVersion: varchar("consent_version"), // Track consent version for future updates
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
