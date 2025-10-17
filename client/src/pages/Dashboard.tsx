@@ -216,12 +216,14 @@ export default function Dashboard() {
               <h1 className="font-serif text-3xl md:text-4xl text-foreground">
                 Your Routine{currentRoutine.name ? `, ${currentRoutine.name}` : ''}
               </h1>
-              <p className="text-muted-foreground mt-1">
-                {currentRoutine.skinType} skin • {currentRoutine.acneTypes && currentRoutine.acneTypes.length > 0 
-                  ? currentRoutine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
-                  : 'acne'} ({currentRoutine.acneSeverity})
-                {isPremium && <Badge className="ml-2" variant="secondary">Premium</Badge>}
-              </p>
+              <div className="text-muted-foreground mt-1 flex items-center gap-2 flex-wrap">
+                <span>
+                  {currentRoutine.skinType} skin • {currentRoutine.acneTypes && currentRoutine.acneTypes.length > 0 
+                    ? currentRoutine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
+                    : 'acne'} ({currentRoutine.acneSeverity})
+                </span>
+                {isPremium && <Badge variant="secondary">Premium</Badge>}
+              </div>
             </div>
             
             <div className="flex gap-2">
