@@ -59,11 +59,10 @@ export default function Landing() {
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4">New Update 2.0</Badge>
             <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-              Exciting New Features in Update 2.0
+              Coming Soon to AcneAgent
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Enhanced AI accuracy, improved skin analysis, and personalized skincare 
-              recommendations for optimal results.
+              At AcneAgent, we're in it for the long haul. Next up: AI Skin Analysis, Progress Monitoring, Adaptive Routines, and Personalized Lifestyle Guidance to Get You Clear and Keep You Clear.
             </p>
           </div>
 
@@ -73,10 +72,9 @@ export default function Landing() {
                 <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
                   <Star className="w-6 h-6 text-accent" />
                 </div>
-                <h3 className="font-serif text-xl font-semibold">AI Diagnosis</h3>
+                <h3 className="font-serif text-xl font-semibold">AI Skin Analysis</h3>
                 <p className="text-sm text-muted-foreground">
-                  Get accurate, real-time skin assessments using advanced AI technology, 
-                  enabling personalized and recommendations.
+                  Get accurate, real-time skin assessments by uploading a photo of your skin to ensure your AcneAgent routine is tailored to your unique needs.
                 </p>
               </CardContent>
             </Card>
@@ -89,7 +87,7 @@ export default function Landing() {
                 <h3 className="font-serif text-xl font-semibold">Progress Monitoring</h3>
                 <p className="text-sm text-muted-foreground">
                   Track your skin's improvement over time with AI-driven analytics, 
-                  personalized insights, and tailored skin care plans.
+                  personalized insights, and a photo diary.
                 </p>
               </CardContent>
             </Card>
@@ -99,10 +97,9 @@ export default function Landing() {
                 <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-accent" />
                 </div>
-                <h3 className="font-serif text-xl font-semibold">Product Suggestions</h3>
+                <h3 className="font-serif text-xl font-semibold">Adaptive Routines</h3>
                 <p className="text-sm text-muted-foreground">
-                  Get AI-driven skincare recommendations personalized to your skin 
-                  type, concerns, and goals, ensuring the best products for optimal results.
+                  As your acne clears, your skin's needs will evolve. AcneAgent will adapt your routines to ensure you stay clear as you move through life's stages.
                 </p>
               </CardContent>
             </Card>
@@ -112,10 +109,10 @@ export default function Landing() {
                 <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
                   <Shield className="w-6 h-6 text-accent" />
                 </div>
-                <h3 className="font-serif text-xl font-semibold">Treatment Guidance</h3>
+                <h3 className="font-serif text-xl font-semibold">AcneAgent Coaching</h3>
                 <p className="text-sm text-muted-foreground">
-                  Receive expert backed, AI-driven treatment recommendations tailored 
-                  to your skin concerns, ensuring effective, personalized skincare.
+                  Receive truly personalized, AI-driven treatment recommendations tailored 
+                  to you. The longer you use AcneAgent, the more effective your skincare will become.
                 </p>
               </CardContent>
             </Card>
