@@ -14,7 +14,7 @@ export function Footer() {
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               data-testid="link-footer-affiliate"
             >
-              Affiliate Disclosure
+              Disclosures
             </Link>
             <Link 
               href="/privacy-policy"
