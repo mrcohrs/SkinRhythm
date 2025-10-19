@@ -1,4 +1,5 @@
 import { PRODUCT_LIBRARY, getProductById } from '@shared/productLibrary';
+import { determineRoutineType } from '@shared/weeklyRoutines';
 import type { RoutineRecommendation } from './parseExcel';
 
 // Resolve product IDs to full product objects for backward compatibility
@@ -64,7 +65,12 @@ export function resolveRoutineProducts(routine: RoutineRecommendation, isPremium
 }
 
 // Resolve saved routine data to use centralized product library
-export function resolveSavedRoutineProducts(routineData: any, isPremiumUser: boolean = false): any {
+export function resolveSavedRoutineProducts(
+  routineData: any, 
+  isPremiumUser: boolean = false,
+  acneTypes?: string[],
+  acneSeverity?: string
+): any {
   if (!routineData || !routineData.products) {
     return routineData;
   }
@@ -98,8 +104,16 @@ export function resolveSavedRoutineProducts(routineData: any, isPremiumUser: boo
     };
   };
 
+  // Recalculate routineType if not present or if we have the data to recalculate
+  let routineType = routineData.routineType;
+  if (acneTypes && acneSeverity && (!routineType || routineType === 'undefined')) {
+    routineType = determineRoutineType(acneTypes, acneSeverity);
+    console.log(`[Resolver] Recalculated routineType from acneTypes ${acneTypes} and severity ${acneSeverity}: ${routineType}`);
+  }
+
   return {
     ...routineData,
+    routineType,
     products: {
       morning: (routineData.products.morning || []).map(resolveProduct),
       evening: (routineData.products.evening || []).map(resolveProduct),

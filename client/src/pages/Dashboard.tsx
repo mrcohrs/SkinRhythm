@@ -250,7 +250,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <Info className="h-4 w-4 flex-shrink-0" />
             <span>
-              Some links on this page are affiliate links.{" "}
+              The small commission AcneAgent makes when you purchase your routine products through the affiliate links on this page allows AcneAgent to provide personalized, evidence-based guidance for free.{" "}
               <Link 
                 href="/affiliate-disclosure"
                 className="text-foreground underline hover:no-underline"

@@ -117,10 +117,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`[Routines] Error getting user, treating as non-premium:`, e);
       }
       
-      // Resolve all products from centralized library
+      // Resolve all products from centralized library and recalculate routineType
       const resolvedRoutines = userRoutines.map(routine => ({
         ...routine,
-        routineData: resolveSavedRoutineProducts(routine.routineData, isPremiumUser),
+        routineData: resolveSavedRoutineProducts(
+          routine.routineData, 
+          isPremiumUser,
+          routine.acneTypes,
+          routine.acneSeverity
+        ),
       }));
       
       res.json(resolvedRoutines);
@@ -147,10 +152,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`[Current Routine] Error getting user, treating as non-premium:`, e);
       }
       
-      // Resolve all products from centralized library
+      // Resolve all products from centralized library and recalculate routineType
       const resolvedRoutine = {
         ...currentRoutine,
-        routineData: resolveSavedRoutineProducts(currentRoutine.routineData, isPremiumUser),
+        routineData: resolveSavedRoutineProducts(
+          currentRoutine.routineData, 
+          isPremiumUser,
+          currentRoutine.acneTypes,
+          currentRoutine.acneSeverity
+        ),
       };
       
       res.json(resolvedRoutine);
