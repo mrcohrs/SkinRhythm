@@ -106,9 +106,10 @@ export function resolveSavedRoutineProducts(
 
   // Recalculate routineType if not present or if we have the data to recalculate
   let routineType = routineData.routineType;
-  if (acneTypes && acneSeverity && (!routineType || routineType === 'undefined')) {
-    routineType = determineRoutineType(acneTypes, acneSeverity);
-    console.log(`[Resolver] Recalculated routineType from acneTypes ${acneTypes} and severity ${acneSeverity}: ${routineType}`);
+  if (acneTypes && acneSeverity) {
+    const recalculatedType = determineRoutineType(acneTypes, acneSeverity);
+    console.log(`[Resolver] Original routineType: ${routineType}, Recalculated from acneTypes ${JSON.stringify(acneTypes)} and severity ${acneSeverity}: ${recalculatedType}`);
+    routineType = recalculatedType;
   }
 
   return {

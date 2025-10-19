@@ -85,7 +85,7 @@ export const PRODUCT_LIBRARY: Record<string, ProductDefinition> = {
     generalName: 'Retinol Serum',
     category: 'Serum',
     csvKey: 'RETINOL SERUM',
-    priceTier: 'standard',
+    priceTier: 'budget',
   },
   
   'mandelic-serum-gentle': {
@@ -101,7 +101,7 @@ export const PRODUCT_LIBRARY: Record<string, ProductDefinition> = {
     generalName: 'Mandelic Serum (Full Strength)',
     category: 'Serum',
     csvKey: 'MANDELIC SERUM (FULL STRENGTH)',
-    priceTier: 'standard',
+    priceTier: 'budget',
   },
   
   'resurfacing-serum': {
@@ -117,7 +117,7 @@ export const PRODUCT_LIBRARY: Record<string, ProductDefinition> = {
     generalName: 'Hydrating Serum',
     category: 'Hydrator',
     csvKey: 'HYDRATING SERUM',
-    priceTier: 'standard',
+    priceTier: 'budget',
   },
   
   'heavy-moisturizer': {
