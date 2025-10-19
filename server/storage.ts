@@ -8,6 +8,7 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
+import { randomUUID } from "crypto";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -21,6 +22,8 @@ export interface IStorage {
   getCurrentRoutine(userId: string): Promise<Routine | undefined>;
   setCurrentRoutine(userId: string, routineId: string): Promise<Routine>;
   setCurrentProduct(userId: string, routineId: string, category: string, productName: string): Promise<Routine>;
+  addRoutineNote(userId: string, routineId: string, text: string): Promise<Routine>;
+  deleteRoutineNote(userId: string, routineId: string, noteId: string): Promise<Routine>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -221,6 +224,75 @@ export class DatabaseStorage implements IStorage {
     }
     
     return updatedUser;
+  }
+
+  async addRoutineNote(
+    userId: string,
+    routineId: string,
+    text: string
+  ): Promise<Routine> {
+    // First verify the routine belongs to the user
+    const [routine] = await db
+      .select()
+      .from(routines)
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)));
+
+    if (!routine) {
+      throw new Error("Routine not found or access denied");
+    }
+
+    // Get current notes or initialize empty array
+    const currentNotes = (routine.notes as Array<{id: string, date: string, text: string}>) || [];
+    
+    // Create new note
+    const newNote = {
+      id: randomUUID(),
+      date: new Date().toISOString(),
+      text
+    };
+
+    // Add new note to the beginning of the array (most recent first)
+    const updatedNotes = [newNote, ...currentNotes];
+
+    // Update the routine with new notes
+    const [updatedRoutine] = await db
+      .update(routines)
+      .set({ notes: updatedNotes })
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)))
+      .returning();
+
+    return updatedRoutine;
+  }
+
+  async deleteRoutineNote(
+    userId: string,
+    routineId: string,
+    noteId: string
+  ): Promise<Routine> {
+    // First verify the routine belongs to the user
+    const [routine] = await db
+      .select()
+      .from(routines)
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)));
+
+    if (!routine) {
+      throw new Error("Routine not found or access denied");
+    }
+
+    // Get current notes or initialize empty array
+    const currentNotes = (routine.notes as Array<{id: string, date: string, text: string}>) || [];
+    
+    // Remove note with matching ID
+    const updatedNotes = currentNotes.filter(note => note.id !== noteId);
+
+    // Update the routine with filtered notes
+    const [updatedRoutine] = await db
+      .update(routines)
+      .set({ notes: updatedNotes })
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)))
+      .returning();
+
+    return updatedRoutine;
   }
 }
 

@@ -240,6 +240,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post('/api/routines/:id/add-note', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { id } = req.params;
+      const { text } = req.body;
+      
+      if (!text || !text.trim()) {
+        return res.status(400).json({ message: "Note text is required" });
+      }
+      
+      const updatedRoutine = await storage.addRoutineNote(userId, id, text.trim());
+      res.json(updatedRoutine);
+    } catch (error: any) {
+      console.error("Error adding note:", error);
+      if (error.message === "Routine not found or access denied") {
+        return res.status(404).json({ message: "Routine not found" });
+      }
+      res.status(500).json({ message: "Failed to add note" });
+    }
+  });
+
+  app.delete('/api/routines/:id/notes/:noteId', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { id, noteId } = req.params;
+      
+      const updatedRoutine = await storage.deleteRoutineNote(userId, id, noteId);
+      res.json(updatedRoutine);
+    } catch (error: any) {
+      console.error("Error deleting note:", error);
+      if (error.message === "Routine not found or access denied") {
+        return res.status(404).json({ message: "Routine not found" });
+      }
+      res.status(500).json({ message: "Failed to delete note" });
+    }
+  });
+
   // Consent endpoints
   app.post('/api/user/consent', isAuthenticated, async (req: any, res) => {
     try {

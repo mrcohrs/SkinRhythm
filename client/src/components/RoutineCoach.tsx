@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weeklyRoutines";
 import { Product } from "./ProductCard";
 import { CompactProductCard } from "./CompactProductCard";
+import { RoutineNotes } from "./RoutineNotes";
 import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from 'embla-carousel-react';
@@ -25,6 +26,7 @@ interface RoutineCoachProps {
   };
   routineId: string;
   currentProductSelections?: Record<string, string>;
+  notes?: Array<{id: string, date: string, text: string}>;
 }
 
 interface StepInfo {
@@ -209,7 +211,7 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
   );
 }
 
-export function RoutineCoach({ routineType, userName, products, routineId, currentProductSelections }: RoutineCoachProps) {
+export function RoutineCoach({ routineType, userName, products, routineId, currentProductSelections, notes }: RoutineCoachProps) {
   const schedule = weeklyRoutines[routineType];
   const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
   const [selectedStepIndex, setSelectedStepIndex] = useState(0);
@@ -521,6 +523,9 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
           </div>
         </CardContent>
       </Card>
+
+      {/* Routine Notes */}
+      <RoutineNotes routineId={routineId} notes={notes} />
 
       {/* Resources Section */}
       <div className="space-y-6">

@@ -20,6 +20,7 @@ import type { Routine } from "@shared/schema";
 import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import { Footer } from "@/components/Footer";
+import { RoutineNotes } from "@/components/RoutineNotes";
 import { Info } from "lucide-react";
 import { Link } from "wouter";
 
@@ -152,6 +153,35 @@ export default function Dashboard() {
       });
     },
   });
+
+  const setProductMutation = useMutation({
+    mutationFn: async ({ category, productName }: { category: string; productName: string }) => {
+      if (!currentRoutine) throw new Error('No current routine');
+      const res = await apiRequest('POST', `/api/routines/${currentRoutine.id}/set-product`, {
+        category,
+        productName
+      });
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
+      toast({
+        title: "Product updated",
+        description: "Your routine has been updated with the new product",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update product selection",
+        variant: "destructive",
+      });
+    }
+  });
+
+  const handleProductSelect = (category: string, productName: string) => {
+    setProductMutation.mutate({ category, productName });
+  };
 
   const handleRetakeQuiz = () => {
     setLocation('/quiz');
@@ -389,6 +419,9 @@ export default function Dashboard() {
                       key={index}
                       product={product}
                       isPremiumUser={isPremium}
+                      routineId={currentRoutine?.id}
+                      currentProductSelections={currentRoutine?.currentProductSelections as Record<string, string> || {}}
+                      onProductSelect={handleProductSelect}
                     />
                   ))}
                 </div>
@@ -532,6 +565,7 @@ export default function Dashboard() {
                   products={products}
                   routineId={currentRoutine.id}
                   currentProductSelections={currentRoutine.currentProductSelections as Record<string, string> || {}}
+                  notes={currentRoutine.notes as Array<{id: string, date: string, text: string}> || []}
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
@@ -964,6 +998,14 @@ Hyaluronic Acid"
                     );
                   })}
                 </div>
+              </div>
+
+              {/* Routine Notes */}
+              <div className="border-t pt-6">
+                <RoutineNotes 
+                  routineId={selectedRoutine.id} 
+                  notes={selectedRoutine.notes as Array<{id: string, date: string, text: string}> || []} 
+                />
               </div>
             </div>
           )}

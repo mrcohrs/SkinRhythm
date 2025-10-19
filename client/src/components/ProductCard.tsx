@@ -34,6 +34,9 @@ export interface Product {
 interface ProductCardProps {
   product: Product;
   isPremiumUser?: boolean;
+  routineId?: string;
+  currentProductSelections?: Record<string, string>;
+  onProductSelect?: (category: string, productName: string) => void;
 }
 
 const categoryImages: Record<string, string> = {
@@ -46,10 +49,13 @@ const categoryImages: Record<string, string> = {
   "Spot Treatment": spotTreatmentImg,
 };
 
-export function ProductCard({ product, isPremiumUser = false }: ProductCardProps) {
+export function ProductCard({ product, isPremiumUser = false, routineId, currentProductSelections, onProductSelect }: ProductCardProps) {
   const isLocked = product.isPremiumOnly && !isPremiumUser;
   // Always use category-based images, ignore any imageUrl from backend
   const productImage = categoryImages[product.category] || categoryImages["Serum"];
+  
+  // Check if this is the current product for this category
+  const isCurrentProduct = currentProductSelections?.[product.category] === product.name;
 
   return (
     <Card className={`group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
@@ -123,24 +129,37 @@ export function ProductCard({ product, isPremiumUser = false }: ProductCardProps
                 </Button>
                 
                 {isPremiumUser && product.premiumOptions && product.premiumOptions.length > 0 && (
-                  <div className="pt-2 border-t">
-                    <p className="text-xs text-muted-foreground mb-2">Premium Alternatives:</p>
-                    <div className="space-y-1">
+                  <div className="pt-2 border-t space-y-3">
+                    <p className="text-xs text-muted-foreground">Premium Alternatives:</p>
+                    <div className="space-y-2">
                       {product.premiumOptions.map((option, index) => {
+                        const isCurrentOption = currentProductSelections?.[product.category] === option.productName;
                         return (
-                          <Button
-                            key={index}
-                            variant="ghost"
-                            size="sm"
-                            className="w-full justify-start p-0 h-auto text-muted-foreground hover:text-foreground no-default-hover-elevate whitespace-normal"
-                            asChild
-                            data-testid={`button-alternative-${index}`}
-                          >
-                            <a href={option.affiliateLink} target="_blank" rel="noopener noreferrer" className="flex items-start gap-1 text-xs">
+                          <div key={index} className="space-y-1">
+                            <a 
+                              href={option.affiliateLink} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="flex items-start gap-1 text-xs text-muted-foreground hover:text-foreground"
+                            >
                               <span className="flex-1">{option.productName}</span>
                               <ArrowRight className="h-3 w-3 flex-shrink-0 mt-0.5" />
                             </a>
-                          </Button>
+                            {routineId && onProductSelect && !isCurrentOption && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full text-xs h-7"
+                                onClick={() => onProductSelect(product.category, option.productName)}
+                                data-testid={`button-set-current-alt-${index}`}
+                              >
+                                Set as Current
+                              </Button>
+                            )}
+                            {isCurrentOption && (
+                              <Badge variant="secondary" className="w-full justify-center text-xs">Current</Badge>
+                            )}
+                          </div>
                         );
                       })}
                     </div>
