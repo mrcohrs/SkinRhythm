@@ -362,44 +362,19 @@ export default function Dashboard() {
               {/* Premium Upsell for Free Users */}
               {!isPremium && (
                 <Card className="border-primary/20" data-testid="card-products-upgrade">
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-2">
-                      <Crown className="h-10 w-10 text-primary flex-shrink-0" />
-                      <div>
-                        <CardTitle>Unlock Premium Features</CardTitle>
-                        <CardDescription>
-                          Take your skincare routine to the next level
-                        </CardDescription>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between gap-6">
+                      <div className="flex items-center gap-3">
+                        <Crown className="h-8 w-8 text-primary flex-shrink-0" />
+                        <div>
+                          <h3 className="font-semibold text-lg">Unlock Premium Features</h3>
+                          <p className="text-sm text-muted-foreground">6-week routine coach, ingredient scanner, and routine library</p>
+                        </div>
                       </div>
+                      <Button data-testid="button-upgrade-products" className="flex-shrink-0">
+                        Upgrade to Premium
+                      </Button>
                     </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium">6-Week Routine Coach</h4>
-                          <p className="text-sm text-muted-foreground">Progressive treatment plan with detailed instructions</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium">Ingredient Scanner</h4>
-                          <p className="text-sm text-muted-foreground">Check products for 348 acne-causing ingredients</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium">Save Multiple Routines</h4>
-                          <p className="text-sm text-muted-foreground">Access your full routine library and history</p>
-                        </div>
-                      </div>
-                    </div>
-                    <Button data-testid="button-upgrade-products" className="w-full">
-                      Upgrade to Premium
-                    </Button>
                   </CardContent>
                 </Card>
               )}

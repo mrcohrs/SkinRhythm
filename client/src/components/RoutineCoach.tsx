@@ -343,7 +343,7 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
   };
 
   // Check if current step is a BPO Mask to show the BPO product
-  const isBPOMask = currentStep.name.includes('BPO Mask') || currentStep.name.includes('Benzoyl Peroxide Mask');
+  const isBPOMask = currentStep.name.includes('BPO') || currentStep.name.includes('Benzoyl Peroxide');
   const bpoProduct = isBPOMask ? products.evening.find(p => p.category === 'Spot Treatment') : undefined;
   
   // Check if current step is an ice step (includes "Ice" or "Ice (see notes)")
@@ -512,7 +512,7 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
                         priceRange: iceGlobesProduct.priceRange,
                         affiliateLink: iceGlobesProduct.affiliateLink!,
                       }}
-                      description="Icing after cleansing can help reduce inflammation. Ice cubes work, but if you like convenience, these are well worth the money."
+                      description="Icing after cleansing can help reduce inflammation. You can use ice cubes, or a convenient and sanitary tool like these cold globes."
                     />
                   </div>
                 );
@@ -525,8 +525,8 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
       {/* Resources Section */}
       <div className="space-y-6">
         <div>
-          <h3 className="text-2xl font-semibold mb-2">Additional Resources</h3>
-          <p className="text-muted-foreground">Tips, tricks, and expert guidance for your skincare journey</p>
+          <h3 className="text-2xl font-semibold mb-2">New Premium Features: Coming Soon!</h3>
+          <p className="text-muted-foreground">Tools that'll remove the guesswork from your clear skin journey.</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -536,9 +536,9 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
-              <h4 className="font-semibold">Getting Started Guide</h4>
+              <h4 className="font-semibold">Track Your Progress</h4>
               <p className="text-sm text-muted-foreground">
-                Learn the fundamentals of your personalized acne treatment routine.
+                Upload images whenever you want to get AI insights that adapt your routine and supercharge your results.
               </p>
               <Button variant="outline" size="sm" className="w-full" disabled>
                 Coming Soon
@@ -551,9 +551,9 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
               <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
                 <Lightbulb className="h-6 w-6 text-accent" />
               </div>
-              <h4 className="font-semibold">Tips & Tricks</h4>
+              <h4 className="font-semibold">Personalized Skincare AI</h4>
               <p className="text-sm text-muted-foreground">
-                Expert advice for maximizing your results and managing side effects.
+                Receive evidence-based answers for your specific needs to any and all of your skincare questions.
               </p>
               <Button variant="outline" size="sm" className="w-full" disabled>
                 Coming Soon
@@ -566,12 +566,12 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
               <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center">
                 <Megaphone className="h-6 w-6 text-secondary" />
               </div>
-              <h4 className="font-semibold">Latest Updates</h4>
+              <h4 className="font-semibold">Your Skincare Sidekick</h4>
               <p className="text-sm text-muted-foreground">
-                Stay informed about new products, research, and skincare insights.
+                AcneAgent is here for you when you want more evidence-based information, but is not a replacement for medical advice. 
               </p>
               <Button variant="outline" size="sm" className="w-full" disabled>
-                Coming Soon
+                Learn More
               </Button>
             </CardContent>
           </Card>
