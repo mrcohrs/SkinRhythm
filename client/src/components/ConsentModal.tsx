@@ -51,7 +51,7 @@ export function ConsentModal({
             {/* Data Collection Consent */}
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <Lock className="h-5 w-5 mt-0.5 text-primary" />
+                <Lock className="h-5 w-5 mt-0.5 text-secondary" />
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-3">
                     <Checkbox
@@ -81,7 +81,7 @@ export function ConsentModal({
             {/* AI Training Consent */}
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <Brain className="h-5 w-5 mt-0.5 text-primary" />
+                <Brain className="h-5 w-5 mt-0.5 text-secondary" />
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-3">
                     <Checkbox
@@ -124,7 +124,7 @@ export function ConsentModal({
                 <a 
                   href="/privacy-policy" 
                   target="_blank" 
-                  className="text-primary hover:underline"
+                  className="text-secondary hover:underline"
                   data-testid="link-privacy-policy"
                 >
                   Privacy Policy
