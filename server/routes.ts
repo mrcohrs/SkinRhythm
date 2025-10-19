@@ -84,6 +84,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`[Save Routine] Received routineData has routineType: ${routineData?.routineType}`);
       console.log(`[Save Routine] routineData keys:`, Object.keys(routineData || {}));
 
+      // Normalize productIds to flat array if it's in legacy {morning, evening} structure
+      let normalizedRoutineData = routineData;
+      if (routineData?.productIds && typeof routineData.productIds === 'object' && 'morning' in routineData.productIds) {
+        const morningIds = routineData.productIds.morning || [];
+        const eveningIds = routineData.productIds.evening || [];
+        const flatProductIds = Array.from(new Set([...morningIds, ...eveningIds]));
+        normalizedRoutineData = {
+          ...routineData,
+          productIds: flatProductIds,
+        };
+        console.log(`[Save Routine] Normalized legacy productIds to flat array:`, flatProductIds);
+      }
+
       const savedRoutine = await storage.saveRoutine({
         userId,
         name,
@@ -93,7 +106,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         acneTypes,
         acneSeverity,
         isPregnantOrNursing,
-        routineData,
+        routineData: normalizedRoutineData,
       });
 
       res.json(savedRoutine);

@@ -10,31 +10,8 @@ export interface RoutineRecommendation {
   acneTypes: string[];
   isPregnantOrNursing: boolean;
   routineType: RoutineType;
-  productIds: {
-    morning: string[];
-    evening: string[];
-  };
-  // Temporary: keep for backward compatibility during migration
-  products?: {
-    morning: Array<{
-      name: string;
-      brand: string;
-      category: string;
-      priceTier: 'budget' | 'standard' | 'premium';
-      price: number;
-      benefits: string[];
-      affiliateLink: string;
-    }>;
-    evening: Array<{
-      name: string;
-      brand: string;
-      category: string;
-      priceTier: 'budget' | 'standard' | 'premium';
-      price: number;
-      benefits: string[];
-      affiliateLink: string;
-    }>;
-  };
+  // Single array of unique product IDs - no duplication
+  productIds: string[];
 }
 
 interface RoutineRow {
@@ -108,49 +85,36 @@ function getProductIdFromCsvKey(csvKey: string): string | null {
   return product.id;
 }
 
-function buildProductIdsFromRow(row: RoutineRow): { morning: string[]; evening: string[] } {
-  const morningProductIds: string[] = [];
-  const eveningProductIds: string[] = [];
+// Build unique product list from CSV row (no duplication)
+function buildProductIdsFromRow(row: RoutineRow): string[] {
+  const productIds: string[] = [];
 
-  // Morning routine
-  const morningCleanser = getProductIdFromCsvKey(row.cleanser);
-  if (morningCleanser) morningProductIds.push(morningCleanser);
+  // Add shared products (used in both AM and PM)
+  const cleanser = getProductIdFromCsvKey(row.cleanser);
+  if (cleanser) productIds.push(cleanser);
   
-  const morningToner = getProductIdFromCsvKey(row.toner);
-  if (morningToner) morningProductIds.push(morningToner);
+  const toner = getProductIdFromCsvKey(row.toner);
+  if (toner) productIds.push(toner);
   
-  const morningSerum = getProductIdFromCsvKey(row.serum);
-  if (morningSerum) morningProductIds.push(morningSerum);
+  const serum = getProductIdFromCsvKey(row.serum);
+  if (serum) productIds.push(serum);
   
-  const morningHydrator = getProductIdFromCsvKey(row.hydrator);
-  if (morningHydrator) morningProductIds.push(morningHydrator);
+  const hydrator = getProductIdFromCsvKey(row.hydrator);
+  if (hydrator) productIds.push(hydrator);
   
-  const morningMoisturizer = getProductIdFromCsvKey(row.moisturizer);
-  if (morningMoisturizer) morningProductIds.push(morningMoisturizer);
+  const moisturizer = getProductIdFromCsvKey(row.moisturizer);
+  if (moisturizer) productIds.push(moisturizer);
   
-  const morningSunscreen = getProductIdFromCsvKey(row.sunscreen);
-  if (morningSunscreen) morningProductIds.push(morningSunscreen);
+  // Add AM-only product (sunscreen)
+  const sunscreen = getProductIdFromCsvKey(row.sunscreen);
+  if (sunscreen) productIds.push(sunscreen);
+  
+  // Add PM-only product (treatment)
+  const treatment = getProductIdFromCsvKey(row.treatment);
+  if (treatment) productIds.push(treatment);
 
-  // Evening routine (reuse some products, add treatment)
-  const eveningCleanser = getProductIdFromCsvKey(row.cleanser);
-  if (eveningCleanser) eveningProductIds.push(eveningCleanser);
-  
-  const eveningToner = getProductIdFromCsvKey(row.toner);
-  if (eveningToner) eveningProductIds.push(eveningToner);
-  
-  const eveningSerum = getProductIdFromCsvKey(row.serum);
-  if (eveningSerum) eveningProductIds.push(eveningSerum);
-  
-  const eveningHydrator = getProductIdFromCsvKey(row.hydrator);
-  if (eveningHydrator) eveningProductIds.push(eveningHydrator);
-  
-  const eveningMoisturizer = getProductIdFromCsvKey(row.moisturizer);
-  if (eveningMoisturizer) eveningProductIds.push(eveningMoisturizer);
-  
-  const eveningTreatment = getProductIdFromCsvKey(row.treatment);
-  if (eveningTreatment) eveningProductIds.push(eveningTreatment);
-
-  return { morning: morningProductIds, evening: eveningProductIds };
+  // Deduplicate in case CSV has same product in multiple columns
+  return Array.from(new Set(productIds));
 }
 
 export function getRoutineForAnswers(answers: {
