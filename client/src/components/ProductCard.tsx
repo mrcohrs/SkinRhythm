@@ -89,7 +89,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
                 <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
                   {product.category}
                 </Badge>
-                <h3 className="font-serif text-xl font-semibold text-foreground leading-tight break-words" data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
+                <h3 className="font-serif text-xl font-semibold text-foreground leading-tight" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }} data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
                   {product.name}
                 </h3>
               </div>

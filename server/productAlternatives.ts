@@ -53,7 +53,7 @@ function extractProductNameFromURL(url: string): string {
     // Convert kebab-case to Title Case
     // Also handle cases like "retinol-05" -> "Retinol 05" or "100440" at end -> removed
     const productIdPatterns2 = /^(pimprod|sku|pid|item|id|ref)\d*$/i;
-    const words = productSlug.split('-')
+    let words = productSlug.split('-')
       .filter(word => {
         // Filter out product ID patterns and long numbers
         if (productIdPatterns2.test(word)) return false;
@@ -67,11 +67,102 @@ function extractProductNameFromURL(url: string): string {
         }
         // Title Case: capitalize first letter, lowercase the rest
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-      })
-      .join(' ')
-      .trim();
+      });
     
-    return words || 'Product';
+    // Handle case where there's only one long word (no hyphens in URL)
+    if (words.length === 1 && words[0].length > 15) {
+      const singleWord = words[0].toLowerCase();
+      
+      // Dictionary of common skincare keywords to use for segmentation
+      const keywords = [
+        // Brand names (common in URLs)
+        'toleriane', 'cerave', 'laroche', 'posay', 'vanicream', 'neutrogena',
+        'skinceuticals', 'drunk', 'elephant', 'tatcha', 'olehenriksen',
+        'paulas', 'choice', 'supergoop', 'elta', 'dermalogica',
+        'mario', 'badescu', 'kiehl', 'origins', 'fresh', 'clinique',
+        'estee', 'lauder', 'shiseido', 'sk-ii', 'biore', 'hada', 'labo',
+        'panoxyl', 'differin', 'acne', 'free', 'clean', 'clear',
+        'aveeno', 'eucerin', 'aquaphor', 'bioderma', 'vichy',
+        // Product types
+        'cleanser', 'cleansing', 'clean', 'wash', 'facial', 'face',
+        'toner', 'serum', 'cream', 'lotion', 'gel', 'oil', 'balm',
+        'treatment', 'sunscreen', 'spf', 'essence', 'mask', 'peel',
+        'scrub', 'exfoliant', 'polish', 'pads', 'wipes',
+        'moisturizer', 'moisturizing', 'moisture', 'hydrator', 'hydrating', 'hydrate',
+        'retinol', 'vitamin', 'acid', 'glycolic', 'salicylic', 'hyaluronic',
+        'niacinamide', 'ceramide', 'peptide', 'antioxidant',
+        // Descriptors and adjectives
+        'gentle', 'soothing', 'calming', 'nourishing', 'repairing', 'repair',
+        'foaming', 'micellar', 'water', 'milk', 'mist', 'spray', 'foam',
+        'daily', 'night', 'day', 'morning', 'evening', 'pm', 'am',
+        'ultra', 'super', 'extra', 'intensive', 'advanced', 'professional',
+        'sensitive', 'delicate', 'irritated', 'reactive',
+        'oily', 'dry', 'combination', 'normal', 'acne', 'prone',
+        'chemical', 'mineral', 'physical', 'hybrid',
+        'brightening', 'clearing', 'purifying', 'detox', 'renewing', 'revitalizing',
+        'anti', 'aging', 'wrinkle', 'fine', 'lines', 'firming', 'lifting',
+        'pore', 'minimizing', 'refining', 'tightening',
+        'oil', 'absorbing', 'controlling', 'free', 'barrier',
+        'spot', 'blemish', 'acne', 'breakout', 'clarifying',
+        'invisible', 'sheer', 'tinted', 'untinted', 'clear',
+        'broad', 'spectrum', 'protection', 'shield', 'defense',
+        'lightweight', 'rich', 'thick', 'thin', 'silky', 'smooth',
+        'skin', 'complexion', 'tone', 'texture', 'surface'
+      ].sort((a, b) => b.length - a.length); // Sort by length descending to match longest first
+      
+      // Try to segment by finding keyword boundaries
+      let segmented = singleWord;
+      const foundWords: string[] = [];
+      let remaining = singleWord;
+      
+      while (remaining.length > 0) {
+        let matched = false;
+        
+        // Try to find a keyword at the start of the remaining string
+        for (const keyword of keywords) {
+          if (remaining.startsWith(keyword)) {
+            foundWords.push(keyword);
+            remaining = remaining.slice(keyword.length);
+            matched = true;
+            break;
+          }
+        }
+        
+        // If no keyword matched, take the first character and continue
+        if (!matched) {
+          // Look for the next keyword in the string
+          let nextKeywordPos = remaining.length;
+          let nextKeyword = '';
+          
+          for (const keyword of keywords) {
+            const pos = remaining.indexOf(keyword, 1); // Start from position 1
+            if (pos > 0 && pos < nextKeywordPos) {
+              nextKeywordPos = pos;
+              nextKeyword = keyword;
+            }
+          }
+          
+          if (nextKeywordPos < remaining.length) {
+            // Found a keyword later in the string
+            foundWords.push(remaining.slice(0, nextKeywordPos));
+            remaining = remaining.slice(nextKeywordPos);
+          } else {
+            // No more keywords found, push remaining as-is
+            foundWords.push(remaining);
+            remaining = '';
+          }
+        }
+      }
+      
+      // Convert to Title Case
+      const productWords = foundWords
+        .filter(w => w.length > 0)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+      
+      return productWords.join(' ').trim() || 'Product';
+    }
+    
+    return words.join(' ').trim() || 'Product';
   } catch (e) {
     return 'Product';
   }
