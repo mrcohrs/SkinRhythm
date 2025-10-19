@@ -620,13 +620,39 @@ Hyaluronic Acid"
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <div className="space-y-2 text-sm text-muted-foreground">
-                            <p>
-                              {routine.skinType} skin • {routine.acneTypes && routine.acneTypes.length > 0 
-                                ? routine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
-                                : 'acne'} ({routine.acneSeverity})
-                            </p>
-                            <p>{totalProducts} products total</p>
+                          <div className="space-y-3">
+                            <div className="flex flex-wrap gap-2">
+                              <Badge 
+                                variant="outline" 
+                                className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                              >
+                                {routine.skinType} skin
+                              </Badge>
+                              {routine.acneTypes && routine.acneTypes.length > 0 && routine.acneTypes.map((type, index) => (
+                                <Badge 
+                                  key={index}
+                                  variant="outline" 
+                                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                                >
+                                  {type.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                </Badge>
+                              ))}
+                              <Badge 
+                                variant="outline" 
+                                className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                              >
+                                {routine.acneSeverity} severity
+                              </Badge>
+                              {routine.isPregnantOrNursing && (
+                                <Badge 
+                                  variant="outline" 
+                                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                                >
+                                  Pregnancy/Nursing Safe
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground">{totalProducts} products total</p>
                           </div>
                         </CardContent>
                       </Card>
