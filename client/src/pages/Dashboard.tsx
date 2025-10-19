@@ -21,8 +21,11 @@ import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import { Footer } from "@/components/Footer";
 import { RoutineNotes } from "@/components/RoutineNotes";
-import { Info } from "lucide-react";
+import { ProductAlternativesModal } from "@/components/ProductAlternativesModal";
+import { Info, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback } from "react";
 
 import cleanserImg from "@assets/Cleanser_1760341831448.png";
 import tonerImg from "@assets/Toner_1760341831459.png";
@@ -53,6 +56,10 @@ export default function Dashboard() {
   // Consent modal state
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [hasCheckedConsent, setHasCheckedConsent] = useState(false);
+  
+  // Product alternatives modal state
+  const [showAlternativesModal, setShowAlternativesModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   
   // Ingredient checker state
   const [ingredientInput, setIngredientInput] = useState("");
@@ -259,6 +266,90 @@ export default function Dashboard() {
     new Map(allProducts.map((p: any) => [p.name, p])).values()
   );
 
+  // Filter products to show current selections (or default) - used for carousel
+  const currentProductSelections = (currentRoutine?.currentProductSelections as Record<string, string>) || {};
+  const displayProducts = uniqueProducts.map((product: any) => {
+    const currentSelection = currentProductSelections[product.category];
+    
+    // If user has selected a different product, find it in premiumOptions
+    if (currentSelection && currentSelection !== product.name && product.premiumOptions) {
+      const selectedOption = product.premiumOptions.find((opt: any) => opt.productName === currentSelection);
+      if (selectedOption) {
+        // Extract brand from product name
+        const extractBrand = (name: string) => {
+          // Product type keywords and adjectives that signal the end of brand name
+          const productKeywords = [
+            // Product types
+            'cleanser', 'moisturizer', 'serum', 'cream', 'lotion', 'gel', 'oil',
+            'toner', 'treatment', 'sunscreen', 'spf', 'wash', 'balm', 'essence',
+            'mask', 'scrub', 'peel', 'foam', 'milk', 'water', 'mist', 'spray',
+            'solution', 'liquid', 'exfoliant', 'retinol', 'vitamin', 'acid',
+            // Common product adjectives
+            'gentle', 'hydrating', 'soothing', 'calming', 'clearing', 'renewing',
+            'perfecting', 'skin', 'face', 'facial', 'daily', 'night', 'day',
+            'anti', 'anti-aging', 'brightening', 'nourishing', 'repairing',
+            'advanced', 'intensive', 'ultra', 'super', 'extra', 'deep'
+          ];
+          
+          const words = name.split(' ');
+          let brandWords = [];
+          
+          for (let i = 0; i < words.length; i++) {
+            const word = words[i];
+            const lowerWord = word.toLowerCase();
+            
+            // Stop if we hit a product keyword
+            if (productKeywords.includes(lowerWord)) break;
+            
+            // Stop if we hit a number (like 2% or 10oz)
+            if (/\d/.test(word)) break;
+            
+            // Add word to brand (handling apostrophes and hyphens in brand names)
+            brandWords.push(word);
+            
+            // Stop after 4 words max (handles "La Roche Posay" or similar)
+            if (brandWords.length >= 4) break;
+          }
+          
+          return brandWords.length > 0 ? brandWords.join(' ') : name.split(' ').slice(0, 2).join(' ');
+        };
+
+        // Return the selected alternative with extracted brand
+        return {
+          ...product,
+          name: selectedOption.productName,
+          brand: extractBrand(selectedOption.productName),
+          affiliateLink: selectedOption.affiliateLink,
+          originalLink: selectedOption.originalLink,
+        };
+      }
+    }
+    
+    // Otherwise return the default product
+    return product;
+  });
+
+  // Carousel state
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -409,21 +500,57 @@ export default function Dashboard() {
                 </Card>
               )}
 
-              {/* Shoppable Product List */}
+              {/* Shoppable Product List - Horizontal Carousel */}
               <div>
                 <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-shoppable-products">Your Routine Products</h3>
                 <p className="text-muted-foreground mb-6">Shop your personalized skincare routine</p>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {uniqueProducts.map((product: any, index: number) => (
-                    <ProductCard
-                      key={index}
-                      product={product}
-                      isPremiumUser={isPremium}
-                      routineId={currentRoutine?.id}
-                      currentProductSelections={currentRoutine?.currentProductSelections as Record<string, string> || {}}
-                      onProductSelect={handleProductSelect}
-                    />
-                  ))}
+                
+                <div className="relative">
+                  {/* Scroll Buttons */}
+                  {canScrollPrev && (
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
+                      onClick={scrollPrev}
+                      aria-label="Scroll to previous products"
+                      data-testid="button-carousel-prev"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </Button>
+                  )}
+                  
+                  {canScrollNext && (
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
+                      onClick={scrollNext}
+                      aria-label="Scroll to next products"
+                      data-testid="button-carousel-next"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </Button>
+                  )}
+
+                  {/* Carousel */}
+                  <div className="overflow-hidden" ref={emblaRef}>
+                    <div className="flex gap-6">
+                      {displayProducts.map((product: any, index: number) => (
+                        <div key={index} className="flex-[0_0_280px] md:flex-[0_0_320px]">
+                          <ProductCard
+                            product={product}
+                            isPremiumUser={isPremium}
+                            showExploreButton={isPremium && product.premiumOptions && product.premiumOptions.length > 0}
+                            onExploreAlternatives={() => {
+                              setSelectedProduct(uniqueProducts[index]); // Use original product with all options
+                              setShowAlternativesModal(true);
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -1030,6 +1157,21 @@ Hyaluronic Acid"
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Product Alternatives Modal */}
+      {selectedProduct && (
+        <ProductAlternativesModal
+          open={showAlternativesModal}
+          onOpenChange={setShowAlternativesModal}
+          product={selectedProduct}
+          currentProductName={currentProductSelections[selectedProduct.category] || selectedProduct.name}
+          onSetCurrent={(productName) => {
+            handleProductSelect(selectedProduct.category, productName);
+            setShowAlternativesModal(false);
+          }}
+          isPending={setProductMutation.isPending}
+        />
+      )}
 
       {/* Consent Modal */}
       <ConsentModal

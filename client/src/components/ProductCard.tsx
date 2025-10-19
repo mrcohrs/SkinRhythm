@@ -37,6 +37,8 @@ interface ProductCardProps {
   routineId?: string;
   currentProductSelections?: Record<string, string>;
   onProductSelect?: (category: string, productName: string) => void;
+  onExploreAlternatives?: () => void;
+  showExploreButton?: boolean;
 }
 
 const categoryImages: Record<string, string> = {
@@ -49,13 +51,16 @@ const categoryImages: Record<string, string> = {
   "Spot Treatment": spotTreatmentImg,
 };
 
-export function ProductCard({ product, isPremiumUser = false, routineId, currentProductSelections, onProductSelect }: ProductCardProps) {
+export function ProductCard({ product, isPremiumUser = false, routineId, currentProductSelections, onProductSelect, onExploreAlternatives, showExploreButton = false }: ProductCardProps) {
   const isLocked = product.isPremiumOnly && !isPremiumUser;
   // Always use category-based images, ignore any imageUrl from backend
   const productImage = categoryImages[product.category] || categoryImages["Serum"];
   
   // Check if this is the current product for this category
   const isCurrentProduct = currentProductSelections?.[product.category] === product.name;
+  
+  // Show alternatives section if we have alternatives AND not using explore button
+  const showAlternativesSection = isPremiumUser && product.premiumOptions && product.premiumOptions.length > 0 && !showExploreButton;
 
   return (
     <Card className={`group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
@@ -127,12 +132,24 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
                     <ArrowRight className="h-4 w-4" />
                   </a>
                 </Button>
+
+                {showExploreButton && onExploreAlternatives && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full gap-1"
+                    onClick={onExploreAlternatives}
+                    data-testid={`button-explore-alternatives-${product.name.replace(/\s/g, '-')}`}
+                  >
+                    Explore Alternatives
+                  </Button>
+                )}
                 
-                {isPremiumUser && product.premiumOptions && product.premiumOptions.length > 0 && (
+                {showAlternativesSection && (
                   <div className="pt-2 border-t space-y-3">
                     <p className="text-xs text-muted-foreground">Premium Alternatives:</p>
                     <div className="space-y-2">
-                      {product.premiumOptions.map((option, index) => {
+                      {product.premiumOptions!.map((option, index) => {
                         const isCurrentOption = currentProductSelections?.[product.category] === option.productName;
                         return (
                           <div key={index} className="space-y-1">
