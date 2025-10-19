@@ -64,6 +64,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const hasPremiumOptions = resolvedRoutine.products!.morning.some((p: any) => p.premiumOptions?.length > 0) || 
                                 resolvedRoutine.products!.evening.some((p: any) => p.premiumOptions?.length > 0);
       console.log(`[Quiz Submit] Routine has premiumOptions: ${hasPremiumOptions}`);
+      console.log(`[Quiz Submit] Resolved routine has routineType: ${resolvedRoutine.routineType}`);
 
       res.json({
         routine: resolvedRoutine,
@@ -79,6 +80,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const { name, age, skinType, fitzpatrickType, acneTypes, acneSeverity, isPregnantOrNursing, routineData } = req.body;
+
+      console.log(`[Save Routine] Received routineData has routineType: ${routineData?.routineType}`);
+      console.log(`[Save Routine] routineData keys:`, Object.keys(routineData || {}));
 
       const savedRoutine = await storage.saveRoutine({
         userId,
