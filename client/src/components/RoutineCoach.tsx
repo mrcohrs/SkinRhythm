@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weeklyRoutines";
 import { Product } from "./ProductCard";
 import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package } from "lucide-react";
@@ -29,35 +31,38 @@ export function RoutineCoach({ routineType, userName, products }: RoutineCoachPr
   const schedule = weeklyRoutines[routineType];
   const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
   const [selectedStepIndex, setSelectedStepIndex] = useState(0);
+  const [showEvening, setShowEvening] = useState(false); // AM/PM toggle
 
   const currentWeek = schedule[selectedWeekIndex];
 
-  // Generate all steps for current week (combining AM and PM)
-  const allSteps: StepInfo[] = [
-    ...currentWeek.amRoutine.map((step, idx) => ({
-      number: idx + 1,
-      name: step,
-      instructions: getStepInstructions(step, 'morning', currentWeek.notes),
-      timeOfDay: 'morning' as const,
-      product: getProductForStep(step, 'morning')
-    })),
-    ...currentWeek.pmRoutine.map((step, idx) => ({
-      number: currentWeek.amRoutine.length + idx + 1,
-      name: step,
-      instructions: getStepInstructions(step, 'evening', currentWeek.notes),
-      timeOfDay: 'evening' as const,
-      product: getProductForStep(step, 'evening')
-    }))
-  ];
+  // Generate steps for current week based on AM/PM selection
+  const morningSteps: StepInfo[] = currentWeek.amRoutine.map((step, idx) => ({
+    number: idx + 1,
+    name: step,
+    instructions: getStepInstructions(step, 'morning', currentWeek.notes),
+    timeOfDay: 'morning' as const,
+    product: getProductForStep(step, 'morning')
+  }));
 
-  // Reset step index when week changes to prevent out-of-bounds errors
+  const eveningSteps: StepInfo[] = currentWeek.pmRoutine.map((step, idx) => ({
+    number: idx + 1,
+    name: step,
+    instructions: getStepInstructions(step, 'evening', currentWeek.notes),
+    timeOfDay: 'evening' as const,
+    product: getProductForStep(step, 'evening')
+  }));
+
+  // Show only AM or PM steps based on toggle
+  const displayedSteps = showEvening ? eveningSteps : morningSteps;
+
+  // Reset step index when week or AM/PM changes
   useEffect(() => {
     setSelectedStepIndex(0);
-  }, [selectedWeekIndex]);
+  }, [selectedWeekIndex, showEvening]);
 
   // Safety guard: ensure currentStep is always valid
-  const safeStepIndex = Math.min(selectedStepIndex, allSteps.length - 1);
-  const currentStep = allSteps[safeStepIndex] || allSteps[0];
+  const safeStepIndex = Math.min(selectedStepIndex, displayedSteps.length - 1);
+  const currentStep = displayedSteps[safeStepIndex] || displayedSteps[0];
 
   function getProductForStep(stepName: string, timeOfDay: 'morning' | 'evening'): Product | undefined {
     const mappedCategory = categoryMapping[stepName];
@@ -98,73 +103,99 @@ export function RoutineCoach({ routineType, userName, products }: RoutineCoachPr
 
   const productOptions = getProductOptions(currentStep.product);
 
+  // Check if current step is a BPO Mask to show the BPO product
+  const isBPOMask = currentStep.name.includes('BPO Mask') || currentStep.name.includes('Benzoyl Peroxide Mask');
+  const bpoProduct = isBPOMask ? products.evening.find(p => p.category === 'Spot Treatment') : undefined;
+
   return (
     <div className="space-y-8" data-testid="routine-coach-container">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl font-bold text-white">
-          {userName.charAt(0).toUpperCase()}
+      {/* Header with Week Dropdown */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl font-bold text-white">
+            {userName.charAt(0).toUpperCase()}
+          </div>
+          <h2 className="text-2xl md:text-3xl font-semibold">
+            {userName}'s Routine Coach
+          </h2>
         </div>
-        <h2 className="text-2xl md:text-3xl font-semibold">
-          {userName}'s Routine Coach
-        </h2>
+        
+        {/* Week Selector Dropdown */}
+        <Select value={selectedWeekIndex.toString()} onValueChange={(v) => setSelectedWeekIndex(parseInt(v))}>
+          <SelectTrigger className="w-[180px]" data-testid="select-week">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {schedule.map((week, idx) => (
+              <SelectItem key={idx} value={idx.toString()} data-testid={`week-option-${idx}`}>
+                {week.weekRange}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
-
-      {/* Week Selector Tabs */}
-      <Tabs value={selectedWeekIndex.toString()} onValueChange={(v) => setSelectedWeekIndex(parseInt(v))}>
-        <TabsList className="w-full grid grid-cols-3 gap-2 h-auto bg-transparent p-0">
-          {schedule.map((week, idx) => (
-            <TabsTrigger
-              key={idx}
-              value={idx.toString()}
-              data-testid={`week-tab-${idx}`}
-              className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground data-[state=inactive]:bg-muted/30 data-[state=inactive]:text-muted-foreground rounded-md px-4 py-2 font-medium transition-colors"
-            >
-              {week.weekRange}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
 
       {/* Main Content Card */}
       <Card className="overflow-hidden border-2 border-secondary/20">
         <CardContent className="p-0">
           <div className="grid md:grid-cols-[240px_1fr] lg:grid-cols-[280px_1fr]">
-            {/* Left: Step Navigation */}
-            <div className="bg-muted/30 p-4 md:p-6 space-y-2 border-r">
-              {allSteps.map((step, idx) => {
-                const isActive = idx === selectedStepIndex;
-                const categoryName = categoryMapping[step.name];
-                const isIce = categoryName === 'Ice';
-                
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedStepIndex(idx)}
-                    className={cn(
-                      "w-full text-left px-4 py-2.5 rounded-md transition-colors flex items-center gap-3",
-                      isActive 
-                        ? "bg-background shadow-sm" 
-                        : "hover-elevate active-elevate-2"
-                    )}
-                    data-testid={`step-nav-${idx}`}
-                  >
-                    <span className={cn(
-                      "flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded",
-                      isActive ? "bg-secondary text-secondary-foreground" : "bg-muted text-muted-foreground"
-                    )}>
-                      Step {step.number}
-                    </span>
-                    <span className={cn(
-                      "text-sm font-medium flex-1",
-                      isActive ? "text-foreground" : "text-muted-foreground"
-                    )}>
-                      {step.name.replace(' (see notes)', '').replace(' (every other day)', '').replace(' (optional)', '')}
-                    </span>
-                    {isActive && <ArrowRight className="h-4 w-4 text-secondary" />}
-                  </button>
-                );
-              })}
+            {/* Left: Step Navigation with AM/PM Toggle */}
+            <div className="bg-muted/30 p-4 md:p-6 space-y-4 border-r">
+              {/* AM/PM Toggle */}
+              <div className="flex items-center justify-between gap-3 p-3 bg-background rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Sun className={cn("h-4 w-4", !showEvening ? "text-yellow-500" : "text-muted-foreground")} />
+                  <Label htmlFor="time-toggle" className="text-sm font-medium cursor-pointer">
+                    {showEvening ? 'PM' : 'AM'}
+                  </Label>
+                </div>
+                <Switch
+                  id="time-toggle"
+                  checked={showEvening}
+                  onCheckedChange={setShowEvening}
+                  data-testid="switch-am-pm"
+                />
+                <div className="flex items-center gap-2">
+                  <Moon className={cn("h-4 w-4", showEvening ? "text-blue-500" : "text-muted-foreground")} />
+                </div>
+              </div>
+
+              {/* Step Navigation */}
+              <div className="space-y-2">
+                {displayedSteps.map((step, idx) => {
+                  const isActive = idx === selectedStepIndex;
+                  const categoryName = categoryMapping[step.name];
+                  const isIce = categoryName === 'Ice';
+                  
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedStepIndex(idx)}
+                      className={cn(
+                        "w-full text-left px-4 py-2.5 rounded-md transition-colors flex items-center gap-3",
+                        isActive 
+                          ? "bg-background shadow-sm" 
+                          : "hover-elevate active-elevate-2"
+                      )}
+                      data-testid={`step-nav-${idx}`}
+                    >
+                      <span className={cn(
+                        "flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded",
+                        isActive ? "bg-secondary text-secondary-foreground" : "bg-muted text-muted-foreground"
+                      )}>
+                        Step {step.number}
+                      </span>
+                      <span className={cn(
+                        "text-sm font-medium flex-1",
+                        isActive ? "text-foreground" : "text-muted-foreground"
+                      )}>
+                        {step.name.replace(' (see notes)', '').replace(' (every other day)', '').replace(' (optional)', '')}
+                      </span>
+                      {isActive && <ArrowRight className="h-4 w-4 text-secondary" />}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Right: Step Display */}
@@ -210,7 +241,7 @@ export function RoutineCoach({ routineType, userName, products }: RoutineCoachPr
               </div>
 
               {/* Product Recommendations */}
-              {productOptions.length > 0 && (
+              {(productOptions.length > 0 || bpoProduct) && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h4 className="text-lg font-semibold">Recommended for your skin type</h4>
@@ -220,7 +251,45 @@ export function RoutineCoach({ routineType, userName, products }: RoutineCoachPr
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
-                    {productOptions.map((product, idx) => (
+                    {/* Show BPO product for BPO Mask steps */}
+                    {bpoProduct && (
+                      <Card className="overflow-hidden hover-elevate">
+                        <CardContent className="p-6 space-y-4">
+                          <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
+                            {/* Product image placeholder */}
+                            <Package className="h-16 w-16 text-muted-foreground/50" />
+                          </div>
+                          <div className="space-y-2">
+                            <div>
+                              <h5 className="font-semibold text-foreground">{bpoProduct.name}</h5>
+                              <p className="text-sm text-muted-foreground">{bpoProduct.category}</p>
+                            </div>
+                            {bpoProduct.priceTier && (
+                              <Badge variant="secondary" className="text-xs">
+                                {bpoProduct.priceTier}
+                              </Badge>
+                            )}
+                          </div>
+                          <Button 
+                            className="w-full gap-2" 
+                            asChild
+                            data-testid="button-buy-bpo-product"
+                          >
+                            <a 
+                              href={bpoProduct.affiliateLink || bpoProduct.originalLink} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                            >
+                              Buy Now
+                              <ExternalLink className="h-4 w-4" />
+                            </a>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    )}
+                    
+                    {/* Show regular product recommendations for non-BPO steps */}
+                    {!isBPOMask && productOptions.map((product, idx) => (
                       <Card key={idx} className="overflow-hidden hover-elevate">
                         <CardContent className="p-6 space-y-4">
                           <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
