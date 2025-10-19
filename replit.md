@@ -26,17 +26,19 @@ Preferred communication style: Simple, everyday language.
 - **Theming**: Custom ThemeProvider with localStorage persistence for light/dark mode.
 - **Dashboard**: Provides authenticated users a personalized view of saved routines, detailed treatment plans (premium), and a routine library. Features include routine switching, retake quiz flow, and current routine management.
 - **Ingredient Checker**: Allows authenticated users to paste ingredient lists to identify 348 known acne-causing ingredients using word-boundary matching.
-- **Routine Display**: Features eyebrow-style badge tags showing skin characteristics (skin type, acne types, severity, pregnancy/nursing status) with outline-only borders and black text for clean visual hierarchy.
-- **Quiz Flow**: 8-step questionnaire with conditional logic and accurate progress tracking:
-  - Steps: Name → Age → Skin Type → Skin Tone (visual) → Sun Reaction (conditional) → Acne Types → Severity → Pregnancy
-  - Progress bar calculation uses `getVisibleStepNumber()` to accurately reflect visible steps (7 or 8 depending on skip logic)
+- **Routine Display**: Features eyebrow-style badge tags showing skin characteristics (skin type, acne types, severity, pregnancy/nursing status) with outline-only borders and black text for clean visual hierarchy. Includes conditional CTA for beauty products (makeup or skin tints) based on quiz answers.
+- **Quiz Flow**: 9-step questionnaire with conditional logic and accurate progress tracking:
+  - Steps: Name → Age → Skin Type → Skin Tone (visual) → Sun Reaction (conditional) → Acne Types → Severity → Beauty Products (optional) → Pregnancy
+  - Progress bar calculation uses `getVisibleStepNumber()` to accurately reflect visible steps (8 or 9 depending on skip logic)
   - All mandatory questions are answered before completion
+  - Beauty products question determines CTA display for acne-safe makeup/skin tints
 - **Post-Quiz Navigation**: Non-authenticated users see navigation header with logo (home link), retake quiz button, create account button, theme toggle, and mailing list signup section.
 - **Ice Globes Upsells**: Strategic product recommendations for ice globes tool displayed across three locations for inflamed routine types only:
   - Quiz results page (RoutineDisplay): Shows compact upsell card after morning routine
   - Dashboard My Products tab: Shows compact upsell card between morning and evening routines
   - Weekly Treatment Plan: Shows compact upsell card before week-by-week schedule
   - All upsells pull from centralized product library and include affiliate links
+- **Beauty Products Page**: Placeholder page at `/beauty-products` for future acne-safe makeup and skin tint recommendations. Accessed via conditional CTA in routine display based on user's beauty product usage (makeup vs tinted moisturizer/SPF).
 - **Affiliate Disclosure**: Dedicated disclosure page at `/affiliate-disclosure` with FTC-compliant language. Disclosure notice banner appears at top of product recommendation pages, with footer links on all major pages.
 - **Privacy Policy**: Dedicated privacy policy page at `/privacy-policy` explaining data collection practices, third-party services, and contact information. Accessible via footer on all major pages (Landing, Dashboard, RoutineDisplay, AffiliateDisclosure, PrivacyPolicy).
 

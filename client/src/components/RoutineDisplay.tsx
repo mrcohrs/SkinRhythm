@@ -7,7 +7,7 @@ import { WeeklyRoutine } from "./WeeklyRoutine";
 import type { RoutineType } from "@shared/weeklyRoutines";
 import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
-import { Home, RefreshCw, LogIn, Mail, Info, Snowflake } from "lucide-react";
+import { Home, RefreshCw, LogIn, Mail, Info, Snowflake, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -20,6 +20,7 @@ interface RoutineDisplayProps {
   acneTypes?: string[];
   acneSeverity?: string;
   isPregnantOrNursing?: boolean;
+  beautyProducts?: string[];
   routineType?: RoutineType;
   products: {
     morning: Product[];
@@ -40,6 +41,7 @@ export function RoutineDisplay({
   acneTypes = [],
   acneSeverity,
   isPregnantOrNursing = false,
+  beautyProducts = [],
   routineType,
   products,
   isPremiumUser = false,
@@ -57,6 +59,23 @@ export function RoutineDisplay({
   // Check if routine type has ice steps (inflamed only)
   const hasIceStep = routineType === 'inflamed';
   const iceGlobesProduct = getProductById('ice-globes');
+
+  // Determine beauty product CTA
+  const getBeautyCTA = () => {
+    if (!beautyProducts || beautyProducts.length === 0) return null;
+    
+    const hasMakeup = beautyProducts.includes('makeup');
+    const hasTintedProducts = beautyProducts.includes('tinted-moisturizer') || beautyProducts.includes('tinted-spf');
+    
+    if (hasMakeup) {
+      return { text: 'Explore Acne-Safe Makeup', link: '/beauty-products?type=makeup' };
+    } else if (hasTintedProducts) {
+      return { text: 'Explore Acne-Safe Skin Tints', link: '/beauty-products?type=skin-tints' };
+    }
+    return null;
+  };
+  
+  const beautyCTA = getBeautyCTA();
 
   const handleMailingListSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -224,7 +243,20 @@ export function RoutineDisplay({
 
         <div className="space-y-16">
           <div>
-            <h3 className="font-serif text-3xl font-semibold mb-8" data-testid="tab-morning">Morning Routine</h3>
+            <div className="flex items-center justify-between mb-8">
+              <h3 className="font-serif text-3xl font-semibold" data-testid="tab-morning">Morning Routine</h3>
+              {beautyCTA && (
+                <Button
+                  variant="outline"
+                  onClick={() => window.open(beautyCTA.link, '_blank')}
+                  className="gap-2"
+                  data-testid="button-beauty-cta"
+                >
+                  {beautyCTA.text}
+                  <ExternalLink className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {products.morning.map((product, index) => (
                 <ProductCard

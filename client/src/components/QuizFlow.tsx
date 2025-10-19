@@ -21,6 +21,7 @@ export interface QuizAnswers {
   fitzpatrickType: "1-3" | "4+" | "";
   acneTypes: string[];
   acneSeverity: "mild" | "moderate" | "severe" | "";
+  beautyProducts: string[];
   isPregnantOrNursing: "yes" | "no" | "";
 }
 
@@ -39,6 +40,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
     fitzpatrickType: "",
     acneTypes: [],
     acneSeverity: "",
+    beautyProducts: [],
     isPregnantOrNursing: "",
   });
   
@@ -46,10 +48,10 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
   const [skinTone, setSkinTone] = useState<number>(0); // 1-6
   const [sunReaction, setSunReaction] = useState<string>(""); // A, B, or C
   
-  // Calculate total steps - always 8 steps, but step 4 (sun reaction) is conditionally shown
-  // Steps: name(0), age(1), skin(2), skinTone(3), sunReaction(4 - conditional), acneTypes(5), severity(6), pregnancy(7)
+  // Calculate total steps - always 9 steps, but step 4 (sun reaction) is conditionally shown
+  // Steps: name(0), age(1), skin(2), skinTone(3), sunReaction(4 - conditional), acneTypes(5), severity(6), beautyProducts(7), pregnancy(8)
   const needsSunReaction = skinTone === 3 || skinTone === 4;
-  const totalSteps = 8;
+  const totalSteps = 9;
   
   // Calculate visible step number for progress bar
   const getVisibleStepNumber = () => {
@@ -59,15 +61,15 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
     if (currentStep === 4) {
       return 5; // Step 4 (sun reaction) is the 5th visible step
     }
-    // For steps 5, 6, 7
+    // For steps 5, 6, 7, 8
     if (needsSunReaction) {
-      return currentStep + 1; // All 8 steps are visible
+      return currentStep + 1; // All 9 steps are visible
     } else {
       return currentStep; // Step 4 is skipped, so step 5 becomes the 5th visible step, etc.
     }
   };
   
-  const visibleSteps = needsSunReaction ? 8 : 7;
+  const visibleSteps = needsSunReaction ? 9 : 8;
   const visibleStepNumber = getVisibleStepNumber();
   const progress = (visibleStepNumber / visibleSteps) * 100;
 
@@ -164,6 +166,8 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
       case 6:
         return answers.acneSeverity !== "";
       case 7:
+        return true; // Beauty products is optional
+      case 8:
         return answers.isPregnantOrNursing !== "";
       default:
         return false;
@@ -397,6 +401,46 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           )}
 
           {currentStep === 7 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Do you use any of the following?</h2>
+                <p className="text-muted-foreground text-lg">Select all that apply</p>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { id: "tinted-moisturizer", label: "Tinted Moisturizer" },
+                  { id: "tinted-spf", label: "Tinted SPF" },
+                  { id: "makeup", label: "Makeup" },
+                ].map((product) => (
+                  <div key={product.id} className="flex items-center space-x-3 p-4 rounded-md hover-elevate border">
+                    <Checkbox
+                      id={product.id}
+                      checked={answers.beautyProducts.includes(product.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setAnswers({
+                            ...answers,
+                            beautyProducts: [...answers.beautyProducts, product.id],
+                          });
+                        } else {
+                          setAnswers({
+                            ...answers,
+                            beautyProducts: answers.beautyProducts.filter((t) => t !== product.id),
+                          });
+                        }
+                      }}
+                      data-testid={`checkbox-beauty-${product.id}`}
+                    />
+                    <Label htmlFor={product.id} className="text-lg cursor-pointer flex-1">
+                      {product.label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {currentStep === 8 && (
             <div className="space-y-6">
               <div>
                 <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Are you pregnant or nursing?</h2>

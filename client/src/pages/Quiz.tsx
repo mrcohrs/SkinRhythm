@@ -41,6 +41,7 @@ export default function Quiz() {
           fitzpatrickType: data.answers.fitzpatrickType,
           acneTypes: data.answers.acneTypes,
           acneSeverity: data.answers.acneSeverity,
+          beautyProducts: data.answers.beautyProducts || [],
           isPregnantOrNursing: data.answers.isPregnantOrNursing === 'yes',
           routineData: data.routine,
         });
@@ -95,6 +96,7 @@ export default function Quiz() {
         fitzpatrickType: quizAnswers.fitzpatrickType,
         acneTypes: quizAnswers.acneTypes,
         acneSeverity: quizAnswers.acneSeverity,
+        beautyProducts: quizAnswers.beautyProducts || [],
         isPregnantOrNursing: quizAnswers.isPregnantOrNursing === 'yes',
         routineData: routineData,
       });
@@ -140,6 +142,7 @@ export default function Quiz() {
         fitzpatrickType: quizAnswers.fitzpatrickType,
         acneTypes: quizAnswers.acneTypes,
         acneSeverity: quizAnswers.acneSeverity,
+        beautyProducts: quizAnswers.beautyProducts || [],
         isPregnantOrNursing: quizAnswers.isPregnantOrNursing === 'yes',
         routineData: routineData,
       });
@@ -176,6 +179,7 @@ export default function Quiz() {
           acneTypes={quizAnswers.acneTypes}
           acneSeverity={quizAnswers.acneSeverity}
           isPregnantOrNursing={quizAnswers.isPregnantOrNursing === 'yes'}
+          beautyProducts={quizAnswers.beautyProducts}
           routineType={routineData.routineType}
           products={routineData.products}
           isPremiumUser={(user as any)?.isPremium || false}
