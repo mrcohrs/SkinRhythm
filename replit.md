@@ -36,7 +36,7 @@ Preferred communication style: Simple, everyday language.
 - **Ice Globes Upsells**: Strategic product recommendations for ice globes tool displayed across three locations for inflamed routine types only:
   - Quiz results page (RoutineDisplay): Shows compact upsell card after morning routine
   - Dashboard My Products tab: Shows compact upsell card between morning and evening routines
-  - Weekly Treatment Plan: Shows compact upsell card before week-by-week schedule
+  - Routine Coach: Shows compact upsell card before week-by-week schedule
   - All upsells pull from centralized product library and include affiliate links
 - **Beauty Products Page**: Placeholder page at `/beauty-products` for future acne-safe makeup and skin tint recommendations. Accessed via conditional CTA in routine display based on user's beauty product usage (makeup vs tinted moisturizer/SPF).
 - **Affiliate Disclosure**: Dedicated disclosure page at `/affiliate-disclosure` with FTC-compliant language. Disclosure notice banner appears at top of product recommendation pages, with footer links on all major pages.

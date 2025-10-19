@@ -39,7 +39,7 @@ export function WeeklyRoutine({ routineType, products }: WeeklyRoutineProps) {
       <div className="space-y-2">
         <h3 className="text-2xl font-semibold flex items-center gap-2">
           <Clock className="w-6 h-6" />
-          Your 6-Week Treatment Plan
+          Your 6-Week Routine Coach
         </h3>
         <p className="text-muted-foreground">
           Follow this progressive routine for optimal results. Start slowly and build up as your skin adjusts.

@@ -336,7 +336,7 @@ export default function Dashboard() {
                   data-testid="tab-treatment"
                   className="flex-shrink-0 snap-center min-w-[180px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
                 >
-                  <span>Treatment Plan</span>
+                  <span>Routine Coach</span>
                   {!isPremium && <Crown className="h-3.5 w-3.5 text-secondary" />}
                 </TabsTrigger>
                 <TabsTrigger 
@@ -459,7 +459,7 @@ export default function Dashboard() {
               </div>
             </TabsContent>
 
-            {/* Detailed Treatment Plan Tab */}
+            {/* Routine Coach Tab */}
             <TabsContent value="treatment" className="space-y-6 mt-6">
               {!isPremium ? (
                 <Card className="border-primary/20" data-testid="card-treatment-upgrade">
@@ -467,7 +467,7 @@ export default function Dashboard() {
                     <div className="flex items-center gap-3 mb-2">
                       <Crown className="h-10 w-10 text-primary flex-shrink-0" />
                       <div>
-                        <CardTitle>Premium Feature: Weekly Treatment Plan</CardTitle>
+                        <CardTitle>Premium Feature: Routine Coach</CardTitle>
                         <CardDescription>
                           Get detailed, week-by-week guidance for maximum results
                         </CardDescription>
