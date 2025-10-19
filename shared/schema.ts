@@ -56,6 +56,7 @@ export const routines = pgTable("routines", {
   beautyProducts: text("beauty_products").array().default(sql`ARRAY[]::text[]`),
   isPregnantOrNursing: boolean("is_pregnant_or_nursing").notNull(),
   routineData: jsonb("routine_data").notNull(),
+  currentProductSelections: jsonb("current_product_selections"), // Maps category -> product name (e.g., {"Cleanser": "La Roche-Posay..."})
   isCurrent: boolean("is_current").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });

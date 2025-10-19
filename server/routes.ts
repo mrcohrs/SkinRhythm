@@ -198,6 +198,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post('/api/routines/:id/set-product', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { id } = req.params;
+      const { category, productName } = req.body;
+      
+      if (!category || !productName) {
+        return res.status(400).json({ message: "Category and productName are required" });
+      }
+      
+      const updatedRoutine = await storage.setCurrentProduct(userId, id, category, productName);
+      
+      // Get user's premium status for proper resolution
+      let isPremiumUser = false;
+      try {
+        const user = await storage.getUser(userId);
+        isPremiumUser = user?.isPremium || false;
+      } catch (e) {
+        console.log(`[Set Product] Error getting user, treating as non-premium:`, e);
+      }
+      
+      // Resolve all products from centralized library
+      const resolvedRoutine = {
+        ...updatedRoutine,
+        routineData: resolveSavedRoutineProducts(
+          updatedRoutine.routineData, 
+          isPremiumUser,
+          updatedRoutine.acneTypes,
+          updatedRoutine.acneSeverity
+        ),
+      };
+      
+      res.json(resolvedRoutine);
+    } catch (error: any) {
+      console.error("Error setting current product:", error);
+      if (error.message === "Routine not found or access denied") {
+        return res.status(404).json({ message: "Routine not found" });
+      }
+      res.status(500).json({ message: "Failed to set current product" });
+    }
+  });
+
   // Consent endpoints
   app.post('/api/user/consent', isAuthenticated, async (req: any, res) => {
     try {

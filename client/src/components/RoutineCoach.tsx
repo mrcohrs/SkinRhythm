@@ -10,6 +10,9 @@ import { Product } from "./ProductCard";
 import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from 'embla-carousel-react';
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 interface RoutineCoachProps {
   routineType: RoutineType;
@@ -18,6 +21,8 @@ interface RoutineCoachProps {
     morning: Product[];
     evening: Product[];
   };
+  routineId: string;
+  currentProductSelections?: Record<string, string>;
 }
 
 interface StepInfo {
@@ -40,9 +45,12 @@ interface ProductOption {
 interface ProductCarouselProps {
   options: ProductOption[];
   title: string;
+  routineId: string;
+  currentProductSelections?: Record<string, string>;
+  onProductSelect?: (category: string, productName: string) => void;
 }
 
-function ProductCarousel({ options, title }: ProductCarouselProps) {
+function ProductCarousel({ options, title, routineId, currentProductSelections, onProductSelect }: ProductCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
@@ -109,49 +117,70 @@ function ProductCarousel({ options, title }: ProductCarouselProps) {
 
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-4">
-          {options.map((option, idx) => (
-            <div key={idx} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%]">
-              <Card className="overflow-hidden hover-elevate h-full">
-                <CardContent className="p-6 space-y-4">
-                  <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
-                    <Package className="h-16 w-16 text-muted-foreground/50" />
-                  </div>
-                  <div className="space-y-2">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h5 className="font-semibold text-foreground">{option.name}</h5>
-                        {option.isDefault && (
-                          <Badge variant="secondary" className="text-xs">
-                            Your Pick
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">{option.category}</p>
+          {options.map((option, idx) => {
+            const isCurrent = currentProductSelections?.[option.category] === option.name;
+            
+            return (
+              <div key={idx} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%]">
+                <Card className="overflow-hidden hover-elevate h-full">
+                  <CardContent className="p-6 space-y-4">
+                    <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
+                      <Package className="h-16 w-16 text-muted-foreground/50" />
                     </div>
-                    {option.priceTier && !option.isDefault && (
-                      <Badge variant="outline" className="text-xs capitalize">
-                        {option.priceTier}
-                      </Badge>
-                    )}
-                  </div>
-                  <Button 
-                    className="w-full gap-2" 
-                    asChild
-                    data-testid={`button-buy-product-${idx}`}
-                  >
-                    <a 
-                      href={option.affiliateLink} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                    >
-                      Buy Now
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          ))}
+                    <div className="space-y-2">
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h5 className="font-semibold text-foreground">{option.name}</h5>
+                          {option.isDefault && (
+                            <Badge variant="secondary" className="text-xs">
+                              Default
+                            </Badge>
+                          )}
+                          {isCurrent && (
+                            <Badge className="text-xs bg-primary">
+                              Current
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">{option.category}</p>
+                      </div>
+                      {option.priceTier && !option.isDefault && (
+                        <Badge variant="outline" className="text-xs capitalize">
+                          {option.priceTier}
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Button 
+                        className="w-full gap-2" 
+                        asChild
+                        data-testid={`button-buy-product-${idx}`}
+                      >
+                        <a 
+                          href={option.affiliateLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                        >
+                          Buy Now
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      </Button>
+                      {!isCurrent && onProductSelect && (
+                        <Button 
+                          variant="outline"
+                          className="w-full" 
+                          onClick={() => onProductSelect(option.category, option.name)}
+                          data-testid={`button-set-current-${idx}`}
+                        >
+                          Set as Current
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -178,11 +207,45 @@ function ProductCarousel({ options, title }: ProductCarouselProps) {
   );
 }
 
-export function RoutineCoach({ routineType, userName, products }: RoutineCoachProps) {
+export function RoutineCoach({ routineType, userName, products, routineId, currentProductSelections }: RoutineCoachProps) {
   const schedule = weeklyRoutines[routineType];
   const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
   const [selectedStepIndex, setSelectedStepIndex] = useState(0);
   const [showEvening, setShowEvening] = useState(false); // AM/PM toggle
+  const [localProductSelections, setLocalProductSelections] = useState(currentProductSelections || {});
+  const { toast } = useToast();
+
+  const setProductMutation = useMutation({
+    mutationFn: async ({ category, productName }: { category: string; productName: string }) => {
+      const res = await apiRequest('POST', `/api/routines/${routineId}/set-product`, {
+        category,
+        productName
+      });
+      return res.json();
+    },
+    onSuccess: (data) => {
+      setLocalProductSelections(prev => ({
+        ...prev,
+        [data.category]: data.productName
+      }));
+      queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
+      toast({
+        title: "Product updated",
+        description: "Your routine has been updated with the new product",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update product selection",
+        variant: "destructive",
+      });
+    }
+  });
+
+  const handleProductSelect = (category: string, productName: string) => {
+    setProductMutation.mutate({ category, productName });
+  };
 
   const currentWeek = schedule[selectedWeekIndex];
 
@@ -422,6 +485,9 @@ export function RoutineCoach({ routineType, userName, products }: RoutineCoachPr
                 <ProductCarousel 
                   options={isBPOMask ? bpoProductOptions : productOptions}
                   title="Recommended for your skin type"
+                  routineId={routineId}
+                  currentProductSelections={localProductSelections}
+                  onProductSelect={handleProductSelect}
                 />
               )}
 

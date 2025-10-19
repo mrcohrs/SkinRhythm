@@ -20,6 +20,7 @@ export interface IStorage {
   getUserRoutines(userId: string): Promise<Routine[]>;
   getCurrentRoutine(userId: string): Promise<Routine | undefined>;
   setCurrentRoutine(userId: string, routineId: string): Promise<Routine>;
+  setCurrentProduct(userId: string, routineId: string, category: string, productName: string): Promise<Routine>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -156,6 +157,41 @@ export class DatabaseStorage implements IStorage {
     const [updatedRoutine] = await db
       .update(routines)
       .set({ isCurrent: true })
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)))
+      .returning();
+
+    return updatedRoutine;
+  }
+
+  async setCurrentProduct(
+    userId: string, 
+    routineId: string, 
+    category: string, 
+    productName: string
+  ): Promise<Routine> {
+    // First verify the routine belongs to the user
+    const [routine] = await db
+      .select()
+      .from(routines)
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)));
+
+    if (!routine) {
+      throw new Error("Routine not found or access denied");
+    }
+
+    // Get current product selections or initialize empty object
+    const currentSelections = (routine.currentProductSelections as Record<string, string>) || {};
+    
+    // Update the selection for this category
+    const updatedSelections = {
+      ...currentSelections,
+      [category]: productName
+    };
+
+    // Update the routine with new selections
+    const [updatedRoutine] = await db
+      .update(routines)
+      .set({ currentProductSelections: updatedSelections })
       .where(and(eq(routines.id, routineId), eq(routines.userId, userId)))
       .returning();
 

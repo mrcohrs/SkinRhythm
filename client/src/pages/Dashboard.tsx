@@ -512,6 +512,8 @@ export default function Dashboard() {
                   routineType={routineType}
                   userName={currentRoutine.name || "User"}
                   products={products}
+                  routineId={currentRoutine.id}
+                  currentProductSelections={currentRoutine.currentProductSelections as Record<string, string> || {}}
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
