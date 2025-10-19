@@ -120,7 +120,7 @@ export function RoutineDisplay({
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground text-center">
               <Info className="h-4 w-4 flex-shrink-0" />
               <span>
-                We strive for clear skin and transparent business practices. Please note that AcneAgent recommends some products through affiliate links. The small commission we receive when you purchase using these links allows us to provide our personalized, evidence-based acne treatment at no extra cost to you.{" "}
+                Some product links are affiliate links. The small commission we receive when you purchase using these links allows us to provide our personalized, evidence-based guidance at no extra cost to you.{" "}
                 <Link 
                   href="/affiliate-disclosure"
                   className="text-foreground underline hover:no-underline"
@@ -139,11 +139,11 @@ export function RoutineDisplay({
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-4">
             <Badge variant="secondary" className="rounded-full px-4 py-1 text-xs uppercase tracking-wide">
-              Your Routine
+              Your
             </Badge>
           </div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold mb-6" data-testid="text-greeting">
-            {userName}'s Personal AcneAgent Recommends This AM & PM Routine for Clearer, Healthier Skin
+            {userName}
           </h1>
           <p className="text-lg text-muted-foreground mb-8">
             Your personalized skincare routine for{" "}
