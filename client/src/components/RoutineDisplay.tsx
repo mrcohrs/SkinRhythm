@@ -1,11 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ProductCard, type Product } from "./ProductCard";
+import { CompactProductCard } from "./CompactProductCard";
 import { PremiumUpsell } from "./PremiumUpsell";
 import { WeeklyRoutine } from "./WeeklyRoutine";
 import type { RoutineType } from "@shared/weeklyRoutines";
+import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
-import { Home, RefreshCw, LogIn, Mail, Info } from "lucide-react";
+import { Home, RefreshCw, LogIn, Mail, Info, Snowflake } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -49,6 +51,10 @@ export function RoutineDisplay({
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Check if routine type has ice steps (inflamed or rosacea)
+  const hasIceStep = routineType && (routineType === 'inflamed' || routineType === 'rosacea');
+  const iceGlobesProduct = getProductById('ice-globes');
 
   const handleMailingListSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -205,6 +211,26 @@ export function RoutineDisplay({
                 />
               ))}
             </div>
+            
+            {hasIceStep && iceGlobesProduct && (
+              <div className="mt-8 space-y-2">
+                <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
+                  <Snowflake className="w-4 h-4" />
+                  Recommended Tool for Ice Steps
+                </h4>
+                <CompactProductCard 
+                  product={{
+                    name: iceGlobesProduct.generalName,
+                    category: iceGlobesProduct.category,
+                    priceTier: iceGlobesProduct.priceTier,
+                    priceRange: iceGlobesProduct.priceRange,
+                    affiliateLink: iceGlobesProduct.affiliateLink!,
+                  }}
+                  description="Icing after cleansing can help reduce inflammation. Ice cubes work, but if you like convenience, these are well worth the money."
+                />
+              </div>
+            )}
+            
             {!isPremiumUser && <PremiumUpsell />}
           </div>
 

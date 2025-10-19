@@ -2,6 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weeklyRoutines";
 import { Product } from "./ProductCard";
+import { CompactProductCard } from "./CompactProductCard";
+import { getProductById } from "@shared/productLibrary";
 import { Clock, Sun, Moon, Info, Snowflake } from "lucide-react";
 
 interface WeeklyRoutineProps {
@@ -24,6 +26,13 @@ export function WeeklyRoutine({ routineType, products }: WeeklyRoutineProps) {
     return productList.find(p => p.category === mappedCategory) || null;
   };
 
+  // Check if routine has ice step in morning routine
+  const hasIceStep = schedule.some(week => 
+    week.amRoutine.some(step => categoryMapping[step] === 'Ice')
+  );
+
+  const iceGlobesProduct = getProductById('ice-globes');
+
   return (
     <div className="space-y-6" data-testid="weekly-routine-container">
       <div className="space-y-2">
@@ -35,6 +44,25 @@ export function WeeklyRoutine({ routineType, products }: WeeklyRoutineProps) {
           Follow this progressive routine for optimal results. Start slowly and build up as your skin adjusts.
         </p>
       </div>
+
+      {hasIceStep && iceGlobesProduct && (
+        <div className="space-y-2">
+          <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
+            <Snowflake className="w-4 h-4" />
+            Recommended Tool for Ice Steps
+          </h4>
+          <CompactProductCard 
+            product={{
+              name: iceGlobesProduct.generalName,
+              category: iceGlobesProduct.category,
+              priceTier: iceGlobesProduct.priceTier,
+              priceRange: iceGlobesProduct.priceRange,
+              affiliateLink: iceGlobesProduct.affiliateLink!,
+            }}
+            description="Icing after cleansing can help reduce inflammation. Ice cubes work, but if you like convenience, these are well worth the money."
+          />
+        </div>
+      )}
 
       <div className="space-y-6">
         {schedule.map((week, index) => (

@@ -6,16 +6,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut } from "lucide-react";
+import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Snowflake } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useLocation } from "wouter";
 import { WeeklyRoutine } from "@/components/WeeklyRoutine";
 import { ProductCard } from "@/components/ProductCard";
+import { CompactProductCard } from "@/components/CompactProductCard";
 import { ConsentModal } from "@/components/ConsentModal";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
+import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import { Footer } from "@/components/Footer";
 import { Info } from "lucide-react";
@@ -122,6 +124,10 @@ export default function Dashboard() {
 
   const isPremium = (user as any)?.isPremium || false;
   const isRoutineLoading = isLoading || isFetching;
+
+  // Check if routine type has ice steps (inflamed or rosacea)
+  const hasIceStep = routineType && (routineType === 'inflamed' || routineType === 'rosacea');
+  const iceGlobesProduct = getProductById('ice-globes');
 
   const makeCurrentMutation = useMutation({
     mutationFn: async (routineId: string) => {
@@ -332,6 +338,26 @@ export default function Dashboard() {
                   ))}
                 </div>
               </div>
+
+              {/* Ice Globes Upsell - Only for non-premium users with ice steps */}
+              {!isPremium && hasIceStep && iceGlobesProduct && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
+                    <Snowflake className="w-4 h-4" />
+                    Recommended Tool for Ice Steps
+                  </h4>
+                  <CompactProductCard 
+                    product={{
+                      name: iceGlobesProduct.generalName,
+                      category: iceGlobesProduct.category,
+                      priceTier: iceGlobesProduct.priceTier,
+                      priceRange: iceGlobesProduct.priceRange,
+                      affiliateLink: iceGlobesProduct.affiliateLink!,
+                    }}
+                    description="Icing after cleansing can help reduce inflammation. Ice cubes work, but if you like convenience, these are well worth the money."
+                  />
+                </div>
+              )}
 
               {/* Evening Routine */}
               <div>

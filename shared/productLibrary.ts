@@ -1,7 +1,7 @@
 export interface ProductDefinition {
   id: string;
   generalName: string;
-  category: 'Cleanser' | 'Toner' | 'Serum' | 'Hydrator' | 'Moisturizer' | 'SPF' | 'Spot Treatment';
+  category: 'Cleanser' | 'Toner' | 'Serum' | 'Hydrator' | 'Moisturizer' | 'SPF' | 'Spot Treatment' | 'Tool';
   csvKey: string;
   priceTier: 'budget' | 'standard' | 'premium';
   priceRange?: string;
@@ -174,6 +174,18 @@ export const PRODUCT_LIBRARY: Record<string, ProductDefinition> = {
     category: 'Spot Treatment',
     csvKey: 'BPO 10%',
     priceTier: 'standard',
+  },
+  
+  'ice-globes': {
+    id: 'ice-globes',
+    generalName: 'Ice Globes',
+    category: 'Tool',
+    csvKey: 'ICE GLOBES',
+    priceTier: 'budget',
+    priceRange: '$10-$15',
+    defaultProductLink: 'https://www.amazon.com/Unbreakable-Massager-Puffiness-Wrinkles-Production/dp/B082S42J2D',
+    defaultProductName: 'Unbreakable Ice Globes',
+    affiliateLink: 'https://amzn.to/3JlYlo9',
   },
 };
 
