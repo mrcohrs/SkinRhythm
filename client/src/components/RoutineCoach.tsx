@@ -7,8 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weeklyRoutines";
 import { Product } from "./ProductCard";
-import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package } from "lucide-react";
+import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface RoutineCoachProps {
   routineType: RoutineType;
@@ -25,6 +26,156 @@ interface StepInfo {
   instructions: string;
   timeOfDay: 'morning' | 'evening';
   product?: Product;
+}
+
+interface ProductOption {
+  name: string;
+  category: string;
+  priceTier?: string;
+  affiliateLink: string;
+  originalLink: string;
+  isDefault: boolean;
+}
+
+interface ProductCarouselProps {
+  options: ProductOption[];
+  title: string;
+}
+
+function ProductCarousel({ options, title }: ProductCarouselProps) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const updateScrollState = () => {
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
+
+    emblaApi.on('select', updateScrollState);
+    emblaApi.on('reInit', updateScrollState);
+    updateScrollState();
+
+    return () => {
+      emblaApi.off('select', updateScrollState);
+      emblaApi.off('reInit', updateScrollState);
+    };
+  }, [emblaApi]);
+
+  const scrollPrev = () => emblaApi?.scrollPrev();
+  const scrollNext = () => emblaApi?.scrollNext();
+
+  if (options.length === 0) return null;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h4 className="text-lg font-semibold">{title}</h4>
+        {options.length > 1 && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              {selectedIndex + 1} / {options.length}
+            </span>
+            <div className="flex gap-1">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={scrollPrev}
+                disabled={!canScrollPrev}
+                data-testid="button-carousel-prev"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={scrollNext}
+                disabled={!canScrollNext}
+                data-testid="button-carousel-next"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-4">
+          {options.map((option, idx) => (
+            <div key={idx} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%]">
+              <Card className="overflow-hidden hover-elevate h-full">
+                <CardContent className="p-6 space-y-4">
+                  <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
+                    <Package className="h-16 w-16 text-muted-foreground/50" />
+                  </div>
+                  <div className="space-y-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h5 className="font-semibold text-foreground">{option.name}</h5>
+                        {option.isDefault && (
+                          <Badge variant="secondary" className="text-xs">
+                            Your Pick
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-1">{option.category}</p>
+                    </div>
+                    {option.priceTier && !option.isDefault && (
+                      <Badge variant="outline" className="text-xs capitalize">
+                        {option.priceTier}
+                      </Badge>
+                    )}
+                  </div>
+                  <Button 
+                    className="w-full gap-2" 
+                    asChild
+                    data-testid={`button-buy-product-${idx}`}
+                  >
+                    <a 
+                      href={option.affiliateLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      Buy Now
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Dot indicators */}
+      {options.length > 1 && (
+        <div className="flex justify-center gap-2">
+          {options.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => emblaApi?.scrollTo(idx)}
+              className={cn(
+                "h-2 rounded-full transition-all",
+                selectedIndex === idx 
+                  ? "w-8 bg-secondary" 
+                  : "w-2 bg-muted-foreground/30"
+              )}
+              data-testid={`button-carousel-dot-${idx}`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function RoutineCoach({ routineType, userName, products }: RoutineCoachProps) {
@@ -93,19 +244,45 @@ export function RoutineCoach({ routineType, userName, products }: RoutineCoachPr
     return baseInstructions[stepName] || `Apply ${stepName.toLowerCase()} as directed.`;
   }
 
-  // Get other product options for current step (placeholder for future carousel)
-  const getProductOptions = (product?: Product) => {
+  // Get all product options including default and premium alternatives
+  const getProductOptions = (product?: Product): ProductOption[] => {
     if (!product) return [];
-    // For now, just return the single product
-    // In future, could return multiple options based on price tier
-    return [product];
+    
+    const options: ProductOption[] = [];
+    
+    // Add the default product first
+    options.push({
+      name: product.name,
+      category: product.category,
+      priceTier: product.priceTier,
+      affiliateLink: product.affiliateLink,
+      originalLink: product.originalLink || product.affiliateLink,
+      isDefault: true
+    });
+    
+    // Add premium alternatives if available
+    if (product.premiumOptions && product.premiumOptions.length > 0) {
+      product.premiumOptions.forEach(option => {
+        options.push({
+          name: option.productName,
+          category: product.category,
+          priceTier: 'premium',
+          affiliateLink: option.affiliateLink,
+          originalLink: option.originalLink,
+          isDefault: false
+        });
+      });
+    }
+    
+    return options;
   };
-
-  const productOptions = getProductOptions(currentStep.product);
 
   // Check if current step is a BPO Mask to show the BPO product
   const isBPOMask = currentStep.name.includes('BPO Mask') || currentStep.name.includes('Benzoyl Peroxide Mask');
   const bpoProduct = isBPOMask ? products.evening.find(p => p.category === 'Spot Treatment') : undefined;
+  
+  const productOptions = getProductOptions(currentStep.product);
+  const bpoProductOptions = isBPOMask ? getProductOptions(bpoProduct) : [];
 
   return (
     <div className="space-y-8" data-testid="routine-coach-container">
@@ -241,91 +418,11 @@ export function RoutineCoach({ routineType, userName, products }: RoutineCoachPr
               </div>
 
               {/* Product Recommendations */}
-              {(productOptions.length > 0 || bpoProduct) && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-lg font-semibold">Recommended for your skin type</h4>
-                    {productOptions.length > 1 && (
-                      <span className="text-sm text-muted-foreground">Scroll for options →</span>
-                    )}
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {/* Show BPO product for BPO Mask steps */}
-                    {bpoProduct && (
-                      <Card className="overflow-hidden hover-elevate">
-                        <CardContent className="p-6 space-y-4">
-                          <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
-                            {/* Product image placeholder */}
-                            <Package className="h-16 w-16 text-muted-foreground/50" />
-                          </div>
-                          <div className="space-y-2">
-                            <div>
-                              <h5 className="font-semibold text-foreground">{bpoProduct.name}</h5>
-                              <p className="text-sm text-muted-foreground">{bpoProduct.category}</p>
-                            </div>
-                            {bpoProduct.priceTier && (
-                              <Badge variant="secondary" className="text-xs">
-                                {bpoProduct.priceTier}
-                              </Badge>
-                            )}
-                          </div>
-                          <Button 
-                            className="w-full gap-2" 
-                            asChild
-                            data-testid="button-buy-bpo-product"
-                          >
-                            <a 
-                              href={bpoProduct.affiliateLink || bpoProduct.originalLink} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                            >
-                              Buy Now
-                              <ExternalLink className="h-4 w-4" />
-                            </a>
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    )}
-                    
-                    {/* Show regular product recommendations for non-BPO steps */}
-                    {!isBPOMask && productOptions.map((product, idx) => (
-                      <Card key={idx} className="overflow-hidden hover-elevate">
-                        <CardContent className="p-6 space-y-4">
-                          <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
-                            {/* Product image placeholder */}
-                            <Package className="h-16 w-16 text-muted-foreground/50" />
-                          </div>
-                          <div className="space-y-2">
-                            <div>
-                              <h5 className="font-semibold text-foreground">{product.name}</h5>
-                              <p className="text-sm text-muted-foreground">{product.category}</p>
-                            </div>
-                            {product.priceTier && (
-                              <Badge variant="secondary" className="text-xs">
-                                {product.priceTier}
-                              </Badge>
-                            )}
-                          </div>
-                          <Button 
-                            className="w-full gap-2" 
-                            asChild
-                            data-testid={`button-buy-product-${idx}`}
-                          >
-                            <a 
-                              href={product.affiliateLink || product.originalLink} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                            >
-                              Buy Now
-                              <ExternalLink className="h-4 w-4" />
-                            </a>
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
+              {(productOptions.length > 0 || bpoProductOptions.length > 0) && (
+                <ProductCarousel 
+                  options={isBPOMask ? bpoProductOptions : productOptions}
+                  title="Recommended for your skin type"
+                />
               )}
 
               {/* Week Notes */}
