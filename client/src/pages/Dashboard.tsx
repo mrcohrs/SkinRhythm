@@ -70,6 +70,27 @@ export default function Dashboard() {
   } | null>(null);
   const [hasCheckedIngredients, setHasCheckedIngredients] = useState(false);
 
+  // Carousel state - MUST be declared before any conditional returns
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
+
   const { data: currentRoutine, isLoading, isFetching } = useQuery<Routine>({
     queryKey: ['/api/routines/current'],
     enabled: !!user,
@@ -328,27 +349,6 @@ export default function Dashboard() {
     // Otherwise return the default product
     return product;
   });
-
-  // Carousel state
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
-  }, [emblaApi, onSelect]);
 
   return (
     <div className="min-h-screen bg-background">
