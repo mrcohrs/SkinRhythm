@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Snowflake } from "lucide-react";
+import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Snowflake, Crown, Sun, Moon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useLocation } from "wouter";
@@ -120,6 +120,7 @@ export default function Dashboard() {
 
   const routineData = currentRoutine?.routineData as any;
   const products = routineData?.products;
+  const productIds = Array.isArray(routineData?.productIds) ? routineData.productIds : [];
   const routineType = routineData?.routineType;
 
   const isPremium = (user as any)?.isPremium || false;
@@ -220,6 +221,13 @@ export default function Dashboard() {
 
   const morningProducts = products.morning || [];
   const eveningProducts = products.evening || [];
+  
+  // Get unique products for shoppable list
+  // Combine morning and evening products and deduplicate by product name
+  const allProducts = [...morningProducts, ...eveningProducts];
+  const uniqueProducts = Array.from(
+    new Map(allProducts.map((p: any) => [p.name, p])).values()
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -310,26 +318,43 @@ export default function Dashboard() {
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full max-w-3xl grid-cols-4" data-testid="tabs-dashboard">
-              <TabsTrigger value="products" data-testid="tab-products">My Products</TabsTrigger>
+              <TabsTrigger value="products" data-testid="tab-products">
+                My Products
+              </TabsTrigger>
               <TabsTrigger 
                 value="treatment" 
-                disabled={!isPremium}
                 data-testid="tab-treatment"
+                className="gap-1.5"
               >
-                {isPremium ? 'Treatment Plan' : 'Treatment Plan (Premium)'}
+                <span>Treatment Plan</span>
+                {!isPremium && <Crown className="h-3.5 w-3.5" />}
               </TabsTrigger>
-              <TabsTrigger value="ingredient-checker" data-testid="tab-ingredient-checker">Ingredient Checker</TabsTrigger>
-              <TabsTrigger value="library" data-testid="tab-library">Routine Library</TabsTrigger>
+              <TabsTrigger 
+                value="ingredient-checker" 
+                data-testid="tab-ingredient-checker"
+                className="gap-1.5"
+              >
+                <span>Ingredient Scanner</span>
+                {!isPremium && <Crown className="h-3.5 w-3.5" />}
+              </TabsTrigger>
+              <TabsTrigger 
+                value="library" 
+                data-testid="tab-library"
+                className="gap-1.5"
+              >
+                <span>Routine Library</span>
+                {!isPremium && <Crown className="h-3.5 w-3.5" />}
+              </TabsTrigger>
             </TabsList>
 
             {/* My Products Tab */}
             <TabsContent value="products" className="space-y-8 mt-6">
-              {/* Morning Routine */}
+              {/* Shoppable Product List */}
               <div>
-                <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-morning-routine">Morning Routine</h3>
-                <p className="text-muted-foreground mb-6">Start your day with these products</p>
+                <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-shoppable-products">Your Routine Products</h3>
+                <p className="text-muted-foreground mb-6">Shop your personalized skincare routine</p>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {morningProducts.map((product: any, index: number) => (
+                  {uniqueProducts.map((product: any, index: number) => (
                     <ProductCard
                       key={index}
                       product={product}
@@ -359,311 +384,474 @@ export default function Dashboard() {
                 </div>
               )}
 
-              {/* Evening Routine */}
-              <div>
-                <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-evening-routine">Evening Routine</h3>
-                <p className="text-muted-foreground mb-6">Wind down with your PM skincare</p>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {eveningProducts.map((product: any, index: number) => (
-                    <ProductCard
-                      key={index}
-                      product={product}
-                      isPremiumUser={isPremium}
-                    />
-                  ))}
+              {/* Visual AM/PM Routine Display */}
+              <div className="space-y-6">
+                <h3 className="font-serif text-2xl font-semibold" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
+                
+                {/* Morning Routine Visual */}
+                <div>
+                  <h4 className="text-lg font-medium mb-4 flex items-center gap-2">
+                    <Sun className="h-5 w-5 text-yellow-500" /> Morning Routine
+                  </h4>
+                  <div className="space-y-2">
+                    {morningProducts.map((product: any, index: number) => {
+                      const productImage = categoryImages[product.category] || categoryImages["Serum"];
+                      return (
+                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                            {index + 1}
+                          </span>
+                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+                            <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium">{product.name}</p>
+                            <p className="text-muted-foreground text-xs">{product.category}</p>
+                          </div>
+                          {product.priceTier && (
+                            <Badge variant="outline" className="text-xs">{product.priceTier}</Badge>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Evening Routine Visual */}
+                <div>
+                  <h4 className="text-lg font-medium mb-4 flex items-center gap-2">
+                    <Moon className="h-5 w-5 text-blue-400" /> Evening Routine
+                  </h4>
+                  <div className="space-y-2">
+                    {eveningProducts.map((product: any, index: number) => {
+                      const productImage = categoryImages[product.category] || categoryImages["Serum"];
+                      return (
+                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                            {index + 1}
+                          </span>
+                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+                            <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium">{product.name}</p>
+                            <p className="text-muted-foreground text-xs">{product.category}</p>
+                          </div>
+                          {product.priceTier && (
+                            <Badge variant="outline" className="text-xs">{product.priceTier}</Badge>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-
-              {/* Premium Upsell if not premium */}
-              {!isPremium && (
-                <Card className="border-primary/20" data-testid="card-premium-upsell">
-                  <CardHeader>
-                    <CardTitle>Unlock Your Detailed Treatment Plan</CardTitle>
-                    <CardDescription>
-                      Get week-by-week guidance on how to use these products for maximum results
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button data-testid="button-upgrade-premium">Upgrade to Premium</Button>
-                  </CardContent>
-                </Card>
-              )}
             </TabsContent>
 
             {/* Detailed Treatment Plan Tab */}
             <TabsContent value="treatment" className="space-y-6 mt-6">
-              {isRoutineLoading ? (
+              {!isPremium ? (
+                <Card className="border-primary/20" data-testid="card-treatment-upgrade">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Crown className="h-10 w-10 text-primary flex-shrink-0" />
+                      <div>
+                        <CardTitle>Premium Feature: Weekly Treatment Plan</CardTitle>
+                        <CardDescription>
+                          Get detailed, week-by-week guidance for maximum results
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">6-Week Progressive Routine</h4>
+                          <p className="text-sm text-muted-foreground">Step-by-step instructions for each week of your treatment</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Product Usage Schedule</h4>
+                          <p className="text-sm text-muted-foreground">Know exactly when and how to use each product</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Clinical Treatment Notes</h4>
+                          <p className="text-sm text-muted-foreground">Expert guidance for managing side effects and optimizing results</p>
+                        </div>
+                      </div>
+                    </div>
+                    <Button data-testid="button-upgrade-treatment" className="w-full">
+                      Upgrade to Premium
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : isRoutineLoading ? (
                 <div className="flex items-center justify-center py-12">
                   <div className="text-muted-foreground">Loading treatment plan...</div>
                 </div>
-              ) : isPremium && routineType && products ? (
+              ) : routineType && products ? (
                 <WeeklyRoutine
                   routineType={routineType}
                   products={products}
                 />
-              ) : isPremium && !routineType ? (
+              ) : (
                 <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
                   <p className="text-muted-foreground">No treatment plan available for this routine.</p>
                   <p className="text-sm text-muted-foreground">This routine may have been created before treatment plans were available.</p>
                 </div>
-              ) : null}
+              )}
             </TabsContent>
 
             {/* Ingredient Checker Tab */}
             <TabsContent value="ingredient-checker" className="space-y-6 mt-6">
-              <div className="max-w-4xl mx-auto space-y-6">
-                {/* Input Section */}
-                <Card>
+              {!isPremium ? (
+                <Card className="border-primary/20" data-testid="card-ingredient-upgrade">
                   <CardHeader>
-                    <CardTitle>Ingredient List</CardTitle>
-                    <CardDescription>
-                      Copy and paste the ingredients from your product label to check for acne-causing ingredients
-                    </CardDescription>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Crown className="h-10 w-10 text-primary flex-shrink-0" />
+                      <div>
+                        <CardTitle>Premium Feature: Ingredient Scanner</CardTitle>
+                        <CardDescription>
+                          Instantly check if products contain acne-causing ingredients
+                        </CardDescription>
+                      </div>
+                    </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <Textarea
-                      placeholder="Example:
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">348 Acne-Causing Ingredients Database</h4>
+                          <p className="text-sm text-muted-foreground">Comprehensive database of comedogenic ingredients</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Instant Analysis</h4>
+                          <p className="text-sm text-muted-foreground">Paste ingredient lists and get immediate results</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Safe Product Verification</h4>
+                          <p className="text-sm text-muted-foreground">Verify that your products won't trigger breakouts</p>
+                        </div>
+                      </div>
+                    </div>
+                    <Button data-testid="button-upgrade-ingredient" className="w-full">
+                      Upgrade to Premium
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="max-w-4xl mx-auto space-y-6">
+                  {/* Input Section */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Ingredient List</CardTitle>
+                      <CardDescription>
+                        Copy and paste the ingredients from your product label to check for acne-causing ingredients
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <Textarea
+                        placeholder="Example:
 Water
 Glycerin
 Niacinamide
 Coconut Oil
 Hyaluronic Acid"
-                      value={ingredientInput}
-                      onChange={(e) => setIngredientInput(e.target.value)}
-                      className="min-h-[200px] font-mono text-sm"
-                      data-testid="textarea-ingredients"
-                    />
-                    <div className="flex gap-3">
-                      <Button
-                        onClick={handleCheckIngredients}
-                        disabled={!ingredientInput.trim()}
-                        className="flex-1"
-                        data-testid="button-check-ingredients"
-                      >
-                        Check Ingredients
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={handleClearIngredients}
-                        disabled={!ingredientInput && !hasCheckedIngredients}
-                        data-testid="button-clear"
-                      >
-                        Clear
-                      </Button>
+                        value={ingredientInput}
+                        onChange={(e) => setIngredientInput(e.target.value)}
+                        className="min-h-[200px] font-mono text-sm"
+                        data-testid="textarea-ingredients"
+                      />
+                      <div className="flex gap-3">
+                        <Button
+                          onClick={handleCheckIngredients}
+                          disabled={!ingredientInput.trim()}
+                          className="flex-1"
+                          data-testid="button-check-ingredients"
+                        >
+                          Check Ingredients
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={handleClearIngredients}
+                          disabled={!ingredientInput && !hasCheckedIngredients}
+                          data-testid="button-clear"
+                        >
+                          Clear
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Results Section */}
+                  {hasCheckedIngredients && ingredientResults && (
+                    <div className="space-y-6">
+                      {/* Summary */}
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Results Summary</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="text-center p-4 rounded-lg bg-muted/50">
+                              <div className="text-3xl font-bold text-foreground">
+                                {ingredientResults.totalChecked}
+                              </div>
+                              <div className="text-sm text-muted-foreground mt-1">
+                                Total Checked
+                              </div>
+                            </div>
+                            <div className="text-center p-4 rounded-lg bg-destructive/10">
+                              <div className="text-3xl font-bold text-destructive">
+                                {ingredientResults.foundIngredients.length}
+                              </div>
+                              <div className="text-sm text-muted-foreground mt-1">
+                                Acne-Causing
+                              </div>
+                            </div>
+                            <div className="text-center p-4 rounded-lg bg-primary/10">
+                              <div className="text-3xl font-bold text-primary">
+                                {ingredientResults.safeIngredients.length}
+                              </div>
+                              <div className="text-sm text-muted-foreground mt-1">
+                                Safe
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Acne-Causing Ingredients */}
+                      {ingredientResults.foundIngredients.length > 0 && (
+                        <Card className="border-destructive/50">
+                          <CardHeader>
+                            <div className="flex items-start gap-3">
+                              <AlertCircle className="h-6 w-6 text-destructive mt-1" />
+                              <div>
+                                <CardTitle className="text-destructive">
+                                  Acne-Causing Ingredients Found
+                                </CardTitle>
+                                <CardDescription>
+                                  These ingredients may clog pores and cause breakouts
+                                </CardDescription>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="flex flex-wrap gap-2">
+                              {ingredientResults.foundIngredients.map((ingredient, index) => (
+                                <Badge
+                                  key={index}
+                                  variant="destructive"
+                                  className="text-sm"
+                                  data-testid={`badge-acne-causing-${index}`}
+                                >
+                                  {ingredient}
+                                </Badge>
+                              ))}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+
+                      {/* Safe Ingredients */}
+                      {ingredientResults.safeIngredients.length > 0 && (
+                        <Card className="border-primary/50">
+                          <CardHeader>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-6 w-6 text-primary mt-1" />
+                              <div>
+                                <CardTitle className="text-primary">
+                                  Safe Ingredients
+                                </CardTitle>
+                                <CardDescription>
+                                  These ingredients are not known to cause acne
+                                </CardDescription>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="flex flex-wrap gap-2">
+                              {ingredientResults.safeIngredients.map((ingredient, index) => (
+                                <Badge
+                                  key={index}
+                                  variant="secondary"
+                                  className="text-sm"
+                                  data-testid={`badge-safe-${index}`}
+                                >
+                                  {ingredient}
+                                </Badge>
+                              ))}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+
+                      {/* All Clear Message */}
+                      {ingredientResults.foundIngredients.length === 0 && ingredientResults.totalChecked > 0 && (
+                        <Card className="border-primary/50 bg-primary/5">
+                          <CardContent className="pt-6">
+                            <div className="flex items-center gap-3">
+                              <CheckCircle className="h-8 w-8 text-primary flex-shrink-0" />
+                              <div>
+                                <h3 className="font-semibold text-lg text-primary">
+                                  All Clear!
+                                </h3>
+                                <p className="text-muted-foreground">
+                                  No acne-causing ingredients detected in this product.
+                                </p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
                     </div>
-                  </CardContent>
-                </Card>
-
-                {/* Results Section */}
-                {hasCheckedIngredients && ingredientResults && (
-                  <div className="space-y-6">
-                    {/* Summary */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Results Summary</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="text-center p-4 rounded-lg bg-muted/50">
-                            <div className="text-3xl font-bold text-foreground">
-                              {ingredientResults.totalChecked}
-                            </div>
-                            <div className="text-sm text-muted-foreground mt-1">
-                              Total Checked
-                            </div>
-                          </div>
-                          <div className="text-center p-4 rounded-lg bg-destructive/10">
-                            <div className="text-3xl font-bold text-destructive">
-                              {ingredientResults.foundIngredients.length}
-                            </div>
-                            <div className="text-sm text-muted-foreground mt-1">
-                              Acne-Causing
-                            </div>
-                          </div>
-                          <div className="text-center p-4 rounded-lg bg-primary/10">
-                            <div className="text-3xl font-bold text-primary">
-                              {ingredientResults.safeIngredients.length}
-                            </div>
-                            <div className="text-sm text-muted-foreground mt-1">
-                              Safe
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Acne-Causing Ingredients */}
-                    {ingredientResults.foundIngredients.length > 0 && (
-                      <Card className="border-destructive/50">
-                        <CardHeader>
-                          <div className="flex items-start gap-3">
-                            <AlertCircle className="h-6 w-6 text-destructive mt-1" />
-                            <div>
-                              <CardTitle className="text-destructive">
-                                Acne-Causing Ingredients Found
-                              </CardTitle>
-                              <CardDescription>
-                                These ingredients may clog pores and cause breakouts
-                              </CardDescription>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex flex-wrap gap-2">
-                            {ingredientResults.foundIngredients.map((ingredient, index) => (
-                              <Badge
-                                key={index}
-                                variant="destructive"
-                                className="text-sm"
-                                data-testid={`badge-acne-causing-${index}`}
-                              >
-                                {ingredient}
-                              </Badge>
-                            ))}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )}
-
-                    {/* Safe Ingredients */}
-                    {ingredientResults.safeIngredients.length > 0 && (
-                      <Card className="border-primary/50">
-                        <CardHeader>
-                          <div className="flex items-start gap-3">
-                            <CheckCircle className="h-6 w-6 text-primary mt-1" />
-                            <div>
-                              <CardTitle className="text-primary">
-                                Safe Ingredients
-                              </CardTitle>
-                              <CardDescription>
-                                These ingredients are not known to cause acne
-                              </CardDescription>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex flex-wrap gap-2">
-                            {ingredientResults.safeIngredients.map((ingredient, index) => (
-                              <Badge
-                                key={index}
-                                variant="secondary"
-                                className="text-sm"
-                                data-testid={`badge-safe-${index}`}
-                              >
-                                {ingredient}
-                              </Badge>
-                            ))}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )}
-
-                    {/* All Clear Message */}
-                    {ingredientResults.foundIngredients.length === 0 && ingredientResults.totalChecked > 0 && (
-                      <Card className="border-primary/50 bg-primary/5">
-                        <CardContent className="pt-6">
-                          <div className="flex items-center gap-3">
-                            <CheckCircle className="h-8 w-8 text-primary flex-shrink-0" />
-                            <div>
-                              <h3 className="font-semibold text-lg text-primary">
-                                All Clear!
-                              </h3>
-                              <p className="text-muted-foreground">
-                                No acne-causing ingredients detected in this product.
-                              </p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )}
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </TabsContent>
 
             {/* Routine Library Tab */}
             <TabsContent value="library" className="space-y-6 mt-6">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {allRoutines && allRoutines.length > 0 ? (
-                  allRoutines.map((routine) => {
-                    const isCurrent = routine.isCurrent;
-                    const routineProducts = (routine.routineData as any)?.products;
-                    const totalProducts = (routineProducts?.morning?.length || 0) + (routineProducts?.evening?.length || 0);
-                    
-                    return (
-                      <Card
-                        key={routine.id}
-                        className={`cursor-pointer hover-elevate ${isCurrent ? 'border-primary' : ''}`}
-                        onClick={() => {
-                          setSelectedRoutine(routine);
-                          setShowRoutineModal(true);
-                        }}
-                        data-testid={`routine-card-${routine.id}`}
-                      >
-                        <CardHeader>
-                          <div className="flex items-start justify-between">
-                            <div className="space-y-1">
-                              <CardTitle className="text-lg">
-                                {routine.name ? `${routine.name}'s Routine` : 'My Routine'}
-                              </CardTitle>
-                              <CardDescription className="flex items-center gap-2">
-                                <Calendar className="h-3 w-3" />
-                                {new Date(routine.createdAt!).toLocaleDateString()}
-                              </CardDescription>
-                            </div>
-                            {isCurrent && (
-                              <Badge className="gap-1">
-                                <Check className="h-3 w-3" />
-                                Current
-                              </Badge>
-                            )}
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-3">
-                            <div className="flex flex-wrap gap-2">
-                              <Badge 
-                                variant="outline" 
-                                className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
-                              >
-                                {routine.skinType} skin
-                              </Badge>
-                              {routine.acneTypes && routine.acneTypes.length > 0 && routine.acneTypes.map((type, index) => (
-                                <Badge 
-                                  key={index}
-                                  variant="outline" 
-                                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
-                                >
-                                  {type.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                                </Badge>
-                              ))}
-                              <Badge 
-                                variant="outline" 
-                                className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
-                              >
-                                {routine.acneSeverity} severity
-                              </Badge>
-                              {routine.isPregnantOrNursing && (
-                                <Badge 
-                                  variant="outline" 
-                                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
-                                >
-                                  Pregnancy/Nursing Safe
+              {!isPremium ? (
+                <Card className="border-primary/20" data-testid="card-library-upgrade">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Crown className="h-10 w-10 text-primary flex-shrink-0" />
+                      <div>
+                        <CardTitle>Premium Feature: Routine Library</CardTitle>
+                        <CardDescription>
+                          Save and switch between multiple personalized routines
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Unlimited Saved Routines</h4>
+                          <p className="text-sm text-muted-foreground">Create routines for different seasons, skin conditions, or goals</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Easy Routine Switching</h4>
+                          <p className="text-sm text-muted-foreground">Switch between routines with one click</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium">Routine History</h4>
+                          <p className="text-sm text-muted-foreground">Track which routines worked best for your skin</p>
+                        </div>
+                      </div>
+                    </div>
+                    <Button data-testid="button-upgrade-library" className="w-full">
+                      Upgrade to Premium
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {allRoutines && allRoutines.length > 0 ? (
+                    allRoutines.map((routine) => {
+                      const isCurrent = routine.isCurrent;
+                      const routineProducts = (routine.routineData as any)?.products;
+                      const totalProducts = (routineProducts?.morning?.length || 0) + (routineProducts?.evening?.length || 0);
+                      
+                      return (
+                        <Card
+                          key={routine.id}
+                          className={`cursor-pointer hover-elevate ${isCurrent ? 'border-primary' : ''}`}
+                          onClick={() => {
+                            setSelectedRoutine(routine);
+                            setShowRoutineModal(true);
+                          }}
+                          data-testid={`routine-card-${routine.id}`}
+                        >
+                          <CardHeader>
+                            <div className="flex items-start justify-between">
+                              <div className="space-y-1">
+                                <CardTitle className="text-lg">
+                                  {routine.name ? `${routine.name}'s Routine` : 'My Routine'}
+                                </CardTitle>
+                                <CardDescription className="flex items-center gap-2">
+                                  <Calendar className="h-3 w-3" />
+                                  {new Date(routine.createdAt!).toLocaleDateString()}
+                                </CardDescription>
+                              </div>
+                              {isCurrent && (
+                                <Badge className="gap-1">
+                                  <Check className="h-3 w-3" />
+                                  Current
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-sm text-muted-foreground">{totalProducts} products total</p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    );
-                  })
-                ) : (
-                  <div className="col-span-full text-center py-12">
-                    <p className="text-muted-foreground">No routines in your library yet</p>
-                  </div>
-                )}
-              </div>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-3">
+                              <div className="flex flex-wrap gap-2">
+                                <Badge 
+                                  variant="outline" 
+                                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                                >
+                                  {routine.skinType} skin
+                                </Badge>
+                                {routine.acneTypes && routine.acneTypes.length > 0 && routine.acneTypes.map((type, index) => (
+                                  <Badge 
+                                    key={index}
+                                    variant="outline" 
+                                    className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                                  >
+                                    {type.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                  </Badge>
+                                ))}
+                                <Badge 
+                                  variant="outline" 
+                                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                                >
+                                  {routine.acneSeverity} severity
+                                </Badge>
+                                {routine.isPregnantOrNursing && (
+                                  <Badge 
+                                    variant="outline" 
+                                    className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                                  >
+                                    Pregnancy/Nursing Safe
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-sm text-muted-foreground">{totalProducts} products total</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })
+                  ) : (
+                    <div className="col-span-full text-center py-12">
+                      <p className="text-muted-foreground">No routines in your library yet</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </div>
