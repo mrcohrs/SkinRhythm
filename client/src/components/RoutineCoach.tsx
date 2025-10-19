@@ -7,12 +7,15 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weeklyRoutines";
 import { Product } from "./ProductCard";
+import { CompactProductCard } from "./CompactProductCard";
 import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from 'embla-carousel-react';
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { getProductById } from "@shared/productLibrary";
+import iceGlobesIcon from "@assets/ciice_1760874110365.png";
 
 interface RoutineCoachProps {
   routineType: RoutineType;
@@ -344,6 +347,9 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
   const isBPOMask = currentStep.name.includes('BPO Mask') || currentStep.name.includes('Benzoyl Peroxide Mask');
   const bpoProduct = isBPOMask ? products.evening.find(p => p.category === 'Spot Treatment') : undefined;
   
+  // Check if current step is an ice step (includes "Ice" or "Ice (see notes)")
+  const isIce = currentStep.name.includes('Ice');
+  
   const productOptions = getProductOptions(currentStep.product);
   const bpoProductOptions = isBPOMask ? getProductOptions(bpoProduct) : [];
 
@@ -491,20 +497,28 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
                 />
               )}
 
-              {/* Week Notes */}
-              {currentWeek.notes && (
-                <div className="bg-primary/10 border-l-4 border-primary rounded-r-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <Info className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <div className="space-y-1">
-                      <h4 className="font-semibold text-sm text-foreground">Important Notes for {currentWeek.weekRange}</h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {currentWeek.notes}
-                      </p>
-                    </div>
+              {/* Ice Globes Upsell - For ice steps */}
+              {isIce && (() => {
+                const iceGlobesProduct = getProductById('ice-globes');
+                return iceGlobesProduct && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
+                      <img src={iceGlobesIcon} alt="" className="w-4 h-4" />
+                      Recommended Tool for Ice Steps
+                    </h4>
+                    <CompactProductCard 
+                      product={{
+                        name: iceGlobesProduct.generalName,
+                        category: iceGlobesProduct.category,
+                        priceTier: iceGlobesProduct.priceTier,
+                        priceRange: iceGlobesProduct.priceRange,
+                        affiliateLink: iceGlobesProduct.affiliateLink!,
+                      }}
+                      description="Icing after cleansing can help reduce inflammation. Ice cubes work, but if you like convenience, these are well worth the money."
+                    />
                   </div>
-                </div>
-              )}
+                );
+              })()}
             </div>
           </div>
         </CardContent>
