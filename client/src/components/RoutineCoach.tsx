@@ -15,7 +15,6 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { getProductById } from "@shared/productLibrary";
-import iceGlobesIcon from "@assets/ciice_1760874110365.png";
 
 interface RoutineCoachProps {
   routineType: RoutineType;
@@ -502,8 +501,7 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
                 const iceGlobesProduct = getProductById('ice-globes');
                 return iceGlobesProduct && (
                   <div className="space-y-2">
-                    <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
-                      <img src={iceGlobesIcon} alt="" className="w-4 h-4" />
+                    <h4 className="text-sm font-semibold text-muted-foreground">
                       Recommended Tool for Ice Steps
                     </h4>
                     <CompactProductCard 

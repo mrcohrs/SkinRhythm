@@ -10,6 +10,7 @@ import hydratorImg from "@assets/hydrator_1760341831459.png";
 import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
 import spfImg from "@assets/SPF_1760341636654.png";
 import spotTreatmentImg from "@assets/BPO_1760341850620.png";
+import iceGlobesImg from "@assets/ciice_1760874110365.png";
 
 export interface CompactProduct {
   name: string;
@@ -32,7 +33,7 @@ const categoryImages: Record<string, string> = {
   "Moisturizer": moisturizerImg,
   "SPF": spfImg,
   "Spot Treatment": spotTreatmentImg,
-  "Tool": serumImg,
+  "Tool": iceGlobesImg,
 };
 
 export function CompactProductCard({ product, description }: CompactProductCardProps) {
