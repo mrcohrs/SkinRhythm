@@ -92,11 +92,10 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
 
 // Determine which routine type to use based on acne types and severity
 export function determineRoutineType(acneTypes: string[], acneSeverity: string): RoutineType {
+  // Check for "inflamed" string directly from quiz
   const hasInflamed = acneTypes.some(type => 
-    type.toLowerCase().includes('cyst') || 
-    type.toLowerCase().includes('nodule') || 
-    type.toLowerCase().includes('papule') ||
-    type.toLowerCase().includes('pustule')
+    type.toLowerCase() === 'inflamed' ||
+    type.toLowerCase().includes('inflamed')
   );
 
   const hasRosacea = acneTypes.some(type => 
