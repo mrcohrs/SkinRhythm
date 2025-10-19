@@ -10,7 +10,7 @@ import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, A
 import { Textarea } from "@/components/ui/textarea";
 import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useLocation } from "wouter";
-import { WeeklyRoutine } from "@/components/WeeklyRoutine";
+import { RoutineCoach } from "@/components/RoutineCoach";
 import { ProductCard } from "@/components/ProductCard";
 import { CompactProductCard } from "@/components/CompactProductCard";
 import { ConsentModal } from "@/components/ConsentModal";
@@ -505,11 +505,12 @@ export default function Dashboard() {
                 </Card>
               ) : isRoutineLoading ? (
                 <div className="flex items-center justify-center py-12">
-                  <div className="text-muted-foreground">Loading treatment plan...</div>
+                  <div className="text-muted-foreground">Loading routine coach...</div>
                 </div>
               ) : routineType && products ? (
-                <WeeklyRoutine
+                <RoutineCoach
                   routineType={routineType}
+                  userName={currentRoutine.name || "User"}
                   products={products}
                 />
               ) : (
