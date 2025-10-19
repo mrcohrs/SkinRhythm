@@ -253,25 +253,6 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Affiliate Disclosure Notice */}
-      <div className="bg-muted/30 border-b border-border/50">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 py-3">
-          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <Info className="h-4 w-4 flex-shrink-0" />
-            <span>
-              The small commission AcneAgent makes when you purchase your routine products through the affiliate links on this page allows AcneAgent to provide personalized, evidence-based guidance for free.{" "}
-              <Link 
-                href="/affiliate-disclosure"
-                className="text-foreground underline hover:no-underline"
-                data-testid="link-affiliate-disclosure-dashboard"
-              >
-                Learn more
-              </Link>
-            </span>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="container mx-auto px-4 md:px-8 lg:px-16 py-8">
         <div className="max-w-6xl mx-auto space-y-6">
@@ -289,6 +270,21 @@ export default function Dashboard() {
                     : 'acne'} ({currentRoutine.acneSeverity})
                 </span>
                 {isPremium && <Badge variant="secondary">Premium</Badge>}
+              </div>
+              
+              {/* Affiliate Disclosure */}
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                <Info className="h-4 w-4 flex-shrink-0" />
+                <span>
+                  The commissions earned through affiliate links on this page allow AcneAgent to offer expert-level services for free.{" "}
+                  <Link 
+                    href="/affiliate-disclosure"
+                    className="text-foreground underline hover:no-underline"
+                    data-testid="link-affiliate-disclosure-dashboard"
+                  >
+                    Learn more
+                  </Link>
+                </span>
               </div>
             </div>
             
