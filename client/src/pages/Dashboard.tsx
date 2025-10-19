@@ -316,37 +316,51 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Tabs */}
+          {/* Tabs - Horizontal Scrolling Carousel */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-3xl grid-cols-4" data-testid="tabs-dashboard">
-              <TabsTrigger value="products" data-testid="tab-products">
-                My Products
-              </TabsTrigger>
-              <TabsTrigger 
-                value="treatment" 
-                data-testid="tab-treatment"
-                className="gap-1.5"
+            <div className="relative">
+              {/* Gradient fade on left edge */}
+              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none md:hidden" />
+              {/* Gradient fade on right edge */}
+              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none md:hidden" />
+              
+              <TabsList 
+                className="w-full md:max-w-3xl inline-flex md:grid md:grid-cols-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth gap-1" 
+                data-testid="tabs-dashboard"
               >
-                <span>Treatment Plan</span>
-                {!isPremium && <Crown className="h-3.5 w-3.5" />}
-              </TabsTrigger>
-              <TabsTrigger 
-                value="ingredient-checker" 
-                data-testid="tab-ingredient-checker"
-                className="gap-1.5"
-              >
-                <span>Ingredient Scanner</span>
-                {!isPremium && <Crown className="h-3.5 w-3.5" />}
-              </TabsTrigger>
-              <TabsTrigger 
-                value="library" 
-                data-testid="tab-library"
-                className="gap-1.5"
-              >
-                <span>Routine Library</span>
-                {!isPremium && <Crown className="h-3.5 w-3.5" />}
-              </TabsTrigger>
-            </TabsList>
+                <TabsTrigger 
+                  value="products" 
+                  data-testid="tab-products"
+                  className="flex-shrink-0 snap-center min-w-[140px] md:min-w-0 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
+                >
+                  My Products
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="treatment" 
+                  data-testid="tab-treatment"
+                  className="flex-shrink-0 snap-center min-w-[180px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
+                >
+                  <span>Treatment Plan</span>
+                  {!isPremium && <Crown className="h-3.5 w-3.5 text-secondary" />}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="ingredient-checker" 
+                  data-testid="tab-ingredient-checker"
+                  className="flex-shrink-0 snap-center min-w-[200px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
+                >
+                  <span>Ingredient Scanner</span>
+                  {!isPremium && <Crown className="h-3.5 w-3.5 text-secondary" />}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="library" 
+                  data-testid="tab-library"
+                  className="flex-shrink-0 snap-center min-w-[170px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
+                >
+                  <span>Routine Library</span>
+                  {!isPremium && <Crown className="h-3.5 w-3.5 text-secondary" />}
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             {/* My Products Tab */}
             <TabsContent value="products" className="space-y-8 mt-6">
