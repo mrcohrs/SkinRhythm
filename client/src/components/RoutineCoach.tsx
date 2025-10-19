@@ -16,24 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { getProductById } from "@shared/productLibrary";
-
-import cleanserImg from "@assets/Cleanser_1760341831448.png";
-import tonerImg from "@assets/Toner_1760341831459.png";
-import serumImg from "@assets/serum_1760341636653.png";
-import hydratorImg from "@assets/hydrator_1760341831459.png";
-import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
-import spfImg from "@assets/SPF_1760341636654.png";
-import spotTreatmentImg from "@assets/BPO_1760341850620.png";
-
-const categoryImages: Record<string, string> = {
-  "Cleanser": cleanserImg,
-  "Toner": tonerImg,
-  "Serum": serumImg,
-  "Hydrator": hydratorImg,
-  "Moisturizer": moisturizerImg,
-  "SPF": spfImg,
-  "Spot Treatment": spotTreatmentImg,
-};
+import { getCategoryImage } from "@/lib/categoryImages";
 
 interface RoutineCoachProps {
   routineType: RoutineType;
@@ -119,7 +102,7 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
             size="icon"
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
             onClick={scrollPrev}
-            aria-label="Scroll to previous product"
+            aria-label="Scroll to previous products"
             data-testid="button-carousel-prev"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -132,7 +115,7 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
             size="icon"
             className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
             onClick={scrollNext}
-            aria-label="Scroll to next product"
+            aria-label="Scroll to next products"
             data-testid="button-carousel-next"
           >
             <ChevronRight className="h-5 w-5" />
@@ -143,7 +126,7 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
         <div className="flex gap-4">
           {options.map((option, idx) => {
             const isCurrent = currentProductSelections?.[option.category] === option.name;
-            const productImage = categoryImages[option.category] || categoryImages["Serum"];
+            const productImage = getCategoryImage(option.category);
             
             return (
               <div key={idx} className="flex-[0_0_280px] md:flex-[0_0_320px]">
@@ -194,14 +177,16 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
                           <ExternalLink className="h-4 w-4" />
                         </a>
                       </Button>
-                      {!isCurrent && onProductSelect && (
+                      {onProductSelect && (
                         <Button 
-                          variant="outline"
+                          variant={isCurrent ? "default" : "outline"}
                           className="w-full" 
-                          onClick={() => onProductSelect(option.category, option.name)}
+                          onClick={() => !isCurrent && onProductSelect(option.category, option.name)}
+                          disabled={isCurrent}
+                          aria-pressed={isCurrent}
                           data-testid={`button-set-current-${idx}`}
                         >
-                          Set as Current
+                          {isCurrent ? "Current Selection" : "Set as Current"}
                         </Button>
                       )}
                     </div>

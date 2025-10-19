@@ -26,24 +26,7 @@ import { Info, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
-
-import cleanserImg from "@assets/Cleanser_1760341831448.png";
-import tonerImg from "@assets/Toner_1760341831459.png";
-import serumImg from "@assets/serum_1760341636653.png";
-import hydratorImg from "@assets/hydrator_1760341831459.png";
-import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
-import spfImg from "@assets/SPF_1760341636654.png";
-import spotTreatmentImg from "@assets/BPO_1760341850620.png";
-
-const categoryImages: Record<string, string> = {
-  "Cleanser": cleanserImg,
-  "Toner": tonerImg,
-  "Serum": serumImg,
-  "Hydrator": hydratorImg,
-  "Moisturizer": moisturizerImg,
-  "SPF": spfImg,
-  "Spot Treatment": spotTreatmentImg,
-};
+import { getCategoryImage } from "@/lib/categoryImages";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -584,7 +567,7 @@ export default function Dashboard() {
                   </h4>
                   <div className="space-y-2">
                     {morningProducts.map((product: any, index: number) => {
-                      const productImage = categoryImages[product.category] || categoryImages["Serum"];
+                      const productImage = getCategoryImage(product.category);
                       return (
                         <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
                           <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
@@ -613,7 +596,7 @@ export default function Dashboard() {
                   </h4>
                   <div className="space-y-2">
                     {eveningProducts.map((product: any, index: number) => {
-                      const productImage = categoryImages[product.category] || categoryImages["Serum"];
+                      const productImage = getCategoryImage(product.category);
                       return (
                         <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
                           <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
@@ -1078,7 +1061,7 @@ Hyaluronic Acid"
                 <h3 className="font-medium">Morning Routine</h3>
                 <div className="space-y-2">
                   {((selectedRoutine.routineData as any)?.products?.morning || []).map((product: any, index: number) => {
-                    const productImage = categoryImages[product.category] || categoryImages["Serum"];
+                    const productImage = getCategoryImage(product.category);
                     return (
                       <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
                         <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
@@ -1105,7 +1088,7 @@ Hyaluronic Acid"
                 <h3 className="font-medium">Evening Routine</h3>
                 <div className="space-y-2">
                   {((selectedRoutine.routineData as any)?.products?.evening || []).map((product: any, index: number) => {
-                    const productImage = categoryImages[product.category] || categoryImages["Serum"];
+                    const productImage = getCategoryImage(product.category);
                     return (
                       <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
                         <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
