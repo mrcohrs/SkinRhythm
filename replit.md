@@ -31,6 +31,11 @@ Preferred communication style: Simple, everyday language.
   - Progress bar calculation uses `getVisibleStepNumber()` to accurately reflect visible steps (7 or 8 depending on skip logic)
   - All mandatory questions are answered before completion
 - **Post-Quiz Navigation**: Non-authenticated users see navigation header with logo (home link), retake quiz button, create account button, theme toggle, and mailing list signup section.
+- **Ice Globes Upsells**: Strategic product recommendations for ice globes tool displayed across three locations for inflamed routine types only:
+  - Quiz results page (RoutineDisplay): Shows compact upsell card after morning routine
+  - Dashboard My Products tab: Shows compact upsell card between morning and evening routines
+  - Weekly Treatment Plan: Shows compact upsell card before week-by-week schedule
+  - All upsells pull from centralized product library and include affiliate links
 - **Affiliate Disclosure**: Dedicated disclosure page at `/affiliate-disclosure` with FTC-compliant language. Disclosure notice banner appears at top of product recommendation pages, with footer links on all major pages.
 - **Privacy Policy**: Dedicated privacy policy page at `/privacy-policy` explaining data collection practices, third-party services, and contact information. Accessible via footer on all major pages (Landing, Dashboard, RoutineDisplay, AffiliateDisclosure, PrivacyPolicy).
 
@@ -102,8 +107,9 @@ Preferred communication style: Simple, everyday language.
 - **Database**: Neon serverless PostgreSQL.
 - **Product Data**: 
   - Product links CSV (`Product Links for Acne Agent Routine Product Options.xlsx - Alternatives (1)_1760657834377.csv`) for product recommendations
-  - Affiliate links CSV (`Affiliate Links - Sheet1_1760657834370.csv`) for affiliate link mappings
+  - Affiliate links CSV (`Affiliate Links - Sheet1_1760657834370.csv`) for affiliate link mappings (38 total)
   - Routine logic CSV (`Acne Agent Routine Logic.xlsx - Noninflamed (12)_1760647720504.csv`) for matching logic
+  - Centralized product library (`shared/productLibrary.ts`) with 21 products across 8 categories including new Tool category
 - **UI Components**: Radix UI primitives (`@radix-ui/*`).
 - **Form Management**: React Hook Form with Zod resolver.
 - **Fonts**: Inter and Playfair Display from Google Fonts CDN.

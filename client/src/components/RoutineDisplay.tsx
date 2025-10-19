@@ -52,8 +52,8 @@ export function RoutineDisplay({
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check if routine type has ice steps (inflamed or rosacea)
-  const hasIceStep = routineType && (routineType === 'inflamed' || routineType === 'rosacea');
+  // Check if routine type has ice steps (inflamed only)
+  const hasIceStep = routineType === 'inflamed';
   const iceGlobesProduct = getProductById('ice-globes');
 
   const handleMailingListSignup = async (e: React.FormEvent) => {

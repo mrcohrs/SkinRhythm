@@ -125,8 +125,8 @@ export default function Dashboard() {
   const isPremium = (user as any)?.isPremium || false;
   const isRoutineLoading = isLoading || isFetching;
 
-  // Check if routine type has ice steps (inflamed or rosacea)
-  const hasIceStep = routineType && (routineType === 'inflamed' || routineType === 'rosacea');
+  // Check if routine type has ice steps (inflamed only)
+  const hasIceStep = routineType === 'inflamed';
   const iceGlobesProduct = getProductById('ice-globes');
 
   const makeCurrentMutation = useMutation({
@@ -339,8 +339,8 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Ice Globes Upsell - Only for non-premium users with ice steps */}
-              {!isPremium && hasIceStep && iceGlobesProduct && (
+              {/* Ice Globes Upsell - For inflamed routines */}
+              {hasIceStep && iceGlobesProduct && (
                 <div className="space-y-2">
                   <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
                     <Snowflake className="w-4 h-4" />
