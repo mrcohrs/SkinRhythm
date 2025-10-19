@@ -84,16 +84,16 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
 
         <div className="p-6 space-y-3">
           <div>
-            <div className="flex items-start justify-between gap-2 mb-2">
-              <div className="flex-1">
+            <div className="flex items-start gap-2 mb-2">
+              <div className="flex-1 min-w-0">
                 <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
                   {product.category}
                 </Badge>
-                <h3 className="font-serif text-xl font-semibold text-foreground leading-tight" data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
+                <h3 className="font-serif text-xl font-semibold text-foreground leading-tight break-words" data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
                   {product.name}
                 </h3>
               </div>
-              <Badge variant="secondary" className="text-xs whitespace-nowrap" data-testid={`badge-tier-${product.priceTier}`}>
+              <Badge variant="secondary" className="text-xs whitespace-nowrap flex-shrink-0" data-testid={`badge-tier-${product.priceTier}`}>
                 {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
               </Badge>
             </div>
