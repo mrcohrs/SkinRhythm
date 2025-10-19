@@ -17,6 +17,24 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { getProductById } from "@shared/productLibrary";
 
+import cleanserImg from "@assets/Cleanser_1760341831448.png";
+import tonerImg from "@assets/Toner_1760341831459.png";
+import serumImg from "@assets/serum_1760341636653.png";
+import hydratorImg from "@assets/hydrator_1760341831459.png";
+import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
+import spfImg from "@assets/SPF_1760341636654.png";
+import spotTreatmentImg from "@assets/BPO_1760341850620.png";
+
+const categoryImages: Record<string, string> = {
+  "Cleanser": cleanserImg,
+  "Toner": tonerImg,
+  "Serum": serumImg,
+  "Hydrator": hydratorImg,
+  "Moisturizer": moisturizerImg,
+  "SPF": spfImg,
+  "Spot Treatment": spotTreatmentImg,
+};
+
 interface RoutineCoachProps {
   routineType: RoutineType;
   userName: string;
@@ -86,50 +104,57 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <h4 className="text-lg font-semibold">{title}</h4>
-        {options.length > 1 && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">
-              {selectedIndex + 1} / {options.length}
-            </span>
-            <div className="flex gap-1">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
-                onClick={scrollPrev}
-                disabled={!canScrollPrev}
-                data-testid="button-carousel-prev"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
-                onClick={scrollNext}
-                disabled={!canScrollNext}
-                data-testid="button-carousel-next"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        )}
+        <span className="text-sm text-muted-foreground">
+          {selectedIndex + 1} / {options.length}
+        </span>
       </div>
 
-      <div className="overflow-hidden" ref={emblaRef}>
+      <div className="relative">
+        {/* Scroll Buttons */}
+        {canScrollPrev && (
+          <Button
+            variant="outline"
+            size="icon"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
+            onClick={scrollPrev}
+            aria-label="Scroll to previous product"
+            data-testid="button-carousel-prev"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+        )}
+        
+        {canScrollNext && (
+          <Button
+            variant="outline"
+            size="icon"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
+            onClick={scrollNext}
+            aria-label="Scroll to next product"
+            data-testid="button-carousel-next"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+        )}
+
+        <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-4">
           {options.map((option, idx) => {
             const isCurrent = currentProductSelections?.[option.category] === option.name;
+            const productImage = categoryImages[option.category] || categoryImages["Serum"];
             
             return (
-              <div key={idx} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%]">
+              <div key={idx} className="flex-[0_0_280px] md:flex-[0_0_320px]">
                 <Card className="overflow-hidden hover-elevate h-full">
                   <CardContent className="p-6 space-y-4">
-                    <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
-                      <Package className="h-16 w-16 text-muted-foreground/50" />
+                    <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-8">
+                      <img 
+                        src={productImage} 
+                        alt={option.category} 
+                        className="w-full h-full object-contain drop-shadow-lg"
+                      />
                     </div>
                     <div className="space-y-2">
                       <div>
@@ -187,10 +212,11 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
           })}
         </div>
       </div>
+      </div>
 
       {/* Dot indicators */}
       {options.length > 1 && (
-        <div className="flex justify-center gap-2">
+        <div className="flex justify-center gap-2 mt-4">
           {options.map((_, idx) => (
             <button
               key={idx}
