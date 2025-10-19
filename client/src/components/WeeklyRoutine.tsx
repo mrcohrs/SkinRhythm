@@ -4,7 +4,8 @@ import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weekl
 import { Product } from "./ProductCard";
 import { CompactProductCard } from "./CompactProductCard";
 import { getProductById } from "@shared/productLibrary";
-import { Clock, Sun, Moon, Info, Snowflake } from "lucide-react";
+import { Clock, Sun, Moon, Info } from "lucide-react";
+import iceGlobesIcon from "@assets/ciice_1760874110365.png";
 
 interface WeeklyRoutineProps {
   routineType: RoutineType;
@@ -48,7 +49,7 @@ export function WeeklyRoutine({ routineType, products }: WeeklyRoutineProps) {
       {hasIceStep && iceGlobesProduct && (
         <div className="space-y-2">
           <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
-            <Snowflake className="w-4 h-4" />
+            <img src={iceGlobesIcon} alt="" className="w-4 h-4" />
             Recommended Tool for Ice Steps
           </h4>
           <CompactProductCard 
@@ -95,7 +96,7 @@ export function WeeklyRoutine({ routineType, products }: WeeklyRoutineProps) {
                         data-testid={`morning-step-${stepIndex}`}
                       >
                         {stepIndex + 1}. {step}
-                        {isIce && <Snowflake className="w-3 h-3" />}
+                        {isIce && <img src={iceGlobesIcon} alt="" className="w-3 h-3" />}
                       </Badge>
                     );
                   })}
@@ -132,7 +133,7 @@ export function WeeklyRoutine({ routineType, products }: WeeklyRoutineProps) {
                         data-testid={`evening-step-${stepIndex}`}
                       >
                         {stepIndex + 1}. {step}
-                        {isIce && <Snowflake className="w-3 h-3" />}
+                        {isIce && <img src={iceGlobesIcon} alt="" className="w-3 h-3" />}
                       </Badge>
                     );
                   })}

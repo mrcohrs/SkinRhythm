@@ -7,7 +7,8 @@ import { WeeklyRoutine } from "./WeeklyRoutine";
 import type { RoutineType } from "@shared/weeklyRoutines";
 import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
-import { Home, RefreshCw, LogIn, Mail, Info, Snowflake, ExternalLink } from "lucide-react";
+import iceGlobesIcon from "@assets/ciice_1760874110365.png";
+import { Home, RefreshCw, LogIn, Mail, Info, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -270,7 +271,7 @@ export function RoutineDisplay({
             {hasIceStep && iceGlobesProduct && (
               <div className="mt-8 space-y-2">
                 <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
-                  <Snowflake className="w-4 h-4" />
+                  <img src={iceGlobesIcon} alt="" className="w-4 h-4" />
                   Recommended Tool for Ice Steps
                 </h4>
                 <CompactProductCard 

@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Snowflake, Crown, Sun, Moon } from "lucide-react";
+import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Crown, Sun, Moon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useLocation } from "wouter";
@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
 import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import iceGlobesIcon from "@assets/ciice_1760874110365.png";
 import { Footer } from "@/components/Footer";
 import { Info } from "lucide-react";
 import { Link } from "wouter";
@@ -368,7 +369,7 @@ export default function Dashboard() {
               {hasIceStep && iceGlobesProduct && (
                 <div className="space-y-2">
                   <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
-                    <Snowflake className="w-4 h-4" />
+                    <img src={iceGlobesIcon} alt="" className="w-4 h-4" />
                     Recommended Tool for Ice Steps
                   </h4>
                   <CompactProductCard 
