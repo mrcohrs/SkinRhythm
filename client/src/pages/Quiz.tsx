@@ -175,6 +175,7 @@ export default function Quiz() {
           skinType={quizAnswers.skinType}
           acneTypes={quizAnswers.acneTypes}
           acneSeverity={quizAnswers.acneSeverity}
+          isPregnantOrNursing={quizAnswers.isPregnantOrNursing === 'yes'}
           routineType={routineData.routineType}
           products={routineData.products}
           isPremiumUser={(user as any)?.isPremium || false}

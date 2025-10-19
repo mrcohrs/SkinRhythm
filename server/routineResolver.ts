@@ -3,6 +3,7 @@ import type { RoutineRecommendation } from './parseExcel';
 
 // Resolve product IDs to full product objects for backward compatibility
 export function resolveRoutineProducts(routine: RoutineRecommendation, isPremiumUser: boolean = false): RoutineRecommendation {
+  console.log('[Resolver] Input routine has routineType:', routine.routineType);
   console.log('[Resolver] Resolving product IDs:', routine.productIds);
   
   const morningProducts = routine.productIds.morning

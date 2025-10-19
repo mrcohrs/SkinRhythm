@@ -26,6 +26,7 @@ Preferred communication style: Simple, everyday language.
 - **Theming**: Custom ThemeProvider with localStorage persistence for light/dark mode.
 - **Dashboard**: Provides authenticated users a personalized view of saved routines, detailed treatment plans (premium), and a routine library. Features include routine switching, retake quiz flow, and current routine management.
 - **Ingredient Checker**: Allows authenticated users to paste ingredient lists to identify 348 known acne-causing ingredients using word-boundary matching.
+- **Routine Display**: Features eyebrow-style badge tags showing skin characteristics (skin type, acne types, severity, pregnancy/nursing status) with outline-only borders and black text for clean visual hierarchy.
 - **Quiz Flow**: 8-step questionnaire with conditional logic and accurate progress tracking:
   - Steps: Name → Age → Skin Type → Skin Tone (visual) → Sun Reaction (conditional) → Acne Types → Severity → Pregnancy
   - Progress bar calculation uses `getVisibleStepNumber()` to accurately reflect visible steps (7 or 8 depending on skip logic)

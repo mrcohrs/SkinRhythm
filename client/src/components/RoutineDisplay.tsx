@@ -19,6 +19,7 @@ interface RoutineDisplayProps {
   skinType: string;
   acneTypes?: string[];
   acneSeverity?: string;
+  isPregnantOrNursing?: boolean;
   routineType?: RoutineType;
   products: {
     morning: Product[];
@@ -38,6 +39,7 @@ export function RoutineDisplay({
   skinType,
   acneTypes = [],
   acneSeverity,
+  isPregnantOrNursing = false,
   routineType,
   products,
   isPremiumUser = false,
@@ -151,25 +153,46 @@ export function RoutineDisplay({
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold mb-6" data-testid="text-greeting">
             {userName}
           </h1>
-          <p className="text-lg text-muted-foreground mb-8">
-            Your personalized skincare routine for{" "}
-            <span className="text-foreground font-medium" data-testid="badge-skin-type">{skinType} skin</span>
-            {acneTypes && acneTypes.length > 0 && (
-              <>
-                {" "}with{" "}
-                <span className="text-foreground font-medium">
-                  {acneTypes.map(type => type.replace('-', ' ')).join(', ')}
-                </span>
-              </>
-            )}
-            {acneSeverity && (
-              <>
-                {" "}({" "}
-                <span className="text-foreground font-medium">{acneSeverity}</span>
-                {" "}severity)
-              </>
-            )}
-          </p>
+          <div className="mb-8">
+            <p className="text-sm uppercase tracking-wide text-muted-foreground mb-3">Optimized for:</p>
+            <div className="flex flex-wrap gap-2">
+              <Badge 
+                variant="outline" 
+                className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                data-testid="badge-skin-type"
+              >
+                {skinType.charAt(0).toUpperCase() + skinType.slice(1)} Skin
+              </Badge>
+              {acneTypes && acneTypes.length > 0 && acneTypes.map((type, index) => (
+                <Badge 
+                  key={index}
+                  variant="outline" 
+                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                  data-testid={`badge-acne-type-${index}`}
+                >
+                  {type.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                </Badge>
+              ))}
+              {acneSeverity && (
+                <Badge 
+                  variant="outline" 
+                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                  data-testid="badge-severity"
+                >
+                  {acneSeverity.charAt(0).toUpperCase() + acneSeverity.slice(1)} Severity
+                </Badge>
+              )}
+              {isPregnantOrNursing && (
+                <Badge 
+                  variant="outline" 
+                  className="border-2 border-foreground bg-transparent text-foreground hover:bg-transparent"
+                  data-testid="badge-pregnancy"
+                >
+                  Pregnancy/Nursing Safe
+                </Badge>
+              )}
+            </div>
+          </div>
 
           <div className="mb-8">
             <Button
