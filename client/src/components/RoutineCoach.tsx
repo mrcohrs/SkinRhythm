@@ -130,19 +130,26 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
             
             return (
               <div key={idx} className="flex-[0_0_280px] md:flex-[0_0_320px]">
-                <Card className="overflow-hidden hover-elevate h-full">
-                  <CardContent className="p-6 space-y-4">
-                    <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-8">
+                <Card className="overflow-hidden hover-elevate flex flex-col h-full">
+                  <CardContent className="p-6 flex flex-col flex-1">
+                    <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-8 mb-4">
                       <img 
                         src={productImage} 
                         alt={option.category} 
                         className="w-full h-full object-contain drop-shadow-lg"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <div>
+                    
+                    <div className="flex-1 flex flex-col gap-3">
+                      <div className="space-y-2">
+                        <div className="space-y-1">
+                          <h5 className="font-semibold text-foreground leading-tight" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                            {option.name}
+                          </h5>
+                          <p className="text-sm text-muted-foreground">{option.category}</p>
+                        </div>
+                        
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h5 className="font-semibold text-foreground">{option.name}</h5>
                           {option.isDefault && (
                             <Badge variant="secondary" className="text-xs">
                               Default
@@ -153,42 +160,42 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
                               Current
                             </Badge>
                           )}
+                          {option.priceTier && !option.isDefault && (
+                            <Badge variant="outline" className="text-xs capitalize">
+                              {option.priceTier}
+                            </Badge>
+                          )}
                         </div>
-                        <p className="text-sm text-muted-foreground mt-1">{option.category}</p>
                       </div>
-                      {option.priceTier && !option.isDefault && (
-                        <Badge variant="outline" className="text-xs capitalize">
-                          {option.priceTier}
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Button 
-                        className="w-full gap-2" 
-                        asChild
-                        data-testid={`button-buy-product-${idx}`}
-                      >
-                        <a 
-                          href={option.affiliateLink} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                        >
-                          Buy Now
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
-                      </Button>
-                      {onProductSelect && (
+                      
+                      <div className="space-y-2 mt-auto">
                         <Button 
-                          variant={isCurrent ? "default" : "outline"}
-                          className="w-full" 
-                          onClick={() => !isCurrent && onProductSelect(option.category, option.name)}
-                          disabled={isCurrent}
-                          aria-pressed={isCurrent}
-                          data-testid={`button-set-current-${idx}`}
+                          className="w-full gap-2" 
+                          asChild
+                          data-testid={`button-buy-product-${idx}`}
                         >
-                          {isCurrent ? "Current Selection" : "Set as Current"}
+                          <a 
+                            href={option.affiliateLink} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            Buy Now
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
                         </Button>
-                      )}
+                        {onProductSelect && (
+                          <Button 
+                            variant={isCurrent ? "default" : "outline"}
+                            className="w-full" 
+                            onClick={() => !isCurrent && onProductSelect(option.category, option.name)}
+                            disabled={isCurrent}
+                            aria-pressed={isCurrent}
+                            data-testid={`button-set-current-${idx}`}
+                          >
+                            {isCurrent ? "Current Selection" : "Set as Current"}
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
