@@ -7,6 +7,14 @@ import { parseExcelFile, getRoutineForAnswers } from "./parseExcel";
 import { resolveRoutineProducts, resolveSavedRoutineProducts } from "./routineResolver";
 import { quizAnswersSchema } from "@shared/schema";
 import "./productAlternatives"; // Load product alternatives CSV
+import { 
+  getQuizResultsCards, 
+  getMyProductsCards, 
+  getCurrentBanner, 
+  recordCardAction,
+  type CardId,
+  type BannerId 
+} from "./cardVisibility";
 
 parseExcelFile();
 
@@ -364,6 +372,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error tracking scan:", error);
       res.status(500).json({ message: "Failed to track scan" });
+    }
+  });
+
+  // Card visibility endpoints
+  app.get('/api/cards/quiz-results', async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || null;
+      const cards = await getQuizResultsCards(userId);
+      res.json(cards);
+    } catch (error) {
+      console.error("Error fetching quiz results cards:", error);
+      res.status(500).json({ message: "Failed to fetch cards" });
+    }
+  });
+
+  app.get('/api/cards/my-products', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const cards = await getMyProductsCards(userId);
+      res.json(cards);
+    } catch (error) {
+      console.error("Error fetching my products cards:", error);
+      res.status(500).json({ message: "Failed to fetch cards" });
+    }
+  });
+
+  app.post('/api/cards/interact', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { cardId, action } = req.body as { cardId: CardId; action: "viewed" | "clicked" | "dismissed" };
+      
+      if (!cardId || !action) {
+        return res.status(400).json({ message: "Missing cardId or action" });
+      }
+      
+      await recordCardAction(userId, cardId, action);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error recording card interaction:", error);
+      res.status(500).json({ message: "Failed to record interaction" });
+    }
+  });
+
+  // Banner endpoints
+  app.get('/api/banner/current', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const banner = await getCurrentBanner(userId);
+      res.json(banner);
+    } catch (error) {
+      console.error("Error fetching current banner:", error);
+      res.status(500).json({ message: "Failed to fetch banner" });
+    }
+  });
+
+  app.post('/api/banner/dismiss', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { bannerId } = req.body as { bannerId: BannerId };
+      
+      if (!bannerId) {
+        return res.status(400).json({ message: "Missing bannerId" });
+      }
+      
+      // Dismiss for 14 days as per requirements
+      await storage.dismissBanner(userId, bannerId, 14);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error dismissing banner:", error);
+      res.status(500).json({ message: "Failed to dismiss banner" });
     }
   });
 
