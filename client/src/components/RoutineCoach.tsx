@@ -115,16 +115,16 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
         )}
 
         <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-4">
+        <div className="flex gap-6">
           {options.map((option, idx) => {
             const isCurrent = currentProductSelections?.[option.category] === option.name;
             const productImage = getCategoryImage(option.category);
             
             return (
-              <div key={idx} className="flex-[0_0_196px] md:flex-[0_0_224px] flex">
+              <div key={idx} className="flex-[0_0_280px] md:flex-[0_0_320px] flex">
                 <Card className="overflow-hidden hover-elevate flex flex-col h-full w-full">
-                  <CardContent className="p-4 flex flex-col flex-1">
-                    <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-6 mb-3">
+                  <CardContent className="p-6 flex flex-col flex-1">
+                    <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-8 mb-4">
                       <img 
                         src={productImage} 
                         alt={option.category} 
@@ -132,11 +132,11 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
                       />
                     </div>
                     
-                    <div className="flex-1 flex flex-col gap-2">
+                    <div className="flex-1 flex flex-col gap-3">
                       <div className="space-y-2">
                         <div className="space-y-1">
                           <h5 
-                            className="font-semibold text-sm text-foreground leading-tight" 
+                            className="font-semibold text-lg text-foreground leading-tight" 
                             style={{ 
                               display: '-webkit-box',
                               WebkitLineClamp: 2,
@@ -147,7 +147,7 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
                           >
                             {option.name}
                           </h5>
-                          <p className="text-xs text-muted-foreground">{option.category}</p>
+                          <p className="text-sm text-muted-foreground">{option.category}</p>
                         </div>
                         
                         <div className="flex items-center gap-2 flex-wrap">
@@ -171,8 +171,7 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
                       
                       <div className="space-y-2 mt-auto">
                         <Button 
-                          size="sm"
-                          className="w-full gap-1" 
+                          className="w-full gap-2" 
                           asChild
                           data-testid={`button-buy-product-${idx}`}
                         >
@@ -182,12 +181,11 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
                             rel="noopener noreferrer"
                           >
                             Buy Now
-                            <ExternalLink className="h-3 w-3" />
+                            <ExternalLink className="h-4 w-4" />
                           </a>
                         </Button>
                         {onProductSelect && (
                           <Button 
-                            size="sm"
                             variant={isCurrent ? "default" : "outline"}
                             className="w-full" 
                             onClick={() => !isCurrent && onProductSelect(option.category, option.name)}
