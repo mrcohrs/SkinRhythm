@@ -8,12 +8,14 @@ import type { RoutineType } from "@shared/weeklyRoutines";
 import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import iceGlobesIcon from "@assets/ciice_1760874110365.png";
-import { Home, RefreshCw, LogIn, Mail, Info, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { Home, RefreshCw, LogIn, Mail, Info, ExternalLink, ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
 import { Footer } from "./Footer";
+import useEmblaCarousel from "embla-carousel-react";
+import { getCategoryImage } from "@/lib/categoryImages";
 
 interface RoutineDisplayProps {
   userName: string;
@@ -60,6 +62,30 @@ export function RoutineDisplay({
   // Check if routine type has ice steps (inflamed only)
   const hasIceStep = routineType === 'inflamed';
   const iceGlobesProduct = getProductById('ice-globes');
+
+  // Combine all products for carousel
+  const allProducts = [...products.morning, ...products.evening];
+
+  // Carousel setup
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
 
   // Determine beauty product CTA
   const getBeautyCTA = () => {
@@ -242,10 +268,11 @@ export function RoutineDisplay({
           </div>
         )}
 
-        <div className="space-y-16">
+        <div className="space-y-8">
+          {/* Shoppable Product List - Horizontal Carousel */}
           <div>
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="font-serif text-3xl font-semibold" data-testid="tab-morning">Morning Routine</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-serif text-2xl font-semibold" data-testid="heading-shoppable-products">Your Routine Products</h3>
               {beautyCTA && (
                 <Button
                   variant="outline"
@@ -258,58 +285,144 @@ export function RoutineDisplay({
                 </Button>
               )}
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {products.morning.map((product, index) => (
-                <ProductCard
-                  key={index}
-                  product={product}
-                  isPremiumUser={isPremiumUser}
-                />
-              ))}
-            </div>
+            <p className="text-muted-foreground mb-6">Shop your personalized skincare routine</p>
             
-            {hasIceStep && iceGlobesProduct && (
-              <div className="mt-8 space-y-2">
-                <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
-                  <img src={iceGlobesIcon} alt="" className="w-4 h-4" />
-                  Recommended Tool for Ice Steps
-                </h4>
-                <CompactProductCard 
-                  product={{
-                    name: iceGlobesProduct.generalName,
-                    category: iceGlobesProduct.category,
-                    priceTier: iceGlobesProduct.priceTier,
-                    priceRange: iceGlobesProduct.priceRange,
-                    affiliateLink: iceGlobesProduct.affiliateLink!,
-                  }}
-                  description="Icing after cleansing can help reduce inflammation. Ice cubes work, but if you like convenience, these are well worth the money."
-                />
+            <div className="relative">
+              {/* Scroll Buttons */}
+              {canScrollPrev && (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
+                  onClick={scrollPrev}
+                  aria-label="Scroll to previous products"
+                  data-testid="button-carousel-prev"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+              )}
+              
+              {canScrollNext && (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
+                  onClick={scrollNext}
+                  aria-label="Scroll to next products"
+                  data-testid="button-carousel-next"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              )}
+
+              {/* Carousel */}
+              <div className="overflow-hidden" ref={emblaRef}>
+                <div className="flex gap-6">
+                  {allProducts.map((product, index) => (
+                    <div key={index} className="flex-[0_0_280px] md:flex-[0_0_320px] flex">
+                      <ProductCard
+                        product={product}
+                        isPremiumUser={isPremiumUser}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            )}
-            
-            {!isPremiumUser && <PremiumUpsell />}
+            </div>
           </div>
 
-          <div>
-            <h3 className="font-serif text-3xl font-semibold mb-8" data-testid="tab-evening">Evening Routine</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {products.evening.map((product, index) => (
-                <ProductCard
-                  key={index}
-                  product={product}
-                  isPremiumUser={isPremiumUser}
-                />
-              ))}
+          {/* Ice Globes Upsell - For inflamed routines */}
+          {hasIceStep && iceGlobesProduct && (
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold text-muted-foreground">
+                Recommended tool for people with inflamed acne
+              </h4>
+              <CompactProductCard 
+                product={{
+                  name: iceGlobesProduct.generalName,
+                  category: iceGlobesProduct.category,
+                  priceTier: iceGlobesProduct.priceTier,
+                  priceRange: iceGlobesProduct.priceRange,
+                  affiliateLink: iceGlobesProduct.affiliateLink!,
+                }}
+                description="Icing after cleansing can help reduce inflammation. Ice cubes work, but if you like convenience, these are well worth the money."
+              />
             </div>
-            {!isPremiumUser && (
-              <div className="mt-8">
-                <PremiumUpsell 
-                  title="Unlock Your Progressive Treatment Schedule"
-                  description="AcneAgent Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
-                />
+          )}
+
+          {/* Visual AM/PM Routine Display */}
+          <div className="space-y-6">
+            <h3 className="font-serif text-2xl font-semibold" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
+            
+            {/* Morning Routine Visual */}
+            <div>
+              <h4 className="text-lg font-medium mb-4 flex items-center gap-2" data-testid="tab-morning">
+                <Sun className="h-5 w-5 text-yellow-500" /> Morning Routine
+              </h4>
+              <div className="space-y-2">
+                {products.morning.map((product, index) => {
+                  const productImage = getCategoryImage(product.category);
+                  return (
+                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                        {index + 1}
+                      </span>
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+                        <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{product.name}</p>
+                        <p className="text-muted-foreground text-xs">{product.category}</p>
+                      </div>
+                      {product.priceTier && (
+                        <Badge variant="outline" className="text-xs flex-shrink-0">
+                          {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
+                        </Badge>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            )}
+            </div>
+
+            {/* Evening Routine Visual */}
+            <div>
+              <h4 className="text-lg font-medium mb-4 flex items-center gap-2" data-testid="tab-evening">
+                <Moon className="h-5 w-5 text-blue-400" /> Evening Routine
+              </h4>
+              <div className="space-y-2">
+                {products.evening.map((product, index) => {
+                  const productImage = getCategoryImage(product.category);
+                  return (
+                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                        {index + 1}
+                      </span>
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+                        <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{product.name}</p>
+                        <p className="text-muted-foreground text-xs">{product.category}</p>
+                      </div>
+                      {product.priceTier && (
+                        <Badge variant="outline" className="text-xs flex-shrink-0">
+                          {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
+                        </Badge>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
+
+          {!isPremiumUser && (
+            <PremiumUpsell 
+              title="Unlock Your Progressive Treatment Schedule"
+              description="AcneAgent Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
+            />
+          )}
         </div>
 
         {/* Mailing List Signup - Only for non-authenticated users */}

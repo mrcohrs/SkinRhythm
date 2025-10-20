@@ -113,13 +113,13 @@ export function ProductAlternativesModal({
                     data-testid={`button-view-product-${index}`}
                   >
                     <a href={option.affiliateLink} target="_blank" rel="noopener noreferrer">
-                      Buy
+                      Buy Now
                     </a>
                   </Button>
                   
                   {isCurrent ? (
                     <Badge variant="secondary" className="flex-1 justify-center text-xs h-8 items-center">
-                      Current
+                      Currently Using
                     </Badge>
                   ) : (
                     <Button
@@ -130,7 +130,7 @@ export function ProductAlternativesModal({
                       disabled={isPending}
                       data-testid={`button-set-current-${index}`}
                     >
-                      {isPending ? 'Setting...' : 'Use This'}
+                      {isPending ? 'Setting...' : 'Set as Currently Using'}
                     </Button>
                   )}
                 </div>
