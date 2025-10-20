@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weeklyRoutines";
-import { Product } from "./ProductCard";
+import { Product, ProductCard } from "./ProductCard";
 import { CompactProductCard } from "./CompactProductCard";
 import { RoutineNotes } from "./RoutineNotes";
 import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package, ChevronLeft, ChevronRight } from "lucide-react";
@@ -117,89 +117,27 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
         <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-6">
           {options.map((option, idx) => {
-            const isCurrent = currentProductSelections?.[option.category] === option.name;
-            const productImage = getCategoryImage(option.category);
+            const productData: Product = {
+              name: option.name,
+              brand: '',
+              category: option.category,
+              price: 0,
+              priceTier: (option.priceTier || 'standard') as "budget" | "standard" | "premium",
+              benefits: [],
+              affiliateLink: option.affiliateLink,
+              originalLink: option.originalLink,
+            };
             
             return (
               <div key={idx} className="flex-[0_0_280px] md:flex-[0_0_320px] flex">
-                <Card className="overflow-hidden hover-elevate flex flex-col h-full w-full">
-                  <CardContent className="p-6 flex flex-col flex-1">
-                    <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-8 mb-4">
-                      <img 
-                        src={productImage} 
-                        alt={option.category} 
-                        className="w-full h-full object-contain drop-shadow-lg"
-                      />
-                    </div>
-                    
-                    <div className="flex-1 flex flex-col gap-3">
-                      <div className="space-y-2">
-                        <div className="space-y-1">
-                          <h5 
-                            className="font-semibold text-lg text-foreground leading-tight" 
-                            style={{ 
-                              display: '-webkit-box',
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: 'vertical',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis'
-                            }}
-                          >
-                            {option.name}
-                          </h5>
-                          <p className="text-sm text-muted-foreground">{option.category}</p>
-                        </div>
-                        
-                        <div className="flex items-center gap-2 flex-wrap">
-                          {option.isDefault && (
-                            <Badge variant="secondary" className="text-xs">
-                              Default
-                            </Badge>
-                          )}
-                          {isCurrent && (
-                            <Badge className="text-xs bg-primary">
-                              Current
-                            </Badge>
-                          )}
-                          {option.priceTier && !option.isDefault && (
-                            <Badge variant="outline" className="text-xs capitalize">
-                              {option.priceTier}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2 mt-auto">
-                        <Button 
-                          className="w-full gap-2" 
-                          asChild
-                          data-testid={`button-buy-product-${idx}`}
-                        >
-                          <a 
-                            href={option.affiliateLink} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                          >
-                            Buy Now
-                            <ExternalLink className="h-4 w-4" />
-                          </a>
-                        </Button>
-                        {onProductSelect && (
-                          <Button 
-                            variant={isCurrent ? "default" : "outline"}
-                            className="w-full" 
-                            onClick={() => !isCurrent && onProductSelect(option.category, option.name)}
-                            disabled={isCurrent}
-                            aria-pressed={isCurrent}
-                            data-testid={`button-set-current-${idx}`}
-                          >
-                            {isCurrent ? "Current Selection" : "Set as Current"}
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <ProductCard
+                  product={productData}
+                  isPremiumUser={true}
+                  routineId={routineId}
+                  currentProductSelections={currentProductSelections}
+                  onProductSelect={onProductSelect}
+                  showExploreButton={false}
+                />
               </div>
             );
           })}
