@@ -707,12 +707,7 @@ export default function Dashboard() {
                     })}
                   </div>
                 </div>
-                {!isPremiumUser && (
-                  <PremiumUpsell 
-                    title="Unlock Your Progressive Treatment Schedule"
-                    description="AcneAgent Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
-                  />
-                )}
+
                 {/* Evening Routine Visual */}
                 <div>
                   <h4 className="text-lg font-medium mb-4 flex items-center gap-2">
