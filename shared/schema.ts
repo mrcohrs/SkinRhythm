@@ -1,12 +1,14 @@
 import { sql } from "drizzle-orm";
 import {
   index,
+  integer,
   jsonb,
   pgTable,
   text,
   timestamp,
   varchar,
   boolean,
+  numeric,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -30,18 +32,47 @@ export const users = pgTable("users", {
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
-  isPremium: boolean("is_premium").default(false),
+  isPremium: boolean("is_premium").default(false), // Legacy field - kept for backward compatibility, synced with membershipTier
+  // Membership tier and tracking (source of truth for access control)
+  membershipTier: varchar("membership_tier").default("free"), // free, premium, premium_plus
+  membershipExpiresAt: timestamp("membership_expires_at"),
+  isFoundingMember: boolean("is_founding_member").default(false),
+  // Ingredient scanner tracking (for free users only - premium gets unlimited)
+  scanCount: integer("scan_count").default(0), // Incremented on each scan for free users
   // Consent fields for AI training and data collection
   dataCollectionConsent: boolean("data_collection_consent").default(false),
   aiTrainingConsent: boolean("ai_training_consent").default(false),
   consentDate: timestamp("consent_date"),
-  consentVersion: varchar("consent_version"), // Track consent version for future updates
+  consentVersion: varchar("consent_version"), // Track consent version for future policy updates
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
+
+// Purchases table - Track one-time purchases
+export const purchases = pgTable("purchases", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  productType: varchar("product_type").notNull(), // detailed_pdf, scan_pack_5, scan_pack_20, unlimited_scanner
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
+  scansGranted: integer("scans_granted").default(0), // For scan packs (added to user balance)
+  isRecurring: boolean("is_recurring").default(false), // True for unlimited_scanner addon subscription
+  expiresAt: timestamp("expires_at"), // For recurring purchases like unlimited_scanner
+  stripePaymentId: varchar("stripe_payment_id"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("IDX_purchases_user_id").on(table.userId) // Index for efficient user purchase lookups
+]);
+
+export const insertPurchaseSchema = createInsertSchema(purchases).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertPurchase = z.infer<typeof insertPurchaseSchema>;
+export type Purchase = typeof purchases.$inferSelect;
 
 // Saved routines table
 export const routines = pgTable("routines", {
