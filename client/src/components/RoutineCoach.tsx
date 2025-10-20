@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -56,48 +56,35 @@ interface ProductCarouselProps {
 }
 
 function ProductCarousel({ options, title, routineId, currentProductSelections, onProductSelect }: ProductCarouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    loop: false, 
-    align: 'start',
-    containScroll: 'trimSnaps',
-    dragFree: false
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
-
-    const updateScrollState = () => {
-      setCanScrollPrev(emblaApi.canScrollPrev());
-      setCanScrollNext(emblaApi.canScrollNext());
-      setSelectedIndex(emblaApi.selectedScrollSnap());
-    };
-
-    emblaApi.on('select', updateScrollState);
-    emblaApi.on('reInit', updateScrollState);
-    updateScrollState();
-
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
     return () => {
-      emblaApi.off('select', updateScrollState);
-      emblaApi.off('reInit', updateScrollState);
+      emblaApi.off('select', onSelect);
+      emblaApi.off('reInit', onSelect);
     };
-  }, [emblaApi]);
-
-  const scrollPrev = () => emblaApi?.scrollPrev();
-  const scrollNext = () => emblaApi?.scrollNext();
+  }, [emblaApi, onSelect]);
 
   if (options.length === 0) return null;
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between mb-4">
-        <h4 className="text-lg font-semibold">{title}</h4>
-        <span className="text-sm text-muted-foreground">
-          {selectedIndex + 1} / {options.length}
-        </span>
-      </div>
+      <h4 className="text-lg font-semibold mb-4">{title}</h4>
 
       <div className="relative">
         {/* Scroll Buttons */}
@@ -221,26 +208,6 @@ function ProductCarousel({ options, title, routineId, currentProductSelections, 
         </div>
       </div>
       </div>
-
-      {/* Dot indicators */}
-      {options.length > 1 && (
-        <div className="flex justify-center gap-2 mt-4">
-          {options.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => emblaApi?.scrollTo(idx)}
-              className={cn(
-                "h-2 rounded-full transition-all",
-                selectedIndex === idx 
-                  ? "w-8 bg-secondary" 
-                  : "w-2 bg-muted-foreground/30"
-              )}
-              data-testid={`button-carousel-dot-${idx}`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }
