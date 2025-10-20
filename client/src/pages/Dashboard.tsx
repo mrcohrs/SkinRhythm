@@ -310,7 +310,17 @@ export default function Dashboard() {
           <div className="container mx-auto px-4 md:px-8 lg:px-16">
             <div className="flex h-16 items-center justify-between">
               <img src={logoPath} alt="AcneAgent" className="h-10" />
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={handleReferFriend}
+                  data-testid="button-refer-friend"
+                >
+                  <Share2 className="h-4 w-4" />
+                  Refer a Friend
+                </Button>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -419,7 +429,17 @@ export default function Dashboard() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
             <img src={logoPath} alt="AcneAgent" className="h-10" />
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2"
+                onClick={handleReferFriend}
+                data-testid="button-refer-friend"
+              >
+                <Share2 className="h-4 w-4" />
+                Refer a Friend
+              </Button>
               <Button
                 variant="ghost"
                 size="sm"
@@ -443,7 +463,7 @@ export default function Dashboard() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="font-serif text-3xl md:text-4xl text-foreground">
-                Your Routine{currentRoutine.name ? `, ${currentRoutine.name}` : ''}
+                {currentRoutine.name ? `${currentRoutine.name}` : ''}'s Routine
               </h1>
               <div className="text-muted-foreground mt-1 flex items-center gap-2 flex-wrap">
                 <span>
@@ -454,33 +474,10 @@ export default function Dashboard() {
                 {isPremium && <Badge variant="secondary">Premium</Badge>}
               </div>
               
-              {/* Affiliate Disclosure */}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
-                <Info className="h-4 w-4 flex-shrink-0" />
-                <span>
-                  The commissions earned through affiliate links on this page allow AcneAgent to offer expert-level services for free.{" "}
-                  <Link 
-                    href="/affiliate-disclosure"
-                    className="text-foreground underline hover:no-underline"
-                    data-testid="link-affiliate-disclosure-dashboard"
-                  >
-                    Learn more
-                  </Link>
-                </span>
-              </div>
+              
             </div>
             
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2"
-                onClick={handleReferFriend}
-                data-testid="button-refer-friend"
-              >
-                <Share2 className="h-4 w-4" />
-                Refer a Friend
-              </Button>
               <Button
                 variant="outline"
                 size="sm"
@@ -589,7 +586,26 @@ export default function Dashboard() {
               {/* Shoppable Product List - Horizontal Carousel */}
               <div>
                 <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-shoppable-products">Your Routine Products</h3>
-                <p className="text-muted-foreground mb-6">Shop your personalized skincare routine</p>
+                
+                
+                <p className="text-muted-foreground mb-6">{/* Affiliate Disclosure */}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                  <Info className="h-4 w-4 flex-shrink-0" />
+                  <span>
+                    The commissions earned through affiliate links on this page allow AcneAgent to offer expert-level services for free.{" "}
+                    <Link 
+                      href="/affiliate-disclosure"
+                      className="text-foreground underline hover:no-underline"
+                      data-testid="link-affiliate-disclosure-dashboard"
+                    >
+                      Learn more
+                    </Link>
+                  </span>
+                </div></p>
+               
+               
+                <p>   </p>
+
                 
                 <div className="relative">
                   {/* Scroll Buttons */}
