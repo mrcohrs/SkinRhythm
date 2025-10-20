@@ -57,9 +57,42 @@ Preferred communication style: Simple, everyday language.
 - **ORM**: Drizzle ORM for type-safe operations.
 - **Schema**: 
   - `sessions` (Replit Auth)
-  - `users` (profiles, `isPremium` flag, consent fields)
+  - `users` (profiles, membership tracking, consent fields)
+    - `membershipTier` (free/premium/premium_plus) - source of truth for access control
+    - `membershipExpiresAt` - validates active subscriptions
+    - `isFoundingMember` - tracks early adopters
+    - `scanCount` - tracks free tier scan usage
+    - `isPremium` - legacy field synced with membershipTier for backward compatibility
   - `routines` (user-specific routines including demographic and product data)
+  - `purchases` (one-time purchases: PDFs, scan packs, unlimited scanner addon)
+    - Indexed on userId for efficient entitlement lookups
 - **Migrations**: Drizzle Kit.
+
+### Monetization Infrastructure
+- **Membership Tiers**: Three-tier system (free, premium, premium_plus)
+  - Free: 3 ingredient scans, basic routine access
+  - Premium ($2.99-$5.99/month): Unlimited scans, Product Alternatives, Routine Coach, Routine Library
+  - Premium Plus: Enhanced features (future expansion)
+- **Scan Tracking System**: 
+  - API endpoint `/api/user/scan` enforces free tier limit (3 scans)
+  - Frontend displays real-time scan counter for free users
+  - Scan button disabled when exhausted with upgrade prompt
+  - Proper error handling clears stale results on limit reached
+- **Entitlements System** (`shared/entitlements.ts`):
+  - `getUserEntitlements()` - Single source of truth for feature access
+  - Validates membership expiry for both tiers and addon purchases
+  - Returns typed entitlements object with feature flags and scan counts
+- **Feature Gating**:
+  - Ingredient Scanner: Free users get 3 scans, premium unlimited
+  - Product Alternatives: Premium-only "Explore Options" button
+  - Routine Coach: Premium-only 6-week treatment schedules
+  - Routine Library: Premium-only saved routines management
+- **Planned Features** (not yet implemented):
+  - Scan packs (5 for $1.99, 20 for $3.99) - requires scan balance tracking
+  - Unlimited scanner addon ($3.49/month) - subscription tracking
+  - One-time PDF purchases ($9.99) - detailed treatment guides
+  - PricingModal component for upgrade flows
+  - Founding member pricing ($2.99 vs $5.99 standard)
 
 ### Consent & Privacy Infrastructure
 - **User Consent System**: Comprehensive consent management for data collection and AI training
