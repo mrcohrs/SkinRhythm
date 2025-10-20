@@ -15,6 +15,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { CompactProductCard } from "@/components/CompactProductCard";
 import { ConsentModal } from "@/components/ConsentModal";
 import { InfoCard } from "@/components/InfoCard";
+import { PromoBanner } from "@/components/PromoBanner";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
@@ -60,10 +61,25 @@ export default function Dashboard() {
     enabled: !!user,
   });
 
+  // Fetch current banner (premium users only)
+  const { data: currentBanner = null } = useQuery<any>({
+    queryKey: ['/api/banners/current'],
+    enabled: !!user,
+  });
+
   // Card interaction mutation
   const cardInteractMutation = useMutation({
     mutationFn: async ({ cardId, action }: { cardId: string; action: string }) => {
       return apiRequest('POST', '/api/cards/interact', { cardId, action });
+    },
+  });
+
+  // Banner interaction mutation
+  const bannerInteractMutation = useMutation({
+    mutationFn: async ({ bannerId, action }: { bannerId: string; action: string }) => {
+      const response = await apiRequest('POST', '/api/banners/interact', { bannerId, action });
+      queryClient.invalidateQueries({ queryKey: ['/api/banners/current'] });
+      return response;
     },
   });
 
@@ -477,6 +493,30 @@ export default function Dashboard() {
               </Button>
             </div>
           </div>
+
+          {/* Premium Banner (Weekly Rotation) */}
+          {currentBanner && (
+            <div className="mb-6">
+              <PromoBanner
+                message={currentBanner.message}
+                primaryCTA={currentBanner.primaryCTA}
+                onPrimaryClick={() => {
+                  bannerInteractMutation.mutate({ bannerId: currentBanner.bannerId, action: 'clicked' });
+                  // Navigate based on banner type
+                  if (currentBanner.bannerId === 'banner-a') {
+                    setActiveTab('ingredient-checker');
+                  } else if (currentBanner.bannerId === 'banner-b') {
+                    setActiveTab('treatment');
+                  } else if (currentBanner.bannerId === 'banner-c') {
+                    setActiveTab('products');
+                  }
+                }}
+                onDismiss={() => {
+                  bannerInteractMutation.mutate({ bannerId: currentBanner.bannerId, action: 'dismissed' });
+                }}
+              />
+            </div>
+          )}
 
           {/* Tabs - Horizontal Scrolling Carousel */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
