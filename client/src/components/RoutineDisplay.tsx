@@ -255,7 +255,7 @@ export function RoutineDisplay({
             <div className="mt-8">
               <PremiumUpsell 
                 title="Premium users see better results"
-                description="Upgrade to AcneAgent Premium (/month) for step-by-step guidance on how to properly ramp up on actives to best treat your acne. Includes personalized, weekly routine instructions with timing for benzoyl peroxide application and serum usage, access to premium product alternatives, and tools like an acne-safe ingredient checker to make sure you get clear and stay clear."
+                description="Lock in the Founder's rate ($2.99/month) for AcneAgent Premium. Get access to the AcneAgent Routine Coach for detailed instructions specific to your routine, premium product alternatives so you can further customize your routine, and tools like an acne-safe ingredient scanner to help you get clear and stay clear."
               />
             </div>
           )}
@@ -384,7 +384,12 @@ export function RoutineDisplay({
                 })}
               </div>
             </div>
-
+            {!isPremiumUser && (
+              <PremiumUpsell 
+                title="Unlock Your Progressive Treatment Schedule"
+                description="AcneAgent Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
+              />
+            )}
             {/* Evening Routine Visual */}
             <div>
               <h4 className="text-lg font-medium mb-4 flex items-center gap-2" data-testid="tab-evening">
@@ -417,12 +422,7 @@ export function RoutineDisplay({
             </div>
           </div>
 
-          {!isPremiumUser && (
-            <PremiumUpsell 
-              title="Unlock Your Progressive Treatment Schedule"
-              description="AcneAgent Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
-            />
-          )}
+          
         </div>
 
         {/* Mailing List Signup - Only for non-authenticated users */}
