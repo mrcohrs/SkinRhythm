@@ -81,23 +81,23 @@ export function ProductAlternativesModal({
             return (
               <div
                 key={index}
-                className={`flex items-center gap-4 p-4 rounded-lg border ${
+                className={`flex items-center gap-3 p-4 rounded-lg border overflow-hidden ${
                   isCurrent ? "border-primary/50 bg-primary/5" : ""
                 }`}
                 data-testid={`alternative-option-${index}`}
               >
-                <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-3">
+                <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2.5">
                   <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
                 </div>
                 
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 overflow-hidden">
                   <p className="font-medium text-sm truncate">{option.name}</p>
                   <Badge variant="outline" className="text-xs mt-1">
                     {option.priceTier === 'budget' ? 'Budget' : option.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
                   </Badge>
                 </div>
 
-                <div className="flex flex-col gap-2 flex-shrink-0">
+                <div className="flex flex-col gap-2 flex-shrink-0 w-[110px]">
                   <Button
                     size="sm"
                     className="gap-1 h-8 text-xs"
