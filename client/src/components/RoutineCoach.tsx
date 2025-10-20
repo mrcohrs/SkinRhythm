@@ -488,13 +488,15 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
 
               {/* Product Recommendations */}
               {(productOptions.length > 0 || bpoProductOptions.length > 0) && (
-                <ProductCarousel 
-                  options={isBPOMask ? bpoProductOptions : productOptions}
-                  title="Recommended for your skin type"
-                  routineId={routineId}
-                  currentProductSelections={localProductSelections}
-                  onProductSelect={handleProductSelect}
-                />
+                <div className="min-w-0">
+                  <ProductCarousel 
+                    options={isBPOMask ? bpoProductOptions : productOptions}
+                    title="Recommended for your skin type"
+                    routineId={routineId}
+                    currentProductSelections={localProductSelections}
+                    onProductSelect={handleProductSelect}
+                  />
+                </div>
               )}
 
               {/* Ice Globes Upsell - For ice steps */}
