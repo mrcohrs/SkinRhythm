@@ -27,12 +27,15 @@ export function setupLocalAuth(app: Express) {
           }
 
           // Return user in format compatible with session
+          // Set expires_at to 7 days from now (matching session TTL)
+          const expiresAt = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60);
           return done(null, { 
             claims: { 
               sub: user.id,
               email: user.email,
               first_name: user.firstName,
-            }
+            },
+            expires_at: expiresAt,
           });
         } catch (error) {
           return done(error);
@@ -63,12 +66,15 @@ export function setupLocalAuth(app: Express) {
       const user = await storage.createUserWithPassword(email, passwordHash, firstName);
 
       // Log the user in
+      // Set expires_at to 7 days from now (matching session TTL)
+      const expiresAt = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60);
       req.login({ 
         claims: { 
           sub: user.id,
           email: user.email,
           first_name: user.firstName,
-        }
+        },
+        expires_at: expiresAt,
       }, (err) => {
         if (err) {
           return res.status(500).json({ message: "Error logging in" });
