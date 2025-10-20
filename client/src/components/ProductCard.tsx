@@ -63,7 +63,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
   const showAlternativesSection = isPremiumUser && product.premiumOptions && product.premiumOptions.length > 0 && !showExploreButton;
 
   return (
-    <Card className={`group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
+    <Card className={`flex flex-col h-full group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
       {isLocked && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm rounded-xl z-10">
           <div className="text-center">
@@ -73,7 +73,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
         </div>
       )}
       
-      <CardContent className="p-0">
+      <CardContent className="p-0 flex flex-col flex-1">
         <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8">
           <img 
             src={productImage} 
@@ -82,30 +82,42 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
           />
         </div>
 
-        <div className="p-6 space-y-3">
-          <div>
-            <div className="flex items-start gap-2 mb-2">
-              <div className="flex-1 min-w-0">
-                <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
-                  {product.category}
+        <div className="p-6 flex flex-col flex-1">
+          <div className="space-y-3 flex-1">
+            <div>
+              <div className="flex items-start gap-2 mb-2">
+                <div className="flex-1 min-w-0">
+                  <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
+                    {product.category}
+                  </Badge>
+                  <h3 
+                    className="font-serif text-lg font-semibold text-foreground leading-tight" 
+                    style={{ 
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}
+                    data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}
+                  >
+                    {product.name}
+                  </h3>
+                </div>
+                <Badge variant="secondary" className="text-xs whitespace-nowrap flex-shrink-0" data-testid={`badge-tier-${product.priceTier}`}>
+                  {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
                 </Badge>
-                <h3 className="font-serif text-xl font-semibold text-foreground leading-tight" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }} data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}>
-                  {product.name}
-                </h3>
               </div>
-              <Badge variant="secondary" className="text-xs whitespace-nowrap flex-shrink-0" data-testid={`badge-tier-${product.priceTier}`}>
-                {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
-              </Badge>
+              {product.brand && <p className="text-sm text-muted-foreground">{product.brand}</p>}
+              {product.priceRange && <p className="text-sm font-medium text-foreground" data-testid="text-price-range">{product.priceRange}</p>}
             </div>
-            {product.brand && <p className="text-sm text-muted-foreground">{product.brand}</p>}
-            {product.priceRange && <p className="text-sm font-medium text-foreground" data-testid="text-price-range">{product.priceRange}</p>}
+            
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {product.benefits[0]}
+            </p>
           </div>
           
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {product.benefits[0]}
-          </p>
-          
-          <div className="pt-2 space-y-3">
+          <div className="pt-2 space-y-3 mt-auto">
             {isLocked ? (
               <Button
                 variant="ghost"
