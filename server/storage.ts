@@ -1,13 +1,19 @@
 import {
   users,
   routines,
+  cardInteractions,
+  bannerState,
   type User,
   type UpsertUser,
   type Routine,
   type InsertRoutine,
+  type CardInteraction,
+  type InsertCardInteraction,
+  type BannerState,
+  type InsertBannerState,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, sql as drizzleSql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -25,6 +31,16 @@ export interface IStorage {
   setCurrentProduct(userId: string, routineId: string, category: string, productName: string): Promise<Routine>;
   addRoutineNote(userId: string, routineId: string, text: string): Promise<Routine>;
   deleteRoutineNote(userId: string, routineId: string, noteId: string): Promise<Routine>;
+  
+  // Card interactions
+  recordCardInteraction(interaction: InsertCardInteraction): Promise<CardInteraction>;
+  getUserCardInteractions(userId: string): Promise<CardInteraction[]>;
+  getCardInteraction(userId: string, cardId: string): Promise<CardInteraction | undefined>;
+  
+  // Banner state
+  getUserBannerState(userId: string): Promise<BannerState | undefined>;
+  upsertBannerState(state: InsertBannerState): Promise<BannerState>;
+  dismissBanner(userId: string, bannerId: string, suppressDays: number): Promise<BannerState>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -313,6 +329,89 @@ export class DatabaseStorage implements IStorage {
       .returning();
 
     return updatedRoutine;
+  }
+
+  // Card interaction methods
+  async recordCardInteraction(interaction: InsertCardInteraction): Promise<CardInteraction> {
+    const [savedInteraction] = await db
+      .insert(cardInteractions)
+      .values(interaction)
+      .returning();
+    return savedInteraction;
+  }
+
+  async getUserCardInteractions(userId: string): Promise<CardInteraction[]> {
+    return await db
+      .select()
+      .from(cardInteractions)
+      .where(eq(cardInteractions.userId, userId))
+      .orderBy(desc(cardInteractions.timestamp));
+  }
+
+  async getCardInteraction(userId: string, cardId: string): Promise<CardInteraction | undefined> {
+    const [interaction] = await db
+      .select()
+      .from(cardInteractions)
+      .where(and(
+        eq(cardInteractions.userId, userId),
+        eq(cardInteractions.cardId, cardId)
+      ))
+      .orderBy(desc(cardInteractions.timestamp))
+      .limit(1);
+    return interaction;
+  }
+
+  // Banner state methods
+  async getUserBannerState(userId: string): Promise<BannerState | undefined> {
+    const [state] = await db
+      .select()
+      .from(bannerState)
+      .where(eq(bannerState.userId, userId));
+    return state;
+  }
+
+  async upsertBannerState(state: InsertBannerState): Promise<BannerState> {
+    const existing = await this.getUserBannerState(state.userId);
+    
+    if (existing) {
+      const [updated] = await db
+        .update(bannerState)
+        .set({
+          ...state,
+          updatedAt: new Date(),
+        })
+        .where(eq(bannerState.userId, state.userId))
+        .returning();
+      return updated;
+    }
+    
+    const [inserted] = await db
+      .insert(bannerState)
+      .values(state)
+      .returning();
+    return inserted;
+  }
+
+  async dismissBanner(userId: string, bannerId: string, suppressDays: number): Promise<BannerState> {
+    const existing = await this.getUserBannerState(userId);
+    
+    const suppressUntil = new Date();
+    suppressUntil.setDate(suppressUntil.getDate() + suppressDays);
+    
+    const suppressMap = (existing?.bannerSuppressUntil as Record<string, string>) || {};
+    suppressMap[bannerId] = suppressUntil.toISOString();
+    
+    const dismissedBanners = existing?.dismissedBanners || [];
+    if (!dismissedBanners.includes(bannerId)) {
+      dismissedBanners.push(bannerId);
+    }
+    
+    return await this.upsertBannerState({
+      userId,
+      dismissedBanners,
+      bannerSuppressUntil: suppressMap,
+      lastRotationDate: existing?.lastRotationDate || new Date(),
+    });
   }
 }
 

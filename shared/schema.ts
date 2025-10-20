@@ -101,6 +101,46 @@ export const insertRoutineSchema = createInsertSchema(routines).omit({
 export type InsertRoutine = z.infer<typeof insertRoutineSchema>;
 export type Routine = typeof routines.$inferSelect;
 
+// Card and banner interactions table - Track user interactions for visibility logic
+export const cardInteractions = pgTable("card_interactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  cardId: varchar("card_id").notNull(), // how-it-works, budgeting, scanner-access, makeup-reminder, contact-us
+  action: varchar("action").notNull(), // viewed, clicked, dismissed
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  suppressUntil: timestamp("suppress_until"), // When card can be shown again
+}, (table) => [
+  index("IDX_card_interactions_user_card").on(table.userId, table.cardId)
+]);
+
+export const insertCardInteractionSchema = createInsertSchema(cardInteractions).omit({
+  id: true,
+  timestamp: true,
+});
+
+export type InsertCardInteraction = z.infer<typeof insertCardInteractionSchema>;
+export type CardInteraction = typeof cardInteractions.$inferSelect;
+
+// Banner state for Premium users - Track weekly rotation and dismissals
+export const bannerState = pgTable("banner_state", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().unique().references(() => users.id),
+  dismissedBanners: text("dismissed_banners").array().default(sql`ARRAY[]::text[]`), // Array of dismissed banner IDs
+  bannerSuppressUntil: jsonb("banner_suppress_until"), // Map of bannerId -> suppress timestamp
+  lastRotationDate: timestamp("last_rotation_date").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("IDX_banner_state_user_id").on(table.userId)
+]);
+
+export const insertBannerStateSchema = createInsertSchema(bannerState).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export type InsertBannerState = z.infer<typeof insertBannerStateSchema>;
+export type BannerState = typeof bannerState.$inferSelect;
+
 // Quiz answers schema
 export const quizAnswersSchema = z.object({
   name: z.string().min(1, "Name is required"),
