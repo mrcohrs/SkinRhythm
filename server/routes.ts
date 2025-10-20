@@ -416,7 +416,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Banner endpoints
-  app.get('/api/banner/current', isAuthenticated, async (req: any, res) => {
+  app.get('/api/banners/current', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const banner = await getCurrentBanner(userId);
@@ -427,21 +427,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/banner/dismiss', isAuthenticated, async (req: any, res) => {
+  app.post('/api/banners/interact', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { bannerId } = req.body as { bannerId: BannerId };
+      const { bannerId, action } = req.body as { bannerId: BannerId; action: "viewed" | "clicked" | "dismissed" };
       
-      if (!bannerId) {
-        return res.status(400).json({ message: "Missing bannerId" });
+      if (!bannerId || !action) {
+        return res.status(400).json({ message: "Missing bannerId or action" });
       }
       
-      // Dismiss for 14 days as per requirements
-      await storage.dismissBanner(userId, bannerId, 14);
+      if (action === 'dismissed') {
+        // Dismiss for 14 days as per requirements
+        await storage.dismissBanner(userId, bannerId, 14);
+      } else if (action === 'clicked') {
+        // Track banner clicks
+        await storage.trackBannerClick(userId, bannerId);
+      } else if (action === 'viewed') {
+        // Track banner views
+        await storage.trackBannerView(userId, bannerId);
+      }
+      
       res.json({ success: true });
     } catch (error) {
-      console.error("Error dismissing banner:", error);
-      res.status(500).json({ message: "Failed to dismiss banner" });
+      console.error("Error recording banner interaction:", error);
+      res.status(500).json({ message: "Failed to record interaction" });
     }
   });
 

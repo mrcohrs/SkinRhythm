@@ -127,6 +127,8 @@ export const bannerState = pgTable("banner_state", {
   userId: varchar("user_id").notNull().unique().references(() => users.id),
   dismissedBanners: text("dismissed_banners").array().default(sql`ARRAY[]::text[]`), // Array of dismissed banner IDs
   bannerSuppressUntil: jsonb("banner_suppress_until"), // Map of bannerId -> suppress timestamp
+  bannerClicks: jsonb("banner_clicks"), // Map of bannerId -> click count
+  bannerViews: jsonb("banner_views"), // Map of bannerId -> view count
   lastRotationDate: timestamp("last_rotation_date").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 }, (table) => [

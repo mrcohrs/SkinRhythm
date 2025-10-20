@@ -41,6 +41,8 @@ export interface IStorage {
   getUserBannerState(userId: string): Promise<BannerState | undefined>;
   upsertBannerState(state: InsertBannerState): Promise<BannerState>;
   dismissBanner(userId: string, bannerId: string, suppressDays: number): Promise<BannerState>;
+  trackBannerClick(userId: string, bannerId: string): Promise<BannerState>;
+  trackBannerView(userId: string, bannerId: string): Promise<BannerState>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -410,6 +412,38 @@ export class DatabaseStorage implements IStorage {
       userId,
       dismissedBanners,
       bannerSuppressUntil: suppressMap,
+      lastRotationDate: existing?.lastRotationDate || new Date(),
+    });
+  }
+
+  async trackBannerClick(userId: string, bannerId: string): Promise<BannerState> {
+    const existing = await this.getUserBannerState(userId);
+    
+    const clicksMap = (existing?.bannerClicks as Record<string, number>) || {};
+    clicksMap[bannerId] = (clicksMap[bannerId] || 0) + 1;
+    
+    return await this.upsertBannerState({
+      userId,
+      dismissedBanners: existing?.dismissedBanners || [],
+      bannerSuppressUntil: existing?.bannerSuppressUntil || {},
+      bannerClicks: clicksMap,
+      bannerViews: existing?.bannerViews || {},
+      lastRotationDate: existing?.lastRotationDate || new Date(),
+    });
+  }
+
+  async trackBannerView(userId: string, bannerId: string): Promise<BannerState> {
+    const existing = await this.getUserBannerState(userId);
+    
+    const viewsMap = (existing?.bannerViews as Record<string, number>) || {};
+    viewsMap[bannerId] = (viewsMap[bannerId] || 0) + 1;
+    
+    return await this.upsertBannerState({
+      userId,
+      dismissedBanners: existing?.dismissedBanners || [],
+      bannerSuppressUntil: existing?.bannerSuppressUntil || {},
+      bannerClicks: existing?.bannerClicks || {},
+      bannerViews: viewsMap,
       lastRotationDate: existing?.lastRotationDate || new Date(),
     });
   }
