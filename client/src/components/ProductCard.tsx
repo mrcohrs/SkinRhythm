@@ -6,11 +6,11 @@ import { extractProductName } from "@/lib/extractProductName";
 
 import cleanserImg from "@assets/Cleanser_1760341831448.png";
 import tonerImg from "@assets/Toner_1760341831459.png";
-import serumImg from "@assets/serum_1760341636653.png";
-import hydratorImg from "@assets/hydrator_1760341831459.png";
+import serumImg from "@assets/acid_1760944347974.png";
+import hydratorImg from "@assets/hydra_1760944347978.png";
 import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
 import spfImg from "@assets/SPF_1760341636654.png";
-import spotTreatmentImg from "@assets/BPO_1760341850620.png";
+import spotTreatmentImg from "@assets/bpooo_1760944347978.png";
 
 export interface Product {
   name: string;
@@ -75,11 +75,13 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
       
       <CardContent className="p-0 flex flex-col flex-1">
         <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8">
-          <img 
-            src={productImage} 
-            alt={product.name} 
-            className="w-full h-full object-contain drop-shadow-lg"
-          />
+          <div className="w-32 h-32 flex items-center justify-center">
+            <img 
+              src={productImage} 
+              alt={product.name} 
+              className="max-w-full max-h-full object-contain drop-shadow-lg"
+            />
+          </div>
         </div>
 
         <div className="p-6 flex flex-col flex-1">

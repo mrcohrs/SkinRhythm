@@ -692,8 +692,8 @@ export default function Dashboard() {
                           <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
                             {index + 1}
                           </span>
-                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
-                            <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
+                            <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                           </div>
                           <div className="flex-1">
                             <p className="font-medium">{product.name}</p>
@@ -721,8 +721,8 @@ export default function Dashboard() {
                           <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
                             {index + 1}
                           </span>
-                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
-                            <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
+                            <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                           </div>
                           <div className="flex-1">
                             <p className="font-medium">{product.name}</p>

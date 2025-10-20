@@ -422,8 +422,8 @@ export function RoutineDisplay({
                       <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
                         {index + 1}
                       </span>
-                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
-                        <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
+                        <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">{product.name}</p>
@@ -458,8 +458,8 @@ export function RoutineDisplay({
                       <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
                         {index + 1}
                       </span>
-                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
-                        <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
+                        <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">{product.name}</p>
@@ -546,7 +546,7 @@ export function RoutineDisplay({
                 return (
                   <div key={index} className="flex items-center gap-4 p-4 rounded-lg border bg-card">
                     <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
-                      <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                      <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                     </div>
                     <div className="flex-1">
                       <p className="font-semibold mb-1">{product.name}</p>

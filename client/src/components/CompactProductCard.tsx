@@ -5,11 +5,11 @@ import { ExternalLink } from "lucide-react";
 
 import cleanserImg from "@assets/Cleanser_1760341831448.png";
 import tonerImg from "@assets/Toner_1760341831459.png";
-import serumImg from "@assets/serum_1760341636653.png";
-import hydratorImg from "@assets/hydrator_1760341831459.png";
+import serumImg from "@assets/acid_1760944347974.png";
+import hydratorImg from "@assets/hydra_1760944347978.png";
 import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
 import spfImg from "@assets/SPF_1760341636654.png";
-import spotTreatmentImg from "@assets/BPO_1760341850620.png";
+import spotTreatmentImg from "@assets/bpooo_1760944347978.png";
 import iceGlobesImg from "@assets/ciice_1760874110365.png";
 
 export interface CompactProduct {
@@ -43,11 +43,11 @@ export function CompactProductCard({ product, description }: CompactProductCardP
     <Card className="border-card-border hover-elevate transition-all" data-testid="card-compact-product">
       <CardContent className="p-4">
         <div className="flex gap-4 items-center">
-          <div className="w-20 h-20 flex-shrink-0 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-3">
+          <div className="w-20 h-20 flex-shrink-0 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
             <img 
               src={productImage} 
               alt={product.name} 
-              className="w-full h-full object-contain drop-shadow-md"
+              className="max-w-full max-h-full object-contain drop-shadow-md"
             />
           </div>
           
