@@ -6,17 +6,15 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weeklyRoutines";
-import { Product, ProductCard } from "./ProductCard";
+import { Product } from "./ProductCard";
 import { CompactProductCard } from "./CompactProductCard";
 import { RoutineNotes } from "./RoutineNotes";
-import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
-import useEmblaCarousel from 'embla-carousel-react';
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { getProductById } from "@shared/productLibrary";
-import { getCategoryImage } from "@/lib/categoryImages";
 
 interface RoutineCoachProps {
   routineType: RoutineType;
@@ -36,116 +34,6 @@ interface StepInfo {
   instructions: string;
   timeOfDay: 'morning' | 'evening';
   product?: Product;
-}
-
-interface ProductOption {
-  name: string;
-  category: string;
-  priceTier?: string;
-  affiliateLink: string;
-  originalLink: string;
-  isDefault: boolean;
-}
-
-interface ProductCarouselProps {
-  options: ProductOption[];
-  title: string;
-  routineId: string;
-  currentProductSelections?: Record<string, string>;
-  onProductSelect?: (category: string, productName: string) => void;
-}
-
-function ProductCarousel({ options, title, routineId, currentProductSelections, onProductSelect }: ProductCarouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
-    return () => {
-      emblaApi.off('select', onSelect);
-      emblaApi.off('reInit', onSelect);
-    };
-  }, [emblaApi, onSelect]);
-
-  if (options.length === 0) return null;
-
-  return (
-    <div className="space-y-4">
-      <h4 className="text-lg font-semibold mb-4">{title}</h4>
-
-      <div className="relative">
-        {/* Scroll Buttons */}
-        {canScrollPrev && (
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
-            onClick={scrollPrev}
-            aria-label="Scroll to previous products"
-            data-testid="button-carousel-prev"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-        )}
-        
-        {canScrollNext && (
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
-            onClick={scrollNext}
-            aria-label="Scroll to next products"
-            data-testid="button-carousel-next"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </Button>
-        )}
-
-        <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-6">
-          {options.map((option, idx) => {
-            const productData: Product = {
-              name: option.name,
-              brand: '',
-              category: option.category,
-              price: 0,
-              priceTier: (option.priceTier || 'standard') as "budget" | "standard" | "premium",
-              benefits: [],
-              affiliateLink: option.affiliateLink,
-              originalLink: option.originalLink,
-            };
-            
-            return (
-              <div key={idx} className="flex-[0_0_280px] md:flex-[0_0_320px] flex">
-                <ProductCard
-                  product={productData}
-                  isPremiumUser={true}
-                  routineId={routineId}
-                  currentProductSelections={currentProductSelections}
-                  onProductSelect={onProductSelect}
-                  showExploreButton={false}
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      </div>
-    </div>
-  );
 }
 
 export function RoutineCoach({ routineType, userName, products, routineId, currentProductSelections, notes }: RoutineCoachProps) {
@@ -248,48 +136,8 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
     return baseInstructions[stepName] || `Apply ${stepName.toLowerCase()} as directed.`;
   }
 
-  // Get all product options including default and premium alternatives
-  const getProductOptions = (product?: Product): ProductOption[] => {
-    if (!product) return [];
-    
-    const options: ProductOption[] = [];
-    
-    // Add the default product first
-    options.push({
-      name: product.name,
-      category: product.category,
-      priceTier: product.priceTier,
-      affiliateLink: product.affiliateLink,
-      originalLink: product.originalLink || product.affiliateLink,
-      isDefault: true
-    });
-    
-    // Add premium alternatives if available
-    if (product.premiumOptions && product.premiumOptions.length > 0) {
-      product.premiumOptions.forEach(option => {
-        options.push({
-          name: option.productName,
-          category: product.category,
-          priceTier: 'premium',
-          affiliateLink: option.affiliateLink,
-          originalLink: option.originalLink,
-          isDefault: false
-        });
-      });
-    }
-    
-    return options;
-  };
-
-  // Check if current step is a BPO Mask to show the BPO product
-  const isBPOMask = currentStep.name.includes('BPO') || currentStep.name.includes('Benzoyl Peroxide');
-  const bpoProduct = isBPOMask ? products.evening.find(p => p.category === 'Spot Treatment') : undefined;
-  
   // Check if current step is an ice step (includes "Ice" or "Ice (see notes)")
   const isIce = currentStep.name.includes('Ice');
-  
-  const productOptions = getProductOptions(currentStep.product);
-  const bpoProductOptions = isBPOMask ? getProductOptions(bpoProduct) : [];
 
   return (
     <div className="space-y-8" data-testid="routine-coach-container">
@@ -424,18 +272,6 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
                 </div>
               </div>
 
-              {/* Product Recommendations */}
-              {(productOptions.length > 0 || bpoProductOptions.length > 0) && (
-                <div className="min-w-0">
-                  <ProductCarousel 
-                    options={isBPOMask ? bpoProductOptions : productOptions}
-                    title="Recommended for your skin type"
-                    routineId={routineId}
-                    currentProductSelections={localProductSelections}
-                    onProductSelect={handleProductSelect}
-                  />
-                </div>
-              )}
 
               {/* Ice Globes Upsell - For ice steps */}
               {isIce && (() => {
