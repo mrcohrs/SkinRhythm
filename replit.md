@@ -16,6 +16,9 @@ The quiz uses an intuitive two-step visual flow to determine Fitzpatrick type:
 ## User Preferences
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+- **MVP Card & Banner System** (January 2025): Implemented comprehensive card and banner placements with user interaction tracking, suppression logic, and weekly rotation for premium users. Cards appear contextually on Quiz Results page and Dashboard tabs with priority-based visibility rules. Premium banners rotate weekly (A→B→C) with 14-day suppression on dismiss.
+
 ## System Architecture
 
 ### Frontend
@@ -41,6 +44,21 @@ Preferred communication style: Simple, everyday language.
 - **Beauty Products Page**: Placeholder page at `/beauty-products` for future acne-safe makeup and skin tint recommendations. Accessed via conditional CTA in routine display based on user's beauty product usage (makeup vs tinted moisturizer/SPF).
 - **Affiliate Disclosure**: Dedicated disclosure page at `/affiliate-disclosure` with FTC-compliant language. Disclosure notice banner appears at top of product recommendation pages, with footer links on all major pages.
 - **Privacy Policy**: Dedicated privacy policy page at `/privacy-policy` explaining data collection practices, third-party services, and contact information. Accessible via footer on all major pages (Landing, Dashboard, RoutineDisplay, AffiliateDisclosure, PrivacyPolicy).
+- **MVP Card System**: Context-aware info cards displayed on Quiz Results and Dashboard with intelligent visibility rules:
+  - **Card 1 (How it Works)**: Quiz Results only, explains routine logic, 7-day suppression on dismiss
+  - **Card 2 (Budgeting)**: Quiz Results only, core routine modal + product tier navigation, 30-day suppression if all products purchased
+  - **Card 3 (Contact Us)**: Dashboard My Products tab (last priority), contact form CTA
+  - **Card 4 (Scanner Access)**: Dashboard My Products tab (highest priority) + Scanner tab empty state, prompts ingredient scanner usage with dynamic scan count
+  - **Card 5 (Makeup Reminder)**: Dashboard My Products tab, conditional on beauty product usage, links to Beauty Products page, 14-day suppression after visit
+  - Max 1-2 cards per page with priority-based filtering
+  - Full interaction tracking (views, clicks, dismissals) with query invalidation
+- **Premium Banner System**: Weekly rotating promotional banners for premium users only, displayed above Dashboard tabs:
+  - **Banner A**: Promotes Ingredient Scanner feature
+  - **Banner B**: Promotes Routine Coach feature  
+  - **Banner C**: Promotes Product Alternatives feature
+  - Rotates weekly (A→B→C) based on user account age
+  - 14-day suppression on dismiss with fallback to next banner in rotation
+  - Click/view analytics tracking for future optimization
 
 ### Backend
 - **Server**: Express.js with TypeScript (Node.js).
@@ -58,6 +76,8 @@ Preferred communication style: Simple, everyday language.
 - **Schema**: 
   - `sessions` (Replit Auth)
   - `users` (profiles, membership tracking, consent fields)
+  - `cardInteractions` (view/click/dismiss tracking with timestamps and suppression)
+  - `bannerState` (weekly rotation state, dismissals, click/view counts per banner)
     - `membershipTier` (free/premium/premium_plus) - source of truth for access control
     - `membershipExpiresAt` - validates active subscriptions
     - `isFoundingMember` - tracks early adopters
