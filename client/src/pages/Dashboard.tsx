@@ -896,6 +896,34 @@ Hyaluronic Acid"
                     </CardContent>
                   </Card>
 
+                  {/* Empty State Card */}
+                  {!hasCheckedIngredients && myProductsCards.length > 0 && (
+                    <div className="mt-6">
+                      {myProductsCards
+                        .filter((card: any) => card.cardId === 'scanner-access')
+                        .map((card: any) => (
+                          <InfoCard
+                            key={card.cardId}
+                            title={card.title}
+                            body={card.body}
+                            primaryCTA={card.primaryCTA}
+                            onPrimaryClick={() => {
+                              cardInteractMutation.mutate({ cardId: card.cardId, action: 'clicked' });
+                              // Scroll to ingredient input
+                              const textarea = document.querySelector('[data-testid="textarea-ingredients"]');
+                              if (textarea) {
+                                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                (textarea as HTMLTextAreaElement).focus();
+                              }
+                            }}
+                            onDismiss={() => {
+                              cardInteractMutation.mutate({ cardId: card.cardId, action: 'dismissed' });
+                            }}
+                          />
+                        ))}
+                    </div>
+                  )}
+
                   {/* Results Section */}
                   {hasCheckedIngredients && ingredientResults && (
                     <div className="space-y-6">
