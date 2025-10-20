@@ -554,7 +554,7 @@ export function RoutineDisplay({
                     </div>
                     <Button
                       variant="outline"
-                      onClick={() => window.open(product.productLink, '_blank')}
+                      onClick={() => window.open(product.affiliateLink, '_blank')}
                       data-testid={`button-shop-core-${index}`}
                     >
                       Shop

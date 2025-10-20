@@ -14,6 +14,7 @@ import { RoutineCoach } from "@/components/RoutineCoach";
 import { ProductCard } from "@/components/ProductCard";
 import { CompactProductCard } from "@/components/CompactProductCard";
 import { ConsentModal } from "@/components/ConsentModal";
+import { InfoCard } from "@/components/InfoCard";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
@@ -52,6 +53,19 @@ export default function Dashboard() {
     totalChecked: number;
   } | null>(null);
   const [hasCheckedIngredients, setHasCheckedIngredients] = useState(false);
+
+  // Fetch cards for My Products tab
+  const { data: myProductsCards = [] } = useQuery<any[]>({
+    queryKey: ['/api/cards/my-products'],
+    enabled: !!user,
+  });
+
+  // Card interaction mutation
+  const cardInteractMutation = useMutation({
+    mutationFn: async ({ cardId, action }: { cardId: string; action: string }) => {
+      return apiRequest('POST', '/api/cards/interact', { cardId, action });
+    },
+  });
 
   // Carousel state - MUST be declared before any conditional returns
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
@@ -667,6 +681,38 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+
+              {/* Info Cards */}
+              {myProductsCards.length > 0 && (
+                <div className="mt-8 space-y-4">
+                  {myProductsCards.map((card: any) => (
+                    <InfoCard
+                      key={card.cardId}
+                      title={card.title}
+                      body={card.body}
+                      primaryCTA={card.primaryCTA}
+                      onPrimaryClick={() => {
+                        cardInteractMutation.mutate({ cardId: card.cardId, action: 'clicked' });
+                        if (card.cardId === 'scanner-access') {
+                          setActiveTab('ingredient-checker');
+                        } else if (card.cardId === 'makeup-reminder') {
+                          window.open('/beauty-products', '_blank');
+                        } else if (card.cardId === 'contact-us') {
+                          // TODO: Open contact modal or navigate to contact page
+                          toast({
+                            title: "Contact Us",
+                            description: "Contact functionality coming soon!",
+                          });
+                        }
+                      }}
+                      onDismiss={() => {
+                        cardInteractMutation.mutate({ cardId: card.cardId, action: 'dismissed' });
+                      }}
+                      variant={card.cardId === 'contact-us' && isPremium ? 'compact' : 'default'}
+                    />
+                  ))}
+                </div>
+              )}
             </TabsContent>
 
             {/* Routine Coach Tab */}
