@@ -1,9 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { ProductCard, type Product } from "./ProductCard";
 import { CompactProductCard } from "./CompactProductCard";
 import { PremiumUpsell } from "./PremiumUpsell";
 import { WeeklyRoutine } from "./WeeklyRoutine";
+import { InfoCard } from "./InfoCard";
 import type { RoutineType } from "@shared/weeklyRoutines";
 import { getProductById } from "@shared/productLibrary";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
@@ -16,6 +24,8 @@ import { Link } from "wouter";
 import { Footer } from "./Footer";
 import useEmblaCarousel from "embla-carousel-react";
 import { getCategoryImage } from "@/lib/categoryImages";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 interface RoutineDisplayProps {
   userName: string;
@@ -58,6 +68,20 @@ export function RoutineDisplay({
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCoreRoutineModal, setShowCoreRoutineModal] = useState(false);
+
+  // Fetch cards for quiz results page
+  const { data: cards = [] } = useQuery<any[]>({
+    queryKey: ['/api/cards/quiz-results'],
+    enabled: isAuthenticated,
+  });
+
+  // Card interaction mutation
+  const cardInteractMutation = useMutation({
+    mutationFn: async ({ cardId, action }: { cardId: string; action: string }) => {
+      return apiRequest('POST', '/api/cards/interact', { cardId, action });
+    },
+  });
 
   // Check if routine type has ice steps (inflamed only)
   const hasIceStep = routineType === 'inflamed';
@@ -251,6 +275,37 @@ export function RoutineDisplay({
               Retake Quiz
             </Button>
           </div>
+
+          {/* Info Cards */}
+          {isAuthenticated && cards.length > 0 && (
+            <div className="mt-8 space-y-4">
+              {cards.map((card: any) => (
+                <InfoCard
+                  key={card.cardId}
+                  title={card.title}
+                  body={card.body}
+                  primaryCTA={card.primaryCTA}
+                  secondaryCTA={card.secondaryCTA}
+                  onPrimaryClick={() => {
+                    cardInteractMutation.mutate({ cardId: card.cardId, action: 'clicked' });
+                    if (card.cardId === 'how-it-works' || card.cardId === 'budgeting') {
+                      // Navigate to dashboard
+                      if (onHomeClick) onHomeClick();
+                    }
+                  }}
+                  onSecondaryClick={card.secondaryCTA ? () => {
+                    if (card.cardId === 'budgeting') {
+                      setShowCoreRoutineModal(true);
+                    }
+                  } : undefined}
+                  onDismiss={() => {
+                    cardInteractMutation.mutate({ cardId: card.cardId, action: 'dismissed' });
+                  }}
+                />
+              ))}
+            </div>
+          )}
+
           {!isPremiumUser && (
             <div className="mt-8">
               <PremiumUpsell 
@@ -460,6 +515,57 @@ export function RoutineDisplay({
         )}
         </div>
       </div>
+      
+      {/* Core Routine Modal */}
+      <Dialog open={showCoreRoutineModal} onOpenChange={setShowCoreRoutineModal}>
+        <DialogContent className="max-w-2xl" data-testid="dialog-core-routine">
+          <DialogHeader>
+            <DialogTitle className="font-serif text-2xl">Core Routine Essentials</DialogTitle>
+            <DialogDescription>
+              If you can't get your entire routine right now, start with these three essentials to keep your skin balanced and healthy (approx. $60 total).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 mt-4">
+            {/* Find Cleanser, Moisturizer, and SPF from products */}
+            {(() => {
+              const coreCategories = ['Cleanser', 'Moisturizer', 'SPF'];
+              const coreProducts = [...products.morning, ...products.evening].filter(p => 
+                coreCategories.includes(p.category)
+              );
+              // Remove duplicates based on category
+              const uniqueCoreProducts = coreProducts.reduce((acc: Product[], current) => {
+                const exists = acc.find(p => p.category === current.category);
+                if (!exists) {
+                  return acc.concat([current]);
+                }
+                return acc;
+              }, []);
+              
+              return uniqueCoreProducts.map((product, index) => {
+                const productImage = getCategoryImage(product.category);
+                return (
+                  <div key={index} className="flex items-center gap-4 p-4 rounded-lg border bg-card">
+                    <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+                      <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold mb-1">{product.name}</p>
+                      <p className="text-sm text-muted-foreground">{product.category}</p>
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => window.open(product.productLink, '_blank')}
+                      data-testid={`button-shop-core-${index}`}
+                    >
+                      Shop
+                    </Button>
+                  </div>
+                );
+              });
+            })()}
+          </div>
+        </DialogContent>
+      </Dialog>
       
       <Footer />
     </div>
