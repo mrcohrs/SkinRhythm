@@ -320,6 +320,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Scan tracking endpoint
+  app.post('/api/user/scan', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Check if user is premium or has unlimited scans
+      const membershipActive = !user.membershipExpiresAt || new Date(user.membershipExpiresAt) > new Date();
+      const isPremium = (user.membershipTier === "premium" || user.membershipTier === "premium_plus") && membershipActive;
+      
+      if (isPremium) {
+        // Premium users have unlimited scans, no need to track
+        return res.json({ 
+          success: true, 
+          scansRemaining: "unlimited" 
+        });
+      }
+      
+      // Check if free user has scans remaining
+      const FREE_TIER_SCANS = 3;
+      const currentScans = user.scanCount || 0;
+      
+      if (currentScans >= FREE_TIER_SCANS) {
+        return res.status(403).json({ 
+          message: "No scans remaining. Upgrade to Premium for unlimited scans.",
+          scansRemaining: 0
+        });
+      }
+      
+      // Increment scan count
+      await storage.incrementScanCount(userId);
+      const scansRemaining = FREE_TIER_SCANS - (currentScans + 1);
+      
+      res.json({ 
+        success: true, 
+        scansRemaining 
+      });
+    } catch (error) {
+      console.error("Error tracking scan:", error);
+      res.status(500).json({ message: "Failed to track scan" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

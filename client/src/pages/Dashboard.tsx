@@ -204,10 +204,59 @@ export default function Dashboard() {
     alert('Referral link copied to clipboard!');
   };
 
+  const scanMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest('POST', '/api/user/scan', {});
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to track scan');
+      }
+      return await response.json();
+    },
+    onSuccess: (data) => {
+      // Refetch user data to update scan count display
+      queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
+      
+      // Perform the ingredient check
+      const checkResults = checkIngredients(ingredientInput);
+      setIngredientResults(checkResults);
+      setHasCheckedIngredients(true);
+      
+      // Show remaining scans for free users
+      if (typeof data.scansRemaining === 'number') {
+        toast({
+          title: "Scan complete",
+          description: `${data.scansRemaining} scan${data.scansRemaining === 1 ? '' : 's'} remaining`,
+        });
+      }
+    },
+    onError: (error: Error) => {
+      // Clear any stale results when scan limit is reached
+      setIngredientResults(null);
+      setHasCheckedIngredients(false);
+      
+      // Refetch user data to show updated scan count
+      queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
+      
+      toast({
+        title: "Scan limit reached",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  });
+
   const handleCheckIngredients = () => {
-    const checkResults = checkIngredients(ingredientInput);
-    setIngredientResults(checkResults);
-    setHasCheckedIngredients(true);
+    if (!user) {
+      // Not authenticated - just check ingredients without tracking
+      const checkResults = checkIngredients(ingredientInput);
+      setIngredientResults(checkResults);
+      setHasCheckedIngredients(true);
+      return;
+    }
+    
+    // Authenticated user - track the scan
+    scanMutation.mutate();
   };
 
   const handleClearIngredients = () => {
@@ -687,50 +736,78 @@ export default function Dashboard() {
 
             {/* Ingredient Checker Tab */}
             <TabsContent value="ingredient-checker" className="space-y-6 mt-6">
-              {!isPremium ? (
-                <Card className="border-primary/20" data-testid="card-ingredient-upgrade">
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-2">
-                      <Crown className="h-10 w-10 text-primary flex-shrink-0" />
-                      <div>
-                        <CardTitle>Premium Feature: Ingredient Scanner</CardTitle>
-                        <CardDescription>
-                          Instantly check if products contain acne-causing ingredients
-                        </CardDescription>
+              <div className="max-w-4xl mx-auto space-y-6">
+                {/* Free User Scan Counter */}
+                {!isPremium && (
+                  <Card className="border-primary/20">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <FlaskConical className="h-5 w-5 text-primary" />
+                          <div>
+                            <div className="font-medium">
+                              {Math.max(0, 3 - (user?.scanCount || 0))} free scan{Math.max(0, 3 - (user?.scanCount || 0)) === 1 ? '' : 's'} remaining
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              Upgrade to Premium for unlimited scans
+                            </div>
+                          </div>
+                        </div>
+                        <Button size="sm" data-testid="button-upgrade-scans">
+                          <Crown className="h-4 w-4 mr-2" />
+                          Upgrade
+                        </Button>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    </CardContent>
+                  </Card>
+                )}
+                
+                {/* Out of Scans - Upgrade Prompt */}
+                {!isPremium && user?.scanCount && user.scanCount >= 3 ? (
+                  <Card className="border-primary/20" data-testid="card-scans-exhausted">
+                    <CardHeader>
+                      <div className="flex items-center gap-3 mb-2">
+                        <Crown className="h-10 w-10 text-primary flex-shrink-0" />
                         <div>
-                          <h4 className="font-medium">348 Acne-Causing Ingredients Database</h4>
-                          <p className="text-sm text-muted-foreground">Comprehensive database of comedogenic ingredients</p>
+                          <CardTitle>Out of Free Scans</CardTitle>
+                          <CardDescription>
+                            Upgrade to Premium for unlimited ingredient scans
+                          </CardDescription>
                         </div>
                       </div>
-                      <div className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium">Instant Analysis</h4>
-                          <p className="text-sm text-muted-foreground">Paste ingredient lists and get immediate results</p>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-3">
+                          <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                          <div>
+                            <h4 className="font-medium">Unlimited Ingredient Scans</h4>
+                            <p className="text-sm text-muted-foreground">Check as many products as you want</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                          <div>
+                            <h4 className="font-medium">Product Alternatives</h4>
+                            <p className="text-sm text-muted-foreground">Explore budget and premium product options</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                          <div>
+                            <h4 className="font-medium">6-Week Routine Coach</h4>
+                            <p className="text-sm text-muted-foreground">Detailed week-by-week treatment guidance</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-medium">Safe Product Verification</h4>
-                          <p className="text-sm text-muted-foreground">Verify that your products won't trigger breakouts</p>
-                        </div>
-                      </div>
-                    </div>
-                    <Button data-testid="button-upgrade-ingredient" className="w-full">
-                      Upgrade to Premium
-                    </Button>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="max-w-4xl mx-auto space-y-6">
+                      <Button data-testid="button-upgrade-no-scans" className="w-full">
+                        <Crown className="h-4 w-4 mr-2" />
+                        Upgrade to Premium
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="space-y-6">
                   {/* Input Section */}
                   <Card>
                     <CardHeader>
@@ -755,11 +832,11 @@ Hyaluronic Acid"
                       <div className="flex gap-3">
                         <Button
                           onClick={handleCheckIngredients}
-                          disabled={!ingredientInput.trim()}
+                          disabled={!ingredientInput.trim() || scanMutation.isPending || (!isPremium && user && (user.scanCount || 0) >= 3)}
                           className="flex-1"
                           data-testid="button-check-ingredients"
                         >
-                          Check Ingredients
+                          {scanMutation.isPending ? 'Checking...' : 'Check Ingredients'}
                         </Button>
                         <Button
                           variant="outline"
@@ -899,6 +976,7 @@ Hyaluronic Acid"
                   )}
                 </div>
               )}
+              </div>
             </TabsContent>
 
             {/* Routine Library Tab */}
