@@ -68,10 +68,9 @@ export default function Quiz() {
         title: "Success",
         description: "Your routine has been saved!",
       });
-      // Redirect to dashboard if user is logged in
-      if (user) {
-        setLocation('/dashboard');
-      }
+      // Always redirect to dashboard after saving routine
+      // (saving only happens when user is authenticated)
+      setLocation('/dashboard');
     },
   });
 

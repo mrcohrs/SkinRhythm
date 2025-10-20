@@ -73,10 +73,16 @@ export function setupLocalAuth(app: Express) {
         if (err) {
           return res.status(500).json({ message: "Error logging in" });
         }
-        res.json({ 
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
+        // Explicitly save session before responding to ensure it's persisted
+        req.session.save((saveErr) => {
+          if (saveErr) {
+            return res.status(500).json({ message: "Error saving session" });
+          }
+          res.json({ 
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+          });
         });
       });
     } catch (error) {
@@ -100,11 +106,17 @@ export function setupLocalAuth(app: Express) {
           return res.status(500).json({ message: "Error logging in" });
         }
         
-        // Return user data
-        res.json({
-          id: user.claims.sub,
-          email: user.claims.email,
-          firstName: user.claims.first_name,
+        // Explicitly save session before responding to ensure it's persisted
+        req.session.save((saveErr) => {
+          if (saveErr) {
+            return res.status(500).json({ message: "Error saving session" });
+          }
+          // Return user data
+          res.json({
+            id: user.claims.sub,
+            email: user.claims.email,
+            firstName: user.claims.first_name,
+          });
         });
       });
     })(req, res, next);
