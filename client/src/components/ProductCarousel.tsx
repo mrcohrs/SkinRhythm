@@ -7,30 +7,22 @@ import useEmblaCarousel from "embla-carousel-react";
 import { cn } from "@/lib/utils";
 import { getCategoryImage } from "@/lib/categoryImages";
 
-interface ProductOption {
-  id: string;
-  generalName: string;
-  category: string;
-  priceTier: "budget" | "standard" | "premium";
-  priceRange?: string;
-  defaultProductLink?: string;
-  defaultProductName?: string;
-  affiliateLink?: string;
-  premiumOptions?: Array<{
-    originalLink: string;
-    affiliateLink: string;
-    productName: string;
-  }>;
-}
-
 interface ProductCarouselProps {
   category: string;
-  currentProduct?: {
+  currentProduct: {
     name: string;
     category: string;
+    brand: string;
+    affiliateLink: string;
+    priceTier: "budget" | "standard" | "premium";
+    priceRange?: string;
+    premiumOptions?: Array<{
+      originalLink: string;
+      affiliateLink: string;
+      productName: string;
+    }>;
   };
-  alternatives: ProductOption[];
-  onProductSelect: (productId: string, productName: string) => void;
+  onProductSelect: (category: string, productName: string) => void;
   isUpdating?: boolean;
   currentProductSelection?: string;
 }
@@ -38,7 +30,6 @@ interface ProductCarouselProps {
 export function ProductCarousel({
   category,
   currentProduct,
-  alternatives,
   onProductSelect,
   isUpdating,
   currentProductSelection,
@@ -72,51 +63,33 @@ export function ProductCarousel({
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
-  if (alternatives.length === 0) {
-    return null;
-  }
-
   const categoryImage = getCategoryImage(category);
 
-  // Build all product cards (default product + all premium options from all alternatives)
+  // Build all product cards (default product + all premium options)
   const allProductCards: Array<{
-    id: string;
     name: string;
-    link: string;
     affiliateLink: string;
     priceTier: string;
     priceRange?: string;
     isCurrentSelection: boolean;
-    sourceProduct: ProductOption;
   }> = [];
 
-  // Add all alternatives and their premium options
-  alternatives.forEach((alt) => {
-    // Add the default product
-    if (alt.defaultProductName && alt.defaultProductLink) {
-      allProductCards.push({
-        id: alt.id,
-        name: alt.defaultProductName,
-        link: alt.defaultProductLink,
-        affiliateLink: alt.affiliateLink || alt.defaultProductLink,
-        priceTier: alt.priceTier === 'budget' ? 'Budget' : alt.priceTier === 'premium' ? 'Luxury' : 'Midrange',
-        priceRange: alt.priceRange,
-        isCurrentSelection: currentProductSelection === alt.defaultProductName,
-        sourceProduct: alt,
-      });
-    }
+  // Add the default product (current product for this step)
+  allProductCards.push({
+    name: currentProduct.name,
+    affiliateLink: currentProduct.affiliateLink,
+    priceTier: currentProduct.priceTier === 'budget' ? 'Budget' : currentProduct.priceTier === 'premium' ? 'Luxury' : 'Midrange',
+    priceRange: currentProduct.priceRange,
+    isCurrentSelection: currentProductSelection === currentProduct.name,
+  });
 
-    // Add premium options if they exist
-    alt.premiumOptions?.forEach((option) => {
-      allProductCards.push({
-        id: `${alt.id}-premium-${option.productName}`,
-        name: option.productName,
-        link: option.originalLink,
-        affiliateLink: option.affiliateLink,
-        priceTier: 'Premium',
-        isCurrentSelection: currentProductSelection === option.productName,
-        sourceProduct: alt,
-      });
+  // Add premium options if they exist
+  currentProduct.premiumOptions?.forEach((option) => {
+    allProductCards.push({
+      name: option.productName,
+      affiliateLink: option.affiliateLink,
+      priceTier: 'Premium',
+      isCurrentSelection: currentProductSelection === option.productName,
     });
   });
 
@@ -163,7 +136,7 @@ export function ProductCarousel({
         <div className="flex gap-4">
           {sortedCards.map((card, index) => (
             <div
-              key={`${card.id}-${index}`}
+              key={`${card.name}-${index}`}
               className="flex-[0_0_min(100%,320px)]"
               data-testid={`carousel-item-${index}`}
             >
@@ -221,7 +194,7 @@ export function ProductCarousel({
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => onProductSelect(card.sourceProduct.id, card.name)}
+                        onClick={() => onProductSelect(category, card.name)}
                         disabled={isUpdating}
                         data-testid="button-add-to-routine"
                       >
