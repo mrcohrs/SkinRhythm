@@ -16,7 +16,7 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Ice (see notes)', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'Ice (see notes)', 'BPO Mask (see notes)', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: 'BPO Mask Details: Apply a thin layer of your BPO product to your face for for 15-30 min (week 1) / 30 mins - 1hr (week 2) then continue with cleanser, toner, hydrator (optional), and moisturizer. Ice instructions: Take an ice cube and rub it gently on your face for 30-60 seconds, focusing on inflamed areas.'
+      notes: 'Apply a thin layer of your BPO product to your face for 15-30 min (week 1) / 30 mins - 1hr (week 2) then continue with cleanser, toner, hydrator (optional), and moisturizer.'
     },
     {
       weekRange: 'Weeks 3–4',
@@ -53,7 +53,7 @@ export const weeklyRoutines: Record<RoutineType, WeeklyRoutineStep[]> = {
       weekRange: 'Weeks 1–2',
       amRoutine: ['Cleanser', 'Toner', 'Serum (every other day)', 'Hydrator (optional)', 'Moisturizer', 'Sunscreen'],
       pmRoutine: ['Cleanser', 'BPO Mask (see notes)', 'Cleanser', 'Toner', 'Hydrator (optional)', 'Moisturizer'],
-      notes: 'BPO Mask Details: Apply a thin layer of your BPO product to your face for for 15-30 min (week 1) / 30 mins - 1hr (week 2) then continue with cleanser, toner, hydrator (optional), and moisturizer.'
+      notes: 'Apply a thin layer of your BPO product to your face for for 15-30 min (week 1) / 30 mins - 1hr (week 2) then continue with cleanser, toner, hydrator (optional), and moisturizer.'
     },
     {
       weekRange: 'Weeks 3–4',

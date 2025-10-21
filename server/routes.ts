@@ -415,6 +415,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Product alternatives endpoint
+  app.get('/api/products/alternatives/:category', isAuthenticated, async (req: any, res) => {
+    try {
+      const { category } = req.params;
+      const userId = req.user.claims.sub;
+      
+      // Import product library dynamically
+      const { PRODUCT_LIBRARY } = await import('@shared/productLibrary');
+      
+      // Get user's premium status
+      let isPremiumUser = false;
+      try {
+        const user = await storage.getUser(userId);
+        isPremiumUser = user?.isPremium || false;
+      } catch (e) {
+        console.log(`[Product Alternatives] Error getting user, treating as non-premium:`, e);
+      }
+      
+      // Filter products by category and include only those with alternatives
+      const categoryProducts = Object.values(PRODUCT_LIBRARY)
+        .filter(product => product.category === category)
+        .filter(product => product.defaultProductLink && product.defaultProductName)
+        .map(product => ({
+          id: product.id,
+          generalName: product.generalName,
+          category: product.category,
+          priceTier: product.priceTier,
+          priceRange: product.priceRange,
+          defaultProductLink: product.defaultProductLink,
+          defaultProductName: product.defaultProductName,
+          affiliateLink: product.affiliateLink,
+          premiumOptions: isPremiumUser ? product.premiumOptions : undefined,
+        }));
+      
+      res.json(categoryProducts);
+    } catch (error) {
+      console.error("Error fetching product alternatives:", error);
+      res.status(500).json({ message: "Failed to fetch product alternatives" });
+    }
+  });
+
   // Banner endpoints
   app.get('/api/banners/current', isAuthenticated, async (req: any, res) => {
     try {
