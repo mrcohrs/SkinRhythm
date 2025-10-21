@@ -167,11 +167,74 @@ export function getRoutineForAnswers(answers: {
     return csvSev === userSev;
   };
 
+  // Calculate detailed specificity metrics for a row
+  const getSpecificityMetrics = (row: RoutineRow, userSkinType: string) => {
+    // Count exact matches (highest priority)
+    let exactMatches = 0;
+    
+    // Mature exact match
+    if (row.mature !== 'All') exactMatches++;
+    
+    // Fitz exact match
+    if (row.fitzGroup !== 'All') exactMatches++;
+    
+    // Skin type exact match (single type that exactly matches user)
+    if (row.skinType !== 'All' && !row.skinType.includes(',') && 
+        row.skinType.toLowerCase() === userSkinType.toLowerCase()) {
+      exactMatches++;
+    }
+    
+    // Severity exact match (single severity)
+    if (row.severityGroup !== 'All' && !row.severityGroup.includes(',')) {
+      exactMatches++;
+    }
+    
+    // Count partial matches (medium priority)
+    let partialMatches = 0;
+    
+    // Multi-value skin type that includes user's type (e.g., "Dry, Normal" when user is "dry")
+    if (row.skinType !== 'All' && row.skinType.includes(',')) {
+      partialMatches++;
+    }
+    
+    // Multi-value severity (e.g., "Mild, Moderate")
+    if (row.severityGroup !== 'All' && row.severityGroup.includes(',')) {
+      partialMatches++;
+    }
+    
+    // Count "All" wildcards (lowest priority - fewer is better)
+    let wildcards = 0;
+    if (row.mature === 'All') wildcards++;
+    if (row.fitzGroup === 'All') wildcards++;
+    if (row.skinType === 'All') wildcards++;
+    if (row.severityGroup === 'All') wildcards++;
+    
+    return {
+      exactMatches,
+      partialMatches,
+      wildcards,
+      // Composite score for sorting (exact matches most important, then partial, then fewer wildcards)
+      score: (exactMatches * 1000) + (partialMatches * 100) - wildcards
+    };
+  };
+
   // Determine if user is mature (45+ years old)
   const userAge = parseInt(answers.age || '0') || 0;
   const isMature = userAge >= 45;
 
-  let matchingRow = routineData.find((row, index) => {
+  // Find all matching rows with their specificity metrics
+  const allMatchingRows: Array<{
+    row: RoutineRow, 
+    originalIndex: number,
+    metrics: {
+      exactMatches: number,
+      partialMatches: number,
+      wildcards: number,
+      score: number
+    }
+  }> = [];
+
+  routineData.forEach((row, originalIndex) => {
     const pregnancyMatch = row.pregnantNursing === isPregnant;
     const acneTypeMatch = row.acneType === primaryAcneType;
     const sevMatch = severityMatches(row.severityGroup, answers.acneSeverity);
@@ -185,11 +248,50 @@ export function getRoutineForAnswers(answers: {
     const isMatch = pregnancyMatch && acneTypeMatch && sevMatch && fitzMatch && skinTypeMatch && matureMatch;
     
     if (isMatch) {
-      console.log(`FOUND MATCH at index ${index}:`, row);
+      const metrics = getSpecificityMetrics(row, answers.skinType);
+      allMatchingRows.push({ row, originalIndex, metrics });
+    }
+  });
+
+  // Sort by specificity metrics (exact matches first, then fewer partials, then fewer wildcards)
+  allMatchingRows.sort((a, b) => {
+    // Primary: Most exact matches wins (higher is better)
+    if (b.metrics.exactMatches !== a.metrics.exactMatches) {
+      return b.metrics.exactMatches - a.metrics.exactMatches;
     }
     
-    return isMatch;
+    // Secondary: FEWER partial matches wins (single-value > multi-value)
+    // A row with "Oily" is more specific than "Dry, Normal"
+    if (a.metrics.partialMatches !== b.metrics.partialMatches) {
+      return a.metrics.partialMatches - b.metrics.partialMatches;
+    }
+    
+    // Tertiary: Fewest wildcards wins (lower is better)
+    if (a.metrics.wildcards !== b.metrics.wildcards) {
+      return a.metrics.wildcards - b.metrics.wildcards;
+    }
+    
+    // Tie-breaker: Lower original index (earlier in CSV) wins
+    return a.originalIndex - b.originalIndex;
   });
+
+  // Log all matching rows with their specificity metrics
+  if (allMatchingRows.length > 0) {
+    console.log(`\n=== FOUND ${allMatchingRows.length} MATCHING ROWS ===`);
+    allMatchingRows.forEach(({ row, originalIndex, metrics }) => {
+      console.log(`Match CSV-Row-${originalIndex + 1} [Exact:${metrics.exactMatches}, Partial:${metrics.partialMatches}, Wildcards:${metrics.wildcards}, Score:${metrics.score}]:`, {
+        mature: row.mature,
+        fitz: row.fitzGroup,
+        skin: row.skinType,
+        severity: row.severityGroup,
+        treatment: row.treatment
+      });
+    });
+    console.log('=== SELECTING MOST SPECIFIC (TOP MATCH) ===\n');
+  }
+
+  // Select the most specific match (first after sorting)
+  const matchingRow = allMatchingRows.length > 0 ? allMatchingRows[0].row : null;
 
   if (!matchingRow) {
     console.error('No matching routine found');
