@@ -100,40 +100,45 @@ export function ProductCarousel({
     return 0;
   });
 
+  // Only show navigation if we have multiple cards
+  const showNavigation = sortedCards.length > 1;
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h4 className="text-sm font-semibold text-muted-foreground">
           Product Options
         </h4>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={scrollPrev}
-            disabled={!canScrollPrev}
-            aria-label="Previous products"
-            className="h-8 w-8"
-            data-testid="button-carousel-prev"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={scrollNext}
-            disabled={!canScrollNext}
-            aria-label="Next products"
-            className="h-8 w-8"
-            data-testid="button-carousel-next"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+        {showNavigation && (
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={scrollPrev}
+              disabled={!canScrollPrev}
+              aria-label="Previous products"
+              className="h-8 w-8 flex-shrink-0"
+              data-testid="button-carousel-prev"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={scrollNext}
+              disabled={!canScrollNext}
+              aria-label="Next products"
+              className="h-8 w-8 flex-shrink-0"
+              data-testid="button-carousel-next"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
 
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-4">
+      <div className="overflow-hidden touch-pan-y" ref={emblaRef}>
+        <div className="flex gap-4" style={{ touchAction: 'pan-y' }}>
           {sortedCards.map((card, index) => (
             <div
               key={`${card.name}-${index}`}

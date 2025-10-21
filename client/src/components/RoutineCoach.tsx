@@ -259,7 +259,7 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
 
                 {/* Instructions */}
                 <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                  <p className="text-foreground leading-relaxed">
+                  <p className="text-foreground leading-relaxed break-words">
                     {currentStep.instructions}
                   </p>
                   {currentStep.name.includes('(optional)') && (
