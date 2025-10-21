@@ -104,9 +104,9 @@ export function ProductCarousel({
   const showNavigation = sortedCards.length > 1;
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h4 className="text-sm font-semibold text-muted-foreground">
+    <div className="space-y-3 w-full">
+      <div className="flex items-center justify-between gap-4">
+        <h4 className="text-sm font-semibold text-muted-foreground flex-shrink-0">
           Product Options
         </h4>
         {showNavigation && (
@@ -137,8 +137,8 @@ export function ProductCarousel({
         )}
       </div>
 
-      <div className="overflow-hidden touch-pan-y" ref={emblaRef}>
-        <div className="flex gap-4" style={{ touchAction: 'pan-y' }}>
+      <div className="overflow-hidden touch-pan-y w-full" ref={emblaRef}>
+        <div className="flex gap-4 w-full" style={{ touchAction: 'pan-y' }}>
           {sortedCards.map((card, index) => (
             <div
               key={`${card.name}-${index}`}

@@ -236,7 +236,7 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
             </div>
 
             {/* Right: Step Display */}
-            <div className="p-6 md:p-8 lg:p-12 space-y-8">
+            <div className="p-6 md:p-8 lg:p-12 space-y-8 min-w-0 overflow-hidden">
               {/* Step Header */}
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
@@ -258,8 +258,8 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
                 </div>
 
                 {/* Instructions */}
-                <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                  <p className="text-foreground leading-relaxed break-words">
+                <div className="bg-muted/50 rounded-lg p-4 space-y-2 w-full">
+                  <p className="text-foreground leading-relaxed break-words overflow-wrap-anywhere">
                     {currentStep.instructions}
                   </p>
                   {currentStep.name.includes('(optional)') && (
@@ -280,13 +280,15 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
 
               {/* Product Carousel - For product steps with alternatives */}
               {hasProduct && hasAlternatives && currentStep.product && (
-                <ProductCarousel
-                  category={currentStep.product.category}
-                  currentProduct={currentStep.product}
-                  onProductSelect={handleProductSelect}
-                  isUpdating={setProductMutation.isPending}
-                  currentProductSelection={localProductSelections[currentStep.product.category] || currentStep.product.name}
-                />
+                <div className="w-full">
+                  <ProductCarousel
+                    category={currentStep.product.category}
+                    currentProduct={currentStep.product}
+                    onProductSelect={handleProductSelect}
+                    isUpdating={setProductMutation.isPending}
+                    currentProductSelection={localProductSelections[currentStep.product.category] || currentStep.product.name}
+                  />
+                </div>
               )}
 
               {/* Ice Globes Upsell - For ice steps */}
