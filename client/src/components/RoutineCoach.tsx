@@ -9,9 +9,10 @@ import { weeklyRoutines, type RoutineType, categoryMapping } from "@shared/weekl
 import { Product } from "./ProductCard";
 import { CompactProductCard } from "./CompactProductCard";
 import { RoutineNotes } from "./RoutineNotes";
+import { ProductCarousel } from "./ProductCarousel";
 import { ArrowRight, Info, ExternalLink, Sun, Moon, BookOpen, Lightbulb, Megaphone, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { getProductById } from "@shared/productLibrary";
@@ -138,6 +139,35 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
 
   // Check if current step is an ice step (includes "Ice" or "Ice (see notes)")
   const isIce = currentStep.name.includes('Ice');
+
+  // Get category for current step
+  const currentStepCategory = categoryMapping[currentStep.name];
+  const hasProduct = !!currentStepCategory && currentStepCategory !== 'Ice';
+
+  // Fetch product alternatives for the current step's category
+  interface ProductAlternative {
+    id: string;
+    generalName: string;
+    category: string;
+    priceTier: 'budget' | 'standard' | 'premium';
+    priceRange?: string;
+    defaultProductLink?: string;
+    defaultProductName?: string;
+    affiliateLink?: string;
+    premiumOptions?: Array<{
+      originalLink: string;
+      affiliateLink: string;
+      productName: string;
+    }>;
+  }
+
+  const { data: productAlternatives = [], isLoading: isLoadingAlternatives } = useQuery<ProductAlternative[]>({
+    queryKey: ['/api/products/alternatives', currentStepCategory],
+    enabled: hasProduct,
+  });
+
+  // Get current product selection for this category
+  const currentProductForCategory = currentStep.product?.name;
 
   return (
     <div className="space-y-8" data-testid="routine-coach-container">
@@ -272,6 +302,18 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
                 </div>
               </div>
 
+
+              {/* Product Carousel - For product steps */}
+              {hasProduct && currentStepCategory && !isLoadingAlternatives && productAlternatives.length > 0 && (
+                <ProductCarousel
+                  category={currentStepCategory}
+                  currentProduct={currentStep.product}
+                  alternatives={productAlternatives}
+                  onProductSelect={handleProductSelect}
+                  isUpdating={setProductMutation.isPending}
+                  currentProductSelection={localProductSelections[currentStepCategory] || currentProductForCategory}
+                />
+              )}
 
               {/* Ice Globes Upsell - For ice steps */}
               {isIce && (() => {
