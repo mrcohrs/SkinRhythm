@@ -82,7 +82,7 @@ function extractProductNameFromURL(url: string): string {
         'mario', 'badescu', 'kiehl', 'origins', 'fresh', 'clinique',
         'estee', 'lauder', 'shiseido', 'sk-ii', 'biore', 'hada', 'labo',
         'panoxyl', 'differin', 'acne', 'free', 'clean', 'clear',
-        'aveeno', 'eucerin', 'aquaphor', 'bioderma', 'vichy',
+        'aveeno', 'eucerin', 'aquaphor', 'bioderma', 'vichy', 'sophie', 'pavitt', 'dr', 'song', 
         // Product types
         'cleanser', 'cleansing', 'clean', 'wash', 'facial', 'face',
         'toner', 'serum', 'cream', 'lotion', 'gel', 'oil', 'balm',
