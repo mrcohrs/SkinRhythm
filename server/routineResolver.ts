@@ -29,7 +29,18 @@ export async function resolveRoutineProducts(routine: RoutineRecommendation | an
   // Split flat product array into AM/PM based on category rules
   const { morning: morningIds, evening: eveningIds } = splitProductsIntoAMPM(productIds);
   
-  // Fetch user product selections if userId provided
+  // Fetch user's routine mode preference and product selections if userId provided
+  let useRecommended = isPremiumUser; // Default to legacy behavior
+  if (userId) {
+    const user = await storage.getUser(userId);
+    if (user && user.routineMode) {
+      // If user has a routineMode preference, use it to determine which products to show
+      // "premium" mode = use isRecommended products, "basic" mode = use isDefault products
+      useRecommended = user.routineMode === 'premium';
+      console.log(`[Resolver] User routineMode: ${user.routineMode}, using ${useRecommended ? 'recommended' : 'default'} products`);
+    }
+  }
+  
   const userSelections = userId ? await storage.getUserProductSelections(userId) : [];
   const selectionsMap = new Map(userSelections.map(s => [s.productId, s.specificProductName]));
   
@@ -42,8 +53,8 @@ export async function resolveRoutineProducts(routine: RoutineRecommendation | an
           return null;
         }
         
-        // Get the specific product based on premium status
-        const specificProduct = getSpecificProduct(id, isPremiumUser);
+        // Get the specific product based on routine mode preference
+        const specificProduct = getSpecificProduct(id, useRecommended);
         
         if (!specificProduct) {
           // Fallback to legacy fields for products like ice-globes that aren't in CSV
@@ -129,7 +140,18 @@ export async function resolveSavedRoutineProducts(
     routineType = recalculatedType;
   }
 
-  // Fetch user product selections if userId provided
+  // Fetch user's routine mode preference and product selections if userId provided
+  let useRecommended = isPremiumUser; // Default to legacy behavior
+  if (userId) {
+    const user = await storage.getUser(userId);
+    if (user && user.routineMode) {
+      // If user has a routineMode preference, use it to determine which products to show
+      // "premium" mode = use isRecommended products, "basic" mode = use isDefault products
+      useRecommended = user.routineMode === 'premium';
+      console.log(`[Resolver] User routineMode: ${user.routineMode}, using ${useRecommended ? 'recommended' : 'default'} products`);
+    }
+  }
+
   const userSelections = userId ? await storage.getUserProductSelections(userId) : [];
   const selectionsMap = new Map(userSelections.map(s => [s.productId, s.specificProductName]));
 
@@ -160,8 +182,8 @@ export async function resolveSavedRoutineProducts(
           return null;
         }
         
-        // Get the specific product based on premium status
-        const specificProduct = getSpecificProduct(id, isPremiumUser);
+        // Get the specific product based on routine mode preference
+        const specificProduct = getSpecificProduct(id, useRecommended);
         
         if (!specificProduct) {
           // Fallback to legacy fields

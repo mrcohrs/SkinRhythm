@@ -361,6 +361,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Routine mode preference endpoint
+  app.post('/api/user/routine-mode', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { routineMode } = req.body;
+      
+      if (!routineMode || !['basic', 'premium'].includes(routineMode)) {
+        return res.status(400).json({ message: "Invalid routine mode. Must be 'basic' or 'premium'" });
+      }
+      
+      await storage.updateRoutineMode(userId, routineMode);
+      
+      // Return sanitized response (no sensitive data)
+      res.json({ 
+        success: true, 
+        routineMode 
+      });
+    } catch (error) {
+      console.error("Error updating routine mode:", error);
+      res.status(500).json({ message: "Failed to update routine mode" });
+    }
+  });
+
   // Scan tracking endpoint
   app.post('/api/user/scan', isAuthenticated, async (req: any, res) => {
     try {

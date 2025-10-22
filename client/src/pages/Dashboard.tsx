@@ -6,7 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Crown, Sun, Moon } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Crown, Sun, Moon, DollarSign, Sparkles } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useLocation } from "wouter";
@@ -167,6 +169,40 @@ export default function Dashboard() {
 
   const isPremium = (user as any)?.isPremium || false;
   const isRoutineLoading = isLoading || isFetching;
+
+  // Routine mode state (basic vs premium)
+  const [routineMode, setRoutineMode] = useState<'basic' | 'premium'>((user as any)?.routineMode || 'premium');
+
+  // Sync local state with user data
+  useEffect(() => {
+    if (user && (user as any).routineMode) {
+      setRoutineMode((user as any).routineMode);
+    }
+  }, [user]);
+
+  // Routine mode toggle mutation
+  const routineModeMutation = useMutation({
+    mutationFn: async (newMode: 'basic' | 'premium') => {
+      const response = await apiRequest('POST', '/api/user/routine-mode', { routineMode: newMode });
+      return await response.json();
+    },
+    onSuccess: (data, newMode) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
+      setRoutineMode(newMode);
+      toast({
+        title: "Routine updated",
+        description: newMode === 'premium' ? "Now showing recommended products for your skin" : "Now showing budget-friendly products",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update routine mode",
+        variant: "destructive",
+      });
+    },
+  });
 
   // Check if routine type has ice steps (inflamed only)
   const hasIceStep = routineType === 'inflamed';
@@ -515,6 +551,45 @@ export default function Dashboard() {
             </div>
           )}
 
+          {/* Routine Mode Toggle for Premium Users */}
+          {isPremium && (
+            <Card className="border-border/50" data-testid="card-routine-mode-toggle">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0">
+                      {routineMode === 'premium' ? (
+                        <Sparkles className="h-5 w-5 text-primary" />
+                      ) : (
+                        <DollarSign className="h-5 w-5 text-primary" />
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="routine-mode-switch" className="font-semibold text-base cursor-pointer">
+                        {routineMode === 'premium' ? 'Premium Routine' : 'Budget Routine'}
+                      </Label>
+                      <p className="text-sm text-muted-foreground">
+                        {routineMode === 'premium' 
+                          ? 'Showing products recommended for your skin type' 
+                          : 'Showing budget-friendly product alternatives'}
+                      </p>
+                    </div>
+                  </div>
+                  <Switch
+                    id="routine-mode-switch"
+                    checked={routineMode === 'premium'}
+                    onCheckedChange={(checked) => {
+                      const newMode = checked ? 'premium' : 'basic';
+                      routineModeMutation.mutate(newMode);
+                    }}
+                    disabled={routineModeMutation.isPending}
+                    data-testid="switch-routine-mode"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Tabs - Horizontal Scrolling Carousel */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="relative">
@@ -656,24 +731,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Ice Globes Upsell - For inflamed routines */}
-              {hasIceStep && iceGlobesProduct && (
-                <div className="space-y-2">
-                  <h4 className="text-sm font-semibold text-muted-foreground">
-                    Recommended Tool for Ice Steps
-                  </h4>
-                  <CompactProductCard 
-                    product={{
-                      name: iceGlobesProduct.generalName,
-                      category: iceGlobesProduct.category,
-                      priceTier: iceGlobesProduct.priceTier,
-                      priceRange: iceGlobesProduct.priceRange,
-                      affiliateLink: iceGlobesProduct.affiliateLink!,
-                    }}
-                    description="Icing after cleansing can help reduce inflammation. Ice cubes work, but if you like convenience, these are well worth the money."
-                  />
-                </div>
-              )}
+             
 
               {/* Visual AM/PM Routine Display */}
               <div className="space-y-6">
@@ -724,7 +782,25 @@ export default function Dashboard() {
                     })}
                   </div>
                 </div>
-
+                
+                {/* Ice Globes Upsell - For inflamed routines */}
+                {hasIceStep && iceGlobesProduct && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground">
+                      Recommended Tool for Inflamed Acne
+                    </h4>
+                    <CompactProductCard 
+                      product={{
+                        name: iceGlobesProduct.generalName,
+                        category: iceGlobesProduct.category,
+                        priceTier: iceGlobesProduct.priceTier,
+                        priceRange: iceGlobesProduct.priceRange,
+                        affiliateLink: iceGlobesProduct.affiliateLink!,
+                      }}
+                      description="Icing after cleansing can help reduce inflammation. Ice cubes work but can be messy and a hassle to make. These cold globes are well worth the money."
+                    />
+                  </div>
+                )}
                 {/* Evening Routine Visual */}
                 <div>
                   <h4 className="text-lg font-medium mb-4 flex items-center gap-2">

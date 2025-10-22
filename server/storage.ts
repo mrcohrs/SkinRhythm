@@ -25,6 +25,7 @@ export interface IStorage {
   upsertUser(user: UpsertUser): Promise<User>;
   createUserWithPassword(email: string, passwordHash: string, firstName?: string): Promise<User>;
   updateUserConsent(userId: string, dataCollectionConsent: boolean, aiTrainingConsent: boolean, consentVersion: string): Promise<User>;
+  updateRoutineMode(userId: string, routineMode: string): Promise<User>;
   incrementScanCount(userId: string): Promise<User>;
   
   saveRoutine(routine: InsertRoutine): Promise<Routine>;
@@ -268,6 +269,23 @@ export class DatabaseStorage implements IStorage {
       })
       .where(eq(users.id, userId))
       .returning();
+    
+    return updatedUser;
+  }
+
+  async updateRoutineMode(userId: string, routineMode: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        routineMode,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
     
     return updatedUser;
   }
