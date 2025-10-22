@@ -428,12 +428,14 @@ export function RoutineDisplay({
                       <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
                         {index + 1}
                       </span>
-                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
-                        <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
+                      <div className="flex-shrink-0 flex flex-col items-center gap-1">
+                        <p className="text-muted-foreground text-xs">{product.category}</p>
+                        <div className="w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
+                          <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
+                        </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">{product.name}</p>
-                        <p className="text-muted-foreground text-xs">{product.category}</p>
                         {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
                         {(product.priceRange || product.price) && (
                           <p className="text-xs font-medium text-foreground mt-0.5">
@@ -477,12 +479,14 @@ export function RoutineDisplay({
                       <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
                         {index + 1}
                       </span>
-                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
-                        <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
+                      <div className="flex-shrink-0 flex flex-col items-center gap-1">
+                        <p className="text-muted-foreground text-xs">{product.category}</p>
+                        <div className="w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
+                          <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
+                        </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">{product.name}</p>
-                        <p className="text-muted-foreground text-xs">{product.category}</p>
                         {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
                         {(product.priceRange || product.price) && (
                           <p className="text-xs font-medium text-foreground mt-0.5">
