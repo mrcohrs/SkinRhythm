@@ -1,3 +1,14 @@
+export interface SpecificProduct {
+  specificProductName: string;
+  brand: string;
+  priceRange: string;
+  productLink: string;
+  affiliateLink: string;
+  isDefault: boolean;
+  isAlt: boolean;
+  isRecommended: boolean;
+}
+
 export interface ProductDefinition {
   id: string;
   generalName: string;
@@ -5,6 +16,9 @@ export interface ProductDefinition {
   csvKey: string;
   priceTier: 'budget' | 'standard' | 'premium';
   priceRange?: string;
+  // New structure: store all specific product variants
+  products?: SpecificProduct[];
+  // Legacy fields for backward compatibility
   defaultProductLink?: string;
   defaultProductName?: string;
   affiliateLink?: string;
@@ -204,4 +218,34 @@ export function getProductByCsvKey(csvKey: string): ProductDefinition | undefine
 // Helper to get product by ID
 export function getProductById(id: string): ProductDefinition | undefined {
   return PRODUCT_LIBRARY[id];
+}
+
+// Get the appropriate specific product based on premium status
+export function getSpecificProduct(productId: string, isPremium: boolean): SpecificProduct | null {
+  const product = getProductById(productId);
+  if (!product || !product.products || product.products.length === 0) {
+    return null;
+  }
+  
+  // For premium users: prioritize isRecommended, fallback to isDefault
+  if (isPremium) {
+    const recommended = product.products.find(p => p.isRecommended);
+    if (recommended) return recommended;
+  }
+  
+  // For free users or if no recommended found: use isDefault
+  const defaultProduct = product.products.find(p => p.isDefault);
+  if (defaultProduct) return defaultProduct;
+  
+  // Fallback to first product if neither isRecommended nor isDefault found
+  return product.products[0];
+}
+
+// Get all alternative products (isAlt = true)
+export function getProductAlternatives(productId: string): SpecificProduct[] {
+  const product = getProductById(productId);
+  if (!product || !product.products) {
+    return [];
+  }
+  return product.products.filter(p => p.isAlt);
 }

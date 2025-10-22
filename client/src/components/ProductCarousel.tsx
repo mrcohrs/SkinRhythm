@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, ExternalLink, Check } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { cn } from "@/lib/utils";
 import { getCategoryImage } from "@/lib/categoryImages";
+import bestForYourSkinBadge from "@assets/bestforyourskin_1761112317047.png";
 
 interface ProductCarouselProps {
   category: string;
@@ -16,6 +17,7 @@ interface ProductCarouselProps {
     affiliateLink: string;
     priceTier: "budget" | "standard" | "premium";
     priceRange?: string;
+    isRecommended?: boolean;
     premiumOptions?: Array<{
       originalLink: string;
       affiliateLink: string;
@@ -161,6 +163,14 @@ export function ProductCarousel({
 
                     <div className="flex-1 min-w-0 space-y-2">
                       <div>
+                        {currentProduct.isRecommended && card.name === currentProduct.name && (
+                          <img 
+                            src={bestForYourSkinBadge} 
+                            alt="Best for Your Skin" 
+                            className="h-5 mb-1"
+                            data-testid="img-best-for-your-skin"
+                          />
+                        )}
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <Badge variant="outline" className="text-xs" data-testid="badge-tier">
                             {card.priceTier}

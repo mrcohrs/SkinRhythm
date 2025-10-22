@@ -11,6 +11,7 @@ import hydratorImg from "@assets/hydra_1760944347978.png";
 import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
 import spfImg from "@assets/SPF_1760341636654.png";
 import spotTreatmentImg from "@assets/bpooo_1760944347978.png";
+import bestForYourSkinBadge from "@assets/bestforyourskin_1761112317047.png";
 
 export interface Product {
   name: string;
@@ -24,6 +25,7 @@ export interface Product {
   originalLink?: string; // Original product link (for reference)
   imageUrl?: string;
   isPremiumOnly?: boolean;
+  isRecommended?: boolean; // True if this is the recommended product for premium users
   premiumOptions?: Array<{
     originalLink: string;
     affiliateLink: string;
@@ -89,6 +91,14 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
             <div>
               <div className="flex items-start gap-2 mb-2">
                 <div className="flex-1 min-w-0">
+                  {product.isRecommended && (
+                    <img 
+                      src={bestForYourSkinBadge} 
+                      alt="Best for Your Skin" 
+                      className="h-5 mb-2"
+                      data-testid="img-best-for-your-skin"
+                    />
+                  )}
                   <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
                     {product.category}
                   </Badge>

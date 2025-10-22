@@ -169,24 +169,51 @@ function extractProductNameFromURL(url: string): string {
 }
 
 export function enrichProductLibraryFromCSV() {
-  const csvPath = path.join(process.cwd(), 'attached_assets', 'Product Links for Acne Agent Routine Product Options.xlsx - Alternatives (1)_1760657834377.csv');
+  const csvPath = path.join(process.cwd(), 'attached_assets', 'AcneAgent_Products_Combined.xlsx - Routine Products (1)_1761112317036.csv');
   
   if (!fs.existsSync(csvPath)) {
-    console.error('Product alternatives CSV not found at:', csvPath);
+    console.error('Combined products CSV not found at:', csvPath);
     return;
   }
 
   const csvContent = fs.readFileSync(csvPath, 'utf-8');
   const lines = csvContent.split('\n');
   
-  let enrichedCount = 0;
+  if (lines.length < 2) {
+    console.error('CSV file is empty or has no data rows');
+    return;
+  }
   
-  // Skip header row
+  // Parse CSV header to get column indices
+  const header = lines[0].split(',').map(h => h.trim());
+  const colIndexes = {
+    specificProductName: header.indexOf('Specific Product Name'),
+    brand: header.indexOf('Brand'),
+    priceRange: header.indexOf('Price Range'),
+    generalProductName: header.indexOf('General Product Name (productId)'),
+    productCategory: header.indexOf('Product Category'),
+    productLink: header.indexOf('Product Link'),
+    affiliateLink: header.indexOf('Affiliate Link'),
+    isDefault: header.indexOf('isDefault?'),
+    isAlt: header.indexOf('isAlt?'),
+    isRecommended: header.indexOf('isRecommended?')
+  };
+  
+  // Clear all existing products arrays to prevent duplication on hot reload
+  Object.values(PRODUCT_LIBRARY).forEach(product => {
+    if (product.products) {
+      product.products = [];
+    }
+  });
+  
+  let enrichedProducts = 0;
+  
+  // Skip header row, process data rows
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
     
-    // Parse CSV line (handling commas in URLs)
+    // Parse CSV line (handling commas in URLs and quoted fields)
     const columns: string[] = [];
     let currentColumn = '';
     let inQuotes = false;
@@ -204,58 +231,44 @@ export function enrichProductLibraryFromCSV() {
     }
     columns.push(currentColumn.trim()); // Add last column
     
-    if (columns.length < 3) continue;
-    
-    const csvProductName = columns[0];
-    const defaultProductLink = columns[2];
-    
-    // Find product in library by CSV name
-    const csvKey = csvProductName.toUpperCase().trim();
-    const product = getProductByCsvKey(csvKey);
-    
-    if (!product) {
-      console.warn(`Product not found in library: ${csvProductName}`);
+    if (columns.length < 10) {
+      console.warn(`Row ${i + 1} has insufficient columns, skipping`);
       continue;
     }
     
-    // Extract product name from default product URL
-    const defaultProductName = extractProductNameFromURL(defaultProductLink);
+    const generalProductName = columns[colIndexes.generalProductName];
+    const csvKey = generalProductName.toUpperCase().trim();
+    const product = getProductByCsvKey(csvKey);
     
-    // Get affiliate link for default product (falls back to original if not found)
-    const affiliateLink = getAffiliateLink(defaultProductLink);
-    
-    // Collect premium options (columns 3-7, may have empty values)
-    const premiumOptions: Array<{
-      originalLink: string;
-      affiliateLink: string;
-      productName: string;
-    }> = [];
-    
-    for (let j = 3; j < Math.min(8, columns.length); j++) {
-      const link = columns[j]?.trim();
-      if (link && link.startsWith('http')) {
-        premiumOptions.push({
-          originalLink: link,
-          affiliateLink: getAffiliateLink(link),
-          productName: extractProductNameFromURL(link)
-        });
-      }
+    if (!product) {
+      console.warn(`Product not found in library for: ${generalProductName}`);
+      continue;
     }
     
-    // Enrich the product library entry
-    product.defaultProductLink = defaultProductLink;
-    // Only set defaultProductName if we successfully extracted a real name (not the fallback "Product")
-    // This preserves the correct generalName for products like BPO that don't have purchasable links
-    if (defaultProductName !== 'Product') {
-      product.defaultProductName = defaultProductName;
+    // Initialize products array if not exists
+    if (!product.products) {
+      product.products = [];
     }
-    product.affiliateLink = affiliateLink;
-    product.premiumOptions = premiumOptions;
     
-    enrichedCount++;
+    // Parse boolean values (TRUE/FALSE strings)
+    const parseBool = (val: string) => val.toUpperCase() === 'TRUE';
+    
+    // Add this specific product variant
+    product.products.push({
+      specificProductName: columns[colIndexes.specificProductName],
+      brand: columns[colIndexes.brand],
+      priceRange: columns[colIndexes.priceRange],
+      productLink: columns[colIndexes.productLink],
+      affiliateLink: columns[colIndexes.affiliateLink] || columns[colIndexes.productLink], // Fallback to product link if no affiliate
+      isDefault: parseBool(columns[colIndexes.isDefault]),
+      isAlt: parseBool(columns[colIndexes.isAlt]),
+      isRecommended: parseBool(columns[colIndexes.isRecommended])
+    });
+    
+    enrichedProducts++;
   }
   
-  console.log(`Enriched ${enrichedCount} products in library with URLs and affiliate links`);
+  console.log(`Loaded ${enrichedProducts} specific product variants from CSV`);
 }
 
 // Backward compatibility function for existing code

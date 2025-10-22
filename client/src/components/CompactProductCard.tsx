@@ -11,6 +11,7 @@ import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
 import spfImg from "@assets/SPF_1760341636654.png";
 import spotTreatmentImg from "@assets/bpooo_1760944347978.png";
 import iceGlobesImg from "@assets/ciice_1760874110365.png";
+import bestForYourSkinBadge from "@assets/bestforyourskin_1761112317047.png";
 
 export interface CompactProduct {
   name: string;
@@ -18,6 +19,7 @@ export interface CompactProduct {
   priceTier: "budget" | "standard" | "premium";
   priceRange?: string;
   affiliateLink: string;
+  isRecommended?: boolean;
 }
 
 interface CompactProductCardProps {
@@ -53,6 +55,14 @@ export function CompactProductCard({ product, description }: CompactProductCardP
           
           <div className="flex-1 min-w-0 space-y-2">
             <div>
+              {product.isRecommended && (
+                <img 
+                  src={bestForYourSkinBadge} 
+                  alt="Best for Your Skin" 
+                  className="h-5 mb-1"
+                  data-testid="img-best-for-your-skin"
+                />
+              )}
               <div className="flex items-center gap-2 mb-1">
                 <Badge variant="outline" className="text-xs" data-testid="badge-category">
                   {product.category}

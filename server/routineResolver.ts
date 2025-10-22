@@ -1,4 +1,4 @@
-import { PRODUCT_LIBRARY, getProductById } from '@shared/productLibrary';
+import { PRODUCT_LIBRARY, getProductById, getSpecificProduct, getProductAlternatives } from '@shared/productLibrary';
 import { determineRoutineType } from '@shared/weeklyRoutines';
 import { splitProductsIntoAMPM } from '@shared/routineHelpers';
 import type { RoutineRecommendation } from './parseExcel';
@@ -37,19 +37,48 @@ export function resolveRoutineProducts(routine: RoutineRecommendation | any, isP
           return null;
         }
         
-        console.log(`[Resolver] Resolved ${id} -> ${product.defaultProductName || product.generalName}`);
+        // Get the specific product based on premium status
+        const specificProduct = getSpecificProduct(id, isPremiumUser);
+        
+        if (!specificProduct) {
+          // Fallback to legacy fields for products like ice-globes that aren't in CSV
+          console.log(`[Resolver] Using legacy fields for ${id} -> ${product.generalName}`);
+          return {
+            name: product.defaultProductName || product.generalName,
+            brand: '',
+            category: product.category,
+            priceTier: product.priceTier,
+            priceRange: product.priceRange || '',
+            price: 0,
+            benefits: ['Recommended for your skin type'],
+            affiliateLink: product.affiliateLink || '',
+            originalLink: product.defaultProductLink || '',
+            isRecommended: false,
+            premiumOptions: undefined,
+          };
+        }
+        
+        console.log(`[Resolver] Resolved ${id} -> ${specificProduct.specificProductName} (recommended: ${specificProduct.isRecommended})`);
+        
+        // Get alternatives for premium users
+        const alternatives = isPremiumUser ? getProductAlternatives(id) : [];
         
         return {
-          name: product.defaultProductName || product.generalName,
-          brand: '',
+          name: specificProduct.specificProductName,
+          brand: specificProduct.brand,
           category: product.category,
           priceTier: product.priceTier,
-          priceRange: product.priceRange,
+          priceRange: specificProduct.priceRange,
           price: 0,
           benefits: ['Recommended for your skin type'],
-          affiliateLink: product.affiliateLink || '',
-          originalLink: product.defaultProductLink,
-          premiumOptions: isPremiumUser ? product.premiumOptions : undefined,
+          affiliateLink: specificProduct.affiliateLink,
+          originalLink: specificProduct.productLink,
+          isRecommended: specificProduct.isRecommended,
+          premiumOptions: alternatives.length > 0 ? alternatives.map(alt => ({
+            originalLink: alt.productLink,
+            affiliateLink: alt.affiliateLink,
+            productName: alt.specificProductName
+          })) : undefined,
         };
       })
       .filter((p): p is NonNullable<typeof p> => p !== null);
@@ -113,17 +142,46 @@ export function resolveSavedRoutineProducts(
           console.error(`Product not found for ID: ${id}`);
           return null;
         }
+        
+        // Get the specific product based on premium status
+        const specificProduct = getSpecificProduct(id, isPremiumUser);
+        
+        if (!specificProduct) {
+          // Fallback to legacy fields
+          return {
+            name: product.defaultProductName || product.generalName,
+            brand: '',
+            category: product.category,
+            priceTier: product.priceTier,
+            priceRange: product.priceRange || '',
+            price: 0,
+            benefits: ['Recommended for your skin type'],
+            affiliateLink: product.affiliateLink || '',
+            originalLink: product.defaultProductLink || '',
+            isRecommended: false,
+            premiumOptions: undefined,
+          };
+        }
+        
+        // Get alternatives for premium users
+        const alternatives = isPremiumUser ? getProductAlternatives(id) : [];
+        
         return {
-          name: product.defaultProductName || product.generalName,
-          brand: '',
+          name: specificProduct.specificProductName,
+          brand: specificProduct.brand,
           category: product.category,
           priceTier: product.priceTier,
-          priceRange: product.priceRange,
+          priceRange: specificProduct.priceRange,
           price: 0,
           benefits: ['Recommended for your skin type'],
-          affiliateLink: product.affiliateLink || '',
-          originalLink: product.defaultProductLink,
-          premiumOptions: isPremiumUser ? product.premiumOptions : undefined,
+          affiliateLink: specificProduct.affiliateLink,
+          originalLink: specificProduct.productLink,
+          isRecommended: specificProduct.isRecommended,
+          premiumOptions: alternatives.length > 0 ? alternatives.map(alt => ({
+            originalLink: alt.productLink,
+            affiliateLink: alt.affiliateLink,
+            productName: alt.specificProductName
+          })) : undefined,
         };
       }).filter((p): p is NonNullable<typeof p> => p !== null);
     };
@@ -143,29 +201,65 @@ export function resolveSavedRoutineProducts(
     const resolveProduct = (oldProduct: any) => {
       if (!oldProduct) return oldProduct;
 
-      // Find matching product in library by product name or general name
-      const libraryProduct = Object.values(PRODUCT_LIBRARY).find(p => {
-        // Match by actual product name OR by general name
-        return p.defaultProductName === oldProduct.name || p.generalName === oldProduct.name;
+      // Try to find matching product in library
+      // First try matching by defaultProductName, generalName, or specific product names in CSV
+      let libraryProduct = Object.values(PRODUCT_LIBRARY).find(p => {
+        // Match by old fields OR by specific product names in CSV
+        if (p.defaultProductName === oldProduct.name || p.generalName === oldProduct.name) {
+          return true;
+        }
+        // Also try matching against specific product names from CSV
+        if (p.products) {
+          return p.products.some(sp => sp.specificProductName === oldProduct.name);
+        }
+        return false;
       });
       
       if (!libraryProduct) {
-        console.warn(`No library product found for product name: ${oldProduct.name}`);
+        // If we still can't find it, just keep the old product data
         return oldProduct;
       }
 
+      // Get the specific product for this user
+      const specificProduct = getSpecificProduct(libraryProduct.id, isPremiumUser);
+      
+      if (!specificProduct) {
+        // Fallback to legacy fields
+        return {
+          name: libraryProduct.defaultProductName || libraryProduct.generalName,
+          brand: '',
+          category: libraryProduct.category,
+          priceTier: libraryProduct.priceTier,
+          priceRange: libraryProduct.priceRange || '',
+          price: 0,
+          benefits: ['Recommended for your skin type'],
+          affiliateLink: libraryProduct.affiliateLink || '',
+          originalLink: libraryProduct.defaultProductLink || '',
+          isRecommended: false,
+          premiumOptions: undefined,
+        };
+      }
+
+      // Get alternatives for premium users
+      const alternatives = isPremiumUser ? getProductAlternatives(libraryProduct.id) : [];
+
       // Use centralized product data
       return {
-        name: libraryProduct.defaultProductName || libraryProduct.generalName,
-        brand: '',
+        name: specificProduct.specificProductName,
+        brand: specificProduct.brand,
         category: libraryProduct.category,
         priceTier: libraryProduct.priceTier,
-        priceRange: libraryProduct.priceRange,
+        priceRange: specificProduct.priceRange,
         price: 0,
         benefits: ['Recommended for your skin type'],
-        affiliateLink: libraryProduct.affiliateLink || '',
-        originalLink: libraryProduct.defaultProductLink,
-        premiumOptions: isPremiumUser ? libraryProduct.premiumOptions : undefined,
+        affiliateLink: specificProduct.affiliateLink,
+        originalLink: specificProduct.productLink,
+        isRecommended: specificProduct.isRecommended,
+        premiumOptions: alternatives.length > 0 ? alternatives.map(alt => ({
+          originalLink: alt.productLink,
+          affiliateLink: alt.affiliateLink,
+          productName: alt.specificProductName
+        })) : undefined,
       };
     };
 
