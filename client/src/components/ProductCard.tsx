@@ -108,36 +108,38 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
           </div>
         </div>
 
-        <div className="p-6 flex flex-col flex-1 min-h-[240px]">
-          <div className="space-y-3 flex-1">
-            <div>
-              <h3 
-                className="font-serif text-lg font-semibold text-foreground leading-tight mb-2 min-h-[3.5rem]" 
-                style={{ 
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis'
-                }}
-                data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}
-              >
-                {product.name}
-              </h3>
-              {product.brand && <p className="text-sm text-muted-foreground mb-1">{product.brand}</p>}
-              <p className="text-sm font-medium text-foreground" data-testid="text-price-range">
-                {product.priceRange || `$${product.price}`}
-              </p>
-            </div>
-            
-            {product.benefits && product.benefits.length > 0 && (
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {product.benefits[0]}
-              </p>
-            )}
-          </div>
+        <div className="p-6 flex flex-col flex-1">
+          <h3 
+            className="font-serif text-lg font-semibold text-foreground leading-tight mb-2 h-[3.5rem]" 
+            style={{ 
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}
+            data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}
+          >
+            {product.name}
+          </h3>
           
-          <div className="pt-2 space-y-3 mt-auto">
+          {product.brand && (
+            <p className="text-sm text-muted-foreground mb-2">{product.brand}</p>
+          )}
+          
+          <p className="text-sm font-medium text-foreground mb-4" data-testid="text-price-range">
+            {product.priceRange || `$${product.price}`}
+          </p>
+          
+          {product.benefits && product.benefits.length > 0 && (
+            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+              {product.benefits[0]}
+            </p>
+          )}
+          
+          <div className="flex-1"></div>
+          
+          <div className="space-y-3">
             {isLocked ? (
               <Button
                 variant="ghost"
