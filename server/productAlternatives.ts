@@ -244,7 +244,11 @@ export function enrichProductLibraryFromCSV() {
     
     // Enrich the product library entry
     product.defaultProductLink = defaultProductLink;
-    product.defaultProductName = defaultProductName;
+    // Only set defaultProductName if we successfully extracted a real name (not the fallback "Product")
+    // This preserves the correct generalName for products like BPO that don't have purchasable links
+    if (defaultProductName !== 'Product') {
+      product.defaultProductName = defaultProductName;
+    }
     product.affiliateLink = affiliateLink;
     product.premiumOptions = premiumOptions;
     
