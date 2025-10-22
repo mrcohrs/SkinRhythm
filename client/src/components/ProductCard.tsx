@@ -69,15 +69,6 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
 
   return (
     <Card className={`flex flex-col h-full group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
-      {/* Category badge positioned at top-left */}
-      <Badge 
-        variant="outline" 
-        className="absolute top-3 left-3 text-xs z-20 bg-background/95 backdrop-blur-sm" 
-        data-testid={`badge-category-${product.category}`}
-      >
-        {product.category}
-      </Badge>
-      
       {isLocked && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm rounded-xl z-10">
           <div className="text-center">
@@ -88,7 +79,26 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
       )}
       
       <CardContent className="p-0 flex flex-col flex-1">
-        <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8">
+        <div className="relative aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8">
+          {/* Category badge positioned at top-left on image */}
+          <Badge 
+            variant="outline" 
+            className="absolute top-3 left-3 text-xs z-20 bg-background/95 backdrop-blur-sm w-fit" 
+            data-testid={`badge-category-${product.category}`}
+          >
+            {product.category}
+          </Badge>
+          
+          {/* Best for Your Skin badge positioned at top-right on image */}
+          {product.isRecommended && (
+            <img 
+              src={bestForYourSkinBadge} 
+              alt="Best for Your Skin" 
+              className="absolute top-3 right-3 h-4 z-20"
+              data-testid="img-best-for-your-skin"
+            />
+          )}
+          
           <div className="w-32 h-32 flex items-center justify-center">
             <img 
               src={productImage} 
@@ -98,19 +108,11 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
           </div>
         </div>
 
-        <div className="p-6 flex flex-col flex-1">
+        <div className="p-6 flex flex-col flex-1 min-h-[240px]">
           <div className="space-y-3 flex-1">
             <div>
-              {product.isRecommended && (
-                <img 
-                  src={bestForYourSkinBadge} 
-                  alt="Best for Your Skin" 
-                  className="h-5 mb-2"
-                  data-testid="img-best-for-your-skin"
-                />
-              )}
               <h3 
-                className="font-serif text-lg font-semibold text-foreground leading-tight mb-2" 
+                className="font-serif text-lg font-semibold text-foreground leading-tight mb-2 min-h-[3.5rem]" 
                 style={{ 
                   display: '-webkit-box',
                   WebkitLineClamp: 2,

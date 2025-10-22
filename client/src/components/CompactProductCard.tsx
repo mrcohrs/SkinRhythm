@@ -43,18 +43,28 @@ export function CompactProductCard({ product, description }: CompactProductCardP
 
   return (
     <Card className="relative border-card-border hover-elevate transition-all" data-testid="card-compact-product">
-      {/* Category badge positioned at top-left */}
-      <Badge 
-        variant="outline" 
-        className="absolute top-3 left-3 text-xs z-10 bg-background/95 backdrop-blur-sm" 
-        data-testid="badge-category"
-      >
-        {product.category}
-      </Badge>
-      
       <CardContent className="p-4">
         <div className="flex gap-4 items-center">
-          <div className="w-20 h-20 flex-shrink-0 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+          <div className="relative w-20 h-20 flex-shrink-0 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
+            {/* Category badge positioned at top-left on image */}
+            <Badge 
+              variant="outline" 
+              className="absolute top-1 left-1 text-xs z-20 bg-background/95 backdrop-blur-sm w-fit" 
+              data-testid="badge-category"
+            >
+              {product.category}
+            </Badge>
+            
+            {/* Best for Your Skin badge positioned at top-right on image */}
+            {product.isRecommended && (
+              <img 
+                src={bestForYourSkinBadge} 
+                alt="Best for Your Skin" 
+                className="absolute top-1 right-1 h-3 z-20"
+                data-testid="img-best-for-your-skin"
+              />
+            )}
+            
             <img 
               src={productImage} 
               alt={product.name} 
@@ -64,14 +74,6 @@ export function CompactProductCard({ product, description }: CompactProductCardP
           
           <div className="flex-1 min-w-0 space-y-2">
             <div>
-              {product.isRecommended && (
-                <img 
-                  src={bestForYourSkinBadge} 
-                  alt="Best for Your Skin" 
-                  className="h-5 mb-1"
-                  data-testid="img-best-for-your-skin"
-                />
-              )}
               <div className="flex items-center gap-2 mb-1">
                 <Badge variant="secondary" className="text-xs" data-testid="badge-tier">
                   {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
