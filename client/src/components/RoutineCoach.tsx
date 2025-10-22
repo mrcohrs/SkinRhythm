@@ -278,8 +278,8 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
               </div>
 
 
-              {/* Product Carousel - For product steps with alternatives */}
-              {hasProduct && hasAlternatives && currentStep.product && (
+              {/* Product Carousel - For product steps (shows current product and alternatives if available) */}
+              {hasProduct && currentStep.product && !isIce && (
                 <div className="w-full">
                   <ProductCarousel
                     category={currentStep.product.category}

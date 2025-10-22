@@ -119,6 +119,7 @@ export function determineRoutineType(acneTypes: string[], acneSeverity: string):
 export const categoryMapping: Record<string, string> = {
   'Cleanser': 'Cleanser',
   'Ice': 'Ice', // Special case - not a product
+  'Ice (see notes)': 'Ice', // Special case - not a product
   'Toner': 'Toner',
   'Serum': 'Serum',
   'Serum (every other day)': 'Serum',
@@ -128,4 +129,5 @@ export const categoryMapping: Record<string, string> = {
   'Sunscreen': 'SPF',
   'Benzoyl Peroxide': 'Spot Treatment',
   'Benzoyl Peroxide Mask': 'Spot Treatment',
+  'BPO Mask (see notes)': 'Spot Treatment',
 };
