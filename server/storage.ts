@@ -31,6 +31,7 @@ export interface IStorage {
   saveRoutine(routine: InsertRoutine): Promise<Routine>;
   getUserRoutines(userId: string): Promise<Routine[]>;
   getCurrentRoutine(userId: string): Promise<Routine | undefined>;
+  getRoutineById(userId: string, routineId: string): Promise<Routine | undefined>;
   setCurrentRoutine(userId: string, routineId: string): Promise<Routine>;
   setCurrentProduct(userId: string, routineId: string, category: string, productName: string): Promise<Routine>;
   addRoutineNote(userId: string, routineId: string, text: string): Promise<Routine>;
@@ -164,6 +165,14 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(routines)
       .where(and(eq(routines.userId, userId), eq(routines.isCurrent, true)));
+    return routine;
+  }
+
+  async getRoutineById(userId: string, routineId: string): Promise<Routine | undefined> {
+    const [routine] = await db
+      .select()
+      .from(routines)
+      .where(and(eq(routines.id, routineId), eq(routines.userId, userId)));
     return routine;
   }
 

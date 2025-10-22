@@ -38,6 +38,7 @@ export default function Dashboard() {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("products");
   const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
+  const [selectedRoutineId, setSelectedRoutineId] = useState<string | null>(null);
   const [showRoutineModal, setShowRoutineModal] = useState(false);
   
   // Consent modal state
@@ -116,6 +117,29 @@ export default function Dashboard() {
     enabled: !!user,
   });
 
+  // Fetch selected routine with products resolved based on current routineMode
+  const { data: resolvedRoutine } = useQuery<Routine>({
+    queryKey: ['/api/routines', selectedRoutineId],
+    queryFn: async () => {
+      if (!selectedRoutineId) return null;
+      const response = await fetch(`/api/routines/${selectedRoutineId}`, {
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch routine');
+      }
+      return response.json();
+    },
+    enabled: !!user && !!selectedRoutineId,
+  });
+
+  // Sync resolved routine data to selectedRoutine when it loads
+  useEffect(() => {
+    if (resolvedRoutine) {
+      setSelectedRoutine(resolvedRoutine);
+    }
+  }, [resolvedRoutine]);
+
   // Check consent status
   const { data: consentData } = useQuery<{
     dataCollectionConsent: boolean;
@@ -189,6 +213,7 @@ export default function Dashboard() {
     onSuccess: (data, newMode) => {
       queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
       queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/routines'] });
       setRoutineMode(newMode);
       toast({
         title: "Routine updated",
@@ -1299,7 +1324,7 @@ Hyaluronic Acid"
                           key={routine.id}
                           className={`cursor-pointer hover-elevate ${isCurrent ? 'border-primary' : ''}`}
                           onClick={() => {
-                            setSelectedRoutine(routine);
+                            setSelectedRoutineId(routine.id);
                             setShowRoutineModal(true);
                           }}
                           data-testid={`routine-card-${routine.id}`}

@@ -194,6 +194,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/routines/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { id } = req.params;
+      const routine = await storage.getRoutineById(userId, id);
+      
+      if (!routine) {
+        return res.status(404).json({ message: "Routine not found" });
+      }
+      
+      // Get user's premium status
+      let isPremiumUser = false;
+      try {
+        const user = await storage.getUser(userId);
+        isPremiumUser = user?.isPremium || false;
+      } catch (e) {
+        console.log(`[Get Routine] Error getting user, treating as non-premium:`, e);
+      }
+      
+      // Resolve all products from centralized library with current routineMode
+      const resolvedRoutine = {
+        ...routine,
+        routineData: await resolveSavedRoutineProducts(
+          routine.routineData, 
+          isPremiumUser,
+          routine.acneTypes,
+          routine.acneSeverity,
+          userId
+        ),
+      };
+      
+      res.json(resolvedRoutine);
+    } catch (error) {
+      console.error("Error fetching routine:", error);
+      res.status(500).json({ message: "Failed to fetch routine" });
+    }
+  });
+
   app.post('/api/routines/:id/set-current', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
