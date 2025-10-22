@@ -69,6 +69,15 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
 
   return (
     <Card className={`flex flex-col h-full group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
+      {/* Category badge positioned at top-left */}
+      <Badge 
+        variant="outline" 
+        className="absolute top-3 left-3 text-xs z-20 bg-background/95 backdrop-blur-sm" 
+        data-testid={`badge-category-${product.category}`}
+      >
+        {product.category}
+      </Badge>
+      
       {isLocked && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm rounded-xl z-10">
           <div className="text-center">
@@ -100,9 +109,6 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
                   data-testid="img-best-for-your-skin"
                 />
               )}
-              <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
-                {product.category}
-              </Badge>
               <h3 
                 className="font-serif text-lg font-semibold text-foreground leading-tight mb-2" 
                 style={{ 
@@ -122,9 +128,11 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
               </p>
             </div>
             
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {product.benefits[0]}
-            </p>
+            {product.benefits && product.benefits.length > 0 && (
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {product.benefits[0]}
+              </p>
+            )}
           </div>
           
           <div className="pt-2 space-y-3 mt-auto">

@@ -42,7 +42,16 @@ export function CompactProductCard({ product, description }: CompactProductCardP
   const productImage = categoryImages[product.category] || categoryImages["Serum"];
 
   return (
-    <Card className="border-card-border hover-elevate transition-all" data-testid="card-compact-product">
+    <Card className="relative border-card-border hover-elevate transition-all" data-testid="card-compact-product">
+      {/* Category badge positioned at top-left */}
+      <Badge 
+        variant="outline" 
+        className="absolute top-3 left-3 text-xs z-10 bg-background/95 backdrop-blur-sm" 
+        data-testid="badge-category"
+      >
+        {product.category}
+      </Badge>
+      
       <CardContent className="p-4">
         <div className="flex gap-4 items-center">
           <div className="w-20 h-20 flex-shrink-0 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
@@ -64,9 +73,6 @@ export function CompactProductCard({ product, description }: CompactProductCardP
                 />
               )}
               <div className="flex items-center gap-2 mb-1">
-                <Badge variant="outline" className="text-xs" data-testid="badge-category">
-                  {product.category}
-                </Badge>
                 <Badge variant="secondary" className="text-xs" data-testid="badge-tier">
                   {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
                 </Badge>

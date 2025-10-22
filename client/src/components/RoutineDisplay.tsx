@@ -346,7 +346,10 @@ export function RoutineDisplay({
                 </Button>
               )}
             </div>
-            <p className="text-muted-foreground mb-6">Shop your personalized skincare routine</p>
+            <p className="text-muted-foreground mb-2">Shop your personalized skincare routine</p>
+            <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+              Every product AcneAgent recommends has been rigorously analyzed and tested to ensure it's an acne-safe, high-quality formulation that complements the other products in your custom regimen to address your specific skin concerns. In order to see results, you must commit to this routine and pause usage of any non-routine products.
+            </p>
             
             <div className="relative">
               {/* Scroll Buttons */}
