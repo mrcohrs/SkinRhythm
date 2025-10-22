@@ -30,7 +30,10 @@ export interface Product {
     originalLink: string;
     affiliateLink: string;
     productName: string;
-  }>; // Alternative products for premium users
+    priceRange?: string;
+    isRecommended?: boolean;
+    isCurrent?: boolean;
+  }>; // ALL product variants (not just alternatives) with isCurrent flag for user selection
 }
 
 interface ProductCardProps {

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import type { Product } from "./ProductCard";
+import bestForYourSkinBadge from "@assets/bestforyourskin_1761112317047.png";
 
 import cleanserImg from "@assets/Cleanser_1760341831448.png";
 import tonerImg from "@assets/Toner_1760341831459.png";
@@ -40,23 +41,25 @@ export function ProductAlternativesModal({
   isPending = false,
 }: ProductAlternativesModalProps) {
   const productImage = categoryImages[product.category] || categoryImages["Serum"];
-  const isDefaultCurrent = currentProductName === product.name;
 
-  // Build list of all products (current + alternatives)
-  const allProducts = [
-    {
-      name: product.name,
-      affiliateLink: product.affiliateLink,
-      priceTier: product.priceTier,
-      isCurrent: isDefaultCurrent,
-    },
-    ...(product.premiumOptions || []).map(opt => ({
-      name: opt.productName,
-      affiliateLink: opt.affiliateLink,
-      priceTier: product.priceTier,
-      isCurrent: currentProductName === opt.productName,
-    })),
-  ];
+  // Build list of all products from premiumOptions (which now contains ALL products with isCurrent flags)
+  const allProducts = (product.premiumOptions && product.premiumOptions.length > 0)
+    ? product.premiumOptions.map(opt => ({
+        name: opt.productName,
+        affiliateLink: opt.affiliateLink,
+        priceTier: product.priceTier,
+        isCurrent: opt.isCurrent ?? false,
+        isRecommended: opt.isRecommended,
+        priceRange: opt.priceRange,
+      }))
+    : [{
+        name: product.name,
+        affiliateLink: product.affiliateLink,
+        priceTier: product.priceTier,
+        isCurrent: true,
+        isRecommended: product.isRecommended,
+        priceRange: product.priceRange,
+      }];
 
   // Sort so current product is first
   const sortedProducts = [...allProducts].sort((a, b) => {
@@ -99,9 +102,21 @@ export function ProductAlternativesModal({
                       overflow: 'hidden',
                       wordBreak: 'break-word'
                     }}>{option.name}</p>
-                    <Badge variant="outline" className="text-xs">
-                      {option.priceTier === 'budget' ? 'Budget' : option.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
-                    </Badge>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {option.priceRange && (
+                        <p className="text-xs text-muted-foreground">
+                          {option.priceRange}
+                        </p>
+                      )}
+                      {option.isRecommended && (
+                        <img 
+                          src={bestForYourSkinBadge} 
+                          alt="Best for Your Skin" 
+                          className="h-3"
+                          data-testid="img-best-for-your-skin"
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
 

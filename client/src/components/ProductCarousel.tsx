@@ -22,6 +22,9 @@ interface ProductCarouselProps {
       originalLink: string;
       affiliateLink: string;
       productName: string;
+      priceRange?: string;
+      isRecommended?: boolean;
+      isCurrent?: boolean;
     }>;
   };
   onProductSelect: (category: string, productName: string) => void;
@@ -67,33 +70,39 @@ export function ProductCarousel({
 
   const categoryImage = getCategoryImage(category);
 
-  // Build all product cards (default product + all premium options)
+  // Build all product cards from premiumOptions (which now contains ALL products with isCurrent flags)
   const allProductCards: Array<{
     name: string;
     affiliateLink: string;
     priceTier: string;
     priceRange?: string;
     isCurrentSelection: boolean;
+    isRecommended?: boolean;
   }> = [];
 
-  // Add the default product (current product for this step)
-  allProductCards.push({
-    name: currentProduct.name,
-    affiliateLink: currentProduct.affiliateLink,
-    priceTier: currentProduct.priceTier === 'budget' ? 'Budget' : currentProduct.priceTier === 'premium' ? 'Luxury' : 'Midrange',
-    priceRange: currentProduct.priceRange,
-    isCurrentSelection: currentProductSelection === currentProduct.name,
-  });
-
-  // Add premium options if they exist
-  currentProduct.premiumOptions?.forEach((option) => {
-    allProductCards.push({
-      name: option.productName,
-      affiliateLink: option.affiliateLink,
-      priceTier: 'Premium',
-      isCurrentSelection: currentProductSelection === option.productName,
+  // If premiumOptions exist, use them (they contain ALL product variants with isCurrent flags)
+  if (currentProduct.premiumOptions && currentProduct.premiumOptions.length > 0) {
+    currentProduct.premiumOptions.forEach((option) => {
+      allProductCards.push({
+        name: option.productName,
+        affiliateLink: option.affiliateLink,
+        priceTier: currentProduct.priceTier === 'budget' ? 'Budget' : currentProduct.priceTier === 'premium' ? 'Luxury' : 'Midrange',
+        priceRange: option.priceRange,
+        isCurrentSelection: option.isCurrent ?? false,
+        isRecommended: option.isRecommended,
+      });
     });
-  });
+  } else {
+    // Fallback for products without variants (like ice-globes)
+    allProductCards.push({
+      name: currentProduct.name,
+      affiliateLink: currentProduct.affiliateLink,
+      priceTier: currentProduct.priceTier === 'budget' ? 'Budget' : currentProduct.priceTier === 'premium' ? 'Luxury' : 'Midrange',
+      priceRange: currentProduct.priceRange,
+      isCurrentSelection: true,
+      isRecommended: currentProduct.isRecommended,
+    });
+  }
 
   // Sort to show current selection first, then the rest
   const sortedCards = [...allProductCards].sort((a, b) => {
@@ -180,7 +189,7 @@ export function ProductCarousel({
                               {card.priceRange}
                             </p>
                           )}
-                          {currentProduct.isRecommended && card.name === currentProduct.name && (
+                          {card.isRecommended && (
                             <img 
                               src={bestForYourSkinBadge} 
                               alt="Best for Your Skin" 
