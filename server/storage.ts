@@ -287,6 +287,14 @@ export class DatabaseStorage implements IStorage {
       throw new Error("User not found");
     }
     
+    // Clear saved product selections from current routine so new mode takes effect
+    await db
+      .update(routines)
+      .set({ currentProductSelections: {} })
+      .where(and(eq(routines.userId, userId), eq(routines.isCurrent, true)));
+    
+    console.log(`[Storage] Cleared product selections for user ${userId} after switching to ${routineMode} mode`);
+    
     return updatedUser;
   }
 

@@ -74,7 +74,7 @@ export async function resolveRoutineProducts(routine: RoutineRecommendation | an
           };
         }
         
-        console.log(`[Resolver] Resolved ${id} -> ${specificProduct.specificProductName} (recommended: ${specificProduct.isRecommended})`);
+        console.log(`[Resolver] Resolved ${id} -> ${specificProduct.specificProductName} (isDefault: ${specificProduct.isDefault}, isRecommended: ${specificProduct.isRecommended})`);
         
         // Get ALL product variants and mark which one is current
         // The current product is determined by: user selection from DB, or defaults to isDefault/isRecommended
