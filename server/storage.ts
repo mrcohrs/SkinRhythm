@@ -3,6 +3,7 @@ import {
   routines,
   cardInteractions,
   bannerState,
+  productSelections,
   type User,
   type UpsertUser,
   type Routine,
@@ -11,6 +12,8 @@ import {
   type InsertCardInteraction,
   type BannerState,
   type InsertBannerState,
+  type ProductSelection,
+  type InsertProductSelection,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql as drizzleSql } from "drizzle-orm";
@@ -43,6 +46,11 @@ export interface IStorage {
   dismissBanner(userId: string, bannerId: string, suppressDays: number): Promise<BannerState>;
   trackBannerClick(userId: string, bannerId: string): Promise<BannerState>;
   trackBannerView(userId: string, bannerId: string): Promise<BannerState>;
+  
+  // Product selections
+  getUserProductSelections(userId: string): Promise<ProductSelection[]>;
+  getUserProductSelection(userId: string, productId: string): Promise<ProductSelection | undefined>;
+  setUserProductSelection(userId: string, productId: string, productName: string): Promise<ProductSelection>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -446,6 +454,57 @@ export class DatabaseStorage implements IStorage {
       bannerViews: viewsMap,
       lastRotationDate: existing?.lastRotationDate || new Date(),
     });
+  }
+
+  async getUserProductSelections(userId: string): Promise<ProductSelection[]> {
+    return await db
+      .select()
+      .from(productSelections)
+      .where(eq(productSelections.userId, userId));
+  }
+
+  async getUserProductSelection(userId: string, productId: string): Promise<ProductSelection | undefined> {
+    const [selection] = await db
+      .select()
+      .from(productSelections)
+      .where(
+        and(
+          eq(productSelections.userId, userId),
+          eq(productSelections.productId, productId)
+        )
+      );
+    return selection;
+  }
+
+  async setUserProductSelection(userId: string, productId: string, productName: string): Promise<ProductSelection> {
+    const existing = await this.getUserProductSelection(userId, productId);
+    
+    if (existing) {
+      const [updated] = await db
+        .update(productSelections)
+        .set({
+          currentProductName: productName,
+          updatedAt: new Date(),
+        })
+        .where(
+          and(
+            eq(productSelections.userId, userId),
+            eq(productSelections.productId, productId)
+          )
+        )
+        .returning();
+      return updated;
+    }
+    
+    const [inserted] = await db
+      .insert(productSelections)
+      .values({
+        userId,
+        productId,
+        currentProductName: productName,
+      })
+      .returning();
+    return inserted;
   }
 }
 
