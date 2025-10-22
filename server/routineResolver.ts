@@ -86,6 +86,7 @@ export async function resolveRoutineProducts(routine: RoutineRecommendation | an
             originalLink: variant.productLink,
             affiliateLink: variant.affiliateLink,
             productName: variant.specificProductName,
+            brand: variant.brand,
             priceRange: variant.priceRange,
             isRecommended: variant.isRecommended,
             isCurrent: variant.specificProductName === currentProductName
@@ -198,6 +199,7 @@ export async function resolveSavedRoutineProducts(
             originalLink: variant.productLink,
             affiliateLink: variant.affiliateLink,
             productName: variant.specificProductName,
+            brand: variant.brand,
             priceRange: variant.priceRange,
             isRecommended: variant.isRecommended,
             isCurrent: variant.specificProductName === currentProductName

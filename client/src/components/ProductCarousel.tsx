@@ -22,6 +22,7 @@ interface ProductCarouselProps {
       originalLink: string;
       affiliateLink: string;
       productName: string;
+      brand?: string;
       priceRange?: string;
       isRecommended?: boolean;
       isCurrent?: boolean;
@@ -73,6 +74,7 @@ export function ProductCarousel({
   // Build all product cards from premiumOptions (which now contains ALL products with isCurrent flags)
   const allProductCards: Array<{
     name: string;
+    brand?: string;
     affiliateLink: string;
     priceTier: string;
     priceRange?: string;
@@ -85,6 +87,7 @@ export function ProductCarousel({
     currentProduct.premiumOptions.forEach((option) => {
       allProductCards.push({
         name: option.productName,
+        brand: option.brand,
         affiliateLink: option.affiliateLink,
         priceTier: currentProduct.priceTier === 'budget' ? 'Budget' : currentProduct.priceTier === 'premium' ? 'Luxury' : 'Midrange',
         priceRange: option.priceRange,
@@ -183,6 +186,9 @@ export function ProductCarousel({
                         <h5 className="font-serif text-base font-semibold text-foreground line-clamp-2" data-testid="text-product-name">
                           {card.name}
                         </h5>
+                        {card.brand && (
+                          <p className="text-xs text-muted-foreground">{card.brand}</p>
+                        )}
                         <div className="flex items-center gap-2 mt-1 flex-wrap">
                           {card.priceRange && (
                             <p className="text-sm font-medium text-muted-foreground">
