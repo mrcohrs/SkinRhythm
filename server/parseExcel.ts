@@ -34,7 +34,7 @@ let routineData: RoutineRow[] = [];
 
 export function parseExcelFile() {
   try {
-    const filePath = path.join(process.cwd(), 'attached_assets', 'Acne Agent Routine Logic.xlsx - Noninflamed (12)_1760647720504.csv');
+    const filePath = path.join(process.cwd(), 'attached_assets', 'Acne Agent Routine Logic.xlsx (12) (1)_1761162778689.csv');
     
     if (!fs.existsSync(filePath)) {
       console.error('CSV file not found at:', filePath);
