@@ -429,11 +429,18 @@ export function RoutineDisplay({
                         <p className="font-medium truncate">{product.name}</p>
                         <p className="text-muted-foreground text-xs">{product.category}</p>
                       </div>
-                      {product.priceTier && (
-                        <Badge variant="outline" className="text-xs flex-shrink-0">
-                          {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
-                        </Badge>
-                      )}
+                      <Button
+                        size="sm"
+                        variant="default"
+                        className="flex-shrink-0 gap-1"
+                        asChild
+                        data-testid={`button-buy-now-morning-${index}`}
+                      >
+                        <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer">
+                          Buy Now
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </Button>
                     </div>
                   );
                 })}
@@ -465,11 +472,18 @@ export function RoutineDisplay({
                         <p className="font-medium truncate">{product.name}</p>
                         <p className="text-muted-foreground text-xs">{product.category}</p>
                       </div>
-                      {product.priceTier && (
-                        <Badge variant="outline" className="text-xs flex-shrink-0">
-                          {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
-                        </Badge>
-                      )}
+                      <Button
+                        size="sm"
+                        variant="default"
+                        className="flex-shrink-0 gap-1"
+                        asChild
+                        data-testid={`button-buy-now-evening-${index}`}
+                      >
+                        <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer">
+                          Buy Now
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </Button>
                     </div>
                   );
                 })}

@@ -92,39 +92,34 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
         <div className="p-6 flex flex-col flex-1">
           <div className="space-y-3 flex-1">
             <div>
-              <div className="flex items-start gap-2 mb-2">
-                <div className="flex-1 min-w-0">
-                  {product.isRecommended && (
-                    <img 
-                      src={bestForYourSkinBadge} 
-                      alt="Best for Your Skin" 
-                      className="h-5 mb-2"
-                      data-testid="img-best-for-your-skin"
-                    />
-                  )}
-                  <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
-                    {product.category}
-                  </Badge>
-                  <h3 
-                    className="font-serif text-lg font-semibold text-foreground leading-tight" 
-                    style={{ 
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis'
-                    }}
-                    data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}
-                  >
-                    {product.name}
-                  </h3>
-                </div>
-                <Badge variant="secondary" className="text-xs whitespace-nowrap flex-shrink-0" data-testid={`badge-tier-${product.priceTier}`}>
-                  {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
-                </Badge>
-              </div>
-              {product.brand && <p className="text-sm text-muted-foreground">{product.brand}</p>}
-              {product.priceRange && <p className="text-sm font-medium text-foreground" data-testid="text-price-range">{product.priceRange}</p>}
+              {product.isRecommended && (
+                <img 
+                  src={bestForYourSkinBadge} 
+                  alt="Best for Your Skin" 
+                  className="h-5 mb-2"
+                  data-testid="img-best-for-your-skin"
+                />
+              )}
+              <Badge variant="outline" className="text-xs mb-2" data-testid={`badge-category-${product.category}`}>
+                {product.category}
+              </Badge>
+              <h3 
+                className="font-serif text-lg font-semibold text-foreground leading-tight mb-2" 
+                style={{ 
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}
+                data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}
+              >
+                {product.name}
+              </h3>
+              {product.brand && <p className="text-sm text-muted-foreground mb-1">{product.brand}</p>}
+              <p className="text-sm font-medium text-foreground" data-testid="text-price-range">
+                {product.priceRange || `$${product.price}`}
+              </p>
             </div>
             
             <p className="text-sm text-muted-foreground leading-relaxed">
