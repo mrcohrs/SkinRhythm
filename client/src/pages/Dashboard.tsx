@@ -555,36 +555,59 @@ export default function Dashboard() {
           {isPremium && (
             <Card className="border-border/50" data-testid="card-routine-mode-toggle">
               <CardContent className="p-4">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex-shrink-0">
-                      {routineMode === 'premium' ? (
-                        <Sparkles className="h-5 w-5 text-primary" />
-                      ) : (
-                        <DollarSign className="h-5 w-5 text-primary" />
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="routine-mode-switch" className="font-semibold text-base cursor-pointer">
-                        {routineMode === 'premium' ? 'Premium Routine' : 'Budget Routine'}
-                      </Label>
-                      <p className="text-sm text-muted-foreground">
-                        {routineMode === 'premium' 
-                          ? 'Showing products recommended for your skin type' 
-                          : 'Showing budget-friendly product alternatives'}
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium">Choose Your Routine</Label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Budget Option */}
+                    <Button
+                      variant={routineMode === 'basic' ? 'default' : 'outline'}
+                      className={`h-auto py-3 px-4 flex flex-col items-start gap-2 transition-all ${
+                        routineMode === 'basic' ? 'ring-2 ring-primary ring-offset-2' : ''
+                      }`}
+                      onClick={() => {
+                        if (routineMode !== 'basic') {
+                          routineModeMutation.mutate('basic');
+                        }
+                      }}
+                      disabled={routineModeMutation.isPending}
+                      data-testid="button-routine-basic"
+                    >
+                      <div className="flex items-center gap-2 w-full">
+                        <DollarSign className="h-5 w-5 flex-shrink-0" />
+                        <span className="font-semibold text-base">Budget</span>
+                      </div>
+                      <p className={`text-xs text-left ${
+                        routineMode === 'basic' ? 'text-primary-foreground/80' : 'text-muted-foreground'
+                      }`}>
+                        Cost-effective alternatives
                       </p>
-                    </div>
+                    </Button>
+
+                    {/* Premium Option */}
+                    <Button
+                      variant={routineMode === 'premium' ? 'default' : 'outline'}
+                      className={`h-auto py-3 px-4 flex flex-col items-start gap-2 transition-all ${
+                        routineMode === 'premium' ? 'ring-2 ring-primary ring-offset-2' : ''
+                      }`}
+                      onClick={() => {
+                        if (routineMode !== 'premium') {
+                          routineModeMutation.mutate('premium');
+                        }
+                      }}
+                      disabled={routineModeMutation.isPending}
+                      data-testid="button-routine-premium"
+                    >
+                      <div className="flex items-center gap-2 w-full">
+                        <Sparkles className="h-5 w-5 flex-shrink-0" />
+                        <span className="font-semibold text-base">Premium</span>
+                      </div>
+                      <p className={`text-xs text-left ${
+                        routineMode === 'premium' ? 'text-primary-foreground/80' : 'text-muted-foreground'
+                      }`}>
+                        Recommended for your skin
+                      </p>
+                    </Button>
                   </div>
-                  <Switch
-                    id="routine-mode-switch"
-                    checked={routineMode === 'premium'}
-                    onCheckedChange={(checked) => {
-                      const newMode = checked ? 'premium' : 'basic';
-                      routineModeMutation.mutate(newMode);
-                    }}
-                    disabled={routineModeMutation.isPending}
-                    data-testid="switch-routine-mode"
-                  />
                 </div>
               </CardContent>
             </Card>
