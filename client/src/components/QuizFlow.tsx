@@ -348,20 +348,38 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
               </div>
               <div className="space-y-3">
                 {[
-                  { id: "inflamed", label: "Inflamed | Classic 'Acne': Raised, red, painful pimples (pustules and papules)." },
-                  { id: "noninflamed", label: "Non-inflamed | Painless blackheads (sebaceous filaments on the nose are not blackheads!), whiteheads, and comedones (blackheads with a white center)." },
-                  { id: "acne-rosacea", label: "Acne Rosacea | Redness across cheeks, nose, forehead, sometimes with bumps, pustules, or pimples." },
+                  { 
+                    id: "inflamed", 
+                    title: "Inflamed",
+                    description: "Classic 'Acne': Raised, red, painful pimples (pustules and papules)." 
+                  },
+                  { 
+                    id: "noninflamed", 
+                    title: "Non-inflamed",
+                    description: "Painless blackheads (sebaceous filaments on the nose are not blackheads!), whiteheads, and comedones (blackheads with a white center)." 
+                  },
+                  { 
+                    id: "acne-rosacea", 
+                    title: "Acne Rosacea",
+                    description: "Redness across cheeks, nose, forehead, sometimes with bumps, pustules, or pimples." 
+                  },
                 ].map((type) => (
-                  <div key={type.id} className="flex items-center space-x-3 p-4 rounded-md hover-elevate border">
+                  <div key={type.id} className="flex items-start space-x-3 p-4 rounded-md hover-elevate border">
                     <Checkbox
                       id={type.id}
                       checked={answers.acneTypes.includes(type.id)}
                       onCheckedChange={() => toggleAcneType(type.id)}
                       data-testid={`checkbox-acne-${type.id}`}
+                      className="mt-1"
                     />
-                    <Label htmlFor={type.id} className="text-lg cursor-pointer flex-1">
-                      {type.label}
-                    </Label>
+                    <div className="flex-1 cursor-pointer" onClick={() => toggleAcneType(type.id)}>
+                      <Label htmlFor={type.id} className="text-lg font-semibold cursor-pointer">
+                        {type.title}
+                      </Label>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {type.description}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
