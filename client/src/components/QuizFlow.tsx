@@ -14,6 +14,7 @@ import tanOliveImg from "@assets/Tan Olive_1760686161678.png";
 import mediumBrownImg from "@assets/Medium Brown_1760686161678.png";
 import deepBrownImg from "@assets/Deep Brown_1760686161673.png";
 
+// Backend-compatible quiz answers type
 export interface QuizAnswers {
   name: string;
   age: string;
@@ -25,6 +26,11 @@ export interface QuizAnswers {
   isPregnantOrNursing: "yes" | "no" | "";
 }
 
+// Internal type for component state that includes UI-only "normal/combination" option
+interface LocalQuizAnswers extends Omit<QuizAnswers, 'skinType'> {
+  skinType: "dry" | "normal" | "normal/combination" | "oily" | "";
+}
+
 interface QuizFlowProps {
   onComplete: (answers: QuizAnswers) => void;
   onBack?: () => void;
@@ -33,7 +39,7 @@ interface QuizFlowProps {
 
 export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
   const [currentStep, setCurrentStep] = useState(userName ? 1 : 0);
-  const [answers, setAnswers] = useState<QuizAnswers>({
+  const [answers, setAnswers] = useState<LocalQuizAnswers>({
     name: userName || "",
     age: "",
     skinType: "",
@@ -123,7 +129,12 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
     else if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      onComplete(answers);
+      // Normalize skinType: map "normal/combination" to "normal" for backend
+      const normalizedAnswers: QuizAnswers = {
+        ...answers,
+        skinType: answers.skinType === "normal/combination" ? "normal" : answers.skinType
+      };
+      onComplete(normalizedAnswers);
     }
   };
 
