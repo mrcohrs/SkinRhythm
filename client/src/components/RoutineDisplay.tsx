@@ -69,6 +69,7 @@ export function RoutineDisplay({
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCoreRoutineModal, setShowCoreRoutineModal] = useState(false);
+  const [showProgressiveSchedule, setShowProgressiveSchedule] = useState(true);
 
   // Fetch cards for quiz results page
   const { data: cards = [] } = useQuery<any[]>({
@@ -317,8 +318,19 @@ export function RoutineDisplay({
           
         </div>
 
-        {isPremiumUser && routineType && (
-          <div className="mb-16">
+        {isPremiumUser && routineType && showProgressiveSchedule && (
+          <div className="mb-16 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-serif text-2xl font-semibold">Your Progressive Treatment Schedule</h3>
+              <Button
+                variant="outline"
+                onClick={() => setShowProgressiveSchedule(false)}
+                className="gap-2"
+                data-testid="button-view-basic"
+              >
+                View Basic Schedule
+              </Button>
+            </div>
             <WeeklyRoutine routineType={routineType} products={products} />
           </div>
         )}
@@ -406,8 +418,21 @@ export function RoutineDisplay({
           )}
 
           {/* Visual AM/PM Routine Display */}
+          {(!isPremiumUser || !showProgressiveSchedule) && (
           <div className="space-y-6">
-            <h3 className="font-serif text-2xl font-semibold" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-serif text-2xl font-semibold" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
+              {isPremiumUser && routineType && (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowProgressiveSchedule(true)}
+                  className="gap-2"
+                  data-testid="button-view-progressive"
+                >
+                  View Progressive Schedule
+                </Button>
+              )}
+            </div>
             
             {/* Morning Routine Visual */}
             <div>
@@ -490,6 +515,7 @@ export function RoutineDisplay({
               </div>
             </div>
           </div>
+          )}
 
           
         </div>
