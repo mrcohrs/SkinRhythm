@@ -285,6 +285,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Product selection endpoints
+  app.get('/api/product-selections', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const selections = await storage.getUserProductSelections(userId);
+      res.json(selections);
+    } catch (error) {
+      console.error("Error fetching product selections:", error);
+      res.status(500).json({ message: "Failed to fetch product selections" });
+    }
+  });
+
+  app.post('/api/product-selections', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { productId, productName } = req.body;
+      
+      if (!productId || !productName) {
+        return res.status(400).json({ message: "productId and productName are required" });
+      }
+      
+      const selection = await storage.setUserProductSelection(userId, productId, productName);
+      res.json(selection);
+    } catch (error) {
+      console.error("Error setting product selection:", error);
+      res.status(500).json({ message: "Failed to set product selection" });
+    }
+  });
+
   // Consent endpoints
   app.post('/api/user/consent', isAuthenticated, async (req: any, res) => {
     try {

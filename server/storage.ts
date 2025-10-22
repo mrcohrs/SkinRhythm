@@ -483,7 +483,7 @@ export class DatabaseStorage implements IStorage {
       const [updated] = await db
         .update(productSelections)
         .set({
-          currentProductName: productName,
+          specificProductName: productName,
           updatedAt: new Date(),
         })
         .where(
@@ -501,7 +501,7 @@ export class DatabaseStorage implements IStorage {
       .values({
         userId,
         productId,
-        currentProductName: productName,
+        specificProductName: productName,
       })
       .returning();
     return inserted;
