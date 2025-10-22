@@ -695,13 +695,28 @@ export default function Dashboard() {
                           <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
                             <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                           </div>
-                          <div className="flex-1">
-                            <p className="font-medium">{product.name}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium truncate">{product.name}</p>
                             <p className="text-muted-foreground text-xs">{product.category}</p>
+                            {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
+                            {(product.priceRange || product.price) && (
+                              <p className="text-xs font-medium text-foreground mt-0.5">
+                                {product.priceRange || `$${product.price}`}
+                              </p>
+                            )}
                           </div>
-                          {product.priceTier && (
-                            <Badge variant="outline" className="text-xs">{product.priceTier}</Badge>
-                          )}
+                          <Button
+                            size="sm"
+                            variant="default"
+                            className="flex-shrink-0 gap-1"
+                            asChild
+                            data-testid={`button-buy-now-morning-${index}`}
+                          >
+                            <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer">
+                              Buy Now
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </Button>
                         </div>
                       );
                     })}
@@ -724,13 +739,28 @@ export default function Dashboard() {
                           <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
                             <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                           </div>
-                          <div className="flex-1">
-                            <p className="font-medium">{product.name}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium truncate">{product.name}</p>
                             <p className="text-muted-foreground text-xs">{product.category}</p>
+                            {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
+                            {(product.priceRange || product.price) && (
+                              <p className="text-xs font-medium text-foreground mt-0.5">
+                                {product.priceRange || `$${product.price}`}
+                              </p>
+                            )}
                           </div>
-                          {product.priceTier && (
-                            <Badge variant="outline" className="text-xs">{product.priceTier}</Badge>
-                          )}
+                          <Button
+                            size="sm"
+                            variant="default"
+                            className="flex-shrink-0 gap-1"
+                            asChild
+                            data-testid={`button-buy-now-evening-${index}`}
+                          >
+                            <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer">
+                              Buy Now
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </Button>
                         </div>
                       );
                     })}

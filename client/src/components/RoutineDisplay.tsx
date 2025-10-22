@@ -434,6 +434,12 @@ export function RoutineDisplay({
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">{product.name}</p>
                         <p className="text-muted-foreground text-xs">{product.category}</p>
+                        {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
+                        {(product.priceRange || product.price) && (
+                          <p className="text-xs font-medium text-foreground mt-0.5">
+                            {product.priceRange || `$${product.price}`}
+                          </p>
+                        )}
                       </div>
                       <Button
                         size="sm"
@@ -477,6 +483,12 @@ export function RoutineDisplay({
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">{product.name}</p>
                         <p className="text-muted-foreground text-xs">{product.category}</p>
+                        {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
+                        {(product.priceRange || product.price) && (
+                          <p className="text-xs font-medium text-foreground mt-0.5">
+                            {product.priceRange || `$${product.price}`}
+                          </p>
+                        )}
                       </div>
                       <Button
                         size="sm"
