@@ -80,21 +80,12 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
       
       <CardContent className="p-0 flex flex-col flex-1">
         <div className="relative aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8">
-          {/* Category badge positioned at top-left on image */}
-          <Badge 
-            variant="outline" 
-            className="absolute top-3 left-3 text-xs z-20 bg-background/95 backdrop-blur-sm w-fit" 
-            data-testid={`badge-category-${product.category}`}
-          >
-            {product.category}
-          </Badge>
-          
-          {/* Best for Your Skin badge positioned at top-right on image */}
+          {/* Best for Your Skin badge positioned at top center on image */}
           {product.isRecommended && (
             <img 
               src={bestForYourSkinBadge} 
               alt="Best for Your Skin" 
-              className="absolute top-3 right-3 h-4 z-20"
+              className="absolute top-3 left-1/2 -translate-x-1/2 h-4 z-20"
               data-testid="img-best-for-your-skin"
             />
           )}
@@ -108,15 +99,16 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
           </div>
         </div>
 
-        <div className="p-6 flex flex-col flex-1">
+        <div className="p-4 md:p-6 flex flex-col flex-1">
           <h3 
-            className="font-serif text-lg font-semibold text-foreground leading-tight mb-2 h-[3.5rem]" 
+            className="font-serif text-base md:text-lg font-semibold text-foreground leading-tight mb-2 h-[3.5rem]" 
             style={{ 
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              textOverflow: 'ellipsis',
+              wordBreak: 'break-word'
             }}
             data-testid={`text-product-name-${product.name.replace(/\s/g, '-')}`}
           >
