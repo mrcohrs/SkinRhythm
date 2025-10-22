@@ -87,8 +87,14 @@ export function RoutineDisplay({
   const hasIceStep = routineType === 'inflamed';
   const iceGlobesProduct = getProductById('ice-globes');
 
-  // Combine all products for carousel
-  const allProducts = [...products.morning, ...products.evening];
+  // Combine all products for carousel - deduplicate by category
+  const allProducts = [...products.morning, ...products.evening].reduce((acc: Product[], current) => {
+    const exists = acc.find(p => p.category === current.category);
+    if (!exists) {
+      return acc.concat([current]);
+    }
+    return acc;
+  }, []);
 
   // Carousel setup
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
@@ -217,7 +223,7 @@ export function RoutineDisplay({
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-4">
             <Badge variant="secondary" className="rounded-full px-4 py-1 text-xs uppercase tracking-wide">
-              Your
+              Your Personalized Routine
             </Badge>
           </div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold mb-6" data-testid="text-greeting">
