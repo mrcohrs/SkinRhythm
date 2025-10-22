@@ -219,9 +219,15 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
                   id="name"
                   value={answers.name}
                   onChange={(e) => setAnswers({ ...answers, name: e.target.value })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && canProceed()) {
+                      handleNext();
+                    }
+                  }}
                   placeholder="Enter your name"
                   data-testid="input-name"
                   className="text-lg"
+                  autoFocus
                 />
               </div>
             </div>
@@ -240,9 +246,15 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
                   type="number"
                   value={answers.age}
                   onChange={(e) => setAnswers({ ...answers, age: e.target.value })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && canProceed()) {
+                      handleNext();
+                    }
+                  }}
                   placeholder="Enter your age"
                   data-testid="input-age"
                   className="text-lg"
+                  autoFocus
                 />
               </div>
             </div>
