@@ -169,7 +169,7 @@ function extractProductNameFromURL(url: string): string {
 }
 
 export function enrichProductLibraryFromCSV() {
-  const csvPath = path.join(process.cwd(), 'attached_assets', 'AcneAgent_Products_Combined.xlsx - Routine Products (1)_1761112317036.csv');
+  const csvPath = path.join(process.cwd(), 'attached_assets', 'AcneAgent_Products_Combined.csv');
   
   if (!fs.existsSync(csvPath)) {
     console.error('Combined products CSV not found at:', csvPath);
@@ -195,7 +195,6 @@ export function enrichProductLibraryFromCSV() {
     productLink: header.indexOf('Product Link'),
     affiliateLink: header.indexOf('Affiliate Link'),
     isDefault: header.indexOf('isDefault?'),
-    isAlt: header.indexOf('isAlt?'),
     isRecommended: header.indexOf('isRecommended?')
   };
   
@@ -231,8 +230,8 @@ export function enrichProductLibraryFromCSV() {
     }
     columns.push(currentColumn.trim()); // Add last column
     
-    if (columns.length < 10) {
-      console.warn(`Row ${i + 1} has insufficient columns, skipping`);
+    if (columns.length < 9) {
+      console.warn(`Row ${i + 1} has insufficient columns (expected 9, got ${columns.length}), skipping`);
       continue;
     }
     
@@ -261,7 +260,6 @@ export function enrichProductLibraryFromCSV() {
       productLink: columns[colIndexes.productLink],
       affiliateLink: columns[colIndexes.affiliateLink] || columns[colIndexes.productLink], // Fallback to product link if no affiliate
       isDefault: parseBool(columns[colIndexes.isDefault]),
-      isAlt: parseBool(columns[colIndexes.isAlt]),
       isRecommended: parseBool(columns[colIndexes.isRecommended])
     });
     

@@ -1,4 +1,4 @@
-import { PRODUCT_LIBRARY, getProductById, getSpecificProduct, getProductAlternatives } from '@shared/productLibrary';
+import { PRODUCT_LIBRARY, getProductById, getSpecificProduct, getAllProductVariants } from '@shared/productLibrary';
 import { determineRoutineType } from '@shared/weeklyRoutines';
 import { splitProductsIntoAMPM } from '@shared/routineHelpers';
 import type { RoutineRecommendation } from './parseExcel';
@@ -60,11 +60,13 @@ export function resolveRoutineProducts(routine: RoutineRecommendation | any, isP
         
         console.log(`[Resolver] Resolved ${id} -> ${specificProduct.specificProductName} (recommended: ${specificProduct.isRecommended})`);
         
-        // Get alternatives for premium users, excluding the currently selected product
-        const alternatives = isPremiumUser ? getProductAlternatives(id, specificProduct.specificProductName) : [];
+        // Get ALL product variants and mark which one is current
+        // The current product is determined by: user selection (TODO) or defaults to isDefault/isRecommended
+        const allVariants = getAllProductVariants(id);
+        const currentProductName = specificProduct.specificProductName; // TODO: Get from user selections DB
         
         return {
-          name: specificProduct.specificProductName,
+          name: currentProductName,
           brand: specificProduct.brand,
           category: product.category,
           priceTier: product.priceTier,
@@ -74,11 +76,15 @@ export function resolveRoutineProducts(routine: RoutineRecommendation | any, isP
           affiliateLink: specificProduct.affiliateLink,
           originalLink: specificProduct.productLink,
           isRecommended: specificProduct.isRecommended,
-          premiumOptions: alternatives.length > 0 ? alternatives.map(alt => ({
-            originalLink: alt.productLink,
-            affiliateLink: alt.affiliateLink,
-            productName: alt.specificProductName
-          })) : undefined,
+          // Return ALL variants with isCurrent flag
+          premiumOptions: allVariants.map(variant => ({
+            originalLink: variant.productLink,
+            affiliateLink: variant.affiliateLink,
+            productName: variant.specificProductName,
+            priceRange: variant.priceRange,
+            isRecommended: variant.isRecommended,
+            isCurrent: variant.specificProductName === currentProductName
+          })),
         };
       })
       .filter((p): p is NonNullable<typeof p> => p !== null);
@@ -163,11 +169,12 @@ export function resolveSavedRoutineProducts(
           };
         }
         
-        // Get alternatives for premium users, excluding the currently selected product
-        const alternatives = isPremiumUser ? getProductAlternatives(id, specificProduct.specificProductName) : [];
+        // Get ALL product variants and mark which one is current
+        const allVariants = getAllProductVariants(id);
+        const currentProductName = specificProduct.specificProductName; // TODO: Get from user selections DB
         
         return {
-          name: specificProduct.specificProductName,
+          name: currentProductName,
           brand: specificProduct.brand,
           category: product.category,
           priceTier: product.priceTier,
@@ -177,11 +184,14 @@ export function resolveSavedRoutineProducts(
           affiliateLink: specificProduct.affiliateLink,
           originalLink: specificProduct.productLink,
           isRecommended: specificProduct.isRecommended,
-          premiumOptions: alternatives.length > 0 ? alternatives.map(alt => ({
-            originalLink: alt.productLink,
-            affiliateLink: alt.affiliateLink,
-            productName: alt.specificProductName
-          })) : undefined,
+          premiumOptions: allVariants.map(variant => ({
+            originalLink: variant.productLink,
+            affiliateLink: variant.affiliateLink,
+            productName: variant.specificProductName,
+            priceRange: variant.priceRange,
+            isRecommended: variant.isRecommended,
+            isCurrent: variant.specificProductName === currentProductName
+          })),
         };
       }).filter((p): p is NonNullable<typeof p> => p !== null);
     };
@@ -240,12 +250,13 @@ export function resolveSavedRoutineProducts(
         };
       }
 
-      // Get alternatives for premium users, excluding the currently selected product
-      const alternatives = isPremiumUser ? getProductAlternatives(libraryProduct.id, specificProduct.specificProductName) : [];
+      // Get ALL product variants and mark which one is current
+      const allVariants = getAllProductVariants(libraryProduct.id);
+      const currentProductName = specificProduct.specificProductName; // TODO: Get from user selections DB
 
       // Use centralized product data
       return {
-        name: specificProduct.specificProductName,
+        name: currentProductName,
         brand: specificProduct.brand,
         category: libraryProduct.category,
         priceTier: libraryProduct.priceTier,
@@ -255,11 +266,14 @@ export function resolveSavedRoutineProducts(
         affiliateLink: specificProduct.affiliateLink,
         originalLink: specificProduct.productLink,
         isRecommended: specificProduct.isRecommended,
-        premiumOptions: alternatives.length > 0 ? alternatives.map(alt => ({
-          originalLink: alt.productLink,
-          affiliateLink: alt.affiliateLink,
-          productName: alt.specificProductName
-        })) : undefined,
+        premiumOptions: allVariants.map(variant => ({
+          originalLink: variant.productLink,
+          affiliateLink: variant.affiliateLink,
+          productName: variant.specificProductName,
+          priceRange: variant.priceRange,
+          isRecommended: variant.isRecommended,
+          isCurrent: variant.specificProductName === currentProductName
+        })),
       };
     };
 

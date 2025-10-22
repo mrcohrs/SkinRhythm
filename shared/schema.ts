@@ -143,6 +143,26 @@ export const insertBannerStateSchema = createInsertSchema(bannerState).omit({
 export type InsertBannerState = z.infer<typeof insertBannerStateSchema>;
 export type BannerState = typeof bannerState.$inferSelect;
 
+// Product selections table - Tracks which specific product variant a user is currently using for each productId
+export const productSelections = pgTable("product_selections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  productId: varchar("product_id").notNull(), // e.g., 'creamy-cleanser', 'retinol-serum'
+  specificProductName: text("specific_product_name").notNull(), // e.g., 'Vanicream Facial Cleanser'
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("IDX_product_selections_user").on(table.userId),
+  index("IDX_product_selections_user_product").on(table.userId, table.productId)
+]);
+
+export const insertProductSelectionSchema = createInsertSchema(productSelections).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export type InsertProductSelection = z.infer<typeof insertProductSelectionSchema>;
+export type ProductSelection = typeof productSelections.$inferSelect;
+
 // Quiz answers schema
 export const quizAnswersSchema = z.object({
   name: z.string().min(1, "Name is required"),

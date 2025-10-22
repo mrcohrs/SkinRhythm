@@ -5,7 +5,6 @@ export interface SpecificProduct {
   productLink: string;
   affiliateLink: string;
   isDefault: boolean;
-  isAlt: boolean;
   isRecommended: boolean;
 }
 
@@ -241,17 +240,12 @@ export function getSpecificProduct(productId: string, isPremium: boolean): Speci
   return product.products[0];
 }
 
-// Get all alternative products (isAlt = true), excluding the currently selected product
-export function getProductAlternatives(productId: string, excludeProductName?: string): SpecificProduct[] {
+// Get all product variants for a given productId
+// This returns ALL specific products - the caller determines which is current based on user state
+export function getAllProductVariants(productId: string): SpecificProduct[] {
   const product = getProductById(productId);
   if (!product || !product.products) {
     return [];
   }
-  return product.products.filter(p => {
-    // Must be marked as alternative
-    if (!p.isAlt) return false;
-    // Exclude the currently selected product to prevent duplicates
-    if (excludeProductName && p.specificProductName === excludeProductName) return false;
-    return true;
-  });
+  return product.products;
 }
