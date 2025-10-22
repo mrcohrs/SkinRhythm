@@ -693,10 +693,10 @@ export default function Dashboard() {
                             {index + 1}
                           </span>
                           <div className="flex-shrink-0 flex flex-col items-center gap-1">
-                            <p className="text-muted-foreground text-xs">{product.category}</p>
                             <div className="w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
                               <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                             </div>
+                            <Badge variant="outline" className="text-xs whitespace-nowrap">{product.category}</Badge>
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="font-medium truncate">{product.name}</p>
@@ -739,10 +739,10 @@ export default function Dashboard() {
                             {index + 1}
                           </span>
                           <div className="flex-shrink-0 flex flex-col items-center gap-1">
-                            <p className="text-muted-foreground text-xs">{product.category}</p>
                             <div className="w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1.5">
                               <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                             </div>
+                            <Badge variant="outline" className="text-xs whitespace-nowrap">{product.category}</Badge>
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="font-medium truncate">{product.name}</p>

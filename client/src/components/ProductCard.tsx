@@ -53,7 +53,7 @@ const categoryImages: Record<string, string> = {
   "Hydrator": hydratorImg,
   "Moisturizer": moisturizerImg,
   "SPF": spfImg,
-  "Spot Treatment": spotTreatmentImg,
+  "Treatment": spotTreatmentImg,
 };
 
 export function ProductCard({ product, isPremiumUser = false, routineId, currentProductSelections, onProductSelect, onExploreAlternatives, showExploreButton = false }: ProductCardProps) {

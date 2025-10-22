@@ -13,7 +13,7 @@ export const categoryImages: Record<string, string> = {
   "Hydrator": hydratorImg,
   "Moisturizer": moisturizerImg,
   "SPF": spfImg,
-  "Spot Treatment": spotTreatmentImg,
+  "Treatment": spotTreatmentImg,
 };
 
 export function getCategoryImage(category: string): string {

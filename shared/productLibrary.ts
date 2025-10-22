@@ -11,7 +11,7 @@ export interface SpecificProduct {
 export interface ProductDefinition {
   id: string;
   generalName: string;
-  category: 'Cleanser' | 'Toner' | 'Serum' | 'Hydrator' | 'Moisturizer' | 'SPF' | 'Spot Treatment' | 'Tool';
+  category: 'Cleanser' | 'Toner' | 'Serum' | 'Hydrator' | 'Moisturizer' | 'SPF' | 'Treatment' | 'Tool';
   csvKey: string;
   priceTier: 'budget' | 'standard' | 'premium';
   priceRange?: string;
@@ -168,7 +168,7 @@ export const PRODUCT_LIBRARY: Record<string, ProductDefinition> = {
   'bpo-2-5': {
     id: 'bpo-2-5',
     generalName: 'Benzoyl Peroxide 2.5%',
-    category: 'Spot Treatment',
+    category: 'Treatment',
     csvKey: 'BPO 2.5%',
     priceTier: 'standard',
   },
@@ -176,7 +176,7 @@ export const PRODUCT_LIBRARY: Record<string, ProductDefinition> = {
   'bpo-5': {
     id: 'bpo-5',
     generalName: 'Benzoyl Peroxide 5%',
-    category: 'Spot Treatment',
+    category: 'Treatment',
     csvKey: 'BPO 5%',
     priceTier: 'standard',
   },
@@ -184,7 +184,7 @@ export const PRODUCT_LIBRARY: Record<string, ProductDefinition> = {
   'bpo-10': {
     id: 'bpo-10',
     generalName: 'Benzoyl Peroxide 10%',
-    category: 'Spot Treatment',
+    category: 'Treatment',
     csvKey: 'BPO 10%',
     priceTier: 'standard',
   },
