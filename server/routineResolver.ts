@@ -2,9 +2,10 @@ import { PRODUCT_LIBRARY, getProductById, getSpecificProduct, getAllProductVaria
 import { determineRoutineType } from '@shared/weeklyRoutines';
 import { splitProductsIntoAMPM } from '@shared/routineHelpers';
 import type { RoutineRecommendation } from './parseExcel';
+import { storage } from './storage';
 
 // Resolve product IDs to full product objects for backward compatibility
-export function resolveRoutineProducts(routine: RoutineRecommendation | any, isPremiumUser: boolean = false): any {
+export async function resolveRoutineProducts(routine: RoutineRecommendation | any, isPremiumUser: boolean = false, userId?: string): Promise<any> {
   console.log('[Resolver] Input routine has routineType:', routine.routineType);
   console.log('[Resolver] Resolving product IDs:', routine.productIds);
   
@@ -27,6 +28,10 @@ export function resolveRoutineProducts(routine: RoutineRecommendation | any, isP
   
   // Split flat product array into AM/PM based on category rules
   const { morning: morningIds, evening: eveningIds } = splitProductsIntoAMPM(productIds);
+  
+  // Fetch user product selections if userId provided
+  const userSelections = userId ? await storage.getUserProductSelections(userId) : [];
+  const selectionsMap = new Map(userSelections.map(s => [s.productId, s.specificProductName]));
   
   const resolveProductIds = (productIds: string[]) => {
     return productIds
@@ -61,9 +66,9 @@ export function resolveRoutineProducts(routine: RoutineRecommendation | any, isP
         console.log(`[Resolver] Resolved ${id} -> ${specificProduct.specificProductName} (recommended: ${specificProduct.isRecommended})`);
         
         // Get ALL product variants and mark which one is current
-        // The current product is determined by: user selection (TODO) or defaults to isDefault/isRecommended
+        // The current product is determined by: user selection from DB, or defaults to isDefault/isRecommended
         const allVariants = getAllProductVariants(id);
-        const currentProductName = specificProduct.specificProductName; // TODO: Get from user selections DB
+        const currentProductName = selectionsMap.get(id) || specificProduct.specificProductName;
         
         return {
           name: currentProductName,
@@ -104,12 +109,13 @@ export function resolveRoutineProducts(routine: RoutineRecommendation | any, isP
 
 // Resolve saved routine data to use centralized product library
 // Handles backward compatibility with old routines that have morning/evening product arrays
-export function resolveSavedRoutineProducts(
+export async function resolveSavedRoutineProducts(
   routineData: any, 
   isPremiumUser: boolean = false,
   acneTypes?: string[],
-  acneSeverity?: string
-): any {
+  acneSeverity?: string,
+  userId?: string
+): Promise<any> {
   if (!routineData) {
     return routineData;
   }
@@ -121,6 +127,10 @@ export function resolveSavedRoutineProducts(
     console.log(`[Resolver] Original routineType: ${routineType}, Recalculated from acneTypes ${JSON.stringify(acneTypes)} and severity ${acneSeverity}: ${recalculatedType}`);
     routineType = recalculatedType;
   }
+
+  // Fetch user product selections if userId provided
+  const userSelections = userId ? await storage.getUserProductSelections(userId) : [];
+  const selectionsMap = new Map(userSelections.map(s => [s.productId, s.specificProductName]));
 
   // If products are missing but productIds exist, rebuild products from productIds
   if (!routineData.products && routineData.productIds) {
@@ -171,7 +181,7 @@ export function resolveSavedRoutineProducts(
         
         // Get ALL product variants and mark which one is current
         const allVariants = getAllProductVariants(id);
-        const currentProductName = specificProduct.specificProductName; // TODO: Get from user selections DB
+        const currentProductName = selectionsMap.get(id) || specificProduct.specificProductName;
         
         return {
           name: currentProductName,
@@ -252,7 +262,7 @@ export function resolveSavedRoutineProducts(
 
       // Get ALL product variants and mark which one is current
       const allVariants = getAllProductVariants(libraryProduct.id);
-      const currentProductName = specificProduct.specificProductName; // TODO: Get from user selections DB
+      const currentProductName = selectionsMap.get(libraryProduct.id) || specificProduct.specificProductName;
 
       // Use centralized product data
       return {

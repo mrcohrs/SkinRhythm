@@ -66,7 +66,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Resolve product IDs to full product objects
-      const resolvedRoutine = resolveRoutineProducts(routine, isPremiumUser);
+      const userId = req.user?.claims?.sub;
+      const resolvedRoutine = await resolveRoutineProducts(routine, isPremiumUser, userId);
 
       // Log if premiumOptions are in the response
       const hasPremiumOptions = resolvedRoutine.products!.morning.some((p: any) => p.premiumOptions?.length > 0) || 
@@ -139,15 +140,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Resolve all products from centralized library and recalculate routineType
-      const resolvedRoutines = userRoutines.map(routine => ({
+      const resolvedRoutines = await Promise.all(userRoutines.map(async routine => ({
         ...routine,
-        routineData: resolveSavedRoutineProducts(
+        routineData: await resolveSavedRoutineProducts(
           routine.routineData, 
           isPremiumUser,
           routine.acneTypes,
-          routine.acneSeverity
+          routine.acneSeverity,
+          userId
         ),
-      }));
+      })));
       
       res.json(resolvedRoutines);
     } catch (error) {
@@ -176,11 +178,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Resolve all products from centralized library and recalculate routineType
       const resolvedRoutine = {
         ...currentRoutine,
-        routineData: resolveSavedRoutineProducts(
+        routineData: await resolveSavedRoutineProducts(
           currentRoutine.routineData, 
           isPremiumUser,
           currentRoutine.acneTypes,
-          currentRoutine.acneSeverity
+          currentRoutine.acneSeverity,
+          userId
         ),
       };
       
@@ -230,11 +233,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Resolve all products from centralized library
       const resolvedRoutine = {
         ...updatedRoutine,
-        routineData: resolveSavedRoutineProducts(
+        routineData: await resolveSavedRoutineProducts(
           updatedRoutine.routineData, 
           isPremiumUser,
           updatedRoutine.acneTypes,
-          updatedRoutine.acneSeverity
+          updatedRoutine.acneSeverity,
+          userId
         ),
       };
       
