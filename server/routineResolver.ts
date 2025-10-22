@@ -60,8 +60,8 @@ export function resolveRoutineProducts(routine: RoutineRecommendation | any, isP
         
         console.log(`[Resolver] Resolved ${id} -> ${specificProduct.specificProductName} (recommended: ${specificProduct.isRecommended})`);
         
-        // Get alternatives for premium users
-        const alternatives = isPremiumUser ? getProductAlternatives(id) : [];
+        // Get alternatives for premium users, excluding the currently selected product
+        const alternatives = isPremiumUser ? getProductAlternatives(id, specificProduct.specificProductName) : [];
         
         return {
           name: specificProduct.specificProductName,
@@ -163,8 +163,8 @@ export function resolveSavedRoutineProducts(
           };
         }
         
-        // Get alternatives for premium users
-        const alternatives = isPremiumUser ? getProductAlternatives(id) : [];
+        // Get alternatives for premium users, excluding the currently selected product
+        const alternatives = isPremiumUser ? getProductAlternatives(id, specificProduct.specificProductName) : [];
         
         return {
           name: specificProduct.specificProductName,
@@ -240,8 +240,8 @@ export function resolveSavedRoutineProducts(
         };
       }
 
-      // Get alternatives for premium users
-      const alternatives = isPremiumUser ? getProductAlternatives(libraryProduct.id) : [];
+      // Get alternatives for premium users, excluding the currently selected product
+      const alternatives = isPremiumUser ? getProductAlternatives(libraryProduct.id, specificProduct.specificProductName) : [];
 
       // Use centralized product data
       return {

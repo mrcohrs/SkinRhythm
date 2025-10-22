@@ -85,13 +85,8 @@ export function ProductCarousel({
     isCurrentSelection: currentProductSelection === currentProduct.name,
   });
 
-  // Add premium options if they exist, excluding duplicates of the current product
+  // Add premium options if they exist
   currentProduct.premiumOptions?.forEach((option) => {
-    // Skip if this option is the same as the current product (prevent duplicates)
-    if (option.productName === currentProduct.name) {
-      return;
-    }
-    
     allProductCards.push({
       name: option.productName,
       affiliateLink: option.affiliateLink,
