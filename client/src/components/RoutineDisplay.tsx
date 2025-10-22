@@ -445,7 +445,7 @@ export function RoutineDisplay({
                       </div>
                       <Button
                         size="sm"
-                        variant="default"
+                        variant="secondary"
                         className="flex-shrink-0 gap-1"
                         asChild
                         data-testid={`button-buy-now-morning-${index}`}
@@ -496,7 +496,7 @@ export function RoutineDisplay({
                       </div>
                       <Button
                         size="sm"
-                        variant="default"
+                        variant="secondary"
                         className="flex-shrink-0 gap-1"
                         asChild
                         data-testid={`button-buy-now-evening-${index}`}
