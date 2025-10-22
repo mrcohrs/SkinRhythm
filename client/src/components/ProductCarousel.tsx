@@ -163,18 +163,7 @@ export function ProductCarousel({
 
                     <div className="flex-1 min-w-0 space-y-2">
                       <div>
-                        {currentProduct.isRecommended && card.name === currentProduct.name && (
-                          <img 
-                            src={bestForYourSkinBadge} 
-                            alt="Best for Your Skin" 
-                            className="h-5 mb-1"
-                            data-testid="img-best-for-your-skin"
-                          />
-                        )}
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <Badge variant="outline" className="text-xs" data-testid="badge-tier">
-                            {card.priceTier}
-                          </Badge>
                           {card.isCurrentSelection && (
                             <Badge variant="secondary" className="text-xs gap-1">
                               <Check className="h-3 w-3" />
@@ -182,14 +171,24 @@ export function ProductCarousel({
                             </Badge>
                           )}
                         </div>
-                        <h5 className="font-serif text-sm font-semibold text-foreground line-clamp-2" data-testid="text-product-name">
+                        <h5 className="font-serif text-base font-semibold text-foreground line-clamp-2" data-testid="text-product-name">
                           {card.name}
                         </h5>
-                        {card.priceRange && (
-                          <p className="text-xs font-medium text-muted-foreground mt-1">
-                            {card.priceRange}
-                          </p>
-                        )}
+                        <div className="flex items-center gap-2 mt-1 flex-wrap">
+                          {card.priceRange && (
+                            <p className="text-sm font-medium text-muted-foreground">
+                              {card.priceRange}
+                            </p>
+                          )}
+                          {currentProduct.isRecommended && card.name === currentProduct.name && (
+                            <img 
+                              src={bestForYourSkinBadge} 
+                              alt="Best for Your Skin" 
+                              className="h-3.5"
+                              data-testid="img-best-for-your-skin"
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
