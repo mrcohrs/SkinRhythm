@@ -74,34 +74,46 @@ export async function resolveRoutineProducts(routine: RoutineRecommendation | an
           };
         }
         
-        console.log(`[Resolver] Resolved ${id} -> ${specificProduct.specificProductName} (isDefault: ${specificProduct.isDefault}, isRecommended: ${specificProduct.isRecommended})`);
-        
-        // Get ALL product variants and mark which one is current
-        // The current product is determined by: user selection from DB, or defaults to isDefault/isRecommended
+        // Get ALL product variants and set isCurrent based on routine mode
+        // In BUDGET mode: isCurrent = isDefault
+        // In PREMIUM mode: isCurrent = isRecommended
         const allVariants = getAllProductVariants(id);
-        const currentProductName = selectionsMap.get(id) || specificProduct.specificProductName;
+        
+        // Check if user has a saved selection for this product
+        const userSelection = selectionsMap.get(id);
+        
+        // Build premium options with isCurrent set based on mode OR user selection
+        const premiumOptions = allVariants.map(variant => ({
+          originalLink: variant.productLink,
+          affiliateLink: variant.affiliateLink,
+          productName: variant.specificProductName,
+          brand: variant.brand,
+          priceRange: variant.priceRange,
+          isRecommended: variant.isRecommended,
+          isDefault: variant.isDefault,
+          // If user has saved a selection, use that. Otherwise use mode-based logic
+          isCurrent: userSelection 
+            ? variant.specificProductName === userSelection
+            : (useRecommended ? variant.isRecommended : variant.isDefault)
+        }));
+        
+        // Find the current product (the one with isCurrent=true)
+        const currentVariant = premiumOptions.find(v => v.isCurrent) || premiumOptions[0];
+        
+        console.log(`[Resolver] Resolved ${id} -> ${currentVariant.productName} (mode: ${useRecommended ? 'premium' : 'basic'}, isCurrent based on: ${userSelection ? 'user selection' : useRecommended ? 'isRecommended' : 'isDefault'})`);
         
         return {
-          name: currentProductName,
-          brand: specificProduct.brand,
+          name: currentVariant.productName,
+          brand: currentVariant.brand,
           category: product.category,
           priceTier: product.priceTier,
-          priceRange: specificProduct.priceRange,
+          priceRange: currentVariant.priceRange,
           price: 0,
           benefits: ['Recommended for your skin type'],
-          affiliateLink: specificProduct.affiliateLink,
-          originalLink: specificProduct.productLink,
-          isRecommended: specificProduct.isRecommended,
-          // Return ALL variants with isCurrent flag
-          premiumOptions: allVariants.map(variant => ({
-            originalLink: variant.productLink,
-            affiliateLink: variant.affiliateLink,
-            productName: variant.specificProductName,
-            brand: variant.brand,
-            priceRange: variant.priceRange,
-            isRecommended: variant.isRecommended,
-            isCurrent: variant.specificProductName === currentProductName
-          })),
+          affiliateLink: currentVariant.affiliateLink,
+          originalLink: currentVariant.originalLink,
+          isRecommended: currentVariant.isRecommended,
+          premiumOptions,
         };
       })
       .filter((p): p is NonNullable<typeof p> => p !== null);
@@ -202,30 +214,37 @@ export async function resolveSavedRoutineProducts(
           };
         }
         
-        // Get ALL product variants and mark which one is current
+        // Get ALL product variants and set isCurrent based on routine mode
         const allVariants = getAllProductVariants(id);
-        const currentProductName = selectionsMap.get(id) || specificProduct.specificProductName;
+        const userSelection = selectionsMap.get(id);
+        
+        const premiumOptions = allVariants.map(variant => ({
+          originalLink: variant.productLink,
+          affiliateLink: variant.affiliateLink,
+          productName: variant.specificProductName,
+          brand: variant.brand,
+          priceRange: variant.priceRange,
+          isRecommended: variant.isRecommended,
+          isDefault: variant.isDefault,
+          isCurrent: userSelection 
+            ? variant.specificProductName === userSelection
+            : (useRecommended ? variant.isRecommended : variant.isDefault)
+        }));
+        
+        const currentVariant = premiumOptions.find(v => v.isCurrent) || premiumOptions[0];
         
         return {
-          name: currentProductName,
-          brand: specificProduct.brand,
+          name: currentVariant.productName,
+          brand: currentVariant.brand,
           category: product.category,
           priceTier: product.priceTier,
-          priceRange: specificProduct.priceRange,
+          priceRange: currentVariant.priceRange,
           price: 0,
           benefits: ['Recommended for your skin type'],
-          affiliateLink: specificProduct.affiliateLink,
-          originalLink: specificProduct.productLink,
-          isRecommended: specificProduct.isRecommended,
-          premiumOptions: allVariants.map(variant => ({
-            originalLink: variant.productLink,
-            affiliateLink: variant.affiliateLink,
-            productName: variant.specificProductName,
-            brand: variant.brand,
-            priceRange: variant.priceRange,
-            isRecommended: variant.isRecommended,
-            isCurrent: variant.specificProductName === currentProductName
-          })),
+          affiliateLink: currentVariant.affiliateLink,
+          originalLink: currentVariant.originalLink,
+          isRecommended: currentVariant.isRecommended,
+          premiumOptions,
         };
       }).filter((p): p is NonNullable<typeof p> => p !== null);
     };
@@ -284,30 +303,38 @@ export async function resolveSavedRoutineProducts(
         };
       }
 
-      // Get ALL product variants and mark which one is current
+      // Get ALL product variants and set isCurrent based on routine mode
       const allVariants = getAllProductVariants(libraryProduct.id);
-      const currentProductName = selectionsMap.get(libraryProduct.id) || specificProduct.specificProductName;
+      const userSelection = selectionsMap.get(libraryProduct.id);
+
+      const premiumOptions = allVariants.map(variant => ({
+        originalLink: variant.productLink,
+        affiliateLink: variant.affiliateLink,
+        productName: variant.specificProductName,
+        brand: variant.brand,
+        priceRange: variant.priceRange,
+        isRecommended: variant.isRecommended,
+        isDefault: variant.isDefault,
+        isCurrent: userSelection 
+          ? variant.specificProductName === userSelection
+          : (useRecommended ? variant.isRecommended : variant.isDefault)
+      }));
+      
+      const currentVariant = premiumOptions.find(v => v.isCurrent) || premiumOptions[0];
 
       // Use centralized product data
       return {
-        name: currentProductName,
-        brand: specificProduct.brand,
+        name: currentVariant.productName,
+        brand: currentVariant.brand,
         category: libraryProduct.category,
         priceTier: libraryProduct.priceTier,
-        priceRange: specificProduct.priceRange,
+        priceRange: currentVariant.priceRange,
         price: 0,
         benefits: ['Recommended for your skin type'],
-        affiliateLink: specificProduct.affiliateLink,
-        originalLink: specificProduct.productLink,
-        isRecommended: specificProduct.isRecommended,
-        premiumOptions: allVariants.map(variant => ({
-          originalLink: variant.productLink,
-          affiliateLink: variant.affiliateLink,
-          productName: variant.specificProductName,
-          priceRange: variant.priceRange,
-          isRecommended: variant.isRecommended,
-          isCurrent: variant.specificProductName === currentProductName
-        })),
+        affiliateLink: currentVariant.affiliateLink,
+        originalLink: currentVariant.originalLink,
+        isRecommended: currentVariant.isRecommended,
+        premiumOptions,
       };
     };
 
