@@ -163,7 +163,7 @@ export default function Pricing() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Premium Routine Access */}
-            <Card>
+            <Card className="flex flex-col">
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
                   <Star className="h-5 w-5 text-secondary" />
@@ -174,7 +174,7 @@ export default function Pricing() {
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 flex-1">
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-bold">${PRODUCT_PRICES.PREMIUM_ROUTINE_ACCESS}</span>
                   <span className="text-muted-foreground">one-time</span>
@@ -216,18 +216,18 @@ export default function Pricing() {
             </Card>
 
             {/* Detailed PDF */}
-            <Card>
+            <Card className="flex flex-col">
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
                   <FileText className="h-5 w-5 text-secondary" />
                   <CardTitle className="text-xl">Detailed Routine PDF</CardTitle>
                 </div>
                 <CardDescription className="text-base">
-                  Professional treatment plan you can print or save
+                  Download your complete treatment plan with detailed AM/PM schedules and product guidance
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 flex-1">
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-bold">${PRODUCT_PRICES.DETAILED_PDF}</span>
                   <span className="text-muted-foreground">one-time</span>
@@ -280,16 +280,16 @@ export default function Pricing() {
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* Unlimited Scanner - Only show if NOT founding period */}
             {!isFoundingActive && (
-              <Card className="border-primary/30">
+              <Card className="border-primary/30 flex flex-col">
                 <CardHeader>
                   <div className="flex items-center gap-2 mb-1">
                     <Scan className="h-5 w-5 text-secondary" />
                     <CardTitle>Unlimited Scans</CardTitle>
                   </div>
-                  <CardDescription>Check ingredients anytime</CardDescription>
+                  <CardDescription>Check ingredients anytime without limits</CardDescription>
                 </CardHeader>
 
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex-1">
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl font-bold">${PRODUCT_PRICES.UNLIMITED_SCANNER}</span>
                     <span className="text-muted-foreground">/month</span>
@@ -320,13 +320,13 @@ export default function Pricing() {
             )}
 
             {/* 5-Pack */}
-            <Card>
+            <Card className="flex flex-col">
               <CardHeader>
                 <CardTitle>5 Scans</CardTitle>
-                <CardDescription>Great to get started</CardDescription>
+                <CardDescription>Perfect starter pack for trying it out</CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 flex-1">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold">${PRODUCT_PRICES.SCAN_PACK_5}</span>
                   <span className="text-muted-foreground">one-time</span>
@@ -350,14 +350,14 @@ export default function Pricing() {
             </Card>
 
             {/* 20-Pack */}
-            <Card>
+            <Card className="flex flex-col">
               <CardHeader>
                 <Badge variant="outline" className="w-fit mb-2">Best Value</Badge>
                 <CardTitle>20 Scans</CardTitle>
-                <CardDescription>Perfect for regular use</CardDescription>
+                <CardDescription>Best value for regular product checking</CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 flex-1">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold">${PRODUCT_PRICES.SCAN_PACK_20}</span>
                   <span className="text-muted-foreground">one-time</span>
