@@ -718,50 +718,54 @@ export default function Dashboard() {
                 </div>
 
                 
-                <div className="relative">
-                  {/* Scroll Buttons */}
-                  {canScrollPrev && (
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
-                      onClick={scrollPrev}
-                      aria-label="Scroll to previous products"
-                      data-testid="button-carousel-prev"
-                    >
-                      <ChevronLeft className="h-5 w-5" />
-                    </Button>
-                  )}
+                <div>
+                  {/* Scroll Buttons - Right aligned above carousel */}
+                  <div className="flex justify-end gap-2 mb-4">
+                    {canScrollPrev && (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-10 w-10 rounded-full shadow-lg"
+                        onClick={scrollPrev}
+                        aria-label="Scroll to previous products"
+                        data-testid="button-carousel-prev"
+                      >
+                        <ChevronLeft className="h-5 w-5" />
+                      </Button>
+                    )}
+                    
+                    {canScrollNext && (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-10 w-10 rounded-full shadow-lg"
+                        onClick={scrollNext}
+                        aria-label="Scroll to next products"
+                        data-testid="button-carousel-next"
+                      >
+                        <ChevronRight className="h-5 w-5" />
+                      </Button>
+                    )}
+                  </div>
                   
-                  {canScrollNext && (
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
-                      onClick={scrollNext}
-                      aria-label="Scroll to next products"
-                      data-testid="button-carousel-next"
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </Button>
-                  )}
-
-                  {/* Carousel */}
-                  <div className="overflow-hidden" ref={emblaRef}>
-                    <div className="flex gap-6">
-                      {displayProducts.map((product: any, index: number) => (
-                        <div key={index} className="flex-[0_0_280px] md:flex-[0_0_320px] flex">
-                          <ProductCard
-                            product={product}
-                            isPremiumUser={isPremium}
-                            showExploreButton={isPremium && product.premiumOptions && product.premiumOptions.length > 0}
-                            onExploreAlternatives={() => {
-                              setSelectedProduct(uniqueProducts[index]); // Use original product with all options
-                              setShowAlternativesModal(true);
-                            }}
-                          />
-                        </div>
-                      ))}
+                  <div className="relative">
+                    {/* Carousel */}
+                    <div className="overflow-hidden" ref={emblaRef}>
+                      <div className="flex gap-2.5">
+                        {displayProducts.map((product: any, index: number) => (
+                          <div key={index} className="flex-[0_0_280px] md:flex-[0_0_320px] flex">
+                            <ProductCard
+                              product={product}
+                              isPremiumUser={isPremium}
+                              showExploreButton={isPremium && product.premiumOptions && product.premiumOptions.length > 0}
+                              onExploreAlternatives={() => {
+                                setSelectedProduct(uniqueProducts[index]); // Use original product with all options
+                                setShowAlternativesModal(true);
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
