@@ -320,6 +320,37 @@ export default function Pricing() {
               </Card>
             )}
 
+            {/* 5-Pack */}
+            <Card>
+              <CardHeader>
+                <CardTitle>5 Scans</CardTitle>
+                <CardDescription>Great to get started</CardDescription>
+              </CardHeader>
+
+              <CardContent className="space-y-4">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold">${PRODUCT_PRICES.SCAN_PACK_5}</span>
+                  <span className="text-muted-foreground">one-time</span>
+                </div>
+                <p className="text-sm text-muted-foreground">Just $0.40 per scan</p>
+              </CardContent>
+
+              <CardFooter>
+                {!user ? (
+                  <Button asChild className="w-full" variant="outline" data-testid="button-signup-scan-5">
+                    <a href="/api/login">Purchase</a>
+                  </Button>
+                ) : (
+                  <CheckoutButton
+                    priceId={STRIPE_PRICE_IDS.SCAN_PACK_5}
+                    label="Purchase 5 Scans"
+                    variant="outline"
+                    className="w-full"
+                  />
+                )}
+              </CardFooter>
+            </Card>
+
             {/* 20-Pack */}
             <Card>
               <CardHeader>
@@ -345,37 +376,6 @@ export default function Pricing() {
                   <CheckoutButton
                     priceId={STRIPE_PRICE_IDS.SCAN_PACK_20}
                     label="Purchase 20 Scans"
-                    variant="outline"
-                    className="w-full"
-                  />
-                )}
-              </CardFooter>
-            </Card>
-
-            {/* 5-Pack */}
-            <Card>
-              <CardHeader>
-                <CardTitle>5 Scans</CardTitle>
-                <CardDescription>Great to get started</CardDescription>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold">${PRODUCT_PRICES.SCAN_PACK_5}</span>
-                  <span className="text-muted-foreground">one-time</span>
-                </div>
-                <p className="text-sm text-muted-foreground">Just $0.40 per scan</p>
-              </CardContent>
-
-              <CardFooter>
-                {!user ? (
-                  <Button asChild className="w-full" variant="outline" data-testid="button-signup-scan-5">
-                    <a href="/api/login">Purchase</a>
-                  </Button>
-                ) : (
-                  <CheckoutButton
-                    priceId={STRIPE_PRICE_IDS.SCAN_PACK_5}
-                    label="Purchase 5 Scans"
                     variant="outline"
                     className="w-full"
                   />
