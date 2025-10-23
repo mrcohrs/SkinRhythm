@@ -346,42 +346,39 @@ export function RoutineDisplay({
                 </Button>
               )}
             </div>
-            <div className="flex items-start justify-between gap-4 mb-6">
-              <div className="flex-1">
-                <p className="text-muted-foreground mb-2">Shop your personalized skincare routine</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Every product AcneAgent recommends has been rigorously analyzed and tested to ensure it's an acne-safe, high-quality formulation that complements the other products in your custom regimen to address your specific skin concerns. In order to see results, you must commit to this routine and pause usage of any non-routine products.
-                </p>
-              </div>
+            
+            <div className="text-muted-foreground mb-2">Shop your personalized skincare routine</div>
+            <div className="text-sm text-muted-foreground leading-relaxed mb-4">
+              Every product AcneAgent recommends has been rigorously analyzed and tested to ensure it's an acne-safe, high-quality formulation that complements the other products in your custom regimen to address your specific skin concerns. In order to see results, you must commit to this routine and pause usage of any non-routine products.
+            </div>
+            
+            {/* Scroll Buttons - Right aligned above carousel */}
+            <div className="flex justify-end gap-2 mb-4">
+              {canScrollPrev && (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-10 w-10 rounded-full shadow-lg"
+                  onClick={scrollPrev}
+                  aria-label="Scroll to previous products"
+                  data-testid="button-carousel-prev"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+              )}
               
-              {/* Scroll Buttons - Right aligned above carousel */}
-              <div className="flex gap-2 flex-shrink-0">
-                {canScrollPrev && (
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-10 w-10 rounded-full shadow-lg"
-                    onClick={scrollPrev}
-                    aria-label="Scroll to previous products"
-                    data-testid="button-carousel-prev"
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </Button>
-                )}
-                
-                {canScrollNext && (
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-10 w-10 rounded-full shadow-lg"
-                    onClick={scrollNext}
-                    aria-label="Scroll to next products"
-                    data-testid="button-carousel-next"
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </Button>
-                )}
-              </div>
+              {canScrollNext && (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-10 w-10 rounded-full shadow-lg"
+                  onClick={scrollNext}
+                  aria-label="Scroll to next products"
+                  data-testid="button-carousel-next"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              )}
             </div>
             
             <div className="relative">
