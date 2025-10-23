@@ -695,7 +695,7 @@ export default function Dashboard() {
                         <Crown className="h-8 w-8 text-primary flex-shrink-0" />
                         <div>
                           <h3 className="font-semibold text-lg">Unlock Premium Features</h3>
-                          <p className="text-sm text-muted-foreground">6-week routine coach, ingredient scanner, and routine library</p>
+                          <p className="text-sm text-muted-foreground">6-week routine coach, ingredient scanner, multiple product options to choose from for each routine step, and routine library</p>
                         </div>
                       </div>
                       <Button data-testid="button-upgrade-products" className="flex-shrink-0">
