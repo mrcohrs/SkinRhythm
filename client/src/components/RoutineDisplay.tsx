@@ -346,14 +346,16 @@ export function RoutineDisplay({
                 </Button>
               )}
             </div>
-            <p className="text-muted-foreground mb-2">Shop your personalized skincare routine</p>
-            <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-              Every product AcneAgent recommends has been rigorously analyzed and tested to ensure it's an acne-safe, high-quality formulation that complements the other products in your custom regimen to address your specific skin concerns. In order to see results, you must commit to this routine and pause usage of any non-routine products.
-            </p>
-            
-            <div className="relative">
-              {/* Scroll Buttons - Both on right side */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex gap-2">
+            <div className="flex items-start justify-between gap-4 mb-6">
+              <div className="flex-1">
+                <p className="text-muted-foreground mb-2">Shop your personalized skincare routine</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Every product AcneAgent recommends has been rigorously analyzed and tested to ensure it's an acne-safe, high-quality formulation that complements the other products in your custom regimen to address your specific skin concerns. In order to see results, you must commit to this routine and pause usage of any non-routine products.
+                </p>
+              </div>
+              
+              {/* Scroll Buttons - Right aligned above carousel */}
+              <div className="flex gap-2 flex-shrink-0">
                 {canScrollPrev && (
                   <Button
                     variant="outline"
@@ -380,7 +382,9 @@ export function RoutineDisplay({
                   </Button>
                 )}
               </div>
-
+            </div>
+            
+            <div className="relative">
               {/* Carousel */}
               <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex gap-2.5">

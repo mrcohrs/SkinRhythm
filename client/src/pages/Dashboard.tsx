@@ -586,7 +586,7 @@ export default function Dashboard() {
                     {/* Budget Option */}
                     <Button
                       variant={routineMode === 'basic' ? 'default' : 'outline'}
-                      className={`h-auto py-3 px-4 flex flex-col items-start gap-2 transition-all ${
+                      className={`h-auto py-3 px-3 md:px-4 flex flex-col items-start gap-2 transition-all ${
                         routineMode === 'basic' ? 'ring-2 ring-primary ring-offset-2' : ''
                       }`}
                       onClick={() => {
@@ -598,10 +598,10 @@ export default function Dashboard() {
                       data-testid="button-routine-basic"
                     >
                       <div className="flex items-center gap-2 w-full">
-                        <DollarSign className="h-5 w-5 flex-shrink-0" />
-                        <span className="font-semibold text-base">Budget</span>
+                        <DollarSign className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+                        <span className="font-semibold text-sm md:text-base">Budget</span>
                       </div>
-                      <p className={`text-xs text-left ${
+                      <p className={`text-xs text-left leading-tight ${
                         routineMode === 'basic' ? 'text-primary-foreground/80' : 'text-muted-foreground'
                       }`}>
                         Cost-effective alternatives
@@ -611,7 +611,7 @@ export default function Dashboard() {
                     {/* Premium Option */}
                     <Button
                       variant={routineMode === 'premium' ? 'default' : 'outline'}
-                      className={`h-auto py-3 px-4 flex flex-col items-start gap-2 transition-all ${
+                      className={`h-auto py-3 px-3 md:px-4 flex flex-col items-start gap-2 transition-all ${
                         routineMode === 'premium' ? 'ring-2 ring-primary ring-offset-2' : ''
                       }`}
                       onClick={() => {
@@ -623,10 +623,10 @@ export default function Dashboard() {
                       data-testid="button-routine-premium"
                     >
                       <div className="flex items-center gap-2 w-full">
-                        <Sparkles className="h-5 w-5 flex-shrink-0" />
-                        <span className="font-semibold text-base">Premium</span>
+                        <Sparkles className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+                        <span className="font-semibold text-sm md:text-base">Premium</span>
                       </div>
-                      <p className={`text-xs text-left ${
+                      <p className={`text-xs text-left leading-tight ${
                         routineMode === 'premium' ? 'text-primary-foreground/80' : 'text-muted-foreground'
                       }`}>
                         Recommended for your skin
@@ -695,7 +695,7 @@ export default function Dashboard() {
                         <Crown className="h-8 w-8 text-primary flex-shrink-0" />
                         <div>
                           <h3 className="font-semibold text-lg">Unlock Premium Features</h3>
-                          <p className="text-sm text-muted-foreground">6-week routine coach, ingredient scanner, multiple product options to choose from for each routine step, and routine library</p>
+                          <p className="text-sm text-muted-foreground">6-week routine coach, ingredient scanner, multiple product options to choose from for each routine step, and your routine library with notes to track what works.</p>
                         </div>
                       </div>
                       <Button data-testid="button-upgrade-products" className="flex-shrink-0">
