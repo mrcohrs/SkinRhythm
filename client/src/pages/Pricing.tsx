@@ -322,6 +322,7 @@ export default function Pricing() {
             {/* 5-Pack */}
             <Card className="flex flex-col">
               <CardHeader>
+                <Badge variant="outline" className="w-fit mb-2">Starter Pack</Badge>
                 <CardTitle>5 Scans</CardTitle>
                 <CardDescription>Perfect starter pack for trying it out</CardDescription>
               </CardHeader>
