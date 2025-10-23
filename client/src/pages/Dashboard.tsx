@@ -807,7 +807,7 @@ export default function Dashboard() {
                           </div>
                           <Button
                             size="sm"
-                            variant="default"
+                            variant="secondary"
                             className="flex-shrink-0 gap-1"
                             asChild
                             data-testid={`button-buy-now-morning-${index}`}
@@ -871,7 +871,7 @@ export default function Dashboard() {
                           </div>
                           <Button
                             size="sm"
-                            variant="default"
+                            variant="secondary"
                             className="flex-shrink-0 gap-1"
                             asChild
                             data-testid={`button-buy-now-evening-${index}`}
