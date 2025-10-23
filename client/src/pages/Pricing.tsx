@@ -48,7 +48,7 @@ export default function Pricing() {
         {isFoundingActive && foundingRate && (
           <div className="mb-12 max-w-2xl mx-auto">
             <div className="flex items-center justify-center gap-3 px-6 py-4 bg-primary/10 border-2 border-primary/30 rounded-lg">
-              <Crown className="h-5 w-5 text-primary flex-shrink-0" />
+              <Crown className="h-5 w-5 text-secondary flex-shrink-0" />
               <div className="text-center">
                 <p className="font-semibold text-foreground">Founding Member Rate Active!</p>
                 <p className="text-sm text-muted-foreground">
@@ -74,7 +74,7 @@ export default function Pricing() {
               
               <CardHeader className="text-center pb-8 pt-8">
                 <div className="flex justify-center mb-3">
-                  <Crown className="h-12 w-12 text-primary" />
+                  <Crown className="h-12 w-12 text-secondary" />
                 </div>
                 <CardTitle className="text-3xl mb-2">Premium Membership</CardTitle>
                 <CardDescription className="text-lg">
@@ -102,28 +102,28 @@ export default function Pricing() {
 
                 <div className="space-y-4 max-w-md mx-auto">
                   <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Premium Product Alternatives</p>
                       <p className="text-sm text-muted-foreground">Access higher-tier options for every routine step</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Personalized Routine Coach</p>
                       <p className="text-sm text-muted-foreground">Get ramping instructions and treatment guidance</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Detailed Treatment PDFs</p>
                       <p className="text-sm text-muted-foreground">Generate professional AM/PM schedules</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Unlimited Ingredient Scans</p>
                       <p className="text-sm text-muted-foreground">Check products for acne-causing ingredients anytime</p>
@@ -166,7 +166,7 @@ export default function Pricing() {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
-                  <Star className="h-5 w-5 text-primary" />
+                  <Star className="h-5 w-5 text-secondary" />
                   <CardTitle className="text-xl">Premium Routine Access</CardTitle>
                 </div>
                 <CardDescription className="text-base">
@@ -182,15 +182,15 @@ export default function Pricing() {
 
                 <div className="space-y-3">
                   <div className="flex items-start gap-2">
-                    <Check className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                    <Check className="h-4 w-4 text-secondary mt-1 flex-shrink-0" />
                     <p className="text-sm">Unlock all product alternatives for your personalized routine</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <Check className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                    <Check className="h-4 w-4 text-secondary mt-1 flex-shrink-0" />
                     <p className="text-sm">Perfect for trying premium features before committing</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <Check className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                    <Check className="h-4 w-4 text-secondary mt-1 flex-shrink-0" />
                     <p className="text-sm">No subscription required</p>
                   </div>
                 </div>
@@ -219,7 +219,7 @@ export default function Pricing() {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
-                  <FileText className="h-5 w-5 text-primary" />
+                  <FileText className="h-5 w-5 text-secondary" />
                   <CardTitle className="text-xl">Detailed Routine PDF</CardTitle>
                 </div>
                 <CardDescription className="text-base">
@@ -235,15 +235,15 @@ export default function Pricing() {
 
                 <div className="space-y-3">
                   <div className="flex items-start gap-2">
-                    <Check className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                    <Check className="h-4 w-4 text-secondary mt-1 flex-shrink-0" />
                     <p className="text-sm">Beautifully designed PDF with AM/PM schedules</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <Check className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                    <Check className="h-4 w-4 text-secondary mt-1 flex-shrink-0" />
                     <p className="text-sm">Complete ramping instructions</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <Check className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                    <Check className="h-4 w-4 text-secondary mt-1 flex-shrink-0" />
                     <p className="text-sm">Share with your dermatologist</p>
                   </div>
                 </div>
@@ -283,7 +283,7 @@ export default function Pricing() {
               <Card className="border-primary/30">
                 <CardHeader>
                   <div className="flex items-center gap-2 mb-1">
-                    <Scan className="h-5 w-5 text-primary" />
+                    <Scan className="h-5 w-5 text-secondary" />
                     <CardTitle>Unlimited Scans</CardTitle>
                   </div>
                   <CardDescription>Check ingredients anytime</CardDescription>
@@ -301,7 +301,7 @@ export default function Pricing() {
 
                 <CardFooter>
                   {!user ? (
-                    <Button asChild className="w-full" variant="outline" data-testid="button-signup-unlimited-scans">
+                    <Button asChild className="w-full" data-testid="button-signup-unlimited-scans">
                       <a href="/api/login">Subscribe</a>
                     </Button>
                   ) : entitlements?.hasUnlimitedScans ? (
@@ -312,7 +312,6 @@ export default function Pricing() {
                     <CheckoutButton
                       priceId={STRIPE_PRICE_IDS.UNLIMITED_SCANNER}
                       label="Subscribe"
-                      variant="outline"
                       className="w-full"
                     />
                   )}
@@ -337,14 +336,13 @@ export default function Pricing() {
 
               <CardFooter>
                 {!user ? (
-                  <Button asChild className="w-full" variant="outline" data-testid="button-signup-scan-5">
+                  <Button asChild className="w-full" data-testid="button-signup-scan-5">
                     <a href="/api/login">Purchase</a>
                   </Button>
                 ) : (
                   <CheckoutButton
                     priceId={STRIPE_PRICE_IDS.SCAN_PACK_5}
                     label="Purchase 5 Scans"
-                    variant="outline"
                     className="w-full"
                   />
                 )}
@@ -369,14 +367,13 @@ export default function Pricing() {
 
               <CardFooter>
                 {!user ? (
-                  <Button asChild className="w-full" variant="outline" data-testid="button-signup-scan-20">
+                  <Button asChild className="w-full" data-testid="button-signup-scan-20">
                     <a href="/api/login">Purchase</a>
                   </Button>
                 ) : (
                   <CheckoutButton
                     priceId={STRIPE_PRICE_IDS.SCAN_PACK_20}
                     label="Purchase 20 Scans"
-                    variant="outline"
                     className="w-full"
                   />
                 )}
@@ -395,15 +392,15 @@ export default function Pricing() {
             <CardContent>
               <div className="grid md:grid-cols-3 gap-4 text-center">
                 <div className="space-y-2">
-                  <Check className="h-5 w-5 text-primary mx-auto" />
+                  <Check className="h-5 w-5 text-secondary mx-auto" />
                   <p className="text-sm font-medium">Personalized Quiz</p>
                 </div>
                 <div className="space-y-2">
-                  <Check className="h-5 w-5 text-primary mx-auto" />
+                  <Check className="h-5 w-5 text-secondary mx-auto" />
                   <p className="text-sm font-medium">Budget-Friendly Products</p>
                 </div>
                 <div className="space-y-2">
-                  <Check className="h-5 w-5 text-primary mx-auto" />
+                  <Check className="h-5 w-5 text-secondary mx-auto" />
                   <p className="text-sm font-medium">3 Free Ingredient Scans</p>
                 </div>
               </div>
