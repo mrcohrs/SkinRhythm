@@ -5,7 +5,7 @@ export interface Entitlements {
   hasPremiumRoutineAccess: boolean;
   hasDetailedPdfAccess: boolean;
   hasUnlimitedScans: boolean;
-  scanCredits: number;
+  scanCount: number;
   membershipTier: string | null;
   isFoundingMember: boolean;
   unlimitedScannerExpiresAt: Date | null;
@@ -26,7 +26,7 @@ export function useEntitlements() {
     canAccessProductAlternatives: query.data?.isPremium || query.data?.hasPremiumRoutineAccess || false,
     canAccessRoutineCoach: query.data?.isPremium || false,
     canAccessDetailedPdf: query.data?.isPremium || query.data?.hasDetailedPdfAccess || false,
-    canScanIngredients: (query.data?.hasUnlimitedScans || (query.data?.scanCredits ?? 0) > 0) || false,
-    remainingScans: query.data?.scanCredits ?? 0,
+    canScanIngredients: (query.data?.hasUnlimitedScans || (query.data?.scanCount ?? 0) > 0) || false,
+    remainingScans: query.data?.scanCount ?? 0,
   };
 }

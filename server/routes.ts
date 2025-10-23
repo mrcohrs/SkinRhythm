@@ -451,7 +451,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Check if free user has scans remaining
       const FREE_TIER_SCANS = 3;
-      const currentScans = user.scanCredits || 0;
+      const currentScans = user.scanCount || 0;
       
       if (currentScans >= FREE_TIER_SCANS) {
         return res.status(403).json({ 

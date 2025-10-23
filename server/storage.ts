@@ -299,10 +299,11 @@ export class DatabaseStorage implements IStorage {
       throw new Error("User not found");
     }
     
+    const currentCount = user.scanCount || 0;
     const [updatedUser] = await db
       .update(users)
       .set({
-        scanCount: (user.scanCount || 0) + 1,
+        scanCount: currentCount + 1,
         updatedAt: new Date(),
       })
       .where(eq(users.id, userId))

@@ -40,8 +40,8 @@ export const users = pgTable("users", {
   // Stripe integration fields
   stripeCustomerId: varchar("stripe_customer_id"),
   stripeSubscriptionId: varchar("stripe_subscription_id"),
-  // Ingredient scanner tracking
-  scanCredits: integer("scan_credits").default(3), // Start with 3 free scans, incremented with pack purchases
+  // Ingredient scanner tracking  
+  scanCount: integer("scan_count").default(0), // Tracks number of scans used (free users get 3 total)
   hasUnlimitedScans: boolean("has_unlimited_scans").default(false), // True for Premium or Unlimited Scanner addon
   unlimitedScannerExpiresAt: timestamp("unlimited_scanner_expires_at"), // For standalone unlimited scanner addon
   // One-time purchase tracking
