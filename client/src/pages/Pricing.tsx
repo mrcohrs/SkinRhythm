@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { STRIPE_PRICE_IDS, PRODUCT_PRICES } from "@/lib/stripe";
-import { Check, Sparkles, FileText, Scan, Crown } from "lucide-react";
+import { Check, Sparkles, FileText, Scan, Crown, ArrowLeft } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Pricing() {
@@ -20,9 +20,22 @@ export default function Pricing() {
   const premiumPriceId = isFoundingActive ? STRIPE_PRICE_IDS.PREMIUM_FOUNDING : STRIPE_PRICE_IDS.PREMIUM_STANDARD;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-6xl">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4" data-testid="text-pricing-title">Choose Your Plan</h1>
+    <div className="min-h-screen bg-background">
+      {/* Header with Back Button */}
+      <header className="border-b border-border/50">
+        <div className="container mx-auto px-4 py-4">
+          <Link href="/">
+            <Button variant="ghost" size="sm" className="gap-2" data-testid="button-back-home">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Home
+            </Button>
+          </Link>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-12 max-w-6xl">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4" data-testid="text-pricing-title">Choose Your Plan</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Get personalized acne treatment routines and unlock powerful tools to achieve clear skin
         </p>
@@ -377,6 +390,7 @@ export default function Pricing() {
             </ul>
           </CardContent>
         </Card>
+      </div>
       </div>
     </div>
   );
