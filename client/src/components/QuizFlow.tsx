@@ -54,12 +54,12 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
   const [skinTone, setSkinTone] = useState<number>(0); // 1-6
   const [sunReaction, setSunReaction] = useState<string>(""); // A, B, or C
   
-  // Calculate total steps - always 9 steps, but step 4 (sun reaction) is conditionally shown
-  // Steps: name(0), age(1), skin(2), skinTone(3), sunReaction(4 - conditional), acneTypes(5), severity(6), beautyProducts(7), pregnancy(8)
+  // Calculate total steps - always 9 steps, but step 4 (sun reaction) and step 7 (beautyProducts) are conditionally shown
+  // Steps: name(0), age(1), skin(2), skinTone(3), sunReaction(4 - conditional), acneTypes(5), severity(6), beautyProducts(7 - HIDDEN), pregnancy(8)
   const needsSunReaction = skinTone === 3 || skinTone === 4;
   const totalSteps = 9;
   
-  // Calculate visible step number for progress bar
+  // Calculate visible step number for progress bar (step 7 beautyProducts is always hidden now)
   const getVisibleStepNumber = () => {
     if (currentStep <= 3) {
       return currentStep + 1; // Steps 0-3 are always shown
@@ -67,15 +67,20 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
     if (currentStep === 4) {
       return 5; // Step 4 (sun reaction) is the 5th visible step
     }
-    // For steps 5, 6, 7, 8
-    if (needsSunReaction) {
-      return currentStep + 1; // All 9 steps are visible
-    } else {
-      return currentStep; // Step 4 is skipped, so step 5 becomes the 5th visible step, etc.
+    if (currentStep === 5) {
+      return needsSunReaction ? 6 : 5; // Acne types
     }
+    if (currentStep === 6) {
+      return needsSunReaction ? 7 : 6; // Severity
+    }
+    // Step 7 (beauty products) is never shown
+    if (currentStep === 8) {
+      return needsSunReaction ? 8 : 7; // Pregnancy (skip beauty products)
+    }
+    return currentStep;
   };
   
-  const visibleSteps = needsSunReaction ? 9 : 8;
+  const visibleSteps = needsSunReaction ? 8 : 7; // One less because beauty products is hidden
   const visibleStepNumber = getVisibleStepNumber();
   const progress = (visibleStepNumber / visibleSteps) * 100;
 
@@ -126,6 +131,10 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
       setAnswers({ ...answers, fitzpatrickType: fitzType });
       setCurrentStep(5); // Go to acne types (step 5)
     }
+    // Step 6: Severity - skip beauty products (step 7) and go to pregnancy (step 8)
+    else if (currentStep === 6) {
+      setCurrentStep(8); // Skip beauty products, go to pregnancy
+    }
     else if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -152,6 +161,10 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
     // Handle going back from step 4 (sun reaction)
     else if (currentStep === 4) {
       setCurrentStep(3); // Go back to skin tone
+    }
+    // Handle going back from pregnancy (step 8) - skip beauty products (step 7)
+    else if (currentStep === 8) {
+      setCurrentStep(6); // Go back to severity, skipping beauty products
     }
     else if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
