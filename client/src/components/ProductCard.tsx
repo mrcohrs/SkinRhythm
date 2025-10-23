@@ -68,7 +68,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
   const showAlternativesSection = isPremiumUser && product.premiumOptions && product.premiumOptions.length > 0 && !showExploreButton;
 
   return (
-    <Card className={`flex flex-col h-full group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
+    <Card className={`flex flex-col h-full w-full group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
       {isLocked && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm rounded-xl z-10">
           <div className="text-center">
@@ -78,8 +78,8 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
         </div>
       )}
       
-      <CardContent className="p-0 flex flex-col flex-1">
-        <div className="relative aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8">
+      <CardContent className="p-0 flex flex-col h-full">
+        <div className="relative w-full aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8 flex-shrink-0">
           {/* Best for Your Skin badge positioned at top center on image */}
           {product.isRecommended && (
             <img 
@@ -109,7 +109,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
           </Badge>
           
           <h3 
-            className="font-serif text-base md:text-lg font-semibold text-foreground leading-tight mb-2 h-[3.5rem]" 
+            className="font-serif text-base md:text-lg font-semibold text-foreground leading-tight mb-3 min-h-[3.5rem]" 
             style={{ 
               display: '-webkit-box',
               WebkitLineClamp: 2,
@@ -123,19 +123,9 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
             {product.name}
           </h3>
           
-          {product.brand && (
-            <p className="text-sm text-muted-foreground mb-2">{product.brand}</p>
-          )}
-          
           <p className="text-sm font-medium text-foreground mb-4" data-testid="text-price-range">
             {product.priceRange || `$${product.price}`}
           </p>
-          
-          {product.benefits && product.benefits.length > 0 && (
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              {product.benefits[0]}
-            </p>
-          )}
           
           <div className="flex-1"></div>
           
@@ -177,44 +167,6 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
                   >
                     Explore Alternatives
                   </Button>
-                )}
-                
-                {showAlternativesSection && (
-                  <div className="pt-2 border-t space-y-3">
-                    <p className="text-xs text-muted-foreground">Premium Alternatives:</p>
-                    <div className="space-y-2">
-                      {product.premiumOptions!.map((option, index) => {
-                        const isCurrentOption = currentProductSelections?.[product.category] === option.productName;
-                        return (
-                          <div key={index} className="space-y-1">
-                            <a 
-                              href={option.affiliateLink} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              className="flex items-start gap-1 text-xs text-muted-foreground hover:text-foreground"
-                            >
-                              <span className="flex-1">{option.productName}</span>
-                              <ArrowRight className="h-3 w-3 flex-shrink-0 mt-0.5" />
-                            </a>
-                            {routineId && onProductSelect && !isCurrentOption && (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="w-full text-xs h-7"
-                                onClick={() => onProductSelect(product.category, option.productName)}
-                                data-testid={`button-set-current-alt-${index}`}
-                              >
-                                Set as Current
-                              </Button>
-                            )}
-                            {isCurrentOption && (
-                              <Badge variant="secondary" className="w-full justify-center text-xs">Current</Badge>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
                 )}
               </>
             )}

@@ -753,7 +753,7 @@ export default function Dashboard() {
                     <div className="overflow-hidden" ref={emblaRef}>
                       <div className="flex gap-2.5">
                         {displayProducts.map((product: any, index: number) => (
-                          <div key={index} className="flex-[0_0_280px] md:flex-[0_0_320px] flex">
+                          <div key={index} className="flex-[0_0_280px] md:flex-[0_0_320px] h-[540px]">
                             <ProductCard
                               product={product}
                               isPremiumUser={isPremium}
