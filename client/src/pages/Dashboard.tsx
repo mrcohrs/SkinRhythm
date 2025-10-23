@@ -702,9 +702,8 @@ export default function Dashboard() {
               <div>
                 <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-shoppable-products">Your Routine Products</h3>
                 
-                
-                <p className="text-muted-foreground mb-6">{/* Affiliate Disclosure */}
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                {/* Affiliate Disclosure */}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
                   <Info className="h-4 w-4 flex-shrink-0" />
                   <span>
                     The commissions earned through affiliate links on this page allow AcneAgent to offer expert-level services for free.{" "}
@@ -716,10 +715,7 @@ export default function Dashboard() {
                       Learn more
                     </Link>
                   </span>
-                </div></p>
-               
-               
-                <p>   </p>
+                </div>
 
                 
                 <div className="relative">
