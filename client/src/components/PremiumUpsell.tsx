@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 
 interface PremiumUpsellProps {
   title?: string;
@@ -23,9 +24,12 @@ export function PremiumUpsell({
           size="lg" 
           className="bg-primary hover:bg-primary/90 rounded-full whitespace-nowrap" 
           data-testid="button-upgrade-to-premium"
+          asChild
         >
-          Get Premium
-          <ArrowRight className="ml-2 h-4 w-4" />
+          <Link href="/pricing">
+            Get Premium
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
         </Button>
       </div>
     </div>

@@ -18,6 +18,7 @@ import { CompactProductCard } from "@/components/CompactProductCard";
 import { ConsentModal } from "@/components/ConsentModal";
 import { InfoCard } from "@/components/InfoCard";
 import { PromoBanner } from "@/components/PromoBanner";
+import { RoutinePurchaseOptions } from "@/components/RoutinePurchaseOptions";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
@@ -919,6 +920,11 @@ export default function Dashboard() {
                   ))}
                 </div>
               )}
+
+              {/* Purchase Options for free users */}
+              {!isPremium && (
+                <RoutinePurchaseOptions isAuthenticated={!!user} className="mt-8" />
+              )}
             </TabsContent>
 
             {/* Routine Coach Tab */}
@@ -960,8 +966,8 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
-                    <Button data-testid="button-upgrade-treatment" className="w-full">
-                      Upgrade to Premium
+                    <Button data-testid="button-upgrade-treatment" className="w-full" asChild>
+                      <Link href="/pricing">Upgrade to Premium</Link>
                     </Button>
                   </CardContent>
                 </Card>

@@ -10,6 +10,7 @@ import {
 import { ProductCard, type Product } from "./ProductCard";
 import { CompactProductCard } from "./CompactProductCard";
 import { PremiumUpsell } from "./PremiumUpsell";
+import { RoutinePurchaseOptions } from "./RoutinePurchaseOptions";
 import { WeeklyRoutine } from "./WeeklyRoutine";
 import { InfoCard } from "./InfoCard";
 import type { RoutineType } from "@shared/weeklyRoutines";
@@ -519,6 +520,10 @@ export function RoutineDisplay({
             </div>
           </div>
 
+          {/* Purchase Options for authenticated free users */}
+          {isAuthenticated && !isPremiumUser && (
+            <RoutinePurchaseOptions isAuthenticated={isAuthenticated} className="mt-16" />
+          )}
           
         </div>
 
