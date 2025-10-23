@@ -24,8 +24,8 @@ export default function IngredientChecker() {
   const { toast } = useToast();
   
   const { data: entitlements, refetch: refetchEntitlements, isLoading: entitlementsLoading } = useEntitlements();
-  const canScan = entitlements?.hasUnlimitedScans || (entitlements?.scanCount ?? 0) > 0;
-  const remainingScans = entitlements?.scanCount ?? 0;
+  const canScan = entitlements?.hasUnlimitedScans || (entitlements?.scanCredits ?? 0) > 0;
+  const remainingScans = entitlements?.scanCredits ?? 0;
   const hasUnlimited = entitlements?.hasUnlimitedScans ?? false;
 
   const handleCheck = async () => {

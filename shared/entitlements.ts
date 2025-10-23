@@ -45,7 +45,7 @@ export function getUserEntitlements(
   }
 
   const tier = (user.membershipTier || "free") as MembershipTier;
-  const scanCount = user.scanCount || 0;
+  const scanCount = user.scanCredits || 0;
   
   // Check if membership is active (not expired)
   const membershipActive = !user.membershipExpiresAt || new Date(user.membershipExpiresAt) > new Date();
