@@ -23,12 +23,17 @@ export default function IngredientChecker() {
   const [showPaywall, setShowPaywall] = useState(false);
   const { toast } = useToast();
   
-  const { data: entitlements, refetch: refetchEntitlements } = useEntitlements();
+  const { data: entitlements, refetch: refetchEntitlements, isLoading: entitlementsLoading } = useEntitlements();
   const canScan = entitlements?.hasUnlimitedScans || (entitlements?.scanCredits ?? 0) > 0;
   const remainingScans = entitlements?.scanCredits ?? 0;
   const hasUnlimited = entitlements?.hasUnlimitedScans ?? false;
 
   const handleCheck = async () => {
+    // Wait for entitlements to load before checking access
+    if (entitlementsLoading) {
+      return;
+    }
+    
     // Check if user can scan
     if (!canScan) {
       setShowPaywall(true);
@@ -147,11 +152,11 @@ Hyaluronic Acid"
               <div className="flex gap-3">
                 <Button
                   onClick={handleCheck}
-                  disabled={!inputText.trim()}
+                  disabled={!inputText.trim() || entitlementsLoading}
                   className="flex-1"
                   data-testid="button-check-ingredients"
                 >
-                  {canScan ? 'Check Ingredients' : 'Unlock Scanning'}
+                  {entitlementsLoading ? 'Loading...' : (canScan ? 'Check Ingredients' : 'Unlock Scanning')}
                 </Button>
                 <Button
                   variant="outline"
