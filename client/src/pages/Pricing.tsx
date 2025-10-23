@@ -50,7 +50,7 @@ export default function Pricing() {
             <div className="flex items-center justify-center gap-3 px-6 py-4 bg-primary/10 border-2 border-primary/30 rounded-lg">
               <Crown className="h-5 w-5 text-primary flex-shrink-0" />
               <div className="text-center">
-                <p className="font-semibold text-primary">Founding Member Rate Active!</p>
+                <p className="font-semibold text-foreground">Founding Member Rate Active!</p>
                 <p className="text-sm text-muted-foreground">
                   Only {foundingRate.purchasesRemaining} spots left at $2.99/month • Lock in this rate forever
                 </p>
