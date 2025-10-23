@@ -217,7 +217,7 @@ export default function Dashboard() {
       setRoutineMode(newMode);
       toast({
         title: "Routine updated",
-        description: newMode === 'premium' ? "Now showing recommended products for your skin" : "Now showing budget-friendly products",
+        description: newMode === 'premium' ? "Now showing the products that AcneAgent scores highest for your skin profile" : "Now showing the best budget-friendly products for your skin profile",
       });
     },
     onError: () => {

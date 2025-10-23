@@ -352,32 +352,34 @@ export function RoutineDisplay({
             </p>
             
             <div className="relative">
-              {/* Scroll Buttons */}
-              {canScrollPrev && (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
-                  onClick={scrollPrev}
-                  aria-label="Scroll to previous products"
-                  data-testid="button-carousel-prev"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-              )}
-              
-              {canScrollNext && (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full shadow-lg"
-                  onClick={scrollNext}
-                  aria-label="Scroll to next products"
-                  data-testid="button-carousel-next"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </Button>
-              )}
+              {/* Scroll Buttons - Both on right side */}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex gap-2">
+                {canScrollPrev && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-10 w-10 rounded-full shadow-lg"
+                    onClick={scrollPrev}
+                    aria-label="Scroll to previous products"
+                    data-testid="button-carousel-prev"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </Button>
+                )}
+                
+                {canScrollNext && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-10 w-10 rounded-full shadow-lg"
+                    onClick={scrollNext}
+                    aria-label="Scroll to next products"
+                    data-testid="button-carousel-next"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
+                )}
+              </div>
 
               {/* Carousel */}
               <div className="overflow-hidden" ref={emblaRef}>
