@@ -383,16 +383,11 @@ export function RoutineDisplay({
               <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex gap-2.5">
                   {allProducts.map((product, index) => (
-                    <div key={index} className="flex-[0_0_280px] md:flex-[0_0_320px]">
-                      <div className="flex flex-col h-full">
-                        <p className="text-sm font-medium text-center mb-3" data-testid={`label-category-${product.category}`}>
-                          {product.category}
-                        </p>
-                        <ProductCard
-                          product={product}
-                          isPremiumUser={isPremiumUser}
-                        />
-                      </div>
+                    <div key={index} className="flex-[0_0_280px] md:flex-[0_0_320px] flex">
+                      <ProductCard
+                        product={product}
+                        isPremiumUser={isPremiumUser}
+                      />
                     </div>
                   ))}
                 </div>

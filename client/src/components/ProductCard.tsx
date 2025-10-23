@@ -100,6 +100,14 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
         </div>
 
         <div className="p-4 md:p-6 flex flex-col flex-1">
+          <Badge 
+            variant="outline" 
+            className="w-fit mb-3" 
+            data-testid={`badge-category-${product.category}`}
+          >
+            {product.category}
+          </Badge>
+          
           <h3 
             className="font-serif text-base md:text-lg font-semibold text-foreground leading-tight mb-2 h-[3.5rem]" 
             style={{ 
