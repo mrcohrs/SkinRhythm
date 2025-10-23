@@ -27,21 +27,16 @@ export function CheckoutButton({
   const handleCheckout = async () => {
     setIsLoading(true);
     try {
-      const response = await apiRequest<{ sessionId: string; url: string }>(
-        "/api/payments/create-checkout",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            priceId,
-            successUrl: `${window.location.origin}/dashboard?payment=success`,
-            cancelUrl: `${window.location.origin}/pricing?payment=cancelled`,
-          }),
-        }
-      );
+      const response = await apiRequest("POST", "/api/payments/create-checkout", {
+        priceId,
+        successUrl: `${window.location.origin}/dashboard?payment=success`,
+        cancelUrl: `${window.location.origin}/pricing?payment=cancelled`,
+      });
+      const data = await response.json() as { sessionId: string; url: string };
 
       // Redirect to Stripe Checkout
-      if (response.url) {
-        window.location.href = response.url;
+      if (data.url) {
+        window.location.href = data.url;
       }
     } catch (error: any) {
       toast({

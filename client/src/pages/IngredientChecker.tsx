@@ -3,8 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
+import { AlertCircle, CheckCircle, ArrowLeft, Sparkles } from "lucide-react";
 import { checkIngredients } from "@shared/acneCausingIngredients";
+import { useEntitlements } from "@/hooks/useEntitlements";
+import { ScanPaywallModal } from "@/components/ScanPaywallModal";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Link } from "wouter";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 
@@ -16,11 +20,46 @@ export default function IngredientChecker() {
     totalChecked: number;
   } | null>(null);
   const [hasChecked, setHasChecked] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const { toast } = useToast();
+  
+  const { data: entitlements, refetch: refetchEntitlements } = useEntitlements();
+  const canScan = entitlements?.hasUnlimitedScans || (entitlements?.scanCredits ?? 0) > 0;
+  const remainingScans = entitlements?.scanCredits ?? 0;
+  const hasUnlimited = entitlements?.hasUnlimitedScans ?? false;
 
-  const handleCheck = () => {
+  const handleCheck = async () => {
+    // Check if user can scan
+    if (!canScan) {
+      setShowPaywall(true);
+      return;
+    }
+
+    // Perform the scan
     const checkResults = checkIngredients(inputText);
     setResults(checkResults);
     setHasChecked(true);
+
+    // Track the scan usage on backend
+    if (!hasUnlimited) {
+      try {
+        await apiRequest("POST", "/api/scans/use-credit");
+        
+        // Refresh entitlements to show updated scan count
+        await refetchEntitlements();
+        
+        toast({
+          title: "Scan Complete",
+          description: `${remainingScans - 1} scan${remainingScans - 1 === 1 ? '' : 's'} remaining`,
+        });
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: error.message || "Failed to track scan usage",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   const handleClear = () => {
@@ -58,6 +97,30 @@ export default function IngredientChecker() {
             <p className="text-lg text-muted-foreground">
               Paste your product's ingredient list below to check for acne-causing ingredients. Enter one ingredient per line - use only ingredient names from product labels, not marketing descriptions.
             </p>
+            
+            {/* Scan Credits Display */}
+            <div className="flex items-center gap-2">
+              {hasUnlimited ? (
+                <Badge variant="default" className="gap-1" data-testid="badge-unlimited-scans">
+                  <Sparkles className="h-3 w-3" />
+                  Unlimited Scans
+                </Badge>
+              ) : (
+                <Badge variant="outline" data-testid="badge-scans-remaining">
+                  {remainingScans} scan{remainingScans === 1 ? '' : 's'} remaining
+                </Badge>
+              )}
+              {!hasUnlimited && remainingScans === 0 && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowPaywall(true)}
+                  data-testid="button-get-more-scans"
+                >
+                  Get more scans
+                </Button>
+              )}
+            </div>
           </div>
 
           {/* Input Section */}
@@ -88,7 +151,7 @@ Hyaluronic Acid"
                   className="flex-1"
                   data-testid="button-check-ingredients"
                 >
-                  Check Ingredients
+                  {canScan ? 'Check Ingredients' : 'Unlock Scanning'}
                 </Button>
                 <Button
                   variant="outline"
@@ -99,6 +162,12 @@ Hyaluronic Acid"
                   Clear
                 </Button>
               </div>
+              
+              {!canScan && (
+                <p className="text-sm text-muted-foreground text-center">
+                  You've used all your free scans. Purchase scan packs or upgrade to Premium for unlimited scanning.
+                </p>
+              )}
             </CardContent>
           </Card>
 
@@ -246,6 +315,9 @@ Hyaluronic Acid"
           </Card>
         </div>
       </div>
+
+      {/* Scan Paywall Modal */}
+      <ScanPaywallModal open={showPaywall} onClose={() => setShowPaywall(false)} />
     </div>
   );
 }

@@ -994,7 +994,7 @@ export default function Dashboard() {
                           <FlaskConical className="h-5 w-5 text-primary" />
                           <div>
                             <div className="font-medium">
-                              {Math.max(0, 3 - (user?.scanCount || 0))} free scan{Math.max(0, 3 - (user?.scanCount || 0)) === 1 ? '' : 's'} remaining
+                              {Math.max(0, 3 - ((user as any)?.scanCredits || 0))} free scan{Math.max(0, 3 - ((user as any)?.scanCredits || 0)) === 1 ? '' : 's'} remaining
                             </div>
                             <div className="text-sm text-muted-foreground">
                               Upgrade to Premium for unlimited scans
@@ -1011,7 +1011,7 @@ export default function Dashboard() {
                 )}
                 
                 {/* Out of Scans - Upgrade Prompt */}
-                {!isPremium && user?.scanCount && user.scanCount >= 3 ? (
+                {!isPremium && (user as any)?.scanCredits && (user as any).scanCredits >= 3 ? (
                   <Card className="border-primary/20" data-testid="card-scans-exhausted">
                     <CardHeader>
                       <div className="flex items-center gap-3 mb-2">
@@ -1080,7 +1080,7 @@ Hyaluronic Acid"
                       <div className="flex gap-3">
                         <Button
                           onClick={handleCheckIngredients}
-                          disabled={!ingredientInput.trim() || scanMutation.isPending || (!isPremium && user && (user.scanCount || 0) >= 3)}
+                          disabled={!ingredientInput.trim() || scanMutation.isPending || (!isPremium && !!user && ((user as any).scanCredits || 0) >= 3)}
                           className="flex-1"
                           data-testid="button-check-ingredients"
                         >

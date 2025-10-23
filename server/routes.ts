@@ -451,7 +451,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Check if free user has scans remaining
       const FREE_TIER_SCANS = 3;
-      const currentScans = user.scanCount || 0;
+      const currentScans = user.scanCredits || 0;
       
       if (currentScans >= FREE_TIER_SCANS) {
         return res.status(403).json({ 
@@ -861,11 +861,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
         hasDetailedPdfAccess,
         membershipTier: user.membershipTier,
         membershipExpiresAt: user.membershipExpiresAt,
+        unlimitedScannerExpiresAt: user.unlimitedScannerExpiresAt,
         isFoundingMember: user.isFoundingMember || false,
       });
     } catch (error) {
       console.error("Error fetching user entitlements:", error);
       res.status(500).json({ message: "Failed to fetch entitlements" });
+    }
+  });
+
+  // 5. Use a Scan Credit
+  app.post('/api/scans/use-credit', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Check if user has unlimited scans
+      const unlimitedScansActive = user.unlimitedScannerExpiresAt && new Date(user.unlimitedScannerExpiresAt) > new Date();
+      const isPremium = (user.membershipTier === "premium" || user.membershipTier === "premium_plus") && 
+                       (!user.membershipExpiresAt || new Date(user.membershipExpiresAt) > new Date());
+      const hasUnlimitedScans = isPremium || unlimitedScansActive;
+      
+      if (hasUnlimitedScans) {
+        // Don't decrement credits for unlimited users
+        return res.json({ success: true, unlimited: true });
+      }
+      
+      // Use one scan credit
+      const updatedUser = await storage.useScanCredit(userId);
+      
+      res.json({
+        success: true,
+        unlimited: false,
+        remainingScans: updatedUser.scanCredits,
+      });
+    } catch (error: any) {
+      console.error("Error using scan credit:", error);
+      res.status(400).json({ message: error.message || "Failed to use scan credit" });
     }
   });
 
