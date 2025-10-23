@@ -15,6 +15,7 @@ import bestForYourSkinBadge from "@assets/bestforyourskin_1761112317047.png";
 
 export interface CompactProduct {
   name: string;
+  brand: string;
   category: string;
   priceTier: "budget" | "standard" | "premium";
   priceRange?: string;
@@ -79,6 +80,9 @@ export function CompactProductCard({ product, description }: CompactProductCardP
                   {product.priceTier === 'budget' ? 'Budget' : product.priceTier === 'premium' ? 'Luxury' : 'Midrange'}
                 </Badge>
               </div>
+              <p className="text-xs text-muted-foreground mb-1" data-testid="text-brand">
+                {product.brand}
+              </p>
               <h4 className="font-serif text-base font-semibold text-foreground truncate" data-testid="text-product-name">
                 {product.name}
               </h4>

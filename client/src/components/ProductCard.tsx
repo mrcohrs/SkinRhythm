@@ -108,6 +108,10 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
             {product.category}
           </Badge>
           
+          <p className="text-xs text-muted-foreground mb-2" data-testid={`text-brand-${product.brand.replace(/\s/g, '-')}`}>
+            {product.brand}
+          </p>
+          
           <h3 
             className="font-serif text-base md:text-lg font-semibold text-foreground leading-tight mb-3 min-h-[3.5rem]" 
             style={{ 
