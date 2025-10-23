@@ -54,7 +54,7 @@ export const users = pgTable("users", {
   consentDate: timestamp("consent_date"),
   consentVersion: varchar("consent_version"), // Track consent version for future policy updates
   // Routine display preference for premium users
-  routineMode: varchar("routine_mode").default("premium"), // "basic" (budget/isDefault) or "premium" (recommended/isRecommended)
+  routineMode: varchar("routine_mode").default("basic"), // "basic" (budget/isDefault) or "premium" (recommended/isRecommended)
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

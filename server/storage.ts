@@ -739,6 +739,8 @@ export class DatabaseStorage implements IStorage {
   // Membership management
   async updateMembership(userId: string, tier: string, expiresAt: Date | null, isFoundingMember: boolean): Promise<User> {
     const isPremium = tier === "premium" || tier === "premium_plus";
+    // Automatically set routineMode to match tier: "premium" for premium tiers, "basic" for free tier
+    const routineMode = isPremium ? "premium" : "basic";
     
     const [updatedUser] = await db
       .update(users)
@@ -747,6 +749,7 @@ export class DatabaseStorage implements IStorage {
         membershipExpiresAt: expiresAt,
         isFoundingMember,
         isPremium,
+        routineMode,
         updatedAt: new Date(),
       })
       .where(eq(users.id, userId))
