@@ -4,6 +4,8 @@ import {
   cardInteractions,
   bannerState,
   productSelections,
+  purchases,
+  foundingRateCounter,
   type User,
   type UpsertUser,
   type Routine,
@@ -14,6 +16,9 @@ import {
   type InsertBannerState,
   type ProductSelection,
   type InsertProductSelection,
+  type Purchase,
+  type InsertPurchase,
+  type FoundingRateCounter,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql as drizzleSql } from "drizzle-orm";
@@ -53,6 +58,30 @@ export interface IStorage {
   getUserProductSelections(userId: string): Promise<ProductSelection[]>;
   getUserProductSelection(userId: string, productId: string): Promise<ProductSelection | undefined>;
   setUserProductSelection(userId: string, productId: string, productName: string): Promise<ProductSelection>;
+  
+  // Payment and subscription management
+  updateStripeCustomer(userId: string, stripeCustomerId: string): Promise<User>;
+  updateStripeSubscription(userId: string, stripeSubscriptionId: string): Promise<User>;
+  recordPurchase(purchase: InsertPurchase): Promise<Purchase>;
+  getUserPurchases(userId: string): Promise<Purchase[]>;
+  getActiveSubscription(userId: string): Promise<Purchase | undefined>;
+  
+  // Scan credits management
+  addScanCredits(userId: string, credits: number): Promise<User>;
+  useScanCredit(userId: string): Promise<User>;
+  setUnlimitedScans(userId: string, expiresAt: Date | null): Promise<User>;
+  
+  // One-time purchase access
+  grantPremiumRoutineAccess(userId: string, routineId: string): Promise<User>;
+  grantDetailedPdfAccess(userId: string): Promise<User>;
+  
+  // Membership management
+  updateMembership(userId: string, tier: string, expiresAt: Date | null, isFoundingMember: boolean): Promise<User>;
+  
+  // Founding rate counter
+  getFoundingRateCounter(): Promise<FoundingRateCounter | undefined>;
+  incrementFoundingRateCounter(): Promise<FoundingRateCounter>;
+  isFoundingRateActive(): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -540,6 +569,241 @@ export class DatabaseStorage implements IStorage {
       })
       .returning();
     return inserted;
+  }
+
+  // Payment and subscription management
+  async updateStripeCustomer(userId: string, stripeCustomerId: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        stripeCustomerId,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    
+    return updatedUser;
+  }
+
+  async updateStripeSubscription(userId: string, stripeSubscriptionId: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        stripeSubscriptionId,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    
+    return updatedUser;
+  }
+
+  async recordPurchase(purchase: InsertPurchase): Promise<Purchase> {
+    const [savedPurchase] = await db
+      .insert(purchases)
+      .values(purchase)
+      .returning();
+    return savedPurchase;
+  }
+
+  async getUserPurchases(userId: string): Promise<Purchase[]> {
+    return await db
+      .select()
+      .from(purchases)
+      .where(eq(purchases.userId, userId))
+      .orderBy(desc(purchases.createdAt));
+  }
+
+  async getActiveSubscription(userId: string): Promise<Purchase | undefined> {
+    const [subscription] = await db
+      .select()
+      .from(purchases)
+      .where(
+        and(
+          eq(purchases.userId, userId),
+          eq(purchases.isSubscription, true),
+          eq(purchases.status, "completed")
+        )
+      )
+      .orderBy(desc(purchases.createdAt))
+      .limit(1);
+    return subscription;
+  }
+
+  // Scan credits management
+  async addScanCredits(userId: string, credits: number): Promise<User> {
+    const user = await this.getUser(userId);
+    
+    if (!user) {
+      throw new Error("User not found");
+    }
+    
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        scanCredits: (user.scanCredits || 0) + credits,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    return updatedUser;
+  }
+
+  async useScanCredit(userId: string): Promise<User> {
+    const user = await this.getUser(userId);
+    
+    if (!user) {
+      throw new Error("User not found");
+    }
+    
+    const currentCredits = user.scanCredits || 0;
+    if (currentCredits <= 0) {
+      throw new Error("Insufficient scan credits");
+    }
+    
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        scanCredits: currentCredits - 1,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    return updatedUser;
+  }
+
+  async setUnlimitedScans(userId: string, expiresAt: Date | null): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        hasUnlimitedScans: true,
+        unlimitedScannerExpiresAt: expiresAt,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    
+    return updatedUser;
+  }
+
+  // One-time purchase access
+  async grantPremiumRoutineAccess(userId: string, routineId: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        hasPremiumRoutineAccess: true,
+        premiumRoutineAccessRoutineId: routineId,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    
+    return updatedUser;
+  }
+
+  async grantDetailedPdfAccess(userId: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        hasDetailedPdfAccess: true,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    
+    return updatedUser;
+  }
+
+  // Membership management
+  async updateMembership(userId: string, tier: string, expiresAt: Date | null, isFoundingMember: boolean): Promise<User> {
+    const isPremium = tier === "premium" || tier === "premium_plus";
+    
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        membershipTier: tier,
+        membershipExpiresAt: expiresAt,
+        isFoundingMember,
+        isPremium,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    
+    return updatedUser;
+  }
+
+  // Founding rate counter
+  async getFoundingRateCounter(): Promise<FoundingRateCounter | undefined> {
+    const [counter] = await db
+      .select()
+      .from(foundingRateCounter)
+      .where(eq(foundingRateCounter.id, "singleton"));
+    return counter;
+  }
+
+  async incrementFoundingRateCounter(): Promise<FoundingRateCounter> {
+    const existing = await this.getFoundingRateCounter();
+    
+    if (!existing) {
+      const [inserted] = await db
+        .insert(foundingRateCounter)
+        .values({
+          id: "singleton",
+          premiumFoundingPurchases: 1,
+          foundingRateActive: true,
+          foundingRateLimit: 500,
+        })
+        .returning();
+      return inserted;
+    }
+    
+    const newCount = (existing.premiumFoundingPurchases || 0) + 1;
+    const limit = existing.foundingRateLimit || 500;
+    const shouldDeactivate = newCount >= limit;
+    
+    const [updated] = await db
+      .update(foundingRateCounter)
+      .set({
+        premiumFoundingPurchases: newCount,
+        foundingRateActive: !shouldDeactivate,
+        updatedAt: new Date(),
+      })
+      .where(eq(foundingRateCounter.id, "singleton"))
+      .returning();
+    
+    return updated;
+  }
+
+  async isFoundingRateActive(): Promise<boolean> {
+    const counter = await this.getFoundingRateCounter();
+    return counter?.foundingRateActive ?? true;
   }
 }
 
