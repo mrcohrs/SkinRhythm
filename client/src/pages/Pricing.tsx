@@ -90,7 +90,7 @@ export default function Pricing() {
                   </div>
                   {isFoundingActive && (
                     <p className="text-sm text-muted-foreground">
-                      Regular price: ${PRODUCT_PRICES.PREMIUM_STANDARD}/month after founding period
+                      Lock in $2.99/month forever • New members pay ${PRODUCT_PRICES.PREMIUM_STANDARD}/month after founding ends
                     </p>
                   )}
                   {entitlements?.isPremium && entitlements.isFoundingMember && (
