@@ -601,11 +601,7 @@ export default function Dashboard() {
                         <DollarSign className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
                         <span className="font-semibold text-sm md:text-base">Budget</span>
                       </div>
-                      <p className={`text-xs text-left leading-tight ${
-                        routineMode === 'basic' ? 'text-primary-foreground/80' : 'text-muted-foreground'
-                      }`}>
-                        Cost-effective alternatives
-                      </p>
+                      
                     </Button>
 
                     {/* Premium Option */}
@@ -626,11 +622,7 @@ export default function Dashboard() {
                         <Sparkles className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
                         <span className="font-semibold text-sm md:text-base">Premium</span>
                       </div>
-                      <p className={`text-xs text-left leading-tight ${
-                        routineMode === 'premium' ? 'text-primary-foreground/80' : 'text-muted-foreground'
-                      }`}>
-                        Recommended for your skin
-                      </p>
+                      
                     </Button>
                   </div>
                 </div>
