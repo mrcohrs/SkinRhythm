@@ -104,7 +104,7 @@ export default function Pricing() {
           <CardFooter>
             {!user ? (
               <Button asChild className="w-full" size="lg" data-testid="button-signup-premium">
-                <Link href="/login">Sign Up to Get Premium</Link>
+                <a href="/api/login">Sign Up to Get Premium</a>
               </Button>
             ) : entitlements?.isPremium ? (
               <Button disabled className="w-full" size="lg" variant="outline">
@@ -163,7 +163,7 @@ export default function Pricing() {
             <CardFooter>
               {!user ? (
                 <Button asChild className="w-full" variant="outline" data-testid="button-signup-routine-access">
-                  <Link href="/login">Sign Up to Purchase</Link>
+                  <a href="/api/login">Sign Up to Purchase</a>
                 </Button>
               ) : entitlements?.hasPremiumRoutineAccess ? (
                 <Button disabled className="w-full" variant="outline">
@@ -217,7 +217,7 @@ export default function Pricing() {
             <CardFooter>
               {!user ? (
                 <Button asChild className="w-full" variant="outline" data-testid="button-signup-pdf">
-                  <Link href="/login">Sign Up to Purchase</Link>
+                  <a href="/api/login">Sign Up to Purchase</a>
                 </Button>
               ) : entitlements?.hasDetailedPdfAccess ? (
                 <Button disabled className="w-full" variant="outline">
@@ -267,7 +267,7 @@ export default function Pricing() {
               <CardFooter>
                 {!user ? (
                   <Button asChild className="w-full" variant="outline" data-testid="button-signup-unlimited-scans">
-                    <Link href="/login">Sign Up to Subscribe</Link>
+                    <a href="/api/login">Sign Up to Subscribe</a>
                   </Button>
                 ) : entitlements?.hasUnlimitedScans ? (
                   <Button disabled className="w-full" variant="outline">
@@ -305,7 +305,7 @@ export default function Pricing() {
             <CardFooter>
               {!user ? (
                 <Button asChild className="w-full" variant="outline" data-testid="button-signup-scan-20">
-                  <Link href="/login">Sign Up to Purchase</Link>
+                  <a href="/api/login">Sign Up to Purchase</a>
                 </Button>
               ) : (
                 <CheckoutButton
@@ -338,7 +338,7 @@ export default function Pricing() {
             <CardFooter>
               {!user ? (
                 <Button asChild className="w-full" variant="outline" data-testid="button-signup-scan-5">
-                  <Link href="/login">Sign Up to Purchase</Link>
+                  <a href="/api/login">Sign Up to Purchase</a>
                 </Button>
               ) : (
                 <CheckoutButton
