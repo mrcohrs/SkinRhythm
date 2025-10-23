@@ -277,7 +277,7 @@ export default function Pricing() {
             <p className="text-muted-foreground">Check products for acne-causing ingredients</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Unlimited Scanner - Only show if NOT founding period */}
             {!isFoundingActive && (
               <Card className="border-primary/30 flex flex-col">
