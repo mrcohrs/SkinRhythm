@@ -37,8 +37,17 @@ export const users = pgTable("users", {
   membershipTier: varchar("membership_tier").default("free"), // free, premium, premium_plus
   membershipExpiresAt: timestamp("membership_expires_at"),
   isFoundingMember: boolean("is_founding_member").default(false),
-  // Ingredient scanner tracking (for free users only - premium gets unlimited)
-  scanCount: integer("scan_count").default(0), // Incremented on each scan for free users
+  // Stripe integration fields
+  stripeCustomerId: varchar("stripe_customer_id"),
+  stripeSubscriptionId: varchar("stripe_subscription_id"),
+  // Ingredient scanner tracking
+  scanCredits: integer("scan_credits").default(3), // Start with 3 free scans, incremented with pack purchases
+  hasUnlimitedScans: boolean("has_unlimited_scans").default(false), // True for Premium or Unlimited Scanner addon
+  unlimitedScannerExpiresAt: timestamp("unlimited_scanner_expires_at"), // For standalone unlimited scanner addon
+  // One-time purchase tracking
+  hasPremiumRoutineAccess: boolean("has_premium_routine_access").default(false), // $9.99 one-time unlock for product alternatives
+  premiumRoutineAccessRoutineId: varchar("premium_routine_access_routine_id"), // Which routine the access is for
+  hasDetailedPdfAccess: boolean("has_detailed_pdf_access").default(false), // $9.99 one-time PDF purchase
   // Consent fields for AI training and data collection
   dataCollectionConsent: boolean("data_collection_consent").default(false),
   aiTrainingConsent: boolean("ai_training_consent").default(false),
@@ -53,19 +62,23 @@ export const users = pgTable("users", {
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 
-// Purchases table - Track one-time purchases
+// Purchases table - Track all purchases (one-time and subscriptions)
 export const purchases = pgTable("purchases", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").notNull().references(() => users.id),
-  productType: varchar("product_type").notNull(), // detailed_pdf, scan_pack_5, scan_pack_20, unlimited_scanner
+  productType: varchar("product_type").notNull(), // premium_subscription, detailed_pdf, premium_routine_access, scan_pack_5, scan_pack_20, unlimited_scanner
   amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency").default("usd"),
   scansGranted: integer("scans_granted").default(0), // For scan packs (added to user balance)
-  isRecurring: boolean("is_recurring").default(false), // True for unlimited_scanner addon subscription
-  expiresAt: timestamp("expires_at"), // For recurring purchases like unlimited_scanner
-  stripePaymentId: varchar("stripe_payment_id"),
+  isSubscription: boolean("is_subscription").default(false), // True for Premium, Unlimited Scanner
+  isFoundingRate: boolean("is_founding_rate").default(false), // Track if purchased at founding rate
+  stripePaymentIntentId: varchar("stripe_payment_intent_id"),
+  stripeSubscriptionId: varchar("stripe_subscription_id"),
+  status: varchar("status").default("completed"), // completed, pending, failed, refunded
   createdAt: timestamp("created_at").defaultNow(),
 }, (table) => [
-  index("IDX_purchases_user_id").on(table.userId) // Index for efficient user purchase lookups
+  index("IDX_purchases_user_id").on(table.userId),
+  index("IDX_purchases_stripe_subscription").on(table.stripeSubscriptionId)
 ]);
 
 export const insertPurchaseSchema = createInsertSchema(purchases).omit({
@@ -164,6 +177,17 @@ export const insertProductSelectionSchema = createInsertSchema(productSelections
 
 export type InsertProductSelection = z.infer<typeof insertProductSelectionSchema>;
 export type ProductSelection = typeof productSelections.$inferSelect;
+
+// Founding rate counter - Global state tracking
+export const foundingRateCounter = pgTable("founding_rate_counter", {
+  id: varchar("id").primaryKey().default("singleton"), // Only one row
+  premiumFoundingPurchases: integer("premium_founding_purchases").default(0), // Count of Premium subscriptions at founding rate
+  foundingRateActive: boolean("founding_rate_active").default(true), // Auto-disable after 500
+  foundingRateLimit: integer("founding_rate_limit").default(500), // Configurable limit
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type FoundingRateCounter = typeof foundingRateCounter.$inferSelect;
 
 // Quiz answers schema
 export const quizAnswersSchema = z.object({
