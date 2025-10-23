@@ -691,8 +691,8 @@ export default function Dashboard() {
                           <p className="text-sm text-muted-foreground">6-week routine coach, ingredient scanner, multiple product options to choose from for each routine step, and your routine library with notes to track what works.</p>
                         </div>
                       </div>
-                      <Button data-testid="button-upgrade-products" className="flex-shrink-0">
-                        Upgrade to Premium
+                      <Button data-testid="button-upgrade-products" className="flex-shrink-0" asChild>
+                        <Link href="/pricing">Upgrade to Premium</Link>
                       </Button>
                     </div>
                   </CardContent>
@@ -1011,9 +1011,11 @@ export default function Dashboard() {
                             </div>
                           </div>
                         </div>
-                        <Button size="sm" data-testid="button-upgrade-scans">
-                          <Crown className="h-4 w-4 mr-2" />
-                          Upgrade
+                        <Button size="sm" data-testid="button-upgrade-scans" asChild>
+                          <Link href="/pricing">
+                            <Crown className="h-4 w-4 mr-2" />
+                            Upgrade
+                          </Link>
                         </Button>
                       </div>
                     </CardContent>
@@ -1058,9 +1060,11 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </div>
-                      <Button data-testid="button-upgrade-no-scans" className="w-full">
-                        <Crown className="h-4 w-4 mr-2" />
-                        Upgrade to Premium
+                      <Button data-testid="button-upgrade-no-scans" className="w-full" asChild>
+                        <Link href="/pricing">
+                          <Crown className="h-4 w-4 mr-2" />
+                          Upgrade to Premium
+                        </Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -1304,8 +1308,8 @@ Hyaluronic Acid"
                         </div>
                       </div>
                     </div>
-                    <Button data-testid="button-upgrade-library" className="w-full">
-                      Upgrade to Premium
+                    <Button data-testid="button-upgrade-library" className="w-full" asChild>
+                      <Link href="/pricing">Upgrade to Premium</Link>
                     </Button>
                   </CardContent>
                 </Card>
