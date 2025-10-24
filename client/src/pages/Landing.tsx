@@ -96,7 +96,7 @@ export default function Landing() {
                   <div>
                     <h3 className="font-semibold mb-1">Clinically-Informed Routines</h3>
                     <p className="text-sm text-muted-foreground">
-                      We use dermatologist-style treatment logic, not TikTok trends.
+                      We use clinically validated logic to build your routines, not TikTok trends.
                     </p>
                   </div>
                 </div>
@@ -115,7 +115,7 @@ export default function Landing() {
               </div>
 
               <p className="text-xs text-muted-foreground">
-                Upgrade to Premium for ingredient scanning and multiple product options for each step of your routine.
+                Upgrade to Premium for unlimited product ingredient scanning and multiple product options for each step of your routine.
               </p>
 
               <div className="space-y-2">
@@ -146,15 +146,15 @@ export default function Landing() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">Cleanser</p>
-                        <p className="text-xs text-muted-foreground">Gentle, non-stripping</p>
+                        <p className="font-medium">Serum</p>
+                        <p className="text-xs text-muted-foreground">Acne-fighting active</p>
                       </div>
-                      <p className="text-sm font-medium">~$10</p>
+                      <p className="text-sm font-medium">~$12</p>
                     </div>
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">Moisturizer</p>
+                        <p className="font-medium">Hydrator</p>
                         <p className="text-xs text-muted-foreground">Barrier support</p>
                       </div>
                       <p className="text-sm font-medium">~$14</p>
@@ -162,10 +162,18 @@ export default function Landing() {
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">SPF</p>
-                        <p className="text-xs text-muted-foreground">Daily, no pore-clogging fillers</p>
+                        <p className="font-medium">Treatment</p>
+                        <p className="text-xs text-muted-foreground">Targeted spot care</p>
                       </div>
-                      <p className="text-sm font-medium">~$13</p>
+                      <p className="text-sm font-medium">~$10</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-3 border-b border-border">
+                      <div>
+                        <p className="font-medium">Ice</p>
+                        <p className="text-xs text-muted-foreground">Calming, de-puffing</p>
+                      </div>
+                      <p className="text-sm font-medium">~$8</p>
                     </div>
                   </div>
 
@@ -204,12 +212,12 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Tell us about your skin</h3>
+                  <h3 className="font-serif text-xl font-semibold">Tell us about your skin and acne</h3>
                   <p className="text-sm text-muted-foreground">
                     Answer a few quick questions about oiliness, sensitivity, breakout pattern, and skin tone. No photos needed.
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    We learn what actually causes your acne — not just 'dry / oily / combo.'
+                    Not all acne is the same. We learn your specific needs to build a personalized routine.
                   </p>
                 </div>
               </CardContent>
@@ -229,10 +237,10 @@ export default function Landing() {
                 <div className="space-y-3">
                   <h3 className="font-serif text-xl font-semibold">Get your personalized acne routine</h3>
                   <p className="text-sm text-muted-foreground">
-                    You immediately get a morning + night plan built for your acne type, using only acne-safe products from our marketplace.
+                    You get a morning + night routine built specifically for your skin + acne type(s), using only acne-safe products from our marketplace.
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    No login required to view your first routine.
+                    No login required to view and shop your first routine.
                   </p>
                 </div>
               </CardContent>
@@ -252,10 +260,10 @@ export default function Landing() {
                 <div className="space-y-3">
                   <h3 className="font-serif text-xl font-semibold">Shop your routine and stay on track</h3>
                   <p className="text-sm text-muted-foreground">
-                    Commit to your AcneAgent routine, removing any current products that don’t pass the Ingredient Checker.
+                    Purchase and commit to your acne-safe routine, removing any current products that don’t pass the Ingredient Scanner.
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Premium unlocks alternative product options for each step, weekly routine adjustments, and the Ingredient Checker.
+                    Create an account to get 3 free Ingredient Scanner credits to see if your products are acne-safe.
                   </p>
                 </div>
               </CardContent>
