@@ -12,7 +12,8 @@ import {
   CheckCircle,
   Clock,
   X,
-  Check
+  Check,
+  DollarSign
 } from "lucide-react";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 
@@ -21,7 +22,7 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       {/* HEADER */}
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/50">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
               <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-label="AcneAgent molecule icon">
@@ -58,26 +59,21 @@ export default function Landing() {
       </header>
 
       {/* HERO */}
-      <section className="relative overflow-hidden py-16 md:py-24 lg:py-32">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
-          <div className="space-y-8">
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              A Simple, Affordable, and Effective Clear Skin Plan. Made Just for You.
-            </h1>
-            
-            <p className="text-lg text-muted-foreground">
-              Based on science, not trial and error.
-            </p>
-
-            <div className="space-y-6">
-              <div className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-primary shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-label="molecule icon">
-                  <circle cx="12" cy="12" r="2" fill="currentColor" />
-                  <circle cx="6" cy="8" r="1.5" />
-                  <circle cx="18" cy="8" r="1.5" />
-                </svg>
-                <p className="text-sm text-muted-foreground">
-                  AcneAgent takes the guesswork out of acne with:
+      <section className="relative overflow-hidden py-20 md:py-32">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Column */}
+            <div className="space-y-8">
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                A simple, affordable, effective clear skin plan — made just for you.
+              </h1>
+              
+              <div className="space-y-3">
+                <p className="text-lg text-muted-foreground">
+                  Based on science, not trial and error.
+                </p>
+                <p className="text-base text-muted-foreground">
+                  Get a personalized acne routine and shop only acne-safe products that are screened for pore-clogging ingredients.
                 </p>
               </div>
 
@@ -89,7 +85,7 @@ export default function Landing() {
                   <div>
                     <h3 className="font-semibold mb-1">AI-Powered Guidance</h3>
                     <p className="text-sm text-muted-foreground">
-                      Your virtual skincare coach learns your skin and adapts your plan over time.
+                      Your virtual skincare coach adapts your plan over time.
                     </p>
                   </div>
                 </div>
@@ -99,9 +95,9 @@ export default function Landing() {
                     <FlaskConical className="w-5 h-5 text-secondary" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Clinically-Proven Routines</h3>
+                    <h3 className="font-semibold mb-1">Clinically-Informed Routines</h3>
                     <p className="text-sm text-muted-foreground">
-                      Built from treatment methods shown to clear acne in over 90% of cases.
+                      We use dermatologist-style treatment logic, not TikTok trends.
                     </p>
                   </div>
                 </div>
@@ -113,136 +109,154 @@ export default function Landing() {
                   <div>
                     <h3 className="font-semibold mb-1">The Only Acne-Safe Marketplace</h3>
                     <p className="text-sm text-muted-foreground">
-                      Every product we recommend is screened for 400+ pore-clogging ingredients, so you never unknowingly sabotage your skin.
+                      Every product is screened for 400+ pore-clogging ingredients before we recommend it.
                     </p>
                   </div>
                 </div>
               </div>
+
+              <p className="text-xs text-muted-foreground">
+                Upgrade to Premium for ingredient scanning and multiple product options for each step of your routine.
+              </p>
+
+              <div className="space-y-2">
+                <Button
+                  size="lg"
+                  onClick={() => window.location.href = '/quiz'}
+                  className="w-full sm:w-auto px-8 py-6 h-auto rounded-full text-base font-medium"
+                  data-testid="button-hero-cta"
+                >
+                  Generate My Free Routine
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <p className="text-xs text-muted-foreground">
+                  No login. Takes under 2 minutes.
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Educational skincare guidance only; not a medical diagnosis.
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-3">
-              <Button
-                size="lg"
-                onClick={() => window.location.href = '/quiz'}
-                className="w-full sm:w-auto px-8 py-6 h-auto rounded-full text-base"
-                data-testid="button-hero-cta"
-              >
-                Generate Free Custom Routine
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <p className="text-xs text-muted-foreground">
-                Educational skincare guidance only; not a medical diagnosis.
-              </p>
+            {/* Right Column - Preview Card */}
+            <div className="lg:flex justify-center">
+              <Card className="border-border shadow-sm bg-muted/30 rounded-2xl max-w-md w-full">
+                <CardContent className="p-8 space-y-6">
+                  <h3 className="font-serif text-xl font-semibold text-center">Your Starter Routine (example)</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-border">
+                      <div>
+                        <p className="font-medium">Cleanser</p>
+                        <p className="text-xs text-muted-foreground">Gentle, non-stripping</p>
+                      </div>
+                      <p className="text-sm font-medium">~$10</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-3 border-b border-border">
+                      <div>
+                        <p className="font-medium">Moisturizer</p>
+                        <p className="text-xs text-muted-foreground">Barrier support</p>
+                      </div>
+                      <p className="text-sm font-medium">~$14</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-3 border-b border-border">
+                      <div>
+                        <p className="font-medium">SPF</p>
+                        <p className="text-xs text-muted-foreground">Daily, no pore-clogging fillers</p>
+                      </div>
+                      <p className="text-sm font-medium">~$13</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 pt-2">
+                    <p className="text-sm text-muted-foreground">
+                      All products in your plan are acne-safe.
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Premium unlocks alternative product options if you're sensitive or on a strict budget.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
+      <section className="py-20 md:py-24 bg-background">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-12">
             How it works
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto mb-12">
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* Card 1 */}
-            <Card className="border-border shadow-sm hover-elevate transition-all">
+            <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-8 space-y-6">
                 <Badge variant="secondary" className="rounded-full bg-secondary text-secondary-foreground">
                   Step 1
                 </Badge>
                 
-                <div className="w-full aspect-square max-w-xs mx-auto flex items-center justify-center">
-                  <div className="relative w-48 h-48">
-                    <div className="absolute inset-0 bg-muted/30 rounded-2xl p-8">
-                      <div className="space-y-3">
-                        <div className="h-3 bg-muted rounded-full" />
-                        <div className="h-3 bg-muted rounded-full" />
-                        <div className="h-3 bg-primary/60 rounded-full" />
-                        <div className="h-3 bg-muted rounded-full" />
-                      </div>
-                      <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-background flex items-center justify-center text-lg">
-                        ?
-                      </div>
-                    </div>
-                  </div>
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <ClipboardCheck className="w-8 h-8 text-primary" strokeWidth={1.5} />
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Tell us about your skin.</h3>
+                  <h3 className="font-serif text-xl font-semibold">Tell us about your skin</h3>
                   <p className="text-sm text-muted-foreground">
-                    Answer a few quick questions. We build your skin profile in under 2 minutes — no confusing dermatology jargon.
+                    Answer a few quick questions about oiliness, sensitivity, breakout pattern, and skin tone. No photos needed.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    We learn what actually causes your acne — not just 'dry / oily / combo.'
                   </p>
                 </div>
-
-                <button 
-                  onClick={() => window.location.href = '/quiz'}
-                  className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1"
-                  data-testid="link-start-quiz-step1"
-                >
-                  Start My Quiz
-                  <ArrowRight className="w-4 h-4" />
-                </button>
               </CardContent>
             </Card>
 
             {/* Card 2 */}
-            <Card className="border-border shadow-sm hover-elevate transition-all">
+            <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-8 space-y-6">
                 <Badge variant="secondary" className="rounded-full bg-secondary text-secondary-foreground">
                   Step 2
                 </Badge>
                 
-                <div className="w-full aspect-square max-w-xs mx-auto flex items-center justify-center">
-                  <div className="relative w-48 h-48 flex items-center justify-center">
-                    <div className="w-32 h-40 rounded-3xl bg-primary/10 border-2 border-primary/30" />
-                    <div className="absolute top-8 w-20 h-24 rounded-2xl bg-primary/20 border border-primary/40" />
-                  </div>
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Sparkles className="w-8 h-8 text-primary" strokeWidth={1.5} />
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">See your custom routine instantly.</h3>
+                  <h3 className="font-serif text-xl font-semibold">Get your personalized acne routine</h3>
                   <p className="text-sm text-muted-foreground">
-                    You'll get a personalized, acne-safe morning + night routine right away — cleanser, treatment, moisturizer, SPF — mapped exactly to your skin type.
+                    You immediately get a morning + night plan built for your acne type, using only acne-safe products from our marketplace.
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    No account required to view your first draft.
+                    No login required to view your first routine.
                   </p>
                 </div>
               </CardContent>
             </Card>
 
             {/* Card 3 */}
-            <Card className="border-border shadow-sm hover-elevate transition-all">
+            <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-8 space-y-6">
                 <Badge variant="secondary" className="rounded-full bg-secondary text-secondary-foreground">
                   Step 3
                 </Badge>
                 
-                <div className="w-full aspect-square max-w-xs mx-auto flex items-center justify-center">
-                  <div className="relative flex gap-3 items-end">
-                    {[60, 80, 70].map((height, i) => (
-                      <div key={i} className="relative">
-                        <div 
-                          className="w-12 rounded-xl bg-gradient-to-t from-primary/30 to-primary/10 border border-primary/30"
-                          style={{ height: `${height}px` }}
-                        />
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-                          <CheckCircle className="w-5 h-5 text-primary" fill="currentColor" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <CheckCircle className="w-8 h-8 text-primary" strokeWidth={1.5} />
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Lock it in and start clearing.</h3>
+                  <h3 className="font-serif text-xl font-semibold">Shop it and stay on track</h3>
                   <p className="text-sm text-muted-foreground">
-                    Create your free account to unlock the Ingredient Checker, get budget-friendly alternatives, and track weekly progress.
+                    You'll see exactly what to use, when to use it, and where to get it — plus budget options. Create a free account to start tracking progress.
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Every product we recommend has passed our 400+ trigger scan.
+                    Premium unlocks alternative product options for each step, weekly routine adjustments, and the Ingredient Checker.
                   </p>
                 </div>
               </CardContent>
@@ -250,140 +264,147 @@ export default function Landing() {
           </div>
 
           {/* Trust Strip */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center max-w-3xl mx-auto mb-8">
-            <div className="flex items-center gap-3">
-              <Shield className="w-5 h-5 text-primary" strokeWidth={1.5} />
-              <p className="text-sm text-muted-foreground">
-                Every recommended product is screened for pore-clogging ingredients.
-              </p>
-            </div>
-            <div className="hidden sm:block w-px h-8 bg-border" />
-            <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5 text-secondary" strokeWidth={1.5} />
-              <p className="text-sm text-muted-foreground">
-                Takes under 2 minutes.
-              </p>
+          <div className="bg-muted/30 rounded-2xl p-6 mb-8">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <div className="flex items-center gap-3">
+                <Shield className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                <p className="text-sm text-muted-foreground">
+                  Every recommended product is screened for pore-clogging ingredients.
+                </p>
+              </div>
+              <div className="hidden sm:block w-px h-8 bg-border" />
+              <div className="flex items-center gap-3">
+                <Clock className="w-5 h-5 text-secondary" strokeWidth={1.5} />
+                <p className="text-sm text-muted-foreground">
+                  Takes under 2 minutes.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="text-center">
+          <div className="text-center space-y-2">
             <Button
               size="lg"
               onClick={() => window.location.href = '/quiz'}
-              className="px-8 py-6 h-auto rounded-full text-base"
+              className="px-8 py-6 h-auto rounded-full text-base font-medium"
               data-testid="button-how-it-works-cta"
             >
               Generate My Free Routine
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
+            <p className="text-xs text-muted-foreground">
+              This is educational skincare guidance, not a medical diagnosis.
+            </p>
           </div>
         </div>
       </section>
 
       {/* PERSONALIZATION FLOW */}
-      <section className="py-16 md:py-24 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
+      <section className="py-20 md:py-24 bg-muted/30">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
           <div className="text-center mb-16 space-y-4">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
               How AcneAgent Personalizes Your Routine
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              From your answers to your perfect product lineup — powered by ingredient science.
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Here's how we generate your personalized acne routine in under 2 minutes — and why it's not just another generic 'skin type' quiz.
             </p>
           </div>
 
-          <div className="max-w-5xl mx-auto mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4 relative">
-              {/* Connection Line - Desktop */}
-              <div className="hidden md:block absolute top-12 left-0 right-0 h-0.5 bg-primary/20">
-                <div className="h-full w-1/5 bg-gradient-to-r from-primary/60 to-transparent animate-pulse" style={{ animationDuration: '3s' }} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+            {/* Node 1 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-20 h-20 rounded-full border-2 border-primary bg-background flex items-center justify-center">
+                <ClipboardCheck className="w-9 h-9 text-primary" strokeWidth={1.5} />
               </div>
-
-              {/* Node 1 */}
-              <div className="flex flex-col items-center text-center space-y-3 relative">
-                <div className="w-24 h-24 rounded-full border-2 border-primary bg-background flex items-center justify-center hover:scale-105 transition-transform">
-                  <ClipboardCheck className="w-10 h-10 text-primary" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-1">Skin Quiz</h3>
-                  <p className="text-xs text-muted-foreground">
-                    We learn your skin, lifestyle, and breakout pattern.
-                  </p>
-                </div>
+              <div>
+                <h3 className="font-semibold mb-1">Skin Quiz</h3>
+                <p className="text-xs text-muted-foreground">
+                  We learn your skin, lifestyle, and breakout pattern.
+                </p>
               </div>
+            </div>
 
-              {/* Node 2 */}
-              <div className="flex flex-col items-center text-center space-y-3 relative">
-                <div className="w-24 h-24 rounded-full border-2 border-primary bg-background flex items-center justify-center hover:scale-105 transition-transform">
-                  <BarChart3 className="w-10 h-10 text-primary" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-1">Analysis</h3>
-                  <p className="text-xs text-muted-foreground">
-                    We match you to a dermatologist-informed treatment structure.
-                  </p>
-                </div>
+            {/* Node 2 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-20 h-20 rounded-full border-2 border-primary bg-background flex items-center justify-center">
+                <BarChart3 className="w-9 h-9 text-primary" strokeWidth={1.5} />
               </div>
-
-              {/* Node 3 */}
-              <div className="flex flex-col items-center text-center space-y-3 relative">
-                <div className="w-24 h-24 rounded-full border-2 border-primary bg-background flex items-center justify-center hover:scale-105 transition-transform">
-                  <Shield className="w-10 h-10 text-primary" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-1">Ingredient Scan</h3>
-                  <p className="text-xs text-muted-foreground">
-                    We block products with known acne triggers.
-                  </p>
-                </div>
+              <div>
+                <h3 className="font-semibold mb-1">Analysis</h3>
+                <p className="text-xs text-muted-foreground">
+                  We match you to a dermatologist-informed treatment structure.
+                </p>
               </div>
+            </div>
 
-              {/* Node 4 */}
-              <div className="flex flex-col items-center text-center space-y-3 relative">
-                <div className="w-24 h-24 rounded-full border-2 border-primary bg-background flex items-center justify-center hover:scale-105 transition-transform">
-                  <FlaskConical className="w-10 h-10 text-primary" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-1">Routine Builder</h3>
-                  <p className="text-xs text-muted-foreground">
-                    We build an AM + PM plan step by step.
-                  </p>
-                </div>
+            {/* Node 3 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-20 h-20 rounded-full border-2 border-primary bg-background flex items-center justify-center">
+                <Shield className="w-9 h-9 text-primary" strokeWidth={1.5} />
               </div>
+              <div>
+                <h3 className="font-semibold mb-1">Ingredient Scan</h3>
+                <p className="text-xs text-muted-foreground">
+                  We screen products for pore-clogging ingredients before they ever reach your routine.
+                </p>
+                <p className="text-[10px] text-muted-foreground">
+                  Premium lets you scan ANY product you already own.
+                </p>
+              </div>
+            </div>
 
-              {/* Node 5 */}
-              <div className="flex flex-col items-center text-center space-y-3 relative">
-                <div className="w-24 h-24 rounded-full border-2 border-primary bg-background flex items-center justify-center hover:scale-105 transition-transform">
-                  <Sparkles className="w-10 h-10 text-primary" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-1">Clear Skin Plan</h3>
-                  <p className="text-xs text-muted-foreground">
-                    You get exact products and how to use them.
-                  </p>
-                </div>
+            {/* Node 4 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-20 h-20 rounded-full border-2 border-primary bg-background flex items-center justify-center">
+                <FlaskConical className="w-9 h-9 text-primary" strokeWidth={1.5} />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Routine Builder</h3>
+                <p className="text-xs text-muted-foreground">
+                  We build an AM + PM plan step by step.
+                </p>
+              </div>
+            </div>
+
+            {/* Node 5 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-20 h-20 rounded-full border-2 border-primary bg-background flex items-center justify-center">
+                <Sparkles className="w-9 h-9 text-primary" strokeWidth={1.5} />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Clear Skin Plan</h3>
+                <p className="text-xs text-muted-foreground">
+                  You get a routine you can actually follow and afford.
+                </p>
+                <p className="text-[10px] text-muted-foreground">
+                  Premium keeps it updated as your skin changes.
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="text-center">
+          <div className="text-center space-y-2">
             <Button
               size="lg"
               onClick={() => window.location.href = '/quiz'}
-              className="px-8 py-6 h-auto rounded-full text-base"
+              className="px-8 py-6 h-auto rounded-full text-base font-medium"
               data-testid="button-personalization-cta"
             >
               Take the Free Quiz
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
+            <p className="text-xs text-muted-foreground">
+              No login required.
+            </p>
           </div>
         </div>
       </section>
 
       {/* WHY ACNEAGENT WORKS - Block A: The Problem */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
-          <Card className="bg-slate-900 dark:bg-slate-950 text-slate-50 border-slate-800 overflow-hidden">
+      <section className="py-20 md:py-24 bg-background">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
+          <Card className="bg-slate-900 dark:bg-slate-950 text-slate-50 border-slate-800 overflow-hidden rounded-2xl">
             <CardContent className="p-8 md:p-12">
               <Badge className="rounded-full bg-secondary text-secondary-foreground mb-6">
                 THE PROBLEM
@@ -395,7 +416,7 @@ export default function Landing() {
                     Most 'acne-safe' products aren't acne-safe.
                   </h2>
                   <p className="text-slate-200 leading-relaxed">
-                    Over 70% of skincare products marketed as 'non-comedogenic' still contain pore-clogging ingredients. AcneAgent screens every formula for 400+ known acne triggers — so you never waste money on products that quietly make breakouts worse.
+                    Most products marketed as 'non-comedogenic' still contain known pore-clogging fillers. Brands can legally call a product 'acne-safe' even if it keeps you breaking out.
                   </p>
                 </div>
 
@@ -424,7 +445,7 @@ export default function Landing() {
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
                         <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                        <p className="text-sm text-slate-300">0 pore-clogging ingredients</p>
+                        <p className="text-sm text-slate-300">0 flagged pore-clogging ingredients</p>
                       </div>
                       <div className="flex items-start gap-2">
                         <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
@@ -439,6 +460,9 @@ export default function Landing() {
                   <p className="text-xs text-slate-400 text-center pt-2">
                     Every single product in your plan is vetted like this.
                   </p>
+                  <p className="text-xs text-slate-500 text-center">
+                    Ingredient screening and product vetting are for educational purposes and do not replace medical care.
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -447,9 +471,9 @@ export default function Landing() {
       </section>
 
       {/* WHY ACNEAGENT WORKS - Block B: The Science */}
-      <section className="py-16 md:py-24 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
-          <div className="text-center mb-12 space-y-4">
+      <section className="py-20 md:py-24 bg-muted/30">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
+          <div className="text-center mb-8 space-y-4">
             <Badge className="rounded-full bg-primary text-primary-foreground">
               THE SCIENCE
             </Badge>
@@ -458,9 +482,13 @@ export default function Landing() {
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <p className="text-center text-muted-foreground max-w-3xl mx-auto mb-12">
+            We prioritize proven acne-fighting ingredients — benzoyl peroxide, salicylic acid, mandelic acid, retinal — and match them to what your skin can actually tolerate. Premium gives you alternative options if you're sensitive or on a darker Fitzpatrick tone.
+          </p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Tile 1: Benzoyl Peroxide */}
-            <Card className="border-border shadow-sm hover-elevate transition-all">
+            <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-6 space-y-4">
                 <div className="text-4xl font-bold text-primary">Bp</div>
                 <h3 className="font-semibold text-lg">Benzoyl Peroxide</h3>
@@ -482,7 +510,7 @@ export default function Landing() {
             </Card>
 
             {/* Tile 2: Salicylic Acid */}
-            <Card className="border-border shadow-sm hover-elevate transition-all">
+            <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-6 space-y-4">
                 <div className="text-4xl font-bold text-primary">Sa</div>
                 <h3 className="font-semibold text-lg">Salicylic Acid</h3>
@@ -495,7 +523,7 @@ export default function Landing() {
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Dissolves oil buildup inside the pore to stop new clogs from forming.
+                  Dissolves oil buildup inside the pore to help prevent new clogs from forming.
                 </p>
                 <p className="text-xs text-muted-foreground border-t border-border pt-3">
                   Best for: blackheads, congestion, body acne
@@ -504,7 +532,7 @@ export default function Landing() {
             </Card>
 
             {/* Tile 3: Mandelic Acid */}
-            <Card className="border-border shadow-sm hover-elevate transition-all">
+            <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-6 space-y-4">
                 <div className="text-4xl font-bold text-primary">Ma</div>
                 <h3 className="font-semibold text-lg">Mandelic Acid</h3>
@@ -526,7 +554,7 @@ export default function Landing() {
             </Card>
 
             {/* Tile 4: Retinal */}
-            <Card className="border-border shadow-sm hover-elevate transition-all">
+            <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-6 space-y-4">
                 <div className="text-4xl font-bold text-primary">Re</div>
                 <h3 className="font-semibold text-lg">Retinal</h3>
@@ -539,7 +567,7 @@ export default function Landing() {
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Speeds renewal and supports collagen while clearing stubborn congestion.
+                  Speeds renewal and supports collagen while helping clear stubborn congestion.
                 </p>
                 <p className="text-xs text-muted-foreground border-t border-border pt-3">
                   Best for: adult acne, texture, fine lines
@@ -551,9 +579,9 @@ export default function Landing() {
       </section>
 
       {/* WHY ACNEAGENT WORKS - Block C: Personalization Proof */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
-          <Card className="border-t-4 border-t-primary overflow-hidden">
+      <section className="py-20 md:py-24 bg-background">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
+          <Card className="border-t-4 border-t-primary overflow-hidden rounded-2xl">
             <CardContent className="p-8 md:p-12 bg-muted/30">
               <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
                 {/* Left Column */}
@@ -567,7 +595,7 @@ export default function Landing() {
                   </h2>
                   
                   <p className="text-muted-foreground leading-relaxed">
-                    AcneAgent builds your plan from 60 dermatologist-informed treatment structures. Each step in those structures can be filled with vetted, acne-safe product options. That produces over 112,000 possible routine combinations — and yours keeps adapting as your skin changes.
+                    AcneAgent builds your plan from dermatologist-informed acne treatment structures. Each step can be filled with vetted, acne-safe product options from our marketplace — including drugstore, mid-range, and splurge. As your skin changes, we adjust. Premium gives you alternative product options for each step, routine tweaks over time, and Ingredient Checker access.
                   </p>
 
                   <div className="space-y-3">
@@ -588,7 +616,7 @@ export default function Landing() {
 
                 {/* Right Column - Persona Cards */}
                 <div className="space-y-4">
-                  <Card className="border-primary/20 bg-primary/5">
+                  <Card className="border-primary/20 bg-primary/5 rounded-2xl">
                     <CardContent className="p-6 space-y-2">
                       <h3 className="font-semibold">Alex, 23</h3>
                       <p className="text-sm text-muted-foreground">
@@ -600,7 +628,7 @@ export default function Landing() {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-secondary/20 bg-secondary/5">
+                  <Card className="border-secondary/20 bg-secondary/5 rounded-2xl">
                     <CardContent className="p-6 space-y-2">
                       <h3 className="font-semibold">Sam, 32</h3>
                       <p className="text-sm text-muted-foreground">
@@ -612,14 +640,14 @@ export default function Landing() {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-primary/20 bg-primary/5">
+                  <Card className="border-primary/20 bg-primary/5 rounded-2xl">
                     <CardContent className="p-6 space-y-2">
                       <h3 className="font-semibold">Riley, 28</h3>
                       <p className="text-sm text-muted-foreground">
                         Adult acne + early fine lines
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Routine pairs retinal with barrier repair to prevent irritation.
+                        Routine pairs retinal with barrier repair to help prevent irritation.
                       </p>
                     </CardContent>
                   </Card>
@@ -628,11 +656,11 @@ export default function Landing() {
             </CardContent>
           </Card>
 
-          <div className="text-center mt-12 space-y-3">
+          <div className="text-center mt-12 space-y-2">
             <Button
               size="lg"
               onClick={() => window.location.href = '/quiz'}
-              className="px-8 py-6 h-auto rounded-full text-base"
+              className="px-8 py-6 h-auto rounded-full text-base font-medium"
               data-testid="button-personalization-proof-cta"
             >
               Get My Free Routine
@@ -645,10 +673,105 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* PREMIUM VS FREE */}
+      <section className="py-20 md:py-24 bg-muted/30">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-12">
+            Free vs. Premium
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+            {/* Free Card */}
+            <Card className="border-border shadow-sm rounded-2xl bg-background">
+              <CardContent className="p-8 space-y-6">
+                <h3 className="font-serif text-2xl font-semibold">Free</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary" strokeWidth={2.5} />
+                    </div>
+                    <p className="text-sm">Personalized acne routine</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary" strokeWidth={2.5} />
+                    </div>
+                    <p className="text-sm">Acne-safe product picks you can buy right now</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary" strokeWidth={2.5} />
+                    </div>
+                    <p className="text-sm">Budget-friendly starter routine (~$60 core: cleanser + moisturizer + SPF)</p>
+                  </div>
+                </div>
+
+                <p className="text-xs text-muted-foreground pt-4">
+                  Great if you're just getting started.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Premium Card */}
+            <Card className="border-primary shadow-sm rounded-2xl bg-background">
+              <CardContent className="p-8 space-y-6">
+                <div className="flex items-center gap-3">
+                  <h3 className="font-serif text-2xl font-semibold">Premium</h3>
+                  <Badge variant="secondary" className="rounded-full bg-secondary text-secondary-foreground">
+                    More control
+                  </Badge>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary" strokeWidth={2.5} />
+                    </div>
+                    <p className="text-sm">Multiple vetted product options for each step (drugstore → splurge)</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary" strokeWidth={2.5} />
+                    </div>
+                    <p className="text-sm">Ingredient Checker: paste any product to see if it contains pore-clogging ingredients</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary" strokeWidth={2.5} />
+                    </div>
+                    <p className="text-sm">Progress tracking and routine tweaks as your skin changes</p>
+                  </div>
+                </div>
+
+                <p className="text-xs text-muted-foreground pt-4">
+                  Founding rate: $2.99/mo
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center space-y-2">
+            <Button
+              size="lg"
+              onClick={() => window.location.href = '/api/login'}
+              className="px-8 py-6 h-auto rounded-full text-base font-medium"
+              data-testid="button-unlock-premium"
+            >
+              Unlock Premium
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              Keep using the free plan if it's working. No pressure.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer className="py-12 md:py-16 bg-background border-t border-border/50">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
             <div className="flex items-center gap-2">
               <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="12" cy="12" r="2" fill="currentColor" />
@@ -673,7 +796,10 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-border/50">
+          <div className="space-y-4 pt-8 border-t border-border/50">
+            <p className="text-sm text-muted-foreground max-w-3xl">
+              AcneAgent is the only acne-safe skincare marketplace that gives you a personalized routine, ingredient screening, and budget-friendly alternatives.
+            </p>
             <p className="text-xs text-muted-foreground max-w-3xl">
               AcneAgent provides evidence-based acne guidance and acne-safe skincare recommendations. This is not a substitute for medical care. We offer personalized acne routine recommendations with non-comedogenic products screened for pore-clogging ingredients.
             </p>

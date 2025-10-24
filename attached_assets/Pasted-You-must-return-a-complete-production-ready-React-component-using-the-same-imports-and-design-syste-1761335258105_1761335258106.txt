@@ -1,0 +1,351 @@
+You must return a complete, production-ready React component using the same imports and design system (Button, Badge, Card, lucide-react icons, etc.). Keep the same routing (/quiz). Keep the same section order:
+
+Header
+
+Hero
+
+How It Works
+
+Personalization Flow
+
+Why AcneAgent Works (Problem / Science / Personalization Proof)
+
+NEW: Premium vs Free section
+
+Footer
+
+Your job is to clean and elevate the visual system, tighten copy, and weave Premium into the story. The changes below are mandatory.
+
+GLOBAL VISUAL RULES
+
+Apply consistent vertical rhythm: each major <section> should use py-20 md:py-24 (hero can stay bigger).
+
+Use consistent containers (max-w-6xl mx-auto px-4 md:px-8 lg:px-16 or equivalent).
+
+All “cards” in multi-card layouts must share the same visual style: rounded-2xl, subtle border, bg-background or bg-muted/30, tasteful shadow-sm. Kill any gimmicky neon gradients, novelty blobs, or weird animated connector lines. It currently looks chaotic and junior. We want calm and clinical.
+
+Icons at the top of cards should sit in a soft circular chip (rounded-full, light tint of primary or secondary) for visual consistency.
+
+CTA buttons:
+
+Primary CTA buttons should be rounded-full, px-8 py-6 h-auto text-base font-medium.
+
+Under every major CTA button, include a reassurance line in text-xs text-muted-foreground like “No login. Takes under 2 minutes.”
+
+GLOBAL COPY RULES
+
+Keep the current brand tone: direct, empathetic, no shame.
+
+Keep “simple, affordable, effective” tone in hero — do NOT rewrite the hero headline to some generic SaaS thing.
+
+We CANNOT promise guaranteed acne clearance. Always say “reduce breakouts,” “prevent new clogs,” “calm inflammation,” “support clearer skin,” etc.
+
+We MUST communicate that AcneAgent is:
+(1) a personalized acne routine generator,
+(2) an acne-safe skincare marketplace, and
+(3) an upgrade path (Premium) with Ingredient Checker, alternatives, tracking.
+
+Premium should be positioned as “more control / more support,” not “paywall to get value.”
+
+COLOR TOKENS
+
+Use existing tokens. Refer to brand teal as primary, accent orange as secondary, light grey backgrounds as muted background. Do NOT hardcode new hex values. You may still use bg-primary/10, etc., like the current code does.
+
+SECTION-BY-SECTION REQUIREMENTS
+
+HEADER
+
+Keep sticky header.
+
+Keep logo + “Log In” + “Take the Quiz”.
+
+Keep visual style consistent with the rest of the page (border bottom, blur, etc.).
+
+No new messaging here. Clean, quiet.
+
+HERO
+Goal: reassure, position AcneAgent as “routine + marketplace,” and softly introduce Premium.
+
+Structure:
+
+Left column: headline, subhead, feature bullets, CTA.
+
+Right column: “Your Starter Routine” preview card showing 3 steps and price ranges.
+
+Copy changes:
+
+Keep the headline almost exactly as it is, but convert to sentence case for polish:
+“A simple, affordable, effective clear skin plan — made just for you.”
+
+Keep the supporting line “Based on science, not trial and error.” Then directly below it, add:
+“Get a personalized acne routine and shop only acne-safe products that are screened for pore-clogging ingredients.”
+
+Keep the 3 feature callouts you already have (AI-Powered Guidance / Clinically-Proven Routines / The Only Acne-Safe Marketplace), but tighten them:
+• AI-Powered Guidance
+“Your virtual skincare coach adapts your plan over time.”
+• Clinically-Informed Routines
+“We use dermatologist-style treatment logic, not TikTok trends.”
+• The Only Acne-Safe Marketplace
+“Every product is screened for 400+ pore-clogging ingredients before we recommend it.”
+(update “Clinically-Proven Routines” to “Clinically-Informed Routines” and remove the “shown to clear acne in over 90% of cases” claim — that’s a medical claim, drop it)
+
+Add one short Premium teaser sentence under the bullet stack:
+“Upgrade to Premium for ingredient scanning and multiple product options for each step of your routine.”
+Style this as text-xs text-muted-foreground.
+
+CTA block (under hero text):
+
+Main button: “Generate My Free Routine”
+
+Subtext under button:
+“No login. Takes under 2 minutes.”
+
+Compliance line beneath that (keep this line, you already have it):
+“Educational skincare guidance only; not a medical diagnosis.”
+
+Right-side routine preview card:
+
+Show a rounded card with soft border and bg-muted/30.
+
+Header text in that card: “Your Starter Routine (example)”
+
+3 rows inside:
+
+Cleanser — “Gentle, non-stripping” — “~$10”
+
+Moisturizer — “Barrier support” — “~$14”
+
+SPF — “Daily, no pore-clogging fillers” — “~$13”
+
+Beneath those rows, add a muted footnote line:
+“All products in your plan are acne-safe.”
+
+Under that, tiny line in text-xs text-muted-foreground:
+“Premium unlocks alternative product options if you’re sensitive or on a strict budget.”
+
+That right card matters for conversion: it proves affordability visually and quietly introduces Premium value (alternatives).
+
+Layout:
+
+On desktop, hero should be a two-column grid with balanced spacing.
+
+On mobile, stack: text → CTA → preview card.
+
+HOW IT WORKS
+Right now this section is chaotic across cards. You must normalize it.
+
+Visual rules:
+
+3 cards in a responsive grid.
+
+Each card:
+
+top: round badge “Step 1 / Step 2 / Step 3”
+
+below: icon chip (circle with icon in primary or secondary tint)
+
+headline
+
+body
+
+tiny supporting note
+
+All 3 cards MUST share the same structure and spacing.
+
+Copy (replace the current card titles/bodies with this exact structure):
+
+Step 1
+Headline: “Tell us about your skin”
+Body: “Answer a few quick questions about oiliness, sensitivity, breakout pattern, and skin tone. No photos needed.”
+Tiny note: “We learn what actually causes your acne — not just ‘dry / oily / combo.’”
+
+Step 2
+Headline: “Get your personalized acne routine”
+Body: “You immediately get a morning + night plan built for your acne type, using only acne-safe products from our marketplace.”
+Tiny note: “No login required to view your first routine.”
+
+Step 3
+Headline: “Shop it and stay on track”
+Body: “You’ll see exactly what to use, when to use it, and where to get it — plus budget options. Create a free account to start tracking progress.”
+Tiny note (explicit Premium hook here):
+“Premium unlocks alternative product options for each step, weekly routine adjustments, and the Ingredient Checker.”
+
+Under the 3 cards:
+
+Keep the trust strip (shield + ‘screened for pore-clogging ingredients’, clock + ‘takes under 2 minutes’). Style it as an intentional muted info bar, not an afterthought.
+
+Then CTA:
+Button: “Generate My Free Routine”
+Subtext line under CTA:
+“This is educational skincare guidance, not a medical diagnosis.”
+
+PERSONALIZATION FLOW (“How AcneAgent Personalizes Your Routine”)
+You currently have 5 “nodes” (Skin Quiz, Analysis, Ingredient Scan, Routine Builder, Clear Skin Plan). Keep those 5, but drop the animated connector line and weird gradient pulse. Make it a clean 5-item responsive grid. Everything visually aligned: circular bordered icon → title → 1-line body.
+
+Update the body text of two nodes to get Premium into this section:
+
+Ingredient Scan
+“We screen products for pore-clogging ingredients before they ever reach your routine.”
+Add a tiny subline under it in text-[10px] text-muted-foreground:
+“Premium lets you scan ANY product you already own.”
+
+Clear Skin Plan
+“You get a routine you can actually follow and afford.”
+Add tiny subline:
+“Premium keeps it updated as your skin changes.”
+
+Section intro text should mention speed + differentiation for SEO:
+Headline stays: “How AcneAgent Personalizes Your Routine”
+Body under headline should be:
+“Here’s how we generate your personalized acne routine in under 2 minutes — and why it’s not just another generic ‘skin type’ quiz.”
+
+CTA at bottom:
+Button text: “Take the Free Quiz”
+Subtext: “No login required.”
+
+WHY ACNEAGENT WORKS — BLOCK A (“THE PROBLEM” dark card)
+Visually keep the dark 2-column card with “THE PROBLEM.” That’s working.
+Copy fixes:
+
+Replace any numeric cure claims with safer, still scary truth:
+“Most products marketed as ‘non-comedogenic’ still contain known pore-clogging fillers. Brands can legally call a product ‘acne-safe’ even if it keeps you breaking out.”
+
+Keep the Rejected vs Approved cards, but make sure approved includes:
+
+“0 flagged pore-clogging ingredients”
+
+“Barrier-safe for daily use”
+
+Add a tiny legal-ish reassurance line at the bottom (text-xs muted):
+“Ingredient screening and product vetting are for educational purposes and do not replace medical care.”
+
+NO Premium mention here. This block is credibility / pain.
+
+WHY ACNEAGENT WORKS — BLOCK B (“THE SCIENCE” ingredient tiles)
+Keep this grid. It looks like a periodic table and that feels science-backed.
+
+Above the tiles, add a single short paragraph in muted text that helps SEO and Premium story:
+“We prioritize proven acne-fighting ingredients — benzoyl peroxide, salicylic acid, mandelic acid, retinal — and match them to what your skin can actually tolerate. Premium gives you alternative options if you’re sensitive or on a darker Fitzpatrick tone.”
+
+Inside each tile:
+
+Keep the Best for: line.
+
+Keep the claims barrier-safe (“calms active breakouts,” “helps prevent new clogs,” “supports barrier,” etc.).
+
+WHY ACNEAGENT WORKS — BLOCK C (“PERSONALIZED, NOT GENERIC”)
+Keep the current 2-column layout: left = messaging + bullets, right = persona cards.
+Update copy to explicitly link Premium to ongoing support:
+
+Main headline: “No two routines are the same.”
+
+Body paragraph should become:
+“AcneAgent builds your plan from dermatologist-informed acne treatment structures. Each step can be filled with vetted, acne-safe product options from our marketplace — including drugstore, mid-range, and splurge. As your skin changes, we adjust. Premium gives you alternative product options for each step, routine tweaks over time, and Ingredient Checker access.”
+
+Bullets (keep them, they’re strong):
+
+Always acne-safe
+
+Budget-first recommendations
+
+Smart swaps if you’re sensitive
+
+Persona cards:
+
+Keep them. They’re doing social proof and inclusivity work (different ages, Fitz types, sensitivities).
+
+Make sure tone is descriptive, not promising outcomes.
+
+CTA under this block:
+Button: “Get My Free Routine”
+Subtext: “Takes under 2 minutes. No credit card.”
+
+NEW SECTION: PREMIUM VS FREE
+After Block C and BEFORE the footer, insert a new full-width section with muted background that clearly lays out free vs Premium. This is mandatory.
+
+Visual:
+
+Section background: bg-muted/30.
+
+Centered heading + 2-column comparison cards.
+
+Two cards side by side (on mobile they stack):
+
+Card 1: “Free”
+
+Bullet list:
+• Personalized acne routine
+• Acne-safe product picks you can buy right now
+• Budget-friendly starter routine (~$60 core: cleanser + moisturizer + SPF)
+
+Footer label in small muted text:
+“Great if you’re just getting started.”
+
+Card 2: “Premium”
+
+Add a small chip at the top of this card: Badge with secondary: “More control”
+
+Bullet list:
+• Multiple vetted product options for each step (drugstore → splurge)
+• Ingredient Checker: paste any product to see if it contains pore-clogging ingredients
+• Progress tracking and routine tweaks as your skin changes
+
+Footer label in small muted text:
+“Founding rate: $2.99/mo”
+
+Under these two cards:
+
+CTA button centered:
+“Unlock Premium”
+
+Tiny reassurance line under button:
+“Keep using the free plan if it’s working. No pressure.”
+
+We want this section to feel friendly, honest, non-predatory. The message is: you get real value for free, Premium just gives you more control + support.
+
+FOOTER
+Keep footer layout, links, legal copy.
+Add 1 positioning line above the legal paragraph in muted text:
+“AcneAgent is the only acne-safe skincare marketplace that gives you a personalized routine, ingredient screening, and budget-friendly alternatives.”
+
+Keep the disclaimer block you already have (“This is not a substitute for medical care…”). That’s important for compliance and also builds trust.
+
+SEO NOTES
+Throughout the updated component, keep these phrases in flowing body text (not keyword stuffing, just natural):
+
+“personalized acne routine”
+
+“acne-safe skincare products”
+
+“pore-clogging ingredients”
+
+“ingredient checker”
+
+“non-comedogenic”
+
+“acne-safe marketplace”
+
+“budget-friendly acne routine”
+
+“Fitzpatrick skin tone”
+
+“barrier support”
+This helps us rank for exactly what we are.
+
+FINAL DEV REQUIREMENTS
+
+Return one updated Landing.tsx React component with all changes applied.
+
+Keep imports the same unless you remove unused.
+
+Keep Button, Badge, Card, etc.
+
+Keep routing to /quiz.
+
+Make sure <h1> only appears in the hero. All other section headings should be <h2> for semantic SEO.
+
+Every CTA under every major block must include a trust-reducing subtext line (“No login,” “No credit card,” etc.). That’s conversion-critical.
+
+Do NOT add modals, carousels, or newsletter signup.
+
+Do NOT gate the free routine behind email.
