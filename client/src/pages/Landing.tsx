@@ -59,18 +59,18 @@ export default function Landing() {
 
       {/* HERO */}
       <section className="relative overflow-hidden py-16 md:py-24 lg:py-32">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-4xl">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="space-y-8">
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-center">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               A Simple, Affordable, and Effective Clear Skin Plan. Made Just for You.
             </h1>
             
-            <p className="text-lg text-muted-foreground text-center">
+            <p className="text-lg text-muted-foreground">
               Based on science, not trial and error.
             </p>
 
             <div className="space-y-6">
-              <div className="flex items-start justify-center gap-3">
+              <div className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-primary shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-label="molecule icon">
                   <circle cx="12" cy="12" r="2" fill="currentColor" />
                   <circle cx="6" cy="8" r="1.5" />
@@ -81,7 +81,7 @@ export default function Landing() {
                 </p>
               </div>
 
-              <div className="space-y-5 max-w-2xl mx-auto">
+              <div className="space-y-5">
                 <div className="flex gap-4">
                   <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <Brain className="w-5 h-5 text-primary" strokeWidth={1.5} />
@@ -120,7 +120,7 @@ export default function Landing() {
               </div>
             </div>
 
-            <div className="space-y-3 flex flex-col items-center">
+            <div className="space-y-3">
               <Button
                 size="lg"
                 onClick={() => window.location.href = '/quiz'}
