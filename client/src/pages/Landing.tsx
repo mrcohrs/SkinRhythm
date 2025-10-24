@@ -15,7 +15,6 @@ import {
   Check
 } from "lucide-react";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
-import moleculeImg from "@assets/molecule_1761251136047.png";
 
 export default function Landing() {
   return (
@@ -60,99 +59,80 @@ export default function Landing() {
 
       {/* HERO */}
       <section className="relative overflow-hidden py-16 md:py-24 lg:py-32">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left Column */}
-            <div className="space-y-8">
-              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                A Simple, Affordable, and Effective Clear Skin Plan. Made Just for You.
-              </h1>
-              
-              <p className="text-lg text-muted-foreground">
-                Based on science, not trial and error.
-              </p>
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-4xl">
+          <div className="space-y-8">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-center">
+              A Simple, Affordable, and Effective Clear Skin Plan. Made Just for You.
+            </h1>
+            
+            <p className="text-lg text-muted-foreground text-center">
+              Based on science, not trial and error.
+            </p>
 
-              <div className="space-y-6">
-                <div className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-primary shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-label="molecule icon">
-                    <circle cx="12" cy="12" r="2" fill="currentColor" />
-                    <circle cx="6" cy="8" r="1.5" />
-                    <circle cx="18" cy="8" r="1.5" />
-                  </svg>
-                  <p className="text-sm text-muted-foreground">
-                    AcneAgent takes the guesswork out of acne with:
-                  </p>
-                </div>
-
-                <div className="space-y-5">
-                  <div className="flex gap-4">
-                    <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Brain className="w-5 h-5 text-primary" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">AI-Powered Guidance</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Your virtual skincare coach learns your skin and adapts your plan over time.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <div className="shrink-0 w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
-                      <FlaskConical className="w-5 h-5 text-secondary" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">Clinically-Proven Routines</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Built from treatment methods shown to clear acne in over 90% of cases.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Shield className="w-5 h-5 text-primary" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">The Only Acne-Safe Marketplace</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Every product we recommend is screened for 400+ pore-clogging ingredients, so you never unknowingly sabotage your skin.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+            <div className="space-y-6">
+              <div className="flex items-start justify-center gap-3">
+                <svg className="w-5 h-5 text-primary shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-label="molecule icon">
+                  <circle cx="12" cy="12" r="2" fill="currentColor" />
+                  <circle cx="6" cy="8" r="1.5" />
+                  <circle cx="18" cy="8" r="1.5" />
+                </svg>
+                <p className="text-sm text-muted-foreground">
+                  AcneAgent takes the guesswork out of acne with:
+                </p>
               </div>
 
-              <div className="space-y-3">
-                <Button
-                  size="lg"
-                  onClick={() => window.location.href = '/quiz'}
-                  className="w-full sm:w-auto px-8 py-6 h-auto rounded-full text-base"
-                  data-testid="button-hero-cta"
-                >
-                  Generate Free Custom Routine
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                <p className="text-xs text-muted-foreground">
-                  Educational skincare guidance only; not a medical diagnosis.
-                </p>
+              <div className="space-y-5 max-w-2xl mx-auto">
+                <div className="flex gap-4">
+                  <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Brain className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">AI-Powered Guidance</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Your virtual skincare coach learns your skin and adapts your plan over time.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="shrink-0 w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                    <FlaskConical className="w-5 h-5 text-secondary" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Clinically-Proven Routines</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Built from treatment methods shown to clear acne in over 90% of cases.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">The Only Acne-Safe Marketplace</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Every product we recommend is screened for 400+ pore-clogging ingredients, so you never unknowingly sabotage your skin.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Right Column - Molecule Visualization */}
-            <div className="hidden lg:flex items-center justify-center relative">
-              <div className="relative w-full max-w-md aspect-square">
-                <div 
-                  className="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-30 animate-pulse"
-                  style={{ 
-                    backgroundImage: `url(${moleculeImg})`,
-                    animationDuration: '4s'
-                  }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-3/4 h-3/4 rounded-full border-2 border-primary/20 animate-pulse" style={{ animationDuration: '3s' }} />
-                </div>
-              </div>
+            <div className="space-y-3 flex flex-col items-center">
+              <Button
+                size="lg"
+                onClick={() => window.location.href = '/quiz'}
+                className="w-full sm:w-auto px-8 py-6 h-auto rounded-full text-base"
+                data-testid="button-hero-cta"
+              >
+                Generate Free Custom Routine
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <p className="text-xs text-muted-foreground">
+                Educational skincare guidance only; not a medical diagnosis.
+              </p>
             </div>
           </div>
         </div>
