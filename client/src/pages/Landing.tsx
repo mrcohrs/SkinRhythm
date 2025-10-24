@@ -146,58 +146,50 @@ export default function Landing() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">Cleanser</p>
-                        <p className="text-xs text-muted-foreground">Gentle, non-stripping</p>
+                        <p className="font-medium">Hydrating Facial Cleanser</p>
+                        <p className="text-xs text-muted-foreground">CeraVe</p>
                       </div>
-                      <p className="text-sm font-medium">~$10</p>
+                      <p className="text-sm font-medium">$10-20</p>
                     </div>
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">Toner</p>
-                        <p className="text-xs text-muted-foreground">Balancing pH prep</p>
+                        <p className="font-medium">Calm Nourishing Milky Toner</p>
+                        <p className="text-xs text-muted-foreground">Paula's Choice</p>
                       </div>
-                      <p className="text-sm font-medium">~$12</p>
+                      <p className="text-sm font-medium">$20-35</p>
                     </div>
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">Serum</p>
-                        <p className="text-xs text-muted-foreground">Acne-fighting active</p>
+                        <p className="font-medium">Mandelic Acid 10% + HA</p>
+                        <p className="text-xs text-muted-foreground">The Ordinary</p>
                       </div>
-                      <p className="text-sm font-medium">~$15</p>
+                      <p className="text-sm font-medium">&lt;$10</p>
                     </div>
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">Hydrator</p>
-                        <p className="text-xs text-muted-foreground">Barrier support</p>
+                        <p className="font-medium">Hyaluronic Acid Serum</p>
+                        <p className="text-xs text-muted-foreground">Good Molecules</p>
                       </div>
-                      <p className="text-sm font-medium">~$14</p>
+                      <p className="text-sm font-medium">&lt;$10</p>
                     </div>
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">Treatment</p>
-                        <p className="text-xs text-muted-foreground">Targeted spot care</p>
+                        <p className="font-medium">Solar Shade Chemical Sunscreen</p>
+                        <p className="text-xs text-muted-foreground">Prequel Skin</p>
                       </div>
-                      <p className="text-sm font-medium">~$10</p>
+                      <p className="text-sm font-medium">$20-35</p>
                     </div>
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
-                        <p className="font-medium">SPF</p>
-                        <p className="text-xs text-muted-foreground">Daily, no pore-clogging fillers</p>
+                        <p className="font-medium">Unbreakable Ice Globes</p>
+                        <p className="text-xs text-muted-foreground">Calming + de-puffing</p>
                       </div>
-                      <p className="text-sm font-medium">~$13</p>
-                    </div>
-
-                    <div className="flex items-center justify-between pb-3 border-b border-border">
-                      <div>
-                        <p className="font-medium">Ice</p>
-                        <p className="text-xs text-muted-foreground">Calming, de-puffing</p>
-                      </div>
-                      <p className="text-sm font-medium">~$8</p>
+                      <p className="text-sm font-medium">$10-15</p>
                     </div>
                   </div>
 
