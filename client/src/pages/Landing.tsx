@@ -65,7 +65,7 @@ export default function Landing() {
             A simple, affordable, effective clear skin plan — made just for you.
           </h1>
           
-          <h1 className="text-xl md:text-2xl text-muted-foreground mb-12">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-muted-foreground mb-12">
             Based on science, not trial and error.
           </h1>
           
