@@ -25,17 +25,6 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
-              <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-label="AcneAgent molecule icon">
-                <circle cx="12" cy="12" r="2" fill="currentColor" />
-                <circle cx="6" cy="8" r="1.5" />
-                <circle cx="18" cy="8" r="1.5" />
-                <circle cx="6" cy="16" r="1.5" />
-                <circle cx="18" cy="16" r="1.5" />
-                <line x1="10.5" y1="11" x2="7.5" y2="9" />
-                <line x1="13.5" y1="11" x2="16.5" y2="9" />
-                <line x1="10.5" y1="13" x2="7.5" y2="15" />
-                <line x1="13.5" y1="13" x2="16.5" y2="15" />
-              </svg>
               <img src={logoPath} alt="AcneAgent" className="h-8" />
             </div>
             <div className="flex items-center gap-6">
@@ -65,7 +54,7 @@ export default function Landing() {
             A simple, affordable, effective clear skin plan — made just for you.
           </h1>
           
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-muted-foreground mb-12">
+          <h1 className="font-serif text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-muted-foreground mb-12">
             Based on science, not trial and error.
           </h1>
           
