@@ -146,10 +146,26 @@ export default function Landing() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
+                        <p className="font-medium">Cleanser</p>
+                        <p className="text-xs text-muted-foreground">Gentle, non-stripping</p>
+                      </div>
+                      <p className="text-sm font-medium">~$10</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-3 border-b border-border">
+                      <div>
+                        <p className="font-medium">Toner</p>
+                        <p className="text-xs text-muted-foreground">Balancing pH prep</p>
+                      </div>
+                      <p className="text-sm font-medium">~$12</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-3 border-b border-border">
+                      <div>
                         <p className="font-medium">Serum</p>
                         <p className="text-xs text-muted-foreground">Acne-fighting active</p>
                       </div>
-                      <p className="text-sm font-medium">~$12</p>
+                      <p className="text-sm font-medium">~$15</p>
                     </div>
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
@@ -166,6 +182,14 @@ export default function Landing() {
                         <p className="text-xs text-muted-foreground">Targeted spot care</p>
                       </div>
                       <p className="text-sm font-medium">~$10</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-3 border-b border-border">
+                      <div>
+                        <p className="font-medium">SPF</p>
+                        <p className="text-xs text-muted-foreground">Daily, no pore-clogging fillers</p>
+                      </div>
+                      <p className="text-sm font-medium">~$13</p>
                     </div>
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
