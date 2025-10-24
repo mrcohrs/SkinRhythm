@@ -65,9 +65,9 @@ export default function Landing() {
             A simple, affordable, effective clear skin plan — made just for you.
           </h1>
           
-          <h2 className="text-xl md:text-2xl text-muted-foreground mb-12">
+          <h1 className="text-xl md:text-2xl text-muted-foreground mb-12">
             Based on science, not trial and error.
-          </h2>
+          </h1>
           
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Column */}
