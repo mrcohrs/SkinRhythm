@@ -178,6 +178,14 @@ export default function Landing() {
 
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <div>
+                        <p className="font-medium">Moisturizing Gel Cream</p>
+                        <p className="text-xs text-muted-foreground">BYOMA</p>
+                      </div>
+                      <p className="text-sm font-medium">$10-20</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-3 border-b border-border">
+                      <div>
                         <p className="font-medium">Solar Shade Chemical Sunscreen</p>
                         <p className="text-xs text-muted-foreground">Prequel Skin</p>
                       </div>
