@@ -61,13 +61,13 @@ export default function Landing() {
       {/* HERO */}
       <section className="relative overflow-hidden py-20 md:py-32">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12">
+            A simple, affordable, effective clear skin plan — made just for you.
+          </h1>
+          
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Column */}
             <div className="space-y-8">
-              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                A simple, affordable, effective clear skin plan — made just for you.
-              </h1>
-              
               <div className="space-y-3">
                 <p className="text-lg text-muted-foreground">
                   Based on science, not trial and error.
