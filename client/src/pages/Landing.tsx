@@ -71,7 +71,7 @@ export default function Landing() {
 
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl">
-              AcneAgent builds your personalized acne-safe routine using clinical acne logic and Ingredient Integrity.
+              AcneAgent tailors your personalized Clear Skin Plan to your unique skin profile using clinically proven protocols and rigorous ingredient analysis.
             </p>
 
             {/* Tagline */}
