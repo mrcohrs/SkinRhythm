@@ -53,53 +53,46 @@ export default function Landing() {
 
       {/* 1️⃣ HERO - The Emotional Hook + Core Promise */}
       <section className="relative py-16 md:py-24 lg:py-32">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left Column */}
-            <div className="space-y-8">
-              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                We understand acne — so you can finally stop guessing.
-              </h1>
-              
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-                AcneAgent builds your personalized acne-safe routine using clinical acne logic and Ingredient Integrity — no gimmicks, no guesswork, just results.
-              </p>
-
-              <div className="space-y-3">
-                <Button
-                  size="lg"
-                  onClick={() => window.location.href = '/quiz'}
-                  className="px-8 py-6 h-auto rounded-full text-base font-medium"
-                  data-testid="button-hero-cta"
-                >
-                  Generate my free routine
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                <p className="text-sm text-muted-foreground">
-                  No login required. Takes under 2 minutes.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3 pt-4">
-                <Badge variant="secondary" className="rounded-full px-4 py-1.5">
-                  Clinically inspired
-                </Badge>
-                <Badge variant="secondary" className="rounded-full px-4 py-1.5">
-                  Ingredient verified
-                </Badge>
-                <Badge variant="secondary" className="rounded-full px-4 py-1.5">
-                  Built for real skin
-                </Badge>
-              </div>
-            </div>
-
-            {/* Right Column - Routine Illustration */}
-            <div className="flex justify-center lg:justify-end">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
+          <div className="flex flex-col items-center text-center space-y-12">
+            {/* Headline */}
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-5xl">
+              We understand acne — so you can finally stop guessing.
+            </h1>
+            
+            {/* Hero Illustration */}
+            <div className="w-full max-w-4xl">
               <img 
                 src={routineIllustration} 
                 alt="Personalized routine interface" 
-                className="w-full max-w-md rounded-2xl"
+                className="w-full rounded-2xl"
               />
+            </div>
+
+            {/* Subheadline */}
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl">
+              AcneAgent builds your personalized acne-safe routine using clinical acne logic and Ingredient Integrity.
+            </p>
+
+            {/* Tagline */}
+            <p className="text-xl md:text-2xl font-semibold">
+              No gimmicks. No guesswork. Just results.
+            </p>
+
+            {/* CTA */}
+            <div className="space-y-3">
+              <Button
+                size="lg"
+                onClick={() => window.location.href = '/quiz'}
+                className="px-8 py-6 h-auto rounded-full text-base font-medium"
+                data-testid="button-hero-cta"
+              >
+                Get My Free Routine
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <p className="text-sm text-muted-foreground">
+                No login required. Takes under 2 minutes.
+              </p>
             </div>
           </div>
         </div>
