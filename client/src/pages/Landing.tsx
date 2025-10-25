@@ -508,10 +508,10 @@ export default function Landing() {
             </h2>
           </div>
 
-          <p className="text-center text-muted-foreground max-w-3xl mx-auto mb-12">
-            We prioritize proven acne-fighting ingredients — benzoyl peroxide, salicylic acid, mandelic acid, retinol, and many more — and strategically deploy them depending on your skin and acne type(s). 
+          <div className="text-center text-muted-foreground max-w-3xl mx-auto mb-12 space-y-3">
+            <p>We prioritize proven acne-fighting ingredients — benzoyl peroxide, salicylic acid, mandelic acid, retinol, and many more — and strategically deploy them depending on your skin and acne type(s).</p>
             <p>Free users get access to the most budget-friendly product option for each step of their routine, while Premium users get access to multiple effective product variants at various price points for each step, because we think you can have acne and still experiment and have fun with your skincare.</p>
-          </p>
+          </div>
 
           <div className="grid sm:grid-cols-2 xlg:grid-cols-2 gap-4">
             {/* Tile 1: Benzoyl Peroxide */}
