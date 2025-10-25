@@ -72,7 +72,7 @@ export interface IStorage {
   setUnlimitedScans(userId: string, expiresAt: Date | null): Promise<User>;
   
   // One-time purchase access
-  grantPremiumRoutineAccess(userId: string, routineId: string): Promise<User>;
+  grantPremiumRoutineAccess(userId: string, routineId: string | null): Promise<User>;
   grantDetailedPdfAccess(userId: string): Promise<User>;
   
   // Membership management
@@ -702,12 +702,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   // One-time purchase access
-  async grantPremiumRoutineAccess(userId: string, routineId: string): Promise<User> {
+  async grantPremiumRoutineAccess(userId: string, routineId: string | null): Promise<User> {
     const [updatedUser] = await db
       .update(users)
       .set({
         hasPremiumRoutineAccess: true,
-        premiumRoutineAccessRoutineId: routineId,
+        premiumRoutineAccessRoutineId: routineId || null,
         updatedAt: new Date(),
       })
       .where(eq(users.id, userId))

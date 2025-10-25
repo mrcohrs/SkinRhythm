@@ -800,11 +800,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           } else if (productType === 'premium_routine_access') {
             // This is a one-time purchase for premium routine access
-            // Grant access to the routine (routineId would need to be in metadata)
-            const routineId = session.metadata?.routineId;
-            if (routineId) {
-              await storage.grantPremiumRoutineAccess(userId, routineId);
+            // Grant access to premium product alternatives for all routines
+            let currentRoutineId: string | null = null;
+            try {
+              const userRoutines = await storage.getUserRoutines(userId);
+              currentRoutineId = userRoutines.find(r => r.isCurrent)?.id || null;
+            } catch (error) {
+              console.log(`[Webhook] Could not fetch user routines for premium access grant, proceeding with null routineId:`, error);
             }
+            await storage.grantPremiumRoutineAccess(userId, currentRoutineId);
           } else if (productType === 'detailed_pdf') {
             await storage.grantDetailedPdfAccess(userId);
           }
