@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
               <p>
                 You can disable cookies in your browser settings at any time. If you have any questions 
                 about our data practices, please contact us at{" "}
-                <a href="mailto:acne-agent-help@gmail.com" className="text-primary underline hover:no-underline">
+                <a href="mailto:acne-agent-help@gmail.com" className="text-primary-text underline hover:no-underline">
                   acne-agent-help@gmail.com
                 </a>.
               </p>

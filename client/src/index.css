@@ -60,6 +60,9 @@
 
   --primary-foreground: 206 18% 22%;
 
+  /* Primary Text: Darker Clearwater Blue for accessible text contrast */
+  --primary-text: 185 55% 40%;
+
   /* Secondary: Restorative Peach - Soft, skin-inspired neutral */
   --secondary: 23 84% 74%;
 
@@ -179,6 +182,9 @@
   --primary: 185 55% 65%;
 
   --primary-foreground: 206 20% 12%;
+
+  /* Primary Text: Brighter Clearwater Blue for dark mode text contrast */
+  --primary-text: 185 55% 70%;
 
   /* Secondary: Restorative Peach - adjusted for dark mode */
   --secondary: 23 80% 70%;

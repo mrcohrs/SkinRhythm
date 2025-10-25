@@ -41,7 +41,7 @@ export default function Landing() {
               </button>
               <button
                 onClick={() => window.location.href = '/quiz'}
-                className="text-sm text-primary hover:text-primary/80 font-medium transition-colors"
+                className="text-sm text-primary-text hover:text-primary-text/80 font-medium underline transition-colors"
                 data-testid="link-quiz-header"
               >
                 Take the Quiz
@@ -161,7 +161,7 @@ export default function Landing() {
                 const howItWorksSection = document.getElementById('how-it-works');
                 howItWorksSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="text-sm text-primary hover:text-primary/80 font-medium underline"
+              className="text-sm text-primary-text hover:text-primary-text/80 font-medium underline"
               data-testid="link-learn-how"
             >
               Learn how it works →
@@ -276,7 +276,7 @@ export default function Landing() {
                     const ingredientsSection = document.getElementById('ingredient-science');
                     ingredientsSection?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="text-sm text-primary hover:text-primary/80 font-medium underline"
+                  className="text-sm text-primary-text hover:text-primary-text/80 font-medium underline"
                   data-testid="link-see-ingredients"
                 >
                   See how we screen ingredients →
@@ -617,7 +617,7 @@ export default function Landing() {
 
           <div className="text-center mt-8">
             <button
-              className="text-sm text-primary hover:text-primary/80 font-medium underline"
+              className="text-sm text-primary-text hover:text-primary-text/80 font-medium underline"
               onClick={() => window.location.href = '/pricing'}
               data-testid="link-explore-upgrades"
             >
@@ -792,7 +792,7 @@ export default function Landing() {
                       const howItWorksSection = document.getElementById('how-it-works');
                       howItWorksSection?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-foreground transition-colors underline"
                   >
                     How It Works
                   </button>
@@ -803,13 +803,13 @@ export default function Landing() {
                       const ingredientsSection = document.getElementById('ingredient-science');
                       ingredientsSection?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-foreground transition-colors underline"
                   >
                     Ingredient Screening
                   </button>
                 </li>
                 <li>
-                  <Link href="/pricing" className="hover:text-foreground transition-colors">
+                  <Link href="/pricing" className="hover:text-foreground transition-colors underline">
                     Premium
                   </Link>
                 </li>
@@ -820,12 +820,12 @@ export default function Landing() {
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <Link href="/affiliate-disclosure" className="hover:text-foreground transition-colors">
+                  <Link href="/affiliate-disclosure" className="hover:text-foreground transition-colors underline">
                     Affiliate Disclosure
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy-policy" className="hover:text-foreground transition-colors">
+                  <Link href="/privacy-policy" className="hover:text-foreground transition-colors underline">
                     Privacy Policy
                   </Link>
                 </li>
