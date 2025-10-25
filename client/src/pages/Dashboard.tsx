@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
+import { useEntitlements } from "@/hooks/useEntitlements";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,6 +36,7 @@ import { getCategoryImage } from "@/lib/categoryImages";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const entitlements = useEntitlements();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("products");
@@ -192,7 +194,13 @@ export default function Dashboard() {
   const productIds = Array.isArray(routineData?.productIds) ? routineData.productIds : [];
   const routineType = routineData?.routineType;
 
-  const isPremium = (user as any)?.isPremium || false;
+  // Use entitlements for access control
+  const isPremium = entitlements.data?.isPremium || false;
+  const canAccessProductAlternatives = entitlements.canAccessProductAlternatives;
+  const canAccessRoutineCoach = entitlements.canAccessRoutineCoach;
+  const canAccessDetailedPdf = entitlements.canAccessDetailedPdf;
+  const canScanIngredients = entitlements.canScanIngredients;
+  const remainingScans = entitlements.remainingScans;
   const isRoutineLoading = isLoading || isFetching;
 
   // Routine mode state (basic vs premium)
@@ -577,8 +585,8 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* Routine Mode Toggle for Premium Users */}
-          {isPremium && (
+          {/* Routine Mode Toggle for Users with Product Alternatives Access */}
+          {canAccessProductAlternatives && (
             <Card className="border-border/50" data-testid="card-routine-mode-toggle">
               <CardContent className="p-4">
                 <div className="space-y-3">
@@ -656,7 +664,7 @@ export default function Dashboard() {
                   className="flex-shrink-0 snap-center min-w-[180px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
                 >
                   <span>Routine Coach</span>
-                  {!isPremium && <Crown className="h-3.5 w-3.5 text-secondary" />}
+                  {!canAccessRoutineCoach && <Crown className="h-3.5 w-3.5 text-secondary" />}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="ingredient-checker" 
@@ -664,7 +672,7 @@ export default function Dashboard() {
                   className="flex-shrink-0 snap-center min-w-[200px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
                 >
                   <span>Ingredient Scanner</span>
-                  {!isPremium && <Crown className="h-3.5 w-3.5 text-secondary" />}
+                  {remainingScans <= 0 && !entitlements.data?.hasUnlimitedScans && <Crown className="h-3.5 w-3.5 text-secondary" />}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="library" 
@@ -680,7 +688,7 @@ export default function Dashboard() {
             {/* My Products Tab */}
             <TabsContent value="products" className="space-y-8 mt-6">
               {/* Premium Upsell for Free Users */}
-              {!isPremium && (
+              {!canAccessProductAlternatives && (
                 <Card className="border-primary/20" data-testid="card-products-upgrade">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between gap-6">
@@ -693,6 +701,71 @@ export default function Dashboard() {
                       </div>
                       <Button data-testid="button-upgrade-products" className="flex-shrink-0" asChild>
                         <Link href="/pricing">Upgrade to Premium</Link>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Download PDF Button */}
+              {canAccessDetailedPdf && (
+                <Card className="border-border/50" data-testid="card-pdf-download">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between gap-6">
+                      <div className="flex items-center gap-3">
+                        <svg className="h-8 w-8 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        <div>
+                          <h3 className="font-semibold text-lg">Detailed Routine PDF</h3>
+                          <p className="text-sm text-muted-foreground">Complete instructions, actives ramping plan, and application tips</p>
+                        </div>
+                      </div>
+                      <Button 
+                        data-testid="button-download-pdf" 
+                        className="flex-shrink-0 gap-2"
+                        onClick={async () => {
+                          try {
+                            const response = await fetch('/api/routines/pdf/download', {
+                              credentials: 'include',
+                            });
+                            
+                            if (!response.ok) {
+                              toast({
+                                title: "Error",
+                                description: "Failed to download PDF",
+                                variant: "destructive",
+                              });
+                              return;
+                            }
+                            
+                            const blob = await response.blob();
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `AcneAgent-Routine-${Date.now()}.pdf`;
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                            document.body.removeChild(a);
+                            
+                            toast({
+                              title: "Success",
+                              description: "Your routine PDF has been downloaded",
+                            });
+                          } catch (error) {
+                            toast({
+                              title: "Error",
+                              description: "Failed to download PDF",
+                              variant: "destructive",
+                            });
+                          }
+                        }}
+                      >
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Download PDF
                       </Button>
                     </div>
                   </CardContent>
@@ -754,11 +827,11 @@ export default function Dashboard() {
                     <div className="overflow-hidden" ref={emblaRef}>
                       <div className="flex gap-2.5">
                         {displayProducts.map((product: any, index: number) => (
-                          <div key={index} className={`flex-[0_0_280px] md:flex-[0_0_320px] ${isPremium ? 'h-[600px]' : 'h-[540px]'}`}>
+                          <div key={index} className={`flex-[0_0_280px] md:flex-[0_0_320px] ${canAccessProductAlternatives ? 'h-[600px]' : 'h-[540px]'}`}>
                             <ProductCard
                               product={product}
-                              isPremiumUser={isPremium}
-                              showExploreButton={isPremium && product.premiumOptions && product.premiumOptions.length > 0}
+                              isPremiumUser={canAccessProductAlternatives}
+                              showExploreButton={canAccessProductAlternatives && product.premiumOptions && product.premiumOptions.length > 0}
                               onExploreAlternatives={() => {
                                 setSelectedProduct(uniqueProducts[index]); // Use original product with all options
                                 setShowAlternativesModal(true);
@@ -833,6 +906,7 @@ export default function Dashboard() {
                     <CompactProductCard 
                       product={{
                         name: iceGlobesProduct.generalName,
+                        brand: iceGlobesProduct.products?.[0]?.brand || '',
                         category: iceGlobesProduct.category,
                         priceTier: iceGlobesProduct.priceTier,
                         priceRange: iceGlobesProduct.priceRange,
@@ -929,7 +1003,7 @@ export default function Dashboard() {
 
             {/* Routine Coach Tab */}
             <TabsContent value="treatment" className="space-y-6 mt-6">
-              {!isPremium ? (
+              {!canAccessRoutineCoach ? (
                 <Card className="border-primary/20" data-testid="card-treatment-upgrade">
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
@@ -996,7 +1070,7 @@ export default function Dashboard() {
             <TabsContent value="ingredient-checker" className="space-y-6 mt-6">
               <div className="max-w-4xl mx-auto space-y-6">
                 {/* Free User Scan Counter */}
-                {!isPremium && (
+                {!entitlements.data?.hasUnlimitedScans && (
                   <Card className="border-primary/20">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between gap-4">
@@ -1004,7 +1078,7 @@ export default function Dashboard() {
                           <FlaskConical className="h-5 w-5 text-primary" />
                           <div>
                             <div className="font-medium">
-                              {Math.max(0, 3 - ((user as any)?.scanCredits || 0))} free scan{Math.max(0, 3 - ((user as any)?.scanCredits || 0)) === 1 ? '' : 's'} remaining
+                              {Math.max(0, 3 - remainingScans)} free scan{Math.max(0, 3 - remainingScans) === 1 ? '' : 's'} remaining
                             </div>
                             <div className="text-sm text-muted-foreground">
                               Upgrade to Premium for unlimited scans
@@ -1023,7 +1097,7 @@ export default function Dashboard() {
                 )}
                 
                 {/* Out of Scans - Upgrade Prompt */}
-                {!isPremium && (user as any)?.scanCredits && (user as any).scanCredits >= 3 ? (
+                {!entitlements.data?.hasUnlimitedScans && remainingScans >= 3 ? (
                   <Card className="border-primary/20" data-testid="card-scans-exhausted">
                     <CardHeader>
                       <div className="flex items-center gap-3 mb-2">
@@ -1094,7 +1168,7 @@ Hyaluronic Acid"
                       <div className="flex gap-3">
                         <Button
                           onClick={handleCheckIngredients}
-                          disabled={!ingredientInput.trim() || scanMutation.isPending || (!isPremium && !!user && ((user as any).scanCredits || 0) >= 3)}
+                          disabled={!ingredientInput.trim() || scanMutation.isPending || (!entitlements.data?.hasUnlimitedScans && remainingScans >= 3)}
                           className="flex-1"
                           data-testid="button-check-ingredients"
                         >
@@ -1271,7 +1345,7 @@ Hyaluronic Acid"
 
             {/* Routine Library Tab */}
             <TabsContent value="library" className="space-y-6 mt-6">
-              {!isPremium ? (
+              {!canAccessProductAlternatives ? (
                 <Card className="border-primary/20" data-testid="card-library-upgrade">
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">

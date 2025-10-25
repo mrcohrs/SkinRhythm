@@ -18,6 +18,7 @@ import {
 import Stripe from 'stripe';
 import { STRIPE_PRICE_IDS, PRODUCT_DETAILS } from './stripe-config';
 import express from 'express';
+import { generateRoutinePDF } from './pdfGenerator';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-11-20.acacia' as any });
 
@@ -47,8 +48,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (req.user && req.user.claims && req.user.claims.sub) {
         try {
           const user = await storage.getUser(req.user.claims.sub);
-          isPremiumUser = user?.isPremium || false;
-          console.log(`[Quiz Submit] User ${req.user.claims.sub} - isPremium: ${user?.isPremium}, will get premiumOptions: ${isPremiumUser}`);
+          isPremiumUser = user?.isPremium || user?.hasPremiumRoutineAccess || false;
+          console.log(`[Quiz Submit] User ${req.user.claims.sub} - isPremium: ${user?.isPremium}, hasPremiumRoutineAccess: ${user?.hasPremiumRoutineAccess}, will get premiumOptions: ${isPremiumUser}`);
         } catch (e) {
           console.log(`[Quiz Submit] Error getting user, treating as non-premium:`, e);
         }
@@ -139,7 +140,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let isPremiumUser = false;
       try {
         const user = await storage.getUser(userId);
-        isPremiumUser = user?.isPremium || false;
+        isPremiumUser = user?.isPremium || user?.hasPremiumRoutineAccess || false;
       } catch (e) {
         console.log(`[Routines] Error getting user, treating as non-premium:`, e);
       }
@@ -171,11 +172,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "No current routine found" });
       }
       
-      // Get user's premium status
+      // Get user's premium status (includes one-time premium routine access)
       let isPremiumUser = false;
       try {
         const user = await storage.getUser(userId);
-        isPremiumUser = user?.isPremium || false;
+        isPremiumUser = user?.isPremium || user?.hasPremiumRoutineAccess || false;
       } catch (e) {
         console.log(`[Current Routine] Error getting user, treating as non-premium:`, e);
       }
@@ -209,11 +210,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Routine not found" });
       }
       
-      // Get user's premium status
+      // Get user's premium status (includes one-time premium routine access)
       let isPremiumUser = false;
       try {
         const user = await storage.getUser(userId);
-        isPremiumUser = user?.isPremium || false;
+        isPremiumUser = user?.isPremium || user?.hasPremiumRoutineAccess || false;
       } catch (e) {
         console.log(`[Get Routine] Error getting user, treating as non-premium:`, e);
       }
@@ -252,6 +253,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/routines/pdf/download', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      // Check if user has access to detailed PDF
+      const hasAccess = user?.isPremium || user?.hasDetailedPdfAccess || false;
+      
+      if (!hasAccess) {
+        return res.status(403).json({ message: "Purchase the Detailed Routine PDF to download" });
+      }
+      
+      // Get current routine
+      const currentRoutine = await storage.getCurrentRoutine(userId);
+      if (!currentRoutine) {
+        return res.status(404).json({ message: "No current routine found" });
+      }
+      
+      // Resolve products for the PDF - check both full premium AND one-time premium routine access
+      const isPremiumUser = user?.isPremium || user?.hasPremiumRoutineAccess || false;
+      const resolvedRoutine = {
+        ...currentRoutine,
+        routineData: await resolveSavedRoutineProducts(
+          currentRoutine.routineData, 
+          isPremiumUser,
+          currentRoutine.acneTypes,
+          currentRoutine.acneSeverity,
+          userId
+        ),
+      };
+      
+      // Generate PDF
+      const doc = generateRoutinePDF({
+        routine: resolvedRoutine,
+        userFirstName: user?.firstName || 'User'
+      });
+      
+      // Set response headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="AcneAgent-Routine-${Date.now()}.pdf"`);
+      
+      // Pipe the PDF to the response
+      doc.pipe(res);
+      doc.end();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      res.status(500).json({ message: "Failed to generate PDF" });
+    }
+  });
+
   app.post('/api/routines/:id/set-product', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
@@ -264,11 +315,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const updatedRoutine = await storage.setCurrentProduct(userId, id, category, productName);
       
-      // Get user's premium status for proper resolution
+      // Get user's premium status for proper resolution (includes one-time premium routine access)
       let isPremiumUser = false;
       try {
         const user = await storage.getUser(userId);
-        isPremiumUser = user?.isPremium || false;
+        isPremiumUser = user?.isPremium || user?.hasPremiumRoutineAccess || false;
       } catch (e) {
         console.log(`[Set Product] Error getting user, treating as non-premium:`, e);
       }
@@ -527,7 +578,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let isPremiumUser = false;
       try {
         const user = await storage.getUser(userId);
-        isPremiumUser = user?.isPremium || false;
+        isPremiumUser = user?.isPremium || user?.hasPremiumRoutineAccess || false;
       } catch (e) {
         console.log(`[Product Alternatives] Error getting user, treating as non-premium:`, e);
       }
