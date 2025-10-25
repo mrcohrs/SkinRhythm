@@ -6,6 +6,7 @@ import {
   productSelections,
   purchases,
   foundingRateCounter,
+  pdfPurchases,
   type User,
   type UpsertUser,
   type Routine,
@@ -19,6 +20,8 @@ import {
   type Purchase,
   type InsertPurchase,
   type FoundingRateCounter,
+  type PdfPurchase,
+  type InsertPdfPurchase,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql as drizzleSql } from "drizzle-orm";
@@ -76,6 +79,10 @@ export interface IStorage {
   // One-time purchase access
   grantPremiumRoutineAccess(userId: string, routineId: string | null): Promise<User>;
   grantDetailedPdfAccess(userId: string): Promise<User>;
+  
+  // PDF purchase snapshots
+  savePdfPurchase(pdfPurchase: InsertPdfPurchase): Promise<PdfPurchase>;
+  getUserPdfPurchases(userId: string): Promise<PdfPurchase[]>;
   
   // Membership management
   updateMembership(userId: string, tier: string, expiresAt: Date | null, isFoundingMember: boolean): Promise<User>;
@@ -838,6 +845,23 @@ export class DatabaseStorage implements IStorage {
   async isFoundingRateActive(): Promise<boolean> {
     const counter = await this.getFoundingRateCounter();
     return counter?.foundingRateActive ?? true;
+  }
+
+  // PDF purchase snapshots
+  async savePdfPurchase(pdfPurchase: InsertPdfPurchase): Promise<PdfPurchase> {
+    const [savedPdf] = await db
+      .insert(pdfPurchases)
+      .values(pdfPurchase)
+      .returning();
+    return savedPdf;
+  }
+
+  async getUserPdfPurchases(userId: string): Promise<PdfPurchase[]> {
+    return await db
+      .select()
+      .from(pdfPurchases)
+      .where(eq(pdfPurchases.userId, userId))
+      .orderBy(desc(pdfPurchases.createdAt));
   }
 }
 

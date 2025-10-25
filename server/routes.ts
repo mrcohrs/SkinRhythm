@@ -68,7 +68,7 @@ export function registerWebhook(app: Express): void {
           }
           
           // Record purchase
-          await storage.recordPurchase({
+          const purchase = await storage.recordPurchase({
             userId,
             productType,
             stripePaymentIntentId: session.payment_intent as string || session.id,
@@ -109,6 +109,28 @@ export function registerWebhook(app: Express): void {
             await storage.grantPremiumRoutineAccess(userId, currentRoutineId);
           } else if (productType === 'detailed_pdf') {
             await storage.grantDetailedPdfAccess(userId);
+            
+            // Save routine snapshot with PDF purchase
+            try {
+              const currentRoutine = await storage.getCurrentRoutine(userId);
+              if (currentRoutine) {
+                await storage.savePdfPurchase({
+                  userId,
+                  purchaseId: purchase.id,
+                  skinType: currentRoutine.skinType,
+                  fitzpatrickType: currentRoutine.fitzpatrickType,
+                  acneTypes: currentRoutine.acneTypes,
+                  acneSeverity: currentRoutine.acneSeverity,
+                  isPregnantOrNursing: currentRoutine.isPregnantOrNursing,
+                  routineData: currentRoutine.routineData,
+                });
+                console.log(`[Webhook] Saved PDF purchase snapshot for user ${userId}`);
+              } else {
+                console.log(`[Webhook] No current routine found for PDF purchase snapshot for user ${userId}`);
+              }
+            } catch (error) {
+              console.error(`[Webhook] Error saving PDF purchase snapshot:`, error);
+            }
           }
           
           console.log(`[Webhook] Successfully processed checkout.session.completed for user ${userId}, product ${productType}`);
@@ -916,6 +938,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Check detailed PDF access
       const hasDetailedPdfAccess = user.hasDetailedPdfAccess || false;
       
+      // Get all purchased PDFs with their routine snapshots
+      const pdfPurchases = await storage.getUserPdfPurchases(userId);
+      
       res.json({
         isPremium,
         hasUnlimitedScans,
@@ -923,6 +948,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         hasPremiumRoutineAccess,
         premiumRoutineAccessRoutineId,
         hasDetailedPdfAccess,
+        pdfPurchases: pdfPurchases.map(pdf => ({
+          id: pdf.id,
+          createdAt: pdf.createdAt,
+          skinType: pdf.skinType,
+          fitzpatrickType: pdf.fitzpatrickType,
+          acneTypes: pdf.acneTypes,
+          acneSeverity: pdf.acneSeverity,
+          isPregnantOrNursing: pdf.isPregnantOrNursing,
+          routineData: pdf.routineData,
+        })),
         membershipTier: user.membershipTier,
         membershipExpiresAt: user.membershipExpiresAt,
         unlimitedScannerExpiresAt: user.unlimitedScannerExpiresAt,

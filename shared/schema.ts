@@ -189,6 +189,31 @@ export const foundingRateCounter = pgTable("founding_rate_counter", {
 
 export type FoundingRateCounter = typeof foundingRateCounter.$inferSelect;
 
+// PDF purchases table - Track purchased PDFs with routine snapshots
+export const pdfPurchases = pgTable("pdf_purchases", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  purchaseId: varchar("purchase_id").notNull().references(() => purchases.id),
+  // Routine snapshot at time of purchase
+  skinType: varchar("skin_type").notNull(),
+  fitzpatrickType: varchar("fitzpatrick_type").notNull(),
+  acneTypes: text("acne_types").array().notNull(),
+  acneSeverity: varchar("acne_severity").notNull(),
+  isPregnantOrNursing: boolean("is_pregnant_or_nursing").notNull(),
+  routineData: jsonb("routine_data").notNull(), // Full routine data for PDF generation
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("IDX_pdf_purchases_user_id").on(table.userId)
+]);
+
+export const insertPdfPurchaseSchema = createInsertSchema(pdfPurchases).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertPdfPurchase = z.infer<typeof insertPdfPurchaseSchema>;
+export type PdfPurchase = typeof pdfPurchases.$inferSelect;
+
 // Quiz answers schema
 export const quizAnswersSchema = z.object({
   name: z.string().min(1, "Name is required"),

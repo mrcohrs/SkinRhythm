@@ -1,5 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 
+export interface PdfPurchase {
+  id: string;
+  createdAt: Date;
+  skinType: string;
+  fitzpatrickType: string;
+  acneTypes: string[];
+  acneSeverity: string;
+  isPregnantOrNursing: boolean;
+  routineData: any;
+}
+
 export interface Entitlements {
   isPremium: boolean;
   hasPremiumRoutineAccess: boolean;
@@ -11,6 +22,7 @@ export interface Entitlements {
   unlimitedScannerExpiresAt: Date | null;
   membershipExpiresAt: Date | null;
   premiumRoutineAccessRoutineId: string | null;
+  pdfPurchases: PdfPurchase[];
 }
 
 export function useEntitlements() {

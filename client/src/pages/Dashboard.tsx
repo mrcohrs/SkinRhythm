@@ -707,69 +707,176 @@ export default function Dashboard() {
                 </Card>
               )}
 
-              {/* Download PDF Button */}
+              {/* Purchased PDFs Section */}
               {canAccessDetailedPdf && (
-                <Card className="border-border/50" data-testid="card-pdf-download">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between gap-6">
-                      <div className="flex items-center gap-3">
-                        <svg className="h-8 w-8 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
-                        <div>
-                          <h3 className="font-semibold text-lg">Detailed Routine PDF</h3>
-                          <p className="text-sm text-muted-foreground">Complete instructions, actives ramping plan, and application tips</p>
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg">Your Purchased PDFs</h3>
+                  
+                  {/* Legacy fallback for users who purchased before PDF tracking */}
+                  {(!entitlements.data?.pdfPurchases || entitlements.data.pdfPurchases.length === 0) && (
+                    <Card className="border-border/50" data-testid="card-pdf-download-legacy">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between gap-6">
+                          <div className="flex items-center gap-3">
+                            <svg className="h-8 w-8 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <div>
+                              <h4 className="font-semibold">Detailed Routine PDF</h4>
+                              <p className="text-sm text-muted-foreground">Complete instructions, actives ramping plan, and application tips</p>
+                            </div>
+                          </div>
+                          <Button 
+                            data-testid="button-download-pdf-legacy"
+                            className="flex-shrink-0 gap-2"
+                            onClick={async () => {
+                              try {
+                                const response = await fetch('/api/routines/pdf/download', {
+                                  credentials: 'include',
+                                });
+                                
+                                if (!response.ok) {
+                                  toast({
+                                    title: "Error",
+                                    description: "Failed to download PDF",
+                                    variant: "destructive",
+                                  });
+                                  return;
+                                }
+                                
+                                const blob = await response.blob();
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `AcneAgent-Routine-${Date.now()}.pdf`;
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                                document.body.removeChild(a);
+                                
+                                toast({
+                                  title: "Success",
+                                  description: "Your routine PDF has been downloaded",
+                                });
+                              } catch (error) {
+                                toast({
+                                  title: "Error",
+                                  description: "Failed to download PDF",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                          >
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Download PDF
+                          </Button>
                         </div>
-                      </div>
-                      <Button 
-                        data-testid="button-download-pdf" 
-                        className="flex-shrink-0 gap-2"
-                        onClick={async () => {
-                          try {
-                            const response = await fetch('/api/routines/pdf/download', {
-                              credentials: 'include',
-                            });
-                            
-                            if (!response.ok) {
-                              toast({
-                                title: "Error",
-                                description: "Failed to download PDF",
-                                variant: "destructive",
-                              });
-                              return;
-                            }
-                            
-                            const blob = await response.blob();
-                            const url = window.URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = `AcneAgent-Routine-${Date.now()}.pdf`;
-                            document.body.appendChild(a);
-                            a.click();
-                            window.URL.revokeObjectURL(url);
-                            document.body.removeChild(a);
-                            
-                            toast({
-                              title: "Success",
-                              description: "Your routine PDF has been downloaded",
-                            });
-                          } catch (error) {
-                            toast({
-                              title: "Error",
-                              description: "Failed to download PDF",
-                              variant: "destructive",
-                            });
-                          }
-                        }}
-                      >
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        Download PDF
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                      </CardContent>
+                    </Card>
+                  )}
+                  
+                  {/* New PDF tracking system - shows all PDFs with dates and profiles */}
+                  {entitlements.data?.pdfPurchases && entitlements.data.pdfPurchases.map((pdfPurchase) => {
+                    // Check if current routine differs from this PDF's routine
+                    const hasRoutineChanged = currentRoutine && (
+                      currentRoutine.skinType !== pdfPurchase.skinType ||
+                      currentRoutine.fitzpatrickType !== pdfPurchase.fitzpatrickType ||
+                      JSON.stringify(currentRoutine.acneTypes?.sort()) !== JSON.stringify(pdfPurchase.acneTypes?.sort()) ||
+                      currentRoutine.acneSeverity !== pdfPurchase.acneSeverity ||
+                      currentRoutine.isPregnantOrNursing !== pdfPurchase.isPregnantOrNursing
+                    );
+                    
+                    const formattedDate = new Date(pdfPurchase.createdAt).toLocaleDateString('en-US', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric'
+                    });
+                    
+                    // Format skin profile for display
+                    const skinProfile = `${pdfPurchase.skinType} skin, Fitzpatrick ${pdfPurchase.fitzpatrickType}, ${pdfPurchase.acneSeverity} ${pdfPurchase.acneTypes.join(', ')} acne`;
+                    
+                    return (
+                      <Card key={pdfPurchase.id} className="border-border/50" data-testid={`card-pdf-${pdfPurchase.id}`}>
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between gap-6">
+                            <div className="flex items-start gap-3 flex-1">
+                              <svg className="h-8 w-8 text-primary flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                              </svg>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h4 className="font-semibold">Detailed Routine PDF</h4>
+                                  <span className="text-xs text-muted-foreground">({formattedDate})</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground mb-2">{skinProfile}</p>
+                                
+                                {hasRoutineChanged && (
+                                  <div className="flex gap-2 mt-3 p-3 bg-warning/10 border border-warning/20 rounded-md">
+                                    <svg className="h-5 w-5 text-warning flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    <div className="text-sm">
+                                      <p className="font-medium text-warning-foreground">Profile Mismatch</p>
+                                      <p className="text-muted-foreground mt-0.5">This PDF is based on a different skin profile from your current routine. The instructions may not match your current needs.</p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <Button 
+                              data-testid={`button-download-pdf-${pdfPurchase.id}`}
+                              className="flex-shrink-0 gap-2"
+                              onClick={async () => {
+                                try {
+                                  const response = await fetch('/api/routines/pdf/download', {
+                                    credentials: 'include',
+                                  });
+                                  
+                                  if (!response.ok) {
+                                    toast({
+                                      title: "Error",
+                                      description: "Failed to download PDF",
+                                      variant: "destructive",
+                                    });
+                                    return;
+                                  }
+                                  
+                                  const blob = await response.blob();
+                                  const url = window.URL.createObjectURL(blob);
+                                  const a = document.createElement('a');
+                                  a.href = url;
+                                  a.download = `AcneAgent-Routine-${formattedDate.replace(/\s/g, '-')}.pdf`;
+                                  document.body.appendChild(a);
+                                  a.click();
+                                  window.URL.revokeObjectURL(url);
+                                  document.body.removeChild(a);
+                                  
+                                  toast({
+                                    title: "Success",
+                                    description: "Your routine PDF has been downloaded",
+                                  });
+                                } catch (error) {
+                                  toast({
+                                    title: "Error",
+                                    description: "Failed to download PDF",
+                                    variant: "destructive",
+                                  });
+                                }
+                              }}
+                            >
+                              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                              </svg>
+                              Download
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
               )}
 
               {/* Shoppable Product List - Horizontal Carousel */}
