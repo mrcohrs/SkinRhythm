@@ -24,6 +24,138 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-11
 
 parseExcelFile();
 
+// Export webhook handler to be registered BEFORE express.json()
+export function registerWebhook(app: Express): void {
+  // Stripe Webhook Handler - MUST be registered before express.json()
+  app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), async (req: any, res) => {
+    const sig = req.headers['stripe-signature'];
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    
+    if (!webhookSecret) {
+      console.error("STRIPE_WEBHOOK_SECRET not configured");
+      return res.status(500).json({ message: "Webhook secret not configured" });
+    }
+    
+    let event: Stripe.Event;
+    
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig!, webhookSecret);
+    } catch (err: any) {
+      console.error(`Webhook signature verification failed:`, err.message);
+      return res.status(400).json({ message: `Webhook Error: ${err.message}` });
+    }
+    
+    try {
+      // Handle different event types
+      switch (event.type) {
+        case 'checkout.session.completed': {
+          const session = event.data.object as Stripe.Checkout.Session;
+          const userId = session.metadata?.userId;
+          const productType = session.metadata?.productType;
+          const isFoundingRate = session.metadata?.isFoundingRate === 'true';
+          
+          if (!userId || !productType) {
+            console.error("Missing metadata in checkout session:", session.id);
+            break;
+          }
+          
+          // Check for founding rate idempotency BEFORE recording purchase
+          let shouldIncrementFoundingCounter = false;
+          if (isFoundingRate && productType === 'premium_subscription') {
+            const existingPurchases = await storage.getUserPurchases(userId);
+            const hasExistingFoundingPurchase = existingPurchases.some(p => p.isFoundingRate === true);
+            shouldIncrementFoundingCounter = !hasExistingFoundingPurchase;
+          }
+          
+          // Record purchase
+          await storage.recordPurchase({
+            userId,
+            productType,
+            stripePaymentIntentId: session.payment_intent as string || session.id,
+            amount: ((session.amount_total || 0) / 100).toString(),
+            isFoundingRate,
+          });
+          
+          // Grant access based on product type
+          if (productType === 'premium_subscription') {
+            const expiresAt = new Date();
+            expiresAt.setMonth(expiresAt.getMonth() + 1);
+            await storage.updateMembership(userId, 'premium', expiresAt, isFoundingRate);
+            if (session.subscription) {
+              await storage.updateStripeSubscription(userId, session.subscription as string);
+            }
+            if (shouldIncrementFoundingCounter) {
+              await storage.incrementFoundingRateCounter();
+            }
+          } else if (productType === 'scan_pack_5') {
+            await storage.addScanCredits(userId, 5);
+          } else if (productType === 'scan_pack_20') {
+            await storage.addScanCredits(userId, 20);
+          } else if (productType === 'unlimited_scanner') {
+            const expiresAt = new Date();
+            expiresAt.setMonth(expiresAt.getMonth() + 1);
+            await storage.setUnlimitedScans(userId, expiresAt);
+            if (session.subscription) {
+              await storage.updateStripeSubscription(userId, session.subscription as string);
+            }
+          } else if (productType === 'premium_routine_access') {
+            let currentRoutineId: string | null = null;
+            try {
+              const userRoutines = await storage.getUserRoutines(userId);
+              currentRoutineId = userRoutines.find(r => r.isCurrent)?.id || null;
+            } catch (error) {
+              console.log(`[Webhook] Could not fetch user routines for premium access grant, proceeding with null routineId:`, error);
+            }
+            await storage.grantPremiumRoutineAccess(userId, currentRoutineId);
+          } else if (productType === 'detailed_pdf') {
+            await storage.grantDetailedPdfAccess(userId);
+          }
+          
+          console.log(`[Webhook] Successfully processed checkout.session.completed for user ${userId}, product ${productType}`);
+          break;
+        }
+        
+        case 'customer.subscription.updated': {
+          const subscription = event.data.object as Stripe.Subscription;
+          const customer = subscription.customer as string;
+          console.log(`[Webhook] Subscription updated for customer ${customer}:`, subscription.status);
+          
+          // Handle subscription status changes
+          const user = await storage.getUserByStripeCustomerId(customer);
+          if (user && (subscription.status === 'canceled' || subscription.status === 'unpaid' || subscription.status === 'incomplete_expired')) {
+            // Revoke membership access when subscription becomes inactive
+            await storage.revokeMembership(user.id);
+            console.log(`[Webhook] Revoked membership for user ${user.id} due to subscription status: ${subscription.status}`);
+          }
+          break;
+        }
+        
+        case 'customer.subscription.deleted': {
+          const subscription = event.data.object as Stripe.Subscription;
+          const customer = subscription.customer as string;
+          console.log(`[Webhook] Subscription deleted for customer ${customer}`);
+          
+          // Revoke membership access
+          const user = await storage.getUserByStripeCustomerId(customer);
+          if (user) {
+            await storage.revokeMembership(user.id);
+            console.log(`[Webhook] Revoked membership for user ${user.id} on subscription deletion`);
+          }
+          break;
+        }
+        
+        default:
+          console.log(`[Webhook] Unhandled event type: ${event.type}`);
+      }
+      
+      res.json({ received: true });
+    } catch (error) {
+      console.error("Error processing webhook:", error);
+      res.status(500).json({ message: "Webhook processing failed" });
+    }
+  });
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   await setupAuth(app);
   setupLocalAuth(app);
@@ -734,139 +866,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // 2. Stripe Webhook Handler
-  app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), async (req: any, res) => {
-    const sig = req.headers['stripe-signature'];
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    
-    if (!webhookSecret) {
-      console.error("STRIPE_WEBHOOK_SECRET not configured");
-      return res.status(500).json({ message: "Webhook secret not configured" });
-    }
-    
-    let event: Stripe.Event;
-    
-    try {
-      event = stripe.webhooks.constructEvent(req.body, sig!, webhookSecret);
-    } catch (err: any) {
-      console.error(`Webhook signature verification failed:`, err.message);
-      return res.status(400).json({ message: `Webhook Error: ${err.message}` });
-    }
-    
-    try {
-      // Handle different event types
-      switch (event.type) {
-        case 'checkout.session.completed': {
-          const session = event.data.object as Stripe.Checkout.Session;
-          const userId = session.metadata?.userId;
-          const productType = session.metadata?.productType;
-          const isFoundingRate = session.metadata?.isFoundingRate === 'true';
-          
-          if (!userId || !productType) {
-            console.error("Missing metadata in checkout session:", session.id);
-            break;
-          }
-          
-          // Record purchase
-          await storage.recordPurchase({
-            userId,
-            productType,
-            stripePaymentIntentId: session.payment_intent as string || session.id,
-            amount: ((session.amount_total || 0) / 100).toString(), // Convert from cents to numeric string
-            isFoundingRate,
-          });
-          
-          // Grant access based on product type
-          if (productType === 'premium_subscription') {
-            // Set membership to premium, expires in 1 month
-            const expiresAt = new Date();
-            expiresAt.setMonth(expiresAt.getMonth() + 1);
-            
-            await storage.updateMembership(userId, 'premium', expiresAt, isFoundingRate);
-            
-            if (session.subscription) {
-              await storage.updateStripeSubscription(userId, session.subscription as string);
-            }
-            
-            // Increment founding rate counter if applicable
-            if (isFoundingRate) {
-              await storage.incrementFoundingRateCounter();
-            }
-          } else if (productType === 'scan_pack_5') {
-            await storage.addScanCredits(userId, 5);
-          } else if (productType === 'scan_pack_20') {
-            await storage.addScanCredits(userId, 20);
-          } else if (productType === 'unlimited_scanner') {
-            // Set unlimited scans for 1 month
-            const expiresAt = new Date();
-            expiresAt.setMonth(expiresAt.getMonth() + 1);
-            await storage.setUnlimitedScans(userId, expiresAt);
-            
-            if (session.subscription) {
-              await storage.updateStripeSubscription(userId, session.subscription as string);
-            }
-          } else if (productType === 'premium_routine_access') {
-            // This is a one-time purchase for premium routine access
-            // Grant access to premium product alternatives for all routines
-            let currentRoutineId: string | null = null;
-            try {
-              const userRoutines = await storage.getUserRoutines(userId);
-              currentRoutineId = userRoutines.find(r => r.isCurrent)?.id || null;
-            } catch (error) {
-              console.log(`[Webhook] Could not fetch user routines for premium access grant, proceeding with null routineId:`, error);
-            }
-            await storage.grantPremiumRoutineAccess(userId, currentRoutineId);
-          } else if (productType === 'detailed_pdf') {
-            await storage.grantDetailedPdfAccess(userId);
-          }
-          
-          console.log(`[Webhook] Successfully processed checkout.session.completed for user ${userId}, product ${productType}`);
-          break;
-        }
-        
-        case 'customer.subscription.updated': {
-          const subscription = event.data.object as Stripe.Subscription;
-          const customer = subscription.customer as string;
-          
-          // Find user by Stripe customer ID
-          // Note: We'd need to add a method to find user by stripeCustomerId
-          // For now, we'll log it
-          console.log(`[Webhook] Subscription updated for customer ${customer}:`, subscription.status);
-          
-          // Handle subscription status changes
-          if (subscription.status === 'active' || subscription.status === 'trialing') {
-            // Subscription is active
-            // We'd need to look up user and update their membership
-          } else if (subscription.status === 'canceled' || subscription.status === 'unpaid') {
-            // Subscription ended
-            // We'd need to look up user and expire their membership
-          }
-          break;
-        }
-        
-        case 'customer.subscription.deleted': {
-          const subscription = event.data.object as Stripe.Subscription;
-          const customer = subscription.customer as string;
-          
-          console.log(`[Webhook] Subscription deleted for customer ${customer}`);
-          
-          // We'd need to find the user and set their membership to expired
-          // This would require a getUserByStripeCustomerId method
-          break;
-        }
-        
-        default:
-          console.log(`[Webhook] Unhandled event type: ${event.type}`);
-      }
-      
-      res.json({ received: true });
-    } catch (error) {
-      console.error("Error processing webhook:", error);
-      res.status(500).json({ message: "Webhook processing failed" });
-    }
-  });
+  // Note: Webhook handler is registered separately in index.ts before express.json()
   
-  // 3. Get Founding Rate Status
+  // Get Founding Rate Status
   app.get('/api/payments/founding-rate-status', async (req: any, res) => {
     try {
       const counter = await storage.getFoundingRateCounter();

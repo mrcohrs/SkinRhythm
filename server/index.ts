@@ -1,8 +1,13 @@
 import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
+import { registerRoutes, registerWebhook } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+
+// CRITICAL: Register Stripe webhook BEFORE express.json() middleware
+// Webhook needs raw body for signature verification
+registerWebhook(app);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

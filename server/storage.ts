@@ -60,11 +60,13 @@ export interface IStorage {
   setUserProductSelection(userId: string, productId: string, productName: string): Promise<ProductSelection>;
   
   // Payment and subscription management
+  getUserByStripeCustomerId(stripeCustomerId: string): Promise<User | undefined>;
   updateStripeCustomer(userId: string, stripeCustomerId: string): Promise<User>;
   updateStripeSubscription(userId: string, stripeSubscriptionId: string): Promise<User>;
   recordPurchase(purchase: InsertPurchase): Promise<Purchase>;
   getUserPurchases(userId: string): Promise<Purchase[]>;
   getActiveSubscription(userId: string): Promise<Purchase | undefined>;
+  revokeMembership(userId: string): Promise<User>;
   
   // Scan credits management
   addScanCredits(userId: string, credits: number): Promise<User>;
@@ -637,6 +639,34 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(purchases.createdAt))
       .limit(1);
     return subscription;
+  }
+
+  async getUserByStripeCustomerId(stripeCustomerId: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.stripeCustomerId, stripeCustomerId));
+    return user;
+  }
+
+  async revokeMembership(userId: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        membershipTier: 'free',
+        membershipExpiresAt: null,
+        unlimitedScannerExpiresAt: null,
+        stripeSubscriptionId: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    
+    return updatedUser;
   }
 
   // Scan credits management
