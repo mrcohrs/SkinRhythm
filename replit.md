@@ -19,7 +19,7 @@ The frontend is built with React and TypeScript, utilizing `shadcn/ui` with Radi
     - **Quiz Flow**: A 9-step questionnaire with conditional logic, including a two-step Fitzpatrick determination process (visual skin tone selection followed by a conditional sun reaction question).
     - **Routine Generation**: A CSV-based product recommendation engine matches user profiles (skin type, Fitzpatrick type, acne types, age, pregnancy status) to recommend product sets, supporting premium product alternatives and a multi-level specificity scoring system.
     - **Dashboard**: Authenticated users access a personalized view of saved routines, detailed premium treatment plans, and routine management features.
-    - **Ingredient Checker**: Allows authenticated users to identify 348 acne-causing ingredients using word-boundary matching.
+    - **Ingredient Checker**: Allows authenticated users to identify 348 acne-causing ingredients using word-boundary matching. Features contextual scanner pack upsells when users have 0 scans (prominent card) or fewer than 3 scans remaining (bottom card).
     - **Monetization**: Implements a three-tier membership system (free, premium, premium_plus) with feature gating for ingredient scans, product alternatives, and routine coaching. Includes an entitlements system for managing feature access and tracking scan usage.
     - **Consent System**: Comprehensive user consent management for data collection and AI training, featuring a consent modal and API endpoints for recording and retrieving preferences.
     - **MVP Card & Banner System**: Context-aware information cards and weekly rotating promotional banners with intelligent visibility rules, tracking, and suppression logic.

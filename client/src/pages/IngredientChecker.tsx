@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, CheckCircle, ArrowLeft, Sparkles } from "lucide-react";
+import { AlertCircle, CheckCircle, ArrowLeft, Sparkles, ShoppingBag } from "lucide-react";
 import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useEntitlements } from "@/hooks/useEntitlements";
 import { ScanPaywallModal } from "@/components/ScanPaywallModal";
@@ -11,6 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Link } from "wouter";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import { CheckoutButton } from "@/components/checkout/CheckoutButton";
+import { STRIPE_PRICE_IDS, PRODUCT_PRICES } from "@/lib/stripe";
 
 export default function IngredientChecker() {
   const [inputText, setInputText] = useState("");
@@ -167,14 +169,95 @@ Hyaluronic Acid"
                   Clear
                 </Button>
               </div>
-              
-              {!canScan && (
-                <p className="text-sm text-muted-foreground text-center">
-                  You've used all your free scans. Purchase scan packs or upgrade to Premium for unlimited scanning.
-                </p>
-              )}
             </CardContent>
           </Card>
+
+          {/* Scan Pack Upsell - When out of scans */}
+          {!hasUnlimited && remainingScans === 0 && (
+            <Card className="border-primary/50 bg-gradient-to-br from-primary/5 to-secondary/5">
+              <CardHeader>
+                <div className="flex items-start gap-3">
+                  <ShoppingBag className="h-6 w-6 text-primary mt-1" />
+                  <div>
+                    <CardTitle>You're out of scans</CardTitle>
+                    <CardDescription>
+                      Purchase scan packs to continue checking ingredients, or upgrade to Premium for unlimited scanning
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* 20-Pack */}
+                  <Card>
+                    <CardHeader>
+                      <Badge variant="outline" className="w-fit">Best Value</Badge>
+                      <CardTitle className="mt-2 text-lg">20 Scans</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-bold">${PRODUCT_PRICES.SCAN_PACK_20}</span>
+                        <span className="text-sm text-muted-foreground">one-time</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Just $0.20 per scan
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <CheckoutButton
+                        priceId={STRIPE_PRICE_IDS.SCAN_PACK_20}
+                        label="Purchase 20 Scans"
+                        variant="default"
+                        className="w-full"
+                        data-testid="button-buy-20-scans"
+                      />
+                    </CardFooter>
+                  </Card>
+
+                  {/* 5-Pack */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">5 Scans</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-bold">${PRODUCT_PRICES.SCAN_PACK_5}</span>
+                        <span className="text-sm text-muted-foreground">one-time</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Just $0.40 per scan
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <CheckoutButton
+                        priceId={STRIPE_PRICE_IDS.SCAN_PACK_5}
+                        label="Purchase 5 Scans"
+                        variant="outline"
+                        className="w-full"
+                        data-testid="button-buy-5-scans"
+                      />
+                    </CardFooter>
+                  </Card>
+                </div>
+              </CardContent>
+              <CardFooter className="flex-col space-y-2">
+                <div className="w-full border-t pt-4">
+                  <p className="text-sm text-muted-foreground text-center mb-3">
+                    Or get unlimited scans with Premium
+                  </p>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setShowPaywall(true)}
+                    className="w-full"
+                    data-testid="button-view-premium"
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    View Premium Plans
+                  </Button>
+                </div>
+              </CardFooter>
+            </Card>
+          )}
 
           {/* Results Section */}
           {hasChecked && results && (
@@ -318,6 +401,93 @@ Hyaluronic Acid"
               </p>
             </CardContent>
           </Card>
+
+          {/* Low Scan Warning Upsell - When less than 3 scans remaining */}
+          {!hasUnlimited && remainingScans > 0 && remainingScans < 3 && (
+            <Card className="border-secondary/50 bg-gradient-to-br from-secondary/5 to-primary/5">
+              <CardHeader>
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-6 w-6 text-secondary mt-1" />
+                  <div>
+                    <CardTitle>Running low on scans</CardTitle>
+                    <CardDescription>
+                      You have {remainingScans} scan{remainingScans === 1 ? '' : 's'} remaining. Stock up now so you never run out.
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* 20-Pack */}
+                  <Card>
+                    <CardHeader>
+                      <Badge variant="outline" className="w-fit">Best Value</Badge>
+                      <CardTitle className="mt-2 text-lg">20 Scans</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-bold">${PRODUCT_PRICES.SCAN_PACK_20}</span>
+                        <span className="text-sm text-muted-foreground">one-time</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Just $0.20 per scan
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <CheckoutButton
+                        priceId={STRIPE_PRICE_IDS.SCAN_PACK_20}
+                        label="Purchase 20 Scans"
+                        variant="default"
+                        className="w-full"
+                        data-testid="button-buy-20-scans-bottom"
+                      />
+                    </CardFooter>
+                  </Card>
+
+                  {/* 5-Pack */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">5 Scans</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-bold">${PRODUCT_PRICES.SCAN_PACK_5}</span>
+                        <span className="text-sm text-muted-foreground">one-time</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Just $0.40 per scan
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <CheckoutButton
+                        priceId={STRIPE_PRICE_IDS.SCAN_PACK_5}
+                        label="Purchase 5 Scans"
+                        variant="outline"
+                        className="w-full"
+                        data-testid="button-buy-5-scans-bottom"
+                      />
+                    </CardFooter>
+                  </Card>
+                </div>
+              </CardContent>
+              <CardFooter className="flex-col space-y-2">
+                <div className="w-full border-t pt-4">
+                  <p className="text-sm text-muted-foreground text-center mb-3">
+                    Or upgrade to Premium for unlimited scans
+                  </p>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setShowPaywall(true)}
+                    className="w-full"
+                    data-testid="button-view-premium-bottom"
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    View Premium Plans
+                  </Button>
+                </div>
+              </CardFooter>
+            </Card>
+          )}
         </div>
       </div>
 
