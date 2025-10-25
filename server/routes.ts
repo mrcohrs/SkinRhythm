@@ -698,6 +698,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.updateStripeCustomer(userId, stripeCustomerId);
       }
       
+      // Construct base URL for redirects
+      // REPLIT_DOMAINS contains the public domain (may have multiple comma-separated)
+      const replitDomain = process.env.REPLIT_DOMAINS?.split(',')[0]?.trim();
+      const baseUrl = replitDomain
+        ? `https://${replitDomain}`
+        : 'http://localhost:5000';
+      
       // Create checkout session
       const session = await stripe.checkout.sessions.create({
         customer: stripeCustomerId,
@@ -708,8 +715,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             quantity: 1,
           },
         ],
-        success_url: successUrl || `${process.env.REPL_HOME || 'http://localhost:5000'}/dashboard?payment=success`,
-        cancel_url: cancelUrl || `${process.env.REPL_HOME || 'http://localhost:5000'}/dashboard?payment=cancelled`,
+        success_url: successUrl || `${baseUrl}/dashboard?payment=success`,
+        cancel_url: cancelUrl || `${baseUrl}/pricing?payment=cancelled`,
         metadata: {
           userId: userId,
           productType: productDetails.type,
