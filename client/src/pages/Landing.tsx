@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import productsIllustration from "@assets/product lineup_1761431861365.png";
-import routineIllustration from "@assets/ipad_1761431861359.png";
+import routineIllustration from "@assets/Frame 58_1761434440825.png";
 
 export default function Landing() {
   return (
