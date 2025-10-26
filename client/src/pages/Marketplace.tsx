@@ -256,7 +256,7 @@ export default function Marketplace() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="flex h-16 items-center justify-between">
             <Link href="/dashboard">
-              <img src={logoPath} alt="AcneAgent" className="h-8 cursor-pointer" data-testid="logo-link" />
+              <img src={logoPath} alt="SkinRhythm" className="h-8 cursor-pointer" data-testid="logo-link" />
             </Link>
             <div className="flex items-center gap-2">
               <Button

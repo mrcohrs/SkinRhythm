@@ -188,7 +188,7 @@ export default function Landing() {
       <section id="how-it-works" className="py-20 md:py-24">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold text-center mb-4">
-            How AcneAgent helps you clear your skin — safely.
+            How SkinRhythm helps you clear your skin — safely.
           </h2>
           <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
             Three simple steps to your personalized Clear Skin Plan.
@@ -227,7 +227,7 @@ export default function Landing() {
                 <div className="space-y-3">
                   <h3 className="font-serif text-xl font-medium">We build your Clear Skin Plan.</h3>
                   <p className="text-sm text-muted-foreground">
-                    AcneAgent maps your skin profile to clinical acne treatment data to create a regimen of acne-safe products.
+                    SkinRhythm maps your skin profile to clinical acne treatment data to create a regimen of acne-safe products.
                   </p>
                 </div>
               </CardContent>
@@ -277,11 +277,11 @@ export default function Landing() {
             {/* Left Column - Text */}
             <div className="space-y-6">
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold">
-                AcneAgent takes the risk out of shopping for skincare.
+                SkinRhythm takes the risk out of shopping for skincare.
               </h2>
               
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Most "acne-safe" products still contain pore-clogging ingredients like coconut oil, shea butter, and Laureth-4. AcneAgent screens every formula for over 400 known acne triggers before adding it to our marketplace — so you can shop our recommendations with confidence.
+                Most "acne-safe" products still contain pore-clogging ingredients like coconut oil, shea butter, and Laureth-4. SkinRhythm screens every formula for over 400 known acne triggers before adding it to our marketplace — so you can shop our recommendations with confidence.
               </p>
 
               <div className="pt-4">
@@ -339,7 +339,7 @@ export default function Landing() {
               </Card>
 
               <p className="text-xs text-muted-foreground text-center pt-2">
-                Ingredient screening and routine generation are for educational purposes only. AcneAgent does not diagnose, treat, or cure medical conditions.
+                Ingredient screening and routine generation are for educational purposes only. SkinRhythm does not diagnose, treat, or cure medical conditions.
               </p>
             </div>
           </div>
@@ -657,7 +657,7 @@ export default function Landing() {
               />
             </div>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              AcneAgent uses proven actives balanced with barrier-supporting ingredients because you need a strong foundation to build on.
+              SkinRhythm uses proven actives balanced with barrier-supporting ingredients because you need a strong foundation to build on.
             </p>
           </div>
           
@@ -780,7 +780,7 @@ export default function Landing() {
                 <ArrowRight className="ml-2 h-6 w-6" />
               </Button>
               <p className="text-sm text-muted-foreground">
-                For educational purposes only. AcneAgent does not diagnose, treat, or cure medical conditions.
+                For educational purposes only. SkinRhythm does not diagnose, treat, or cure medical conditions.
               </p>
             </div>
           </div>
@@ -792,7 +792,7 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div className="space-y-4">
-              <img src={logoPath} alt="AcneAgent" className="h-8" />
+              <img src={logoPath} alt="SkinRhythm" className="h-8" />
               <p className="text-sm text-muted-foreground">
                 Personalized acne care built on science and integrity.
               </p>
@@ -862,10 +862,10 @@ export default function Landing() {
 
           <div className="pt-8 border-t border-border/50 space-y-4">
             <p className="text-xs text-muted-foreground text-center">
-              <strong>Medical Disclaimer:</strong> AcneAgent provides educational skincare guidance, not medical treatment. Our ingredient screening and routine recommendations are for informational purposes only and do not constitute medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider or dermatologist before starting any new skincare regimen, especially if you have severe acne, skin conditions, allergies, or are pregnant/nursing.
+              <strong>Medical Disclaimer:</strong> SkinRhythm provides educational skincare guidance, not medical treatment. Our ingredient screening and routine recommendations are for informational purposes only and do not constitute medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider or dermatologist before starting any new skincare regimen, especially if you have severe acne, skin conditions, allergies, or are pregnant/nursing.
             </p>
             <p className="text-xs text-muted-foreground text-center">
-              © 2025 AcneAgent. All rights reserved.
+              © 2025 SkinRhythm. All rights reserved.
             </p>
           </div>
         </div>

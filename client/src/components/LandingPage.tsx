@@ -34,7 +34,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                 Your personalized, acne-safe routine — powered by <strong className="text-foreground">clinical protocols developed by top acne experts</strong> and inspired by the <strong className="text-foreground">formulation standards of luxury skincare labs</strong>.
               </p>
               <p className="text-lg md:text-xl mb-8 leading-relaxed text-muted-foreground">
-                AcneAgent builds you a complete regimen using <strong className="text-foreground">budget-friendly, over-the-counter products</strong> that meet the same ingredient safety standards as premium lines.
+                SkinRhythm builds you a complete regimen using <strong className="text-foreground">budget-friendly, over-the-counter products</strong> that meet the same ingredient safety standards as premium lines.
               </p>
               <Button
                 size="lg"
@@ -46,7 +46,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-xs text-muted-foreground max-w-2xl">
-                AcneAgent provides educational skincare recommendations based on evidence-informed treatment protocols. It is not a substitute for medical care or diagnosis.
+                SkinRhythm provides educational skincare recommendations based on evidence-informed treatment protocols. It is not a substitute for medical care or diagnosis.
               </p>
             </div>
           </div>
@@ -74,7 +74,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                 Nearly <strong className="text-foreground">9 in 10 benzoyl peroxide products</strong> on the market contain <em>laureth-4</em>, which can block pores and undo results.
               </p>
               <p className="text-lg leading-relaxed">
-                AcneAgent only recommends <strong>benzoyl peroxide formulas free of laureth-4</strong> — and applies that same ingredient logic to every cleanser, serum, and moisturizer we suggest.
+                SkinRhythm only recommends <strong>benzoyl peroxide formulas free of laureth-4</strong> — and applies that same ingredient logic to every cleanser, serum, and moisturizer we suggest.
               </p>
             </div>
             
@@ -106,7 +106,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
               Skincare That Feels Luxe — and Acts Clinical
             </h3>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              Each AcneAgent routine is crafted with the same precision as a luxury skincare line: thoughtfully layered actives, ingredient synergy, and no pore-clogging fillers. We source from <strong className="text-foreground">accessible, evidence-based brands</strong> that perform like prestige skincare — without the inflated price tags.
+              Each SkinRhythm routine is crafted with the same precision as a luxury skincare line: thoughtfully layered actives, ingredient synergy, and no pore-clogging fillers. We source from <strong className="text-foreground">accessible, evidence-based brands</strong> that perform like prestige skincare — without the inflated price tags.
             </p>
           </div>
 
@@ -175,12 +175,12 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
         </div>
       </section>
 
-      {/* How AcneAgent Works Section */}
+      {/* How SkinRhythm Works Section */}
       <section className="py-24 md:py-32 bg-card">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
           <div className="text-center mb-16">
             <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6">
-              How AcneAgent Works
+              How SkinRhythm Works
             </h2>
           </div>
           
@@ -240,12 +240,12 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Why Users Love AcneAgent Section */}
+      {/* Why Users Love SkinRhythm Section */}
       <section className="py-24 md:py-32 bg-background">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
           <div className="text-center mb-16">
             <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6">
-              Why Users Love AcneAgent
+              Why Users Love SkinRhythm
             </h2>
           </div>
 

@@ -271,7 +271,7 @@ export default function Dashboard() {
       
       toast({
         title: "Routine updated",
-        description: newMode === 'premium' ? "Now showing the products that AcneAgent scores highest for your skin profile" : "Now showing the best budget-friendly products for your skin profile",
+        description: newMode === 'premium' ? "Now showing the products that SkinRhythm scores highest for your skin profile" : "Now showing the best budget-friendly products for your skin profile",
       });
     },
     onError: () => {
@@ -431,7 +431,7 @@ export default function Dashboard() {
         <header className="border-b border-border/50">
           <div className="container mx-auto px-4 md:px-8 lg:px-16">
             <div className="flex h-16 items-center justify-between">
-              <img src={logoPath} alt="AcneAgent" className="h-10" />
+              <img src={logoPath} alt="SkinRhythm" className="h-10" />
               <div className="flex items-center gap-2">
                 {isPremium && (
                   <Button
@@ -562,7 +562,7 @@ export default function Dashboard() {
       <header className="border-b border-border/50">
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
-            <img src={logoPath} alt="AcneAgent" className="h-10" />
+            <img src={logoPath} alt="SkinRhythm" className="h-10" />
             <div className="flex items-center gap-2">
               {isPremium && (
                 <Button
@@ -824,7 +824,7 @@ export default function Dashboard() {
                                 const url = window.URL.createObjectURL(blob);
                                 const a = document.createElement('a');
                                 a.href = url;
-                                a.download = `AcneAgent-Routine-${Date.now()}.pdf`;
+                                a.download = `SkinRhythm-Routine-${Date.now()}.pdf`;
                                 document.body.appendChild(a);
                                 a.click();
                                 window.URL.revokeObjectURL(url);
@@ -923,7 +923,7 @@ export default function Dashboard() {
                                   const url = window.URL.createObjectURL(blob);
                                   const a = document.createElement('a');
                                   a.href = url;
-                                  a.download = `AcneAgent-Routine-${formattedDate.replace(/\s/g, '-')}.pdf`;
+                                  a.download = `SkinRhythm-Routine-${formattedDate.replace(/\s/g, '-')}.pdf`;
                                   document.body.appendChild(a);
                                   a.click();
                                   window.URL.revokeObjectURL(url);
@@ -963,7 +963,7 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
                   <Info className="h-4 w-4 flex-shrink-0" />
                   <span>
-                    The commissions earned through affiliate links on this page allow AcneAgent to offer expert-level services for free.{" "}
+                    The commissions earned through affiliate links on this page allow SkinRhythm to offer expert-level services for free.{" "}
                     <Link 
                       href="/affiliate-disclosure"
                       className="text-foreground underline hover:no-underline"

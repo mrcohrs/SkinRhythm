@@ -101,7 +101,7 @@ export default function IngredientChecker() {
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
-              <img src={logoPath} alt="AcneAgent" className="h-10" />
+              <img src={logoPath} alt="SkinRhythm" className="h-10" />
             </div>
           </div>
         </div>

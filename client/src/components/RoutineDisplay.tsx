@@ -161,7 +161,7 @@ export function RoutineDisplay({
             className="flex items-center gap-2 hover-elevate active-elevate-2 rounded-md transition-colors"
             data-testid="button-home"
           >
-            <img src={logoPath} alt="AcneAgent" className="h-10" />
+            <img src={logoPath} alt="SkinRhythm" className="h-10" />
           </button>
           
           <div className="flex items-center gap-3">
@@ -205,7 +205,7 @@ export function RoutineDisplay({
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground text-center">
               <Info className="h-4 w-4 flex-shrink-0" />
               <span>
-                 The small commission AcneAgent makes when you purchase your routine products through the affiliate links on this page allows AcneAgent to provide personalized, evidence-based guidance for free.{" "}
+                 The small commission SkinRhythm makes when you purchase your routine products through the affiliate links on this page allows SkinRhythm to provide personalized, evidence-based guidance for free.{" "}
                 <Link 
                   href="/affiliate-disclosure"
                   className="text-foreground underline hover:no-underline"
@@ -317,7 +317,7 @@ export function RoutineDisplay({
             <div className="mt-8">
               <PremiumUpsell 
                 title="Premium users see better results"
-                description="Lock in the Founder's rate ($2.99/month) for AcneAgent Premium. Get access to the AcneAgent Routine Coach for detailed instructions specific to your routine, premium product alternatives so you can further customize your routine, and tools like an acne-safe ingredient scanner to help you get clear and stay clear."
+                description="Lock in the Founder's rate ($2.99/month) for SkinRhythm Premium. Get access to the SkinRhythm Routine Coach for detailed instructions specific to your routine, premium product alternatives so you can further customize your routine, and tools like an acne-safe ingredient scanner to help you get clear and stay clear."
               />
             </div>
           )}
@@ -350,7 +350,7 @@ export function RoutineDisplay({
             
             <div className="text-muted-foreground mb-2">Shop your personalized skincare routine</div>
             <div className="text-sm text-muted-foreground leading-relaxed mb-4">
-              Every product AcneAgent recommends has been rigorously analyzed and tested to ensure it's an acne-safe, high-quality formulation that complements the other products in your custom regimen to address your specific skin concerns. In order to see results, you must commit to this routine and pause usage of any non-routine products.
+              Every product SkinRhythm recommends has been rigorously analyzed and tested to ensure it's an acne-safe, high-quality formulation that complements the other products in your custom regimen to address your specific skin concerns. In order to see results, you must commit to this routine and pause usage of any non-routine products.
             </div>
             
             {/* Scroll Buttons - Right aligned above carousel */}
@@ -470,7 +470,7 @@ export function RoutineDisplay({
             {!isPremiumUser && (
               <PremiumUpsell 
                 title="Unlock Your Progressive Treatment Schedule"
-                description="AcneAgent Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
+                description="SkinRhythm Premium users get detailed routines showing exactly when and how to apply each product during your first 6 weeks. Learn the right way to introduce actives and build tolerance safely."
               />
             )}
             {/* Evening Routine Visual */}

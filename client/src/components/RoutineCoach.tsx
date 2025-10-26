@@ -366,7 +366,7 @@ export function RoutineCoach({ routineType, userName, products, routineId, curre
               </div>
               <h4 className="font-semibold">Your Skincare Sidekick</h4>
               <p className="text-sm text-muted-foreground">
-                AcneAgent is here for you when you want more evidence-based information, but is not a replacement for medical advice. 
+                SkinRhythm is here for you when you want more evidence-based information, but is not a replacement for medical advice. 
               </p>
               <Button variant="outline" size="sm" className="w-full" disabled>
                 Learn More
