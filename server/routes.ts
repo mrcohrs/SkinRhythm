@@ -1004,6 +1004,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // 6. Marketplace - Get all products with variants
+  app.get('/api/marketplace', async (_req, res) => {
+    try {
+      const { PRODUCT_LIBRARY } = await import('@shared/productLibrary');
+      
+      // Convert product library to array and include all product data
+      const products = Object.values(PRODUCT_LIBRARY).map(product => ({
+        id: product.id,
+        generalName: product.generalName,
+        category: product.category,
+        priceTier: product.priceTier,
+        priceRange: product.priceRange,
+        products: product.products || [],
+      }));
+      
+      res.json({ products });
+    } catch (error) {
+      console.error("Error fetching marketplace products:", error);
+      res.status(500).json({ message: "Failed to fetch marketplace products" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

@@ -11,6 +11,7 @@ import Quiz from "@/pages/Quiz";
 import Dashboard from "@/pages/Dashboard";
 import IngredientChecker from "@/pages/IngredientChecker";
 import Pricing from "@/pages/Pricing";
+import Marketplace from "@/pages/Marketplace";
 import AffiliateDisclosure from "@/pages/AffiliateDisclosure";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import BeautyProducts from "@/pages/BeautyProducts";
@@ -69,6 +70,7 @@ function Router() {
     <Switch>
       <Route path="/quiz" component={Quiz} />
       <Route path="/pricing" component={Pricing} />
+      <Route path="/marketplace" component={Marketplace} />
       <Route path="/affiliate-disclosure" component={AffiliateDisclosure} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/beauty-products" component={BeautyProducts} />
