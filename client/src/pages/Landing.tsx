@@ -32,14 +32,6 @@ export default function Landing() {
               <img src={logoPath} alt="AcneAgent" className="h-8" />
             </div>
             <div className="flex items-center gap-6">
-              <Link href="/marketplace">
-                <button 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  data-testid="link-marketplace-header"
-                >
-                  Marketplace
-                </button>
-              </Link>
               <button 
                 onClick={() => window.location.href = '/api/login'}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
