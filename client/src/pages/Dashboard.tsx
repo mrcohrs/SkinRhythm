@@ -34,6 +34,13 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 import { getCategoryImage } from "@/lib/categoryImages";
 import { trackPurchase, trackRoutineModeChanged, trackProductAlternativeSelected, trackCardInteraction, trackBannerInteraction } from "@/lib/analytics";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -430,7 +437,9 @@ export default function Dashboard() {
           <div className="container mx-auto px-4 md:px-8 lg:px-16">
             <div className="flex h-16 items-center justify-between">
               <img src={logoPath} alt="SkinRhythm" className="h-10" />
-              <div className="flex items-center gap-2">
+              
+              {/* Desktop Navigation */}
+              <div className="hidden md:flex items-center gap-2">
                 {isPremium && (
                   <Button
                     variant="ghost"
@@ -463,6 +472,73 @@ export default function Dashboard() {
                   <LogOut className="h-4 w-4" />
                   Log Out
                 </Button>
+              </div>
+
+              {/* Mobile Hamburger Menu */}
+              <div className="md:hidden">
+                <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
+                  <SheetTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      data-testid="button-mobile-menu"
+                    >
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="right" className="w-64">
+                    <SheetHeader>
+                      <SheetTitle className="text-left">menu</SheetTitle>
+                    </SheetHeader>
+                    <nav className="flex flex-col gap-4 mt-8">
+                      {isPremium && (
+                        <button
+                          onClick={() => {
+                            setLocation('/marketplace');
+                            setShowMobileMenu(false);
+                          }}
+                          className="text-left py-2 text-muted-foreground"
+                          data-testid="mobile-link-marketplace"
+                        >
+                          acne-safe marketplace
+                        </button>
+                      )}
+                      <button
+                        onClick={() => {
+                          setLocation('/pricing');
+                          setShowMobileMenu(false);
+                        }}
+                        className="text-left py-2 text-muted-foreground"
+                        data-testid="mobile-link-pricing"
+                        >
+                          pricing
+                        </button>
+                      <button
+                        onClick={() => {
+                          handleReferFriend();
+                          setShowMobileMenu(false);
+                        }}
+                        className="w-full text-left py-2 text-muted-foreground flex items-center gap-2"
+                        data-testid="mobile-button-refer-friend"
+                      >
+                        <Share2 className="h-4 w-4" />
+                        refer a friend
+                      </button>
+                      <div className="border-t pt-4 mt-2">
+                        <button
+                          onClick={() => {
+                            window.location.href = '/api/auth/logout';
+                          }}
+                          className="w-full text-left py-2 text-muted-foreground flex items-center gap-2"
+                          data-testid="mobile-button-logout"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          log out
+                        </button>
+                      </div>
+                    </nav>
+                  </SheetContent>
+                </Sheet>
               </div>
             </div>
           </div>
@@ -561,7 +637,9 @@ export default function Dashboard() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
             <img src={logoPath} alt="SkinRhythm" className="h-10" />
-            <div className="flex items-center gap-2">
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-2">
               {isPremium && (
                 <Button
                   variant="ghost"
@@ -594,6 +672,73 @@ export default function Dashboard() {
                 <LogOut className="h-4 w-4" />
                 Log Out
               </Button>
+            </div>
+
+            {/* Mobile Hamburger Menu */}
+            <div className="md:hidden">
+              <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
+                <SheetTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    data-testid="button-mobile-menu"
+                  >
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-64">
+                  <SheetHeader>
+                    <SheetTitle className="text-left">menu</SheetTitle>
+                  </SheetHeader>
+                  <nav className="flex flex-col gap-4 mt-8">
+                    {isPremium && (
+                      <button
+                        onClick={() => {
+                          setLocation('/marketplace');
+                          setShowMobileMenu(false);
+                        }}
+                        className="text-left py-2 text-muted-foreground"
+                        data-testid="mobile-link-marketplace"
+                      >
+                        acne-safe marketplace
+                      </button>
+                    )}
+                    <button
+                      onClick={() => {
+                        setLocation('/pricing');
+                        setShowMobileMenu(false);
+                      }}
+                      className="text-left py-2 text-muted-foreground"
+                      data-testid="mobile-link-pricing"
+                    >
+                      pricing
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleReferFriend();
+                        setShowMobileMenu(false);
+                      }}
+                      className="w-full text-left py-2 text-muted-foreground flex items-center gap-2"
+                      data-testid="mobile-button-refer-friend"
+                    >
+                      <Share2 className="h-4 w-4" />
+                      refer a friend
+                    </button>
+                    <div className="border-t pt-4 mt-2">
+                      <button
+                        onClick={() => {
+                          window.location.href = '/api/auth/logout';
+                        }}
+                        className="w-full text-left py-2 text-muted-foreground flex items-center gap-2"
+                        data-testid="mobile-button-logout"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        log out
+                      </button>
+                    </div>
+                  </nav>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
