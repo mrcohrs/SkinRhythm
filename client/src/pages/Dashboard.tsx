@@ -381,6 +381,18 @@ export default function Dashboard() {
             <div className="flex h-16 items-center justify-between">
               <img src={logoPath} alt="AcneAgent" className="h-10" />
               <div className="flex items-center gap-2">
+                {isPremium && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    asChild
+                    data-testid="link-marketplace"
+                  >
+                    <Link href="/marketplace">
+                      Acne-Safe Marketplace
+                    </Link>
+                  </Button>
+                )}
                 <Button
                   variant="outline"
                   size="sm"
@@ -500,6 +512,18 @@ export default function Dashboard() {
           <div className="flex h-16 items-center justify-between">
             <img src={logoPath} alt="AcneAgent" className="h-10" />
             <div className="flex items-center gap-2">
+              {isPremium && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  asChild
+                  data-testid="link-marketplace"
+                >
+                  <Link href="/marketplace">
+                    Acne-Safe Marketplace
+                  </Link>
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"
