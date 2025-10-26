@@ -311,7 +311,7 @@ export default function Landing() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="flex flex-col items-center gap-2 text-center">
                     <img src={coconutImg} alt="Coconut oil" className="w-20 h-20 object-contain" />
-                    <p className="text-sm text-muted-foreground">coconut oil: widely used in per</p>
+                    <p className="text-sm text-muted-foreground">coconut oil: widely used in personal care products. Cocokind has a line of acne products that almost all contain this </p>
                   </div>
                   <div className="flex flex-col items-center gap-2 text-center">
                     <img src={sheaImg} alt="Shea butter" className="w-20 h-20 object-contain" />
