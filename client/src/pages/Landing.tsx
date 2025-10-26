@@ -21,6 +21,9 @@ import {
 import logoPath from "@assets/skinrhythm-logo.svg";
 import productsIllustration from "@assets/product lineup_1761438760613.png";
 import routineIllustration from "@assets/Frame 58_1761434440825.png";
+import algaeImg from "@assets/algae_1761481865848.png";
+import coconutImg from "@assets/coconut_1761481865855.png";
+import sheaImg from "@assets/shea_1761481865855.png";
 import { LoginModal } from "@/components/LoginModal";
 
 export default function Landing() {
@@ -319,24 +322,29 @@ export default function Landing() {
                 </CardContent>
               </Card>
 
-              <Card className="border-primary/20 bg-primary/5 rounded-2xl">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                      <Check className="w-6 h-6 text-primary" />
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="font-normal">mdacne benzoyl peroxide treatment</h4>
-                      <p className="text-sm text-muted-foreground">
-                        all ingredients verified acne-safe — no known comedogenic triggers
-                      </p>
-                      <Badge variant="secondary" className="rounded-full text-xs bg-primary/10 text-primary border-primary/20">
-                        acne-safe
-                      </Badge>
-                    </div>
+              <div className="space-y-6">
+                <h4 className="font-normal text-center">common comedogenic ingredients to avoid:</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <img src={coconutImg} alt="Coconut oil" className="w-20 h-20 object-contain" />
+                    <p className="text-sm text-muted-foreground">coconut oil</p>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <img src={sheaImg} alt="Shea butter" className="w-20 h-20 object-contain" />
+                    <p className="text-sm text-muted-foreground">shea butter</p>
+                  </div>
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <img src={algaeImg} alt="Algae" className="w-20 h-20 object-contain" />
+                    <p className="text-sm text-muted-foreground">algae</p>
+                  </div>
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <div className="w-20 h-20 rounded-full bg-destructive/10 flex items-center justify-center">
+                      <X className="w-10 h-10 text-destructive" />
+                    </div>
+                    <p className="text-sm text-muted-foreground">laureth-4</p>
+                  </div>
+                </div>
+              </div>
 
               <p className="text-xs text-muted-foreground text-center pt-2">
                 for educational purposes only. skinrhythm does not diagnose, treat, or cure medical conditions.
@@ -662,6 +670,20 @@ export default function Landing() {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {/* Mandelic Acid */}
+            <Card className="border-border shadow-sm rounded-2xl">
+              <CardContent className="p-6 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <TestTube className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-normal text-lg">mandelic acid</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  skinrhythm's lead singer: gentle but thorough exfoliant that kills bacteria and fungus, reduces inflammation, and fades hyperpigmentation.
+                </p>
+              </CardContent>
+            </Card>
             {/* Benzoyl Peroxide */}
             <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-6 space-y-4">
@@ -692,20 +714,7 @@ export default function Landing() {
               </CardContent>
             </Card>
 
-            {/* Mandelic Acid */}
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <TestTube className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-normal text-lg">mandelic acid</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  skinrhythm's lead singer: gentle but thorough exfoliant that kills bacteria and fungus, reduces inflammation, and fades hyperpigmentation.
-                </p>
-              </CardContent>
-            </Card>
+           
 
             {/* Niacinamide */}
             <Card className="border-border shadow-sm rounded-2xl">
