@@ -15,7 +15,7 @@ import { WeeklyRoutine } from "./WeeklyRoutine";
 import { InfoCard } from "./InfoCard";
 import type { RoutineType } from "@shared/weeklyRoutines";
 import { getProductById } from "@shared/productLibrary";
-import logoPath from "@assets/skinrhythm-logo.svg";
+import logoPath from "@assets/neweww_1761485311132.png";
 import iceGlobesIcon from "@assets/ciice_1760874110365.png";
 import { Home, RefreshCw, LogIn, Mail, Info, ExternalLink, ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";

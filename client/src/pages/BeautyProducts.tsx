@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { useLocation } from "wouter";
-import logoPath from "@assets/skinrhythm-logo.svg";
+import logoPath from "@assets/neweww_1761485311132.png";
 import { Link } from "wouter";
 import { Footer } from "@/components/Footer";
 

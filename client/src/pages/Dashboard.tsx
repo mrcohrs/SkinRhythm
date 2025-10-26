@@ -24,7 +24,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
 import { getProductById } from "@shared/productLibrary";
-import logoPath from "@assets/skinrhythm-logo.svg";
+import logoPath from "@assets/neweww_1761485311132.png";
 import { Footer } from "@/components/Footer";
 import { RoutineNotes } from "@/components/RoutineNotes";
 import { ProductAlternativesModal } from "@/components/ProductAlternativesModal";

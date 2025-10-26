@@ -15,7 +15,7 @@ import { Search, Filter, Crown, Lock, LogOut } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { Link, useLocation } from 'wouter';
-import logoPath from "@assets/skinrhythm-logo.svg";
+import logoPath from "@assets/neweww_1761485311132.png";
 import { ProductCard } from '@/components/ProductCard';
 import type { Product as ProductCardType } from '@/components/ProductCard';
 import { LoginModal } from '@/components/LoginModal';

@@ -15,7 +15,7 @@
   --elevate-2: rgba(0,0,0, .08);
 
   /* Paper White - Gentle off-white base */
-  --background: 210deg 20% 98.04%;
+  --background: 45deg 100% 98.43%;
 
   /* Graphite Ink - Deep gray with trace of blue for text */
   --foreground: 206.67deg 20.93% 8.43%;
@@ -64,12 +64,12 @@
   --primary-text: 185 55% 40%;
 
   /* Secondary: Restorative Peach - Soft, skin-inspired neutral */
-  --secondary: 222.9deg 100% 59.41%;
+  --secondary: 180deg 16.46% 46.47%;
 
   --secondary-foreground: 0deg 0% 100%;
 
   /* Muted: Hydro Mist - Pale bluish green for cards and backgrounds */
-  --muted: 50deg 12% 90.2%;
+  --muted: 77.14deg 18.92% 92.75%;
 
   --muted-foreground: 225deg 5.56% 28.24%;
 

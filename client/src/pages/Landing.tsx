@@ -18,7 +18,7 @@ import {
   Check,
   X
 } from "lucide-react";
-import logoPath from "@assets/skinrhythm-logo.svg";
+import logoPath from "@assets/neweww_1761485311132.png";
 import productsIllustration from "@assets/product lineup_1761438760613.png";
 import routineIllustration from "@assets/Frame 58_1761434440825.png";
 import algaeImg from "@assets/algae_1761481865848.png";
@@ -276,8 +276,8 @@ export default function Landing() {
 
       {/* 4️⃣ WHY IT WORKS - Clinical Logic + Ingredient Integrity */}
       <section className="py-20 md:py-24 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
+          <div className="grid xlg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Column - Text */}
             <div className="space-y-6">
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
@@ -285,7 +285,7 @@ export default function Landing() {
               </h2>
               
               <p className="text-lg text-muted-foreground leading-relaxed">
-                most "acne-safe" and "non-comedogenic" products contain pore-clogging ingredients. that's why every product in our marketplace is scanned for over 400 known acne triggers — so you can shop our recommendations with confidence.
+                most "non-comedogenic" products and products marketed for acne prone skin actually contain laundry lists of pore-clogging ingredients. that's why every product in the skinrhythm marketplace is scanned for over 400 known acne triggers — so you can shop our recommendations with confidence.
               </p>
 
               <div className="pt-4">
@@ -307,30 +307,26 @@ export default function Landing() {
               
 
               <div className="space-y-6">
-                <h4 className="font-normal text-center">common comedogenics often labeled non-comedogenic:</h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <h4 className="font-medium text-center">common comedogenic ingredients labeled non-comedogenic:</h4>
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-24">
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <img src={coconutImg} alt="Coconut oil" className="w-20 h-20 object-contain" />
-                    <p className="text-sm text-muted-foreground">coconut oil: widely used in personal care products. Cocokind has a line of acne products that almost all contain this </p>
+                    <img src={coconutImg} alt="Coconut oil" className="w-60 h-60 object-contain" />
+                    <p className="text-sm text-muted-foreground"><b>coconut oil:</b> widely used in personal care products. the brand cocokind even has a line of acne products that almost all contain this pore-clogger.</p>
                   </div>
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <img src={sheaImg} alt="Shea butter" className="w-20 h-20 object-contain" />
-                    <p className="text-sm text-muted-foreground">shea butter</p>
+                    <img src={sheaImg} alt="Shea butter" className="w-60 h-60 object-contain" />
+                    <p className="text-sm text-muted-foreground"><b>shea butter:</b> ubiquitous in personal care. finding moisturizers without shea butter is harder than a needle in a haystack.</p>
                   </div>
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <img src={algaeImg} alt="Algae" className="w-20 h-20 object-contain" />
-                    <p className="text-sm text-muted-foreground">algae</p>
+                    <img src={algaeImg} alt="Algae" className="w-60 h-60 object-contain" />
+                    <p className="text-sm text-muted-foreground"><b>algae:</b> a trendy ingredient that has popped up in many personal care products, but that has high levels of iodine that can trigger breakouts.</p>
                   </div>
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <img src={beakerImg} alt="Laureth-4" className="w-20 h-20 object-contain" />
-                    <p className="text-sm text-muted-foreground">laureth-4</p>
+                    <img src={beakerImg} alt="Laureth-4" className="w-60 h-60 object-contain" />
+                    <p className="text-sm text-muted-foreground"><b>laureth-4:</b> a surfactant used in 90% of benzoyl peroxide cream formulations (intended to treat acne) that is extremely comedogenic.</p>
                   </div>
                 </div>
               </div>
-
-              <p className="text-xs text-muted-foreground text-center pt-2">
-                for educational purposes only. skinrhythm does not diagnose, treat, or cure medical conditions.
-              </p>
             </div>
           </div>
         </div>
@@ -420,7 +416,7 @@ export default function Landing() {
                 <div>
                   <h3 className="font-normal mb-2">unlimited ingredient scans</h3>
                   <p className="text-sm text-muted-foreground">
-                    scan any product for acne triggers
+                    scan any product for acne triggers to make sure all your products, from your cleanser to your foundation, are acne-safe.
                   </p>
                 </div>
               </CardContent>
@@ -432,9 +428,9 @@ export default function Landing() {
                   <Brain className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-normal mb-2">routine coach</h3>
+                  <h3 className="font-normal mb-2">routine coach & progress tracking</h3>
                   <p className="text-sm text-muted-foreground">
-                    detailed step-by-step guidance on ramping up on actives, personalized tips, progress tracking, and more.
+                    detailed step-by-step guidance on ramping up on actives, personalized tips, and the ability to take notes on your routine history to track what works best for you.
                   </p>
                 </div>
               </CardContent>
@@ -446,9 +442,9 @@ export default function Landing() {
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-normal mb-2">product alternatives</h3>
+                  <h3 className="font-normal mb-2">premium product alternatives</h3>
                   <p className="text-sm text-muted-foreground">
-                    customize your routine without affecting your results. budget to luxury options that fit your skinrhythm.
+                    customize your routine without affecting your results. budget to luxury options that fit your skinrhythm routine.
                   </p>
                 </div>
               </CardContent>
@@ -460,15 +456,16 @@ export default function Landing() {
                   <Shield className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-normal mb-2">routine history</h3>
+                  <h3 className="font-normal mb-2">full access to the skinrhythm marketplace</h3>
                   <p className="text-sm text-muted-foreground">
-                    view your complete routine history and take notes to track what works best for you.
+                    shop skinrhythm's entire acne-safe marketplace, which includes acne-safe beauty products, tools, and more.
                   </p>
                 </div>
               </CardContent>
             </Card>
           </div>
-
+          
+         
           <Card className="border-primary/20 shadow-sm rounded-2xl max-w-2xl mx-auto">
             <CardContent className="p-8 md:p-12 text-center space-y-6">
               <div className="space-y-2">
@@ -529,9 +526,9 @@ export default function Landing() {
                   </svg>
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">detailed routine guidance (PDF download)</h3>
+                  <h3 className="font-serif text-xl font-light">detailed routine guidance (.pdf download)</h3>
                   <p className="text-sm text-muted-foreground">
-                    a PDF download with detailed instructions for your routine, how to ramp up on actives, and tips and tricks for your clear skin journey.
+                    a .pdf download with detailed instructions for your routine, how to ramp up on actives, and tips and tricks for your clear skin journey.
                   </p>
                   <p className="text-2xl font-normal">$9.99</p>
                 </div>
@@ -552,7 +549,7 @@ export default function Landing() {
                   <Sparkles className="w-8 h-8 text-primary" />
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">access product alternatives</h3>
+                  <h3 className="font-serif text-xl font-light">access premium product alternatives</h3>
                   <p className="text-sm text-muted-foreground">
                     unlock all product options for each step of your current clear skin routine, from drugstore to luxury brands.
                   </p>
@@ -575,7 +572,7 @@ export default function Landing() {
                   <Beaker className="w-8 h-8 text-primary" />
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">ingredient scanner credits</h3>
+                  <h3 className="font-serif text-xl font-light">ingredient scanner credit packs</h3>
                   <p className="text-sm text-muted-foreground">
                     buy credits to scan products you have (or products you want to try) for acne-causing ingredients.
                   </p>

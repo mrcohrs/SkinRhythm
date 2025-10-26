@@ -1,6 +1,6 @@
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
-import logoPath from "@assets/skinrhythm-logo.svg";
+import logoPath from "@assets/neweww_1761485311132.png";
 
 interface HeaderProps {
   onLoginClick?: () => void;
