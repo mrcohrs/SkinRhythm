@@ -666,7 +666,7 @@ export default function Dashboard() {
             <Card className="border-border/50" data-testid="card-routine-mode-toggle">
               <CardContent className="p-4">
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium">Choose Your Routine</Label>
+                  <Label className="text-sm font-normal">Choose Your Routine</Label>
                   <div className="grid grid-cols-2 gap-3">
                     {/* Budget Option */}
                     <Button
@@ -684,7 +684,7 @@ export default function Dashboard() {
                     >
                       <div className="flex items-center gap-2 w-full">
                         <DollarSign className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
-                        <span className="font-semibold text-sm md:text-base">Budget</span>
+                        <span className="font-normal text-sm md:text-base">Budget</span>
                       </div>
                       
                     </Button>
@@ -705,7 +705,7 @@ export default function Dashboard() {
                     >
                       <div className="flex items-center gap-2 w-full">
                         <Sparkles className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
-                        <span className="font-semibold text-sm md:text-base">Premium</span>
+                        <span className="font-normal text-sm md:text-base">Premium</span>
                       </div>
                       
                     </Button>
@@ -771,7 +771,7 @@ export default function Dashboard() {
                       <div className="flex items-center gap-3">
                         <Crown className="h-8 w-8 text-primary flex-shrink-0" />
                         <div>
-                          <h3 className="font-semibold text-lg">Unlock Premium Features</h3>
+                          <h3 className="font-normal text-lg">Unlock Premium Features</h3>
                           <p className="text-sm text-muted-foreground">6-week routine coach, ingredient scanner, multiple product options to choose from for each routine step, and your routine library with notes to track what works.</p>
                         </div>
                       </div>
@@ -786,7 +786,7 @@ export default function Dashboard() {
               {/* Purchased PDFs Section */}
               {canAccessDetailedPdf && (
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-lg">Your Purchased PDFs</h3>
+                  <h3 className="font-normal text-lg">Your Purchased PDFs</h3>
                   
                   {/* Legacy fallback for users who purchased before PDF tracking */}
                   {(!entitlements.data?.pdfPurchases || entitlements.data.pdfPurchases.length === 0) && (
@@ -798,7 +798,7 @@ export default function Dashboard() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                             </svg>
                             <div>
-                              <h4 className="font-semibold">Detailed Routine PDF</h4>
+                              <h4 className="font-normal">Detailed Routine PDF</h4>
                               <p className="text-sm text-muted-foreground">Complete instructions, actives ramping plan, and application tips</p>
                             </div>
                           </div>
@@ -883,7 +883,7 @@ export default function Dashboard() {
                               </svg>
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <h4 className="font-semibold">Detailed Routine PDF</h4>
+                                  <h4 className="font-normal">Detailed Routine PDF</h4>
                                   <span className="text-xs text-muted-foreground">({formattedDate})</span>
                                 </div>
                                 <p className="text-sm text-muted-foreground mb-2">{skinProfile}</p>
@@ -894,7 +894,7 @@ export default function Dashboard() {
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
                                     <div className="text-sm">
-                                      <p className="font-medium text-warning-foreground">Profile Mismatch</p>
+                                      <p className="font-normal text-warning-foreground">Profile Mismatch</p>
                                       <p className="text-muted-foreground mt-0.5">This PDF is based on a different skin profile from your current routine. The instructions may not match your current needs.</p>
                                     </div>
                                   </div>
@@ -957,7 +957,7 @@ export default function Dashboard() {
 
               {/* Shoppable Product List - Horizontal Carousel */}
               <div>
-                <h3 className="font-serif text-2xl font-semibold mb-4" data-testid="heading-shoppable-products">Your Routine Products</h3>
+                <h3 className="font-serif text-2xl font-light mb-4" data-testid="heading-shoppable-products">Your Routine Products</h3>
                 
                 {/* Affiliate Disclosure */}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
@@ -1032,11 +1032,11 @@ export default function Dashboard() {
 
               {/* Visual AM/PM Routine Display */}
               <div className="space-y-6">
-                <h3 className="font-serif text-2xl font-semibold" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
+                <h3 className="font-serif text-2xl font-light" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
                 
                 {/* Morning Routine Visual */}
                 <div>
-                  <h4 className="text-lg font-medium mb-4 flex items-center gap-2">
+                  <h4 className="text-lg font-normal mb-4 flex items-center gap-2">
                     <Sun className="h-5 w-5 text-yellow-500" /> Morning Routine
                   </h4>
                   <div className="space-y-2">
@@ -1044,7 +1044,7 @@ export default function Dashboard() {
                       const productImage = getCategoryImage(product.category);
                       return (
                         <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
-                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-normal text-foreground">
                             {index + 1}
                           </span>
                           <div className="flex-shrink-0 w-20 flex flex-col items-center justify-start gap-1">
@@ -1054,10 +1054,10 @@ export default function Dashboard() {
                             <Badge variant="outline" className="text-xs whitespace-nowrap leading-tight">{product.category}</Badge>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium truncate">{product.name}</p>
+                            <p className="font-normal truncate">{product.name}</p>
                             {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
                             {(product.priceRange || product.price) && (
-                              <p className="text-xs font-medium text-foreground mt-0.5">
+                              <p className="text-xs font-normal text-foreground mt-0.5">
                                 {product.priceRange || `$${product.price}`}
                               </p>
                             )}
@@ -1083,7 +1083,7 @@ export default function Dashboard() {
                 {/* Ice Globes Upsell - For inflamed routines */}
                 {hasIceStep && iceGlobesProduct && (
                   <div className="space-y-2">
-                    <h4 className="text-sm font-semibold text-muted-foreground">
+                    <h4 className="text-sm font-normal text-muted-foreground">
                       Recommended Tool for Inflamed Acne
                     </h4>
                     <CompactProductCard 
@@ -1101,7 +1101,7 @@ export default function Dashboard() {
                 )}
                 {/* Evening Routine Visual */}
                 <div>
-                  <h4 className="text-lg font-medium mb-4 flex items-center gap-2">
+                  <h4 className="text-lg font-normal mb-4 flex items-center gap-2">
                     <Moon className="h-5 w-5 text-blue-400" /> Evening Routine
                   </h4>
                   <div className="space-y-2">
@@ -1109,7 +1109,7 @@ export default function Dashboard() {
                       const productImage = getCategoryImage(product.category);
                       return (
                         <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
-                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-normal text-foreground">
                             {index + 1}
                           </span>
                           <div className="flex-shrink-0 w-20 flex flex-col items-center justify-start gap-1">
@@ -1119,10 +1119,10 @@ export default function Dashboard() {
                             <Badge variant="outline" className="text-xs whitespace-nowrap leading-tight">{product.category}</Badge>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium truncate">{product.name}</p>
+                            <p className="font-normal truncate">{product.name}</p>
                             {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
                             {(product.priceRange || product.price) && (
-                              <p className="text-xs font-medium text-foreground mt-0.5">
+                              <p className="text-xs font-normal text-foreground mt-0.5">
                                 {product.priceRange || `$${product.price}`}
                               </p>
                             )}
@@ -1204,21 +1204,21 @@ export default function Dashboard() {
                       <div className="flex items-start gap-3">
                         <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
-                          <h4 className="font-medium">6-Week Progressive Routine</h4>
+                          <h4 className="font-normal">6-Week Progressive Routine</h4>
                           <p className="text-sm text-muted-foreground">Step-by-step instructions for each week of your treatment</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
                         <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
-                          <h4 className="font-medium">Product Usage Schedule</h4>
+                          <h4 className="font-normal">Product Usage Schedule</h4>
                           <p className="text-sm text-muted-foreground">Know exactly when and how to use each product</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
                         <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
-                          <h4 className="font-medium">Clinical Treatment Notes</h4>
+                          <h4 className="font-normal">Clinical Treatment Notes</h4>
                           <p className="text-sm text-muted-foreground">Expert guidance for managing side effects and optimizing results</p>
                         </div>
                       </div>
@@ -1260,7 +1260,7 @@ export default function Dashboard() {
                         <div className="flex items-center gap-3">
                           <FlaskConical className="h-5 w-5 text-primary" />
                           <div>
-                            <div className="font-medium">
+                            <div className="font-normal">
                               {Math.max(0, 3 - remainingScans)} free scan{Math.max(0, 3 - remainingScans) === 1 ? '' : 's'} remaining
                             </div>
                             <div className="text-sm text-muted-foreground">
@@ -1298,21 +1298,21 @@ export default function Dashboard() {
                         <div className="flex items-start gap-3">
                           <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                           <div>
-                            <h4 className="font-medium">Unlimited Ingredient Scans</h4>
+                            <h4 className="font-normal">Unlimited Ingredient Scans</h4>
                             <p className="text-sm text-muted-foreground">Check as many products as you want</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-3">
                           <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                           <div>
-                            <h4 className="font-medium">Product Alternatives</h4>
+                            <h4 className="font-normal">Product Alternatives</h4>
                             <p className="text-sm text-muted-foreground">Explore budget and premium product options</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-3">
                           <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                           <div>
-                            <h4 className="font-medium">6-Week Routine Coach</h4>
+                            <h4 className="font-normal">6-Week Routine Coach</h4>
                             <p className="text-sm text-muted-foreground">Detailed week-by-week treatment guidance</p>
                           </div>
                         </div>
@@ -1408,7 +1408,7 @@ Hyaluronic Acid"
                         <CardContent>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="text-center p-4 rounded-lg bg-muted/50">
-                              <div className="text-3xl font-bold text-foreground">
+                              <div className="text-3xl font-light text-foreground">
                                 {ingredientResults.totalChecked}
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
@@ -1416,7 +1416,7 @@ Hyaluronic Acid"
                               </div>
                             </div>
                             <div className="text-center p-4 rounded-lg bg-destructive/10">
-                              <div className="text-3xl font-bold text-destructive">
+                              <div className="text-3xl font-light text-destructive">
                                 {ingredientResults.foundIngredients.length}
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
@@ -1424,7 +1424,7 @@ Hyaluronic Acid"
                               </div>
                             </div>
                             <div className="text-center p-4 rounded-lg bg-primary/10">
-                              <div className="text-3xl font-bold text-primary">
+                              <div className="text-3xl font-light text-primary">
                                 {ingredientResults.safeIngredients.length}
                               </div>
                               <div className="text-sm text-muted-foreground mt-1">
@@ -1508,7 +1508,7 @@ Hyaluronic Acid"
                             <div className="flex items-center gap-3">
                               <CheckCircle className="h-8 w-8 text-primary flex-shrink-0" />
                               <div>
-                                <h3 className="font-semibold text-lg text-primary">
+                                <h3 className="font-normal text-lg text-primary">
                                   All Clear!
                                 </h3>
                                 <p className="text-muted-foreground">
@@ -1546,21 +1546,21 @@ Hyaluronic Acid"
                       <div className="flex items-start gap-3">
                         <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
-                          <h4 className="font-medium">Unlimited Saved Routines</h4>
+                          <h4 className="font-normal">Unlimited Saved Routines</h4>
                           <p className="text-sm text-muted-foreground">Create routines for different seasons, skin conditions, or goals</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
                         <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
-                          <h4 className="font-medium">Easy Routine Switching</h4>
+                          <h4 className="font-normal">Easy Routine Switching</h4>
                           <p className="text-sm text-muted-foreground">Switch between routines with one click</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
                         <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
-                          <h4 className="font-medium">Routine History</h4>
+                          <h4 className="font-normal">Routine History</h4>
                           <p className="text-sm text-muted-foreground">Track which routines worked best for your skin</p>
                         </div>
                       </div>
@@ -1683,20 +1683,20 @@ Hyaluronic Acid"
 
               {/* Morning Products */}
               <div className="space-y-3">
-                <h3 className="font-medium">Morning Routine</h3>
+                <h3 className="font-normal">Morning Routine</h3>
                 <div className="space-y-2">
                   {((selectedRoutine.routineData as any)?.products?.morning || []).map((product: any, index: number) => {
                     const productImage = getCategoryImage(product.category);
                     return (
                       <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-normal text-foreground">
                           {index + 1}
                         </span>
                         <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
                           <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium">{product.name}</p>
+                          <p className="font-normal">{product.name}</p>
                           <p className="text-muted-foreground text-xs">{product.category}</p>
                         </div>
                         {product.tier && (
@@ -1710,20 +1710,20 @@ Hyaluronic Acid"
 
               {/* Evening Products */}
               <div className="space-y-3">
-                <h3 className="font-medium">Evening Routine</h3>
+                <h3 className="font-normal">Evening Routine</h3>
                 <div className="space-y-2">
                   {((selectedRoutine.routineData as any)?.products?.evening || []).map((product: any, index: number) => {
                     const productImage = getCategoryImage(product.category);
                     return (
                       <div key={index} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-normal text-foreground">
                           {index + 1}
                         </span>
                         <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-2">
                           <img src={productImage} alt={product.category} className="w-full h-full object-contain" />
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium">{product.name}</p>
+                          <p className="font-normal">{product.name}</p>
                           <p className="text-muted-foreground text-xs">{product.category}</p>
                         </div>
                         {product.tier && (
