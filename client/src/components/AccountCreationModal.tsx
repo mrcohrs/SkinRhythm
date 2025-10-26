@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { trackSignup, setUserProperties } from "@/lib/analytics";
 
 interface AccountCreationModalProps {
   open: boolean;
@@ -31,6 +32,16 @@ export function AccountCreationModal({ open, onClose, onSuccess, userName }: Acc
       return await response.json();
     },
     onSuccess: (user) => {
+      // Track signup event
+      trackSignup('email');
+      
+      // Set user properties for analytics
+      setUserProperties({
+        userId: user.id,
+        membershipTier: user.membershipTier || 'free',
+        isFoundingMember: user.isFoundingMember || false
+      });
+      
       toast({
         title: "Account created!",
         description: "Your account has been created successfully.",

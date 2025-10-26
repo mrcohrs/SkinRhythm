@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { trackLogin, setUserProperties } from "@/lib/analytics";
 
 interface LoginModalProps {
   open: boolean;
@@ -31,6 +32,16 @@ export function LoginModal({ open, onClose, onSuccess }: LoginModalProps) {
     onSuccess: async (user) => {
       // Refresh user data
       await queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
+      
+      // Track login event
+      trackLogin('email');
+      
+      // Set user properties for analytics
+      setUserProperties({
+        userId: user.id,
+        membershipTier: user.membershipTier || 'free',
+        isFoundingMember: user.isFoundingMember || false
+      });
       
       toast({
         title: "Welcome back!",
