@@ -11,8 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, Search, Filter } from 'lucide-react';
+import { ExternalLink, Search, Filter, Crown, Lock } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAuth } from '@/hooks/useAuth';
+import { Link } from 'wouter';
 
 interface SpecificProduct {
   specificProductName: string;
@@ -37,14 +39,20 @@ interface MarketplaceData {
 }
 
 export default function Marketplace() {
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPriceTier, setSelectedPriceTier] = useState<string>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
 
-  const { data, isLoading } = useQuery<MarketplaceData>({
+  const { data, isLoading, error } = useQuery<MarketplaceData>({
     queryKey: ['/api/marketplace'],
+    enabled: isAuthenticated,
   });
+
+  // Check if error is 403 (not premium)
+  const isPremiumRequired = error && (error as any).message?.includes('403');
+  const isNotAuthenticated = !authLoading && !isAuthenticated;
 
   // Extract all specific products with their parent product info
   const allProducts = useMemo(() => {
@@ -147,12 +155,115 @@ export default function Marketplace() {
     return tierMap[tier] || { label: tier, variant: 'outline' };
   };
 
+  // Show login prompt for non-authenticated users
+  if (isNotAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background">
+        <section className="py-12 md:py-16 bg-muted/30 border-b">
+          <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
+            <div className="max-w-3xl mx-auto text-center space-y-4">
+              <h1 className="font-serif text-4xl md:text-5xl font-semibold">
+                Acne-Safe Marketplace
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Every product screened for 400+ acne-causing ingredients. Shop with confidence.
+              </p>
+            </div>
+          </div>
+        </section>
+        
+        <section className="py-16">
+          <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-3xl">
+            <Card className="border-border shadow-sm rounded-2xl">
+              <CardContent className="p-12 text-center space-y-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Lock className="w-8 h-8 text-primary" />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="font-serif text-2xl font-semibold">Sign In Required</h2>
+                  <p className="text-muted-foreground">
+                    Please sign in to access the acne-safe marketplace.
+                  </p>
+                </div>
+                <Button
+                  size="lg"
+                  onClick={() => window.location.href = '/api/login'}
+                  className="rounded-full"
+                  data-testid="button-login"
+                >
+                  Sign In
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // Show premium upgrade prompt for non-premium users
+  if (isPremiumRequired) {
+    return (
+      <div className="min-h-screen bg-background">
+        <section className="py-12 md:py-16 bg-muted/30 border-b">
+          <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
+            <div className="max-w-3xl mx-auto text-center space-y-4">
+              <h1 className="font-serif text-4xl md:text-5xl font-semibold">
+                Acne-Safe Marketplace
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Every product screened for 400+ acne-causing ingredients. Shop with confidence.
+              </p>
+            </div>
+          </div>
+        </section>
+        
+        <section className="py-16">
+          <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-3xl">
+            <Card className="border-primary/20 shadow-sm rounded-2xl">
+              <CardContent className="p-12 text-center space-y-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Crown className="w-8 h-8 text-primary" />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="font-serif text-2xl font-semibold">Premium Feature</h2>
+                  <p className="text-muted-foreground">
+                    The acne-safe marketplace is available exclusively to Premium members. Browse our curated collection of verified products, all screened for 400+ acne-causing ingredients.
+                  </p>
+                </div>
+                <div className="space-y-4">
+                  <Button
+                    size="lg"
+                    asChild
+                    className="rounded-full"
+                    data-testid="button-upgrade-premium"
+                  >
+                    <Link href="/pricing">
+                      Upgrade to Premium
+                    </Link>
+                  </Button>
+                  <p className="text-xs text-muted-foreground">
+                    Starting at $2.99/month
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <section className="py-12 md:py-16 bg-muted/30 border-b">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="max-w-3xl mx-auto text-center space-y-4">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Crown className="w-6 h-6 text-primary" />
+              <Badge variant="secondary" className="rounded-full">Premium</Badge>
+            </div>
             <h1 className="font-serif text-4xl md:text-5xl font-semibold">
               Acne-Safe Marketplace
             </h1>

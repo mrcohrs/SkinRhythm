@@ -122,7 +122,7 @@ export function registerWebhook(app: Express): void {
                   acneTypes: currentRoutine.acneTypes,
                   acneSeverity: currentRoutine.acneSeverity,
                   isPregnantOrNursing: currentRoutine.isPregnantOrNursing,
-                  routineData: currentRoutine.routineData,
+                  routineData: currentRoutine.routineData as any,
                 });
                 console.log(`[Webhook] Saved PDF purchase snapshot for user ${userId}`);
               } else {
@@ -1004,9 +1004,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // 6. Marketplace - Get all products with variants
-  app.get('/api/marketplace', async (_req, res) => {
+  // 6. Marketplace - Get all products with variants (Premium only)
+  app.get('/api/marketplace', isAuthenticated, async (req: any, res) => {
     try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Check if user has active premium membership
+      const isPremium = (user.membershipTier === "premium" || user.membershipTier === "premium_plus") && 
+                       (!user.membershipExpiresAt || new Date(user.membershipExpiresAt) > new Date());
+      
+      if (!isPremium) {
+        return res.status(403).json({ 
+          message: "Premium membership required to access marketplace",
+          requiresPremium: true 
+        });
+      }
+      
       const { PRODUCT_LIBRARY } = await import('@shared/productLibrary');
       
       // Convert product library to array and include all product data
