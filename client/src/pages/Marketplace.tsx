@@ -11,11 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, Search, Filter, Crown, Lock, LogOut } from 'lucide-react';
+import { Search, Filter, Crown, Lock, LogOut } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'wouter';
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import { ProductCard } from '@/components/ProductCard';
+import type { Product as ProductCardType } from '@/components/ProductCard';
 
 interface SpecificProduct {
   specificProductName: string;
@@ -130,30 +132,6 @@ export default function Marketplace() {
     setSelectedCategory('all');
     setSelectedPriceTier('all');
     setSelectedBrand('all');
-  };
-
-  // Category image mapping
-  const getCategoryImage = (category: string) => {
-    const categoryMap: Record<string, string> = {
-      'Cleanser': '🧴',
-      'Toner': '💧',
-      'Serum': '✨',
-      'Hydrator': '💦',
-      'Moisturizer': '🧴',
-      'SPF': '☀️',
-      'Treatment': '💊',
-      'Tool': '🧊',
-    };
-    return categoryMap[category] || '🧴';
-  };
-
-  const getPriceTierBadge = (tier: string) => {
-    const tierMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'outline' }> = {
-      'budget': { label: 'Budget', variant: 'secondary' },
-      'standard': { label: 'Standard', variant: 'outline' },
-      'premium': { label: 'Premium', variant: 'default' },
-    };
-    return tierMap[tier] || { label: tier, variant: 'outline' };
   };
 
   // Show login prompt for non-authenticated users
@@ -412,73 +390,28 @@ export default function Marketplace() {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product, index) => {
-                const tierBadge = getPriceTierBadge(product.priceTier);
+                // Transform marketplace product data to ProductCard format
+                const productCardData: ProductCardType = {
+                  name: product.specificProductName,
+                  brand: product.brand,
+                  category: product.category,
+                  price: 0, // Not used when priceRange is provided
+                  priceTier: product.priceTier as "budget" | "standard" | "premium",
+                  priceRange: product.priceRange,
+                  benefits: [],
+                  affiliateLink: product.affiliateLink,
+                  originalLink: product.productLink,
+                  isRecommended: product.isRecommended,
+                };
                 
                 return (
-                  <Card 
-                    key={`${product.productId}-${index}`} 
-                    className="border-border shadow-sm rounded-2xl hover-elevate"
-                    data-testid={`card-product-${product.productId}-${index}`}
-                  >
-                    <CardContent className="p-6 space-y-4">
-                      {/* Category Icon */}
-                      <div className="flex justify-center">
-                        <div className="text-6xl">
-                          {getCategoryImage(product.category)}
-                        </div>
-                      </div>
-
-                      {/* Product Info */}
-                      <div className="space-y-2 text-center">
-                        <div className="flex items-center justify-center gap-2 flex-wrap">
-                          <Badge variant="secondary" className="rounded-full text-xs">
-                            {product.category}
-                          </Badge>
-                          <Badge variant={tierBadge.variant} className="rounded-full text-xs">
-                            {tierBadge.label}
-                          </Badge>
-                        </div>
-
-                        <h3 className="font-medium text-lg leading-tight">
-                          {product.specificProductName}
-                        </h3>
-
-                        <p className="text-sm text-muted-foreground">
-                          {product.brand}
-                        </p>
-
-                        {product.priceRange && (
-                          <p className="text-sm font-medium">
-                            {product.priceRange}
-                          </p>
-                        )}
-
-                        {product.isRecommended && (
-                          <Badge variant="outline" className="rounded-full text-xs border-primary/50 bg-primary/5">
-                            ⭐ Recommended
-                          </Badge>
-                        )}
-                      </div>
-
-                      {/* CTA Button */}
-                      <Button
-                        asChild
-                        className="w-full rounded-full"
-                        data-testid={`button-shop-${product.productId}-${index}`}
-                      >
-                        <a 
-                          href={product.affiliateLink} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                        >
-                          Shop Now
-                          <ExternalLink className="ml-2 h-4 w-4" />
-                        </a>
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <ProductCard
+                    key={`${product.productId}-${index}`}
+                    product={productCardData}
+                    isPremiumUser={true}
+                  />
                 );
               })}
             </div>
