@@ -100,39 +100,39 @@ export default function Landing() {
 
       {/* 2️⃣ TRUST / PROOF STRIP - Science, Not Hype */}
       <section className="py-12 md:py-16 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
           <h2 className="text-center font-serif text-2xl md:text-3xl font-semibold mb-12">
             Rooted in science. Built on ingredient integrity.
           </h2>
           
-          <div className="space-y-8 max-w-4xl mx-auto">
-            {/* Item 1 - Icon Left */}
+          <div className="space-y-16 max-w-4xl mx-auto">
+            {/* Item 1 */}
             <div className="flex items-center gap-6">
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Microscope className="w-8 h-8 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="font-medium mb-1">Rigorous product ingredient standards</h3>
+                <h3 className="font-medium mb-1">The only acne-safe marketplace</h3>
                 <p className="text-sm text-muted-foreground">
-                  Screened for 400+ acne-causing ingredients.
+                  Every product we recommend is screened for over 400 acne-causing ingredients. Our zero-tolerance policy means you can shop with confidence knowing any product we recommend is completely free of acne triggers.
                 </p>
               </div>
             </div>
 
-            {/* Item 2 - Icon Right */}
+            {/* Item 2 */}
             <div className="flex items-center gap-6">
-              <div className="flex-1 text-right">
-                <h3 className="font-medium mb-1">Results-based treatment frameworks</h3>
-                <p className="text-sm text-muted-foreground">
-                  We follow clinical data, not Tiktok trends.
-                </p>
-              </div>
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <FlaskConical className="w-8 h-8 text-primary" />
               </div>
+              <div className="flex-1">
+                <h3 className="font-medium mb-1">Results-based treatment frameworks</h3>
+                <p className="text-sm text-muted-foreground">
+                  We follow clinical data, not Tiktok trends. Your Clear Skin Plan is built on evidence-based protocols to ensure you get the best results.
+                </p>
+              </div>
             </div>
 
-            {/* Item 3 - Icon Left */}
+            {/* Item 3 */}
             <div className="flex items-center gap-6">
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Brain className="w-8 h-8 text-primary" />
@@ -140,21 +140,21 @@ export default function Landing() {
               <div className="flex-1">
                 <h3 className="font-medium mb-1">Customized for your unique skin profile</h3>
                 <p className="text-sm text-muted-foreground">
-                  Fine tuned for skin type, tone, and acne type(s).
+                  Each Clear Skin Plan is fine tuned to your unique skin profile, including skin type and tone, acne type, and barrier function.
                 </p>
               </div>
             </div>
 
-            {/* Item 4 - Icon Right */}
+            {/* Item 4 */}
             <div className="flex items-center gap-6">
-              <div className="flex-1 text-right">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Shield className="w-8 h-8 text-primary" />
+              </div>
+              <div className="flex-1">
                 <h3 className="font-medium mb-1">Affordable recommendations</h3>
                 <p className="text-sm text-muted-foreground">
                   Effective and accessible product recommendations.
                 </p>
-              </div>
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Shield className="w-8 h-8 text-primary" />
               </div>
             </div>
           </div>
