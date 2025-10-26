@@ -56,15 +56,15 @@
   --popover-border: 174 20% 92%;
 
   /* Primary: Clearwater Blue - A light blue-green for clarity and freshness */
-  --primary: 185 55% 61%;
+  --primary: 184.95deg 54.77% 60.98%;
 
-  --primary-foreground: 206 18% 22%;
+  --primary-foreground: 0deg 0% 100%;
 
   /* Primary Text: Darker Clearwater Blue for accessible text contrast */
   --primary-text: 185 55% 40%;
 
   /* Secondary: Restorative Peach - Soft, skin-inspired neutral */
-  --secondary: 23 84% 74%;
+  --secondary: 23.24deg 83.46% 73.92%;
 
   --secondary-foreground: 206 18% 22%;
 
@@ -74,7 +74,7 @@
   --muted-foreground: 206 18% 40%;
 
   /* Accent: Soft Apricot - Human touch highlights */
-  --accent: 23 100% 87%;
+  --accent: 22.73deg 100% 87.06%;
 
   --accent-foreground: 206 18% 22%;
 
@@ -96,9 +96,9 @@
   --chart-4: 174 35% 70%;
   --chart-5: 23 100% 75%;
 
-  --font-sans: 'Poppins', sans-serif;
+  --font-sans: 'Roboto', sans-serif;
   --font-serif: 'Cormorant Garamond', serif;
-  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  --font-mono: 'Ubuntu Mono', monospace;
   --radius: 0.7rem; /* 8px */
   --shadow-2xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.04);
   --shadow-xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.06);
@@ -213,6 +213,13 @@
 
   --input: 206 15% 25%;
   --ring: 185 55% 65%;
+}
+
+@layer base {
+  /* Typography: 2% letter-spacing for all headings and body text */
+  h1, h2, h3, h4, h5, h6, p, body {
+    letter-spacing: 0.02em;
+  }
 }
 
 @layer utilities {
