@@ -25,6 +25,7 @@ import coconutImg from "@assets/coconut_1761481865855.png";
 import sheaImg from "@assets/shea_1761481865855.png";
 import beakerImg from "@assets/beaker_1761482228536.png";
 import { Header } from "@/components/Header";
+import { FloatingCTA } from "@/components/FloatingCTA";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
@@ -32,6 +33,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      <FloatingCTA premiumSectionId="premium-section" />
 
       {/* 1️⃣ HERO - The Emotional Hook + Core Promise */}
       <section className="relative py-16 md:py-24 lg:py-32">
@@ -363,7 +365,7 @@ export default function Landing() {
       </section>
 
       {/* 6️⃣ PREMIUM TIER - Upgrade for Guidance & Control */}
-      <section className="py-20 md:py-24 bg-muted/30">
+      <section id="premium-section" className="py-20 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="text-center space-y-4 mb-12">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
