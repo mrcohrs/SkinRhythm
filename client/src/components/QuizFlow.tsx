@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { trackQuizStarted, trackQuizCompleted } from "@/lib/analytics";
 import veryFairImg from "@assets/Very Fair_1760686161679.png";
 import fairLightImg from "@assets/Fair-Light_1760686161678.png";
 import lightMediumImg from "@assets/Light Medium_1760686161678.png";
@@ -84,6 +85,11 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
   const visibleStepNumber = getVisibleStepNumber();
   const progress = (visibleStepNumber / visibleSteps) * 100;
 
+  // Track quiz started on component mount
+  useEffect(() => {
+    trackQuizStarted();
+  }, []);
+
   // Calculate Fitzpatrick type based on skin tone and sun reaction
   const calculateFitzpatrickType = (): "1-3" | "4+" => {
     // If skin tone is 1 or 2 → Fitz 1-3
@@ -143,6 +149,16 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
         ...answers,
         skinType: answers.skinType === "normal/combination" ? "normal" : answers.skinType
       };
+      
+      // Track quiz completion
+      trackQuizCompleted({
+        skinType: normalizedAnswers.skinType,
+        fitzpatrickType: normalizedAnswers.fitzpatrickType,
+        acneTypes: normalizedAnswers.acneTypes,
+        acneSeverity: normalizedAnswers.acneSeverity,
+        isPregnantOrNursing: normalizedAnswers.isPregnantOrNursing === "yes"
+      });
+      
       onComplete(normalizedAnswers);
     }
   };

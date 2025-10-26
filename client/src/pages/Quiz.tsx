@@ -8,6 +8,7 @@ import { AccountCreationModal } from "@/components/AccountCreationModal";
 import { LoginModal } from "@/components/LoginModal";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+import { trackRoutineGenerated } from "@/lib/analytics";
 
 export default function Quiz() {
   const { user } = useAuth();
@@ -28,6 +29,14 @@ export default function Quiz() {
     onSuccess: (data) => {
       setRoutineData(data.routine);
       setShowQuiz(false);
+      
+      // Track routine generation
+      trackRoutineGenerated({
+        routineType: data.routine.routineType || 'unknown',
+        skinType: data.answers.skinType,
+        fitzpatrickType: data.answers.fitzpatrickType,
+        productCount: (data.routine.products?.morning?.length || 0) + (data.routine.products?.evening?.length || 0)
+      });
       
       // Show account creation modal if not logged in
       if (!user) {
