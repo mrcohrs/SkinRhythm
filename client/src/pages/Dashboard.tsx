@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Crown, Sun, Moon, DollarSign, Sparkles } from "lucide-react";
+import { FlaskConical, RefreshCw, Share2, ExternalLink, User, Calendar, Check, AlertCircle, CheckCircle, LogOut, Crown, Sun, Moon, DollarSign, Sparkles, Menu, Download } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { checkIngredients } from "@shared/acneCausingIngredients";
 import { useLocation } from "wouter";
@@ -44,6 +44,7 @@ export default function Dashboard() {
   const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
   const [selectedRoutineId, setSelectedRoutineId] = useState<string | null>(null);
   const [showRoutineModal, setShowRoutineModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   
   // Consent modal state
   const [showConsentModal, setShowConsentModal] = useState(false);
@@ -264,10 +265,7 @@ export default function Dashboard() {
       setRoutineMode(newMode);
       
       // Track routine mode change
-      trackRoutineModeChanged({
-        from: newMode === 'premium' ? 'basic' : 'premium',
-        to: newMode
-      });
+      trackRoutineModeChanged(newMode);
       
       toast({
         title: "Routine updated",
@@ -323,8 +321,8 @@ export default function Dashboard() {
       // Track product alternative selection
       trackProductAlternativeSelected({
         category: variables.category,
-        newProduct: variables.productName,
-        routineId: currentRoutine?.id || ''
+        originalProduct: '', // Not tracked
+        newProduct: variables.productName
       });
       
       queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
@@ -607,20 +605,58 @@ export default function Dashboard() {
           
           {/* Welcome Section */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="font-serif text-3xl md:text-4xl text-foreground">
-                {currentRoutine.name ? `${currentRoutine.name}` : ''}'s Routine
-              </h1>
-              <div className="text-muted-foreground mt-1 flex items-center gap-2 flex-wrap">
-                <span>
-                  {currentRoutine.skinType} skin • {currentRoutine.acneTypes && currentRoutine.acneTypes.length > 0 
-                    ? currentRoutine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
-                    : 'acne'} ({currentRoutine.acneSeverity})
-                </span>
-                {isPremium && <Badge variant="secondary">Premium</Badge>}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <h1 className="font-serif text-3xl md:text-4xl text-foreground">
+                  {currentRoutine.name ? `${currentRoutine.name}` : ''}'s Routine
+                </h1>
+                {isPremium && (
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-xs font-normal">+</span>
+                  </div>
+                )}
+              </div>
+              <div className="text-muted-foreground text-sm">
+                {currentRoutine.skinType} skin • {currentRoutine.acneTypes && currentRoutine.acneTypes.length > 0 
+                  ? currentRoutine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
+                  : 'acne'} ({currentRoutine.acneSeverity})
               </div>
               
-              
+              {/* Budget/Premium Toggle - Now under username */}
+              {canAccessProductAlternatives && (
+                <div className="flex gap-2">
+                  <Button
+                    variant={routineMode === 'basic' ? 'default' : 'outline'}
+                    size="sm"
+                    className="h-7 px-3 text-xs gap-1.5"
+                    onClick={() => {
+                      if (routineMode !== 'basic') {
+                        routineModeMutation.mutate('basic');
+                      }
+                    }}
+                    disabled={routineModeMutation.isPending}
+                    data-testid="button-routine-basic"
+                  >
+                    <DollarSign className="h-3 w-3" />
+                    Budget
+                  </Button>
+                  <Button
+                    variant={routineMode === 'premium' ? 'default' : 'outline'}
+                    size="sm"
+                    className="h-7 px-3 text-xs gap-1.5"
+                    onClick={() => {
+                      if (routineMode !== 'premium') {
+                        routineModeMutation.mutate('premium');
+                      }
+                    }}
+                    disabled={routineModeMutation.isPending}
+                    data-testid="button-routine-premium"
+                  >
+                    <Sparkles className="h-3 w-3" />
+                    Premium
+                  </Button>
+                </div>
+              )}
             </div>
             
             <div className="flex gap-2">
@@ -661,108 +697,93 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* Routine Mode Toggle for Users with Product Alternatives Access */}
-          {canAccessProductAlternatives && (
-            <Card className="border-border/50" data-testid="card-routine-mode-toggle">
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <Label className="text-sm font-normal">Choose Your Routine</Label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* Budget Option */}
-                    <Button
-                      variant={routineMode === 'basic' ? 'default' : 'outline'}
-                      className={`h-auto py-3 px-3 md:px-4 flex flex-col items-start gap-2 transition-all ${
-                        routineMode === 'basic' ? 'ring-2 ring-primary ring-offset-2' : ''
-                      }`}
-                      onClick={() => {
-                        if (routineMode !== 'basic') {
-                          routineModeMutation.mutate('basic');
-                        }
-                      }}
-                      disabled={routineModeMutation.isPending}
-                      data-testid="button-routine-basic"
-                    >
-                      <div className="flex items-center gap-2 w-full">
-                        <DollarSign className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
-                        <span className="font-normal text-sm md:text-base">Budget</span>
-                      </div>
-                      
-                    </Button>
 
-                    {/* Premium Option */}
-                    <Button
-                      variant={routineMode === 'premium' ? 'default' : 'outline'}
-                      className={`h-auto py-3 px-3 md:px-4 flex flex-col items-start gap-2 transition-all ${
-                        routineMode === 'premium' ? 'ring-2 ring-primary ring-offset-2' : ''
-                      }`}
-                      onClick={() => {
-                        if (routineMode !== 'premium') {
-                          routineModeMutation.mutate('premium');
-                        }
-                      }}
-                      disabled={routineModeMutation.isPending}
-                      data-testid="button-routine-premium"
-                    >
-                      <div className="flex items-center gap-2 w-full">
-                        <Sparkles className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
-                        <span className="font-normal text-sm md:text-base">Premium</span>
-                      </div>
-                      
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          {/* Mobile Tab Dropdown Menu */}
+          <div className="md:hidden">
+            <Button
+              variant="outline"
+              className="w-full justify-between"
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              data-testid="button-mobile-menu"
+            >
+              <span className="flex items-center gap-2">
+                <Menu className="h-4 w-4" />
+                {activeTab === 'products' && 'My Products'}
+                {activeTab === 'treatment' && 'Routine Coach'}
+                {activeTab === 'ingredient-checker' && 'Ingredient Scanner'}
+                {activeTab === 'library' && 'Routine Library'}
+              </span>
+            </Button>
+            {showMobileMenu && (
+              <Card className="mt-2 border-border">
+                <CardContent className="p-2 space-y-1">
+                  <Button
+                    variant={activeTab === 'products' ? 'default' : 'ghost'}
+                    className="w-full justify-start"
+                    onClick={() => { setActiveTab('products'); setShowMobileMenu(false); }}
+                    data-testid="tab-products-mobile"
+                  >
+                    My Products
+                  </Button>
+                  <Button
+                    variant={activeTab === 'treatment' ? 'default' : 'ghost'}
+                    className="w-full justify-start gap-2"
+                    onClick={() => { setActiveTab('treatment'); setShowMobileMenu(false); }}
+                    data-testid="tab-treatment-mobile"
+                  >
+                    <span>Routine Coach</span>
+                    {!canAccessRoutineCoach && <Crown className="h-3.5 w-3.5" />}
+                  </Button>
+                  <Button
+                    variant={activeTab === 'ingredient-checker' ? 'default' : 'ghost'}
+                    className="w-full justify-start gap-2"
+                    onClick={() => { setActiveTab('ingredient-checker'); setShowMobileMenu(false); }}
+                    data-testid="tab-ingredient-checker-mobile"
+                  >
+                    <span>Ingredient Scanner</span>
+                    {remainingScans <= 0 && !entitlements.data?.hasUnlimitedScans && <Crown className="h-3.5 w-3.5" />}
+                  </Button>
+                  <Button
+                    variant={activeTab === 'library' ? 'default' : 'ghost'}
+                    className="w-full justify-start gap-2"
+                    onClick={() => { setActiveTab('library'); setShowMobileMenu(false); }}
+                    data-testid="tab-library-mobile"
+                  >
+                    <span>Routine Library</span>
+                    {!isPremium && <Crown className="h-3.5 w-3.5" />}
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </div>
 
-          {/* Tabs - Horizontal Scrolling Carousel */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <div className="relative">
-              {/* Gradient fade on left edge */}
-              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none md:hidden" />
-              {/* Gradient fade on right edge */}
-              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none md:hidden" />
-              
-              <TabsList 
-                className="w-full md:max-w-3xl inline-flex md:grid md:grid-cols-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth gap-1" 
-                data-testid="tabs-dashboard"
-              >
-                <TabsTrigger 
-                  value="products" 
-                  data-testid="tab-products"
-                  className="flex-shrink-0 snap-center min-w-[140px] md:min-w-0 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
-                >
-                  My Products
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="treatment" 
-                  data-testid="tab-treatment"
-                  className="flex-shrink-0 snap-center min-w-[180px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
-                >
-                  <span>Routine Coach</span>
-                  {!canAccessRoutineCoach && <Crown className="h-3.5 w-3.5 text-secondary" />}
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="ingredient-checker" 
-                  data-testid="tab-ingredient-checker"
-                  className="flex-shrink-0 snap-center min-w-[200px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
-                >
-                  <span>Ingredient Scanner</span>
-                  {remainingScans <= 0 && !entitlements.data?.hasUnlimitedScans && <Crown className="h-3.5 w-3.5 text-secondary" />}
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="library" 
-                  data-testid="tab-library"
-                  className="flex-shrink-0 snap-center min-w-[170px] md:min-w-0 gap-1.5 relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-primary before:to-accent before:opacity-0 before:transition-opacity data-[state=active]:before:opacity-100"
-                >
-                  <span>Routine Library</span>
-                  {!isPremium && <Crown className="h-3.5 w-3.5 text-secondary" />}
-                </TabsTrigger>
-              </TabsList>
-            </div>
+          {/* Desktop Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full hidden md:block">
+            <TabsList className="w-full max-w-3xl grid grid-cols-4 gap-1" data-testid="tabs-dashboard">
+              <TabsTrigger value="products" data-testid="tab-products">
+                My Products
+              </TabsTrigger>
+              <TabsTrigger value="treatment" data-testid="tab-treatment" className="gap-1.5">
+                <span>Routine Coach</span>
+                {!canAccessRoutineCoach && <Crown className="h-3.5 w-3.5" />}
+              </TabsTrigger>
+              <TabsTrigger value="ingredient-checker" data-testid="tab-ingredient-checker" className="gap-1.5">
+                <span>Ingredient Scanner</span>
+                {remainingScans <= 0 && !entitlements.data?.hasUnlimitedScans && <Crown className="h-3.5 w-3.5" />}
+              </TabsTrigger>
+              <TabsTrigger value="library" data-testid="tab-library" className="gap-1.5">
+                <span>Routine Library</span>
+                {!isPremium && <Crown className="h-3.5 w-3.5" />}
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          {/* Tab Content Container */}
+          <div className="space-y-8 mt-6">
 
             {/* My Products Tab */}
-            <TabsContent value="products" className="space-y-8 mt-6">
+            {activeTab === 'products' && (
+            <div className="space-y-8">
               {/* Premium Upsell for Free Users */}
               {!canAccessProductAlternatives && (
                 <Card className="border-primary/20" data-testid="card-products-upgrade">
@@ -1182,10 +1203,12 @@ export default function Dashboard() {
               {!isPremium && (
                 <RoutinePurchaseOptions isAuthenticated={!!user} className="mt-8" />
               )}
-            </TabsContent>
+            </div>
+            )}
 
             {/* Routine Coach Tab */}
-            <TabsContent value="treatment" className="space-y-6 mt-6">
+            {activeTab === 'treatment' && (
+            <div className="space-y-6">
               {!canAccessRoutineCoach ? (
                 <Card className="border-primary/20" data-testid="card-treatment-upgrade">
                   <CardHeader>
@@ -1247,10 +1270,12 @@ export default function Dashboard() {
                   <p className="text-sm text-muted-foreground">This routine may have been created before treatment plans were available.</p>
                 </div>
               )}
-            </TabsContent>
+            </div>
+            )}
 
             {/* Ingredient Checker Tab */}
-            <TabsContent value="ingredient-checker" className="space-y-6 mt-6">
+            {activeTab === 'ingredient-checker' && (
+            <div className="space-y-6">
               <div className="max-w-4xl mx-auto space-y-6">
                 {/* Free User Scan Counter */}
                 {!entitlements.data?.hasUnlimitedScans && (
@@ -1524,10 +1549,12 @@ Hyaluronic Acid"
                 </div>
               )}
               </div>
-            </TabsContent>
+            </div>
+            )}
 
             {/* Routine Library Tab */}
-            <TabsContent value="library" className="space-y-6 mt-6">
+            {activeTab === 'library' && (
+            <div className="space-y-6">
               {!canAccessProductAlternatives ? (
                 <Card className="border-primary/20" data-testid="card-library-upgrade">
                   <CardHeader>
@@ -1653,8 +1680,10 @@ Hyaluronic Acid"
                   )}
                 </div>
               )}
-            </TabsContent>
-          </Tabs>
+            {/* End of Library Tab */}
+            </div>
+            )}
+          </div>
         </div>
       </div>
 
