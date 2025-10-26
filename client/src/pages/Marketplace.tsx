@@ -11,10 +11,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, Search, Filter, Crown, Lock } from 'lucide-react';
+import { ExternalLink, Search, Filter, Crown, Lock, LogOut } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'wouter';
+import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 
 interface SpecificProduct {
   specificProductName: string;
@@ -256,7 +257,40 @@ export default function Marketplace() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* Navigation Header */}
+      <header className="border-b border-border/50">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
+          <div className="flex h-16 items-center justify-between">
+            <Link href="/dashboard">
+              <img src={logoPath} alt="AcneAgent" className="h-8 cursor-pointer" data-testid="logo-link" />
+            </Link>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                data-testid="link-dashboard"
+              >
+                <Link href="/dashboard">
+                  Dashboard
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2"
+                onClick={() => window.location.href = '/api/logout'}
+                data-testid="button-logout"
+              >
+                <LogOut className="h-4 w-4" />
+                Log Out
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
       <section className="py-12 md:py-16 bg-muted/30 border-b">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="max-w-3xl mx-auto text-center space-y-4">
