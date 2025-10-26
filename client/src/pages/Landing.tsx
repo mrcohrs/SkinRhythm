@@ -67,7 +67,7 @@ export default function Landing() {
           <div className="flex flex-col items-center text-center space-y-12">
             {/* Headline */}
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight max-w-5xl">
-              SkinRhythm understands your acne so you don't have to.
+              Personalized Clear Skin Plans tuned to each person's SkinRhythm.
             </h1>
             
             {/* Hero Illustration */}
