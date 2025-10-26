@@ -18,7 +18,7 @@ import {
   Check,
   X
 } from "lucide-react";
-import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import logoPath from "@assets/skinrhythm-logo.svg";
 import productsIllustration from "@assets/product lineup_1761438760613.png";
 import routineIllustration from "@assets/Frame 58_1761434440825.png";
 import { LoginModal } from "@/components/LoginModal";
@@ -39,7 +39,7 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
-              <img src={logoPath} alt="AcneAgent" className="h-8" />
+              <img src={logoPath} alt="SkinRhythm" className="h-8" />
             </div>
             <div className="flex items-center gap-6">
               <button 
@@ -67,7 +67,7 @@ export default function Landing() {
           <div className="flex flex-col items-center text-center space-y-12">
             {/* Headline */}
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight max-w-5xl">
-              AcneAgent understands your acne so you don't have to.
+              SkinRhythm understands your acne so you don't have to.
             </h1>
             
             {/* Hero Illustration */}
@@ -81,7 +81,7 @@ export default function Landing() {
 
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl">
-              AcneAgent tailors your personalized Clear Skin Plan to your unique skin profile using clinically proven protocols and rigorous ingredient analysis.
+              SkinRhythm tailors your personalized Clear Skin Plan to your unique skin profile using clinically proven protocols and rigorous ingredient analysis.
             </p>
 
             {/* Tagline */}

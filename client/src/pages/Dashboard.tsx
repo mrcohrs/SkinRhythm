@@ -24,7 +24,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Routine } from "@shared/schema";
 import { getProductById } from "@shared/productLibrary";
-import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import logoPath from "@assets/skinrhythm-logo.svg";
 import { Footer } from "@/components/Footer";
 import { RoutineNotes } from "@/components/RoutineNotes";
 import { ProductAlternativesModal } from "@/components/ProductAlternativesModal";

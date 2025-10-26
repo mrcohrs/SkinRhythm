@@ -10,7 +10,7 @@ import { ScanPaywallModal } from "@/components/ScanPaywallModal";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Link } from "wouter";
-import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import logoPath from "@assets/skinrhythm-logo.svg";
 import { CheckoutButton } from "@/components/checkout/CheckoutButton";
 import { STRIPE_PRICE_IDS, PRODUCT_PRICES } from "@/lib/stripe";
 import { trackIngredientScan, trackScanLimitReached } from "@/lib/analytics";

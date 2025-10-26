@@ -15,7 +15,7 @@ import { Search, Filter, Crown, Lock, LogOut } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { Link, useLocation } from 'wouter';
-import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import logoPath from "@assets/skinrhythm-logo.svg";
 import { ProductCard } from '@/components/ProductCard';
 import type { Product as ProductCardType } from '@/components/ProductCard';
 import { LoginModal } from '@/components/LoginModal';

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { useLocation } from "wouter";
-import logoPath from "@assets/acne agent brand logo_1760328618927.png";
+import logoPath from "@assets/skinrhythm-logo.svg";
 import { Link } from "wouter";
 import { Footer } from "@/components/Footer";
 
@@ -47,7 +47,7 @@ export default function BeautyProducts() {
           <Link href="/" data-testid="link-home">
             <img 
               src={logoPath} 
-              alt="AcneAgent" 
+              alt="SkinRhythm" 
               className="h-8 w-auto"
             />
           </Link>
