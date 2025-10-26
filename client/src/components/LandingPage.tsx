@@ -27,7 +27,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
         <div className="relative z-10 w-full">
           <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-24">
             <div className="max-w-3xl">
-              <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+              <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-thin mb-8 leading-tight">
                 Clear Skin, Backed by Science — Not Hype
               </h1>
               <p className="text-lg md:text-xl mb-6 leading-relaxed text-muted-foreground">
@@ -58,13 +58,13 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="font-serif text-4xl md:text-5xl font-light mb-6">
                 Why Ingredients Matter
               </h2>
             </div>
             
             <div className="bg-background rounded-2xl p-8 md:p-12 mb-8">
-              <h3 className="font-serif text-3xl md:text-4xl font-semibold mb-6">
+              <h3 className="font-serif text-3xl md:text-4xl font-light mb-6">
                 90% of "Acne Products" Contain Acne-Causing Ingredients
               </h3>
               <p className="text-lg text-muted-foreground leading-relaxed mb-4">
@@ -99,10 +99,10 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
       <section className="py-24 md:py-32 bg-background">
         <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
           <div className="text-center mb-12">
-            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="font-serif text-4xl md:text-5xl font-light mb-6">
               Evidence Meets Aesthetics
             </h2>
-            <h3 className="font-serif text-2xl md:text-3xl font-semibold text-muted-foreground mb-6">
+            <h3 className="font-serif text-2xl md:text-3xl font-light text-muted-foreground mb-6">
               Skincare That Feels Luxe — and Acts Clinical
             </h3>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
@@ -120,7 +120,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h4 className="font-serif text-xl font-semibold mb-2">Benzoyl Peroxide</h4>
+              <h4 className="font-serif text-xl font-light mb-2">Benzoyl Peroxide</h4>
               <p className="text-sm text-muted-foreground italic mb-2">Antibacterial Power</p>
               <p className="text-sm leading-relaxed">
                 Eliminates acne-causing bacteria and keeps pores clear.
@@ -135,7 +135,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h4 className="font-serif text-xl font-semibold mb-2">Mandelic Acid</h4>
+              <h4 className="font-serif text-xl font-light mb-2">Mandelic Acid</h4>
               <p className="text-sm text-muted-foreground italic mb-2">Gentle Luxury Exfoliant</p>
               <p className="text-sm leading-relaxed">
                 Balances tone and clarity with the same actives used in high-end formulations.
@@ -150,7 +150,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h4 className="font-serif text-xl font-semibold mb-2">Retinol</h4>
+              <h4 className="font-serif text-xl font-light mb-2">Retinol</h4>
               <p className="text-sm text-muted-foreground italic mb-2">Refines & Rejuvenates</p>
               <p className="text-sm leading-relaxed">
                 Promotes cell turnover for visibly smoother skin.
@@ -165,7 +165,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h4 className="font-serif text-xl font-semibold mb-2">Bisabolol</h4>
+              <h4 className="font-serif text-xl font-light mb-2">Bisabolol</h4>
               <p className="text-sm text-muted-foreground italic mb-2">Luxury-Caliber Calm</p>
               <p className="text-sm leading-relaxed">
                 Derived from chamomile; soothes redness and irritation with a touch of botanical refinement.
@@ -187,7 +187,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="group">
               <div className="text-5xl font-serif text-primary/20 mb-4">01</div>
-              <h3 className="font-serif text-xl font-semibold mb-3">
+              <h3 className="font-serif text-xl font-light mb-3">
                 Answer a few quick questions
               </h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -197,7 +197,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
 
             <div className="group">
               <div className="text-5xl font-serif text-primary/20 mb-4">02</div>
-              <h3 className="font-serif text-xl font-semibold mb-3">
+              <h3 className="font-serif text-xl font-light mb-3">
                 AI applies expert treatment logic
               </h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -207,7 +207,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
 
             <div className="group">
               <div className="text-5xl font-serif text-primary/20 mb-4">03</div>
-              <h3 className="font-serif text-xl font-semibold mb-3">
+              <h3 className="font-serif text-xl font-light mb-3">
                 Get your personalized routine
               </h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -217,7 +217,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
 
             <div className="group">
               <div className="text-5xl font-serif text-primary/20 mb-4">04</div>
-              <h3 className="font-serif text-xl font-semibold mb-3">
+              <h3 className="font-serif text-xl font-light mb-3">
                 Upgrade to Premium
               </h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -257,7 +257,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                 </div>
               </div>
               <div>
-                <h3 className="font-serif text-xl font-semibold mb-2">
+                <h3 className="font-serif text-xl font-light mb-2">
                   Luxury logic, accessible price
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -273,7 +273,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                 </div>
               </div>
               <div>
-                <h3 className="font-serif text-xl font-semibold mb-2">
+                <h3 className="font-serif text-xl font-light mb-2">
                   Zero acne triggers
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -289,7 +289,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                 </div>
               </div>
               <div>
-                <h3 className="font-serif text-xl font-semibold mb-2">
+                <h3 className="font-serif text-xl font-light mb-2">
                   Accessible evidence
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -305,7 +305,7 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
                 </div>
               </div>
               <div>
-                <h3 className="font-serif text-xl font-semibold mb-2">
+                <h3 className="font-serif text-xl font-light mb-2">
                   Designed for modern skin
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
