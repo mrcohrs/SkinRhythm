@@ -41,7 +41,7 @@ export default function Landing() {
               </button>
               <button
                 onClick={() => window.location.href = '/quiz'}
-                className="text-sm text-primary-text hover:text-primary-text/80 font-medium underline transition-colors"
+                className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline transition-colors"
                 data-testid="link-quiz-header"
               >
                 Take the Quiz
@@ -56,7 +56,7 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
           <div className="flex flex-col items-center text-center space-y-12">
             {/* Headline */}
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-5xl">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight max-w-5xl">
               AcneAgent understands your acne so you don't have to.
             </h1>
             
@@ -75,7 +75,7 @@ export default function Landing() {
             </p>
 
             {/* Tagline */}
-            <p className="text-xl md:text-2xl font-semibold">
+            <p className="text-xl md:text-2xl font-medium">
               No gimmicks. No guesswork. Just results.
             </p>
 
@@ -84,7 +84,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 onClick={() => window.location.href = '/quiz'}
-                className="px-8 py-6 h-auto rounded-full text-base font-medium"
+                className="px-8 py-6 h-auto rounded-full text-base font-normal"
                 data-testid="button-hero-cta"
               >
                 Get My Free Routine
@@ -101,7 +101,7 @@ export default function Landing() {
       {/* 2️⃣ TRUST / PROOF STRIP - Science, Not Hype */}
       <section className="py-12 md:py-16 bg-muted/30">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <h2 className="text-center font-serif text-2xl md:text-3xl font-bold mb-12">
+          <h2 className="text-center font-serif text-2xl md:text-3xl font-semibold mb-12">
             Rooted in science. Built on ingredient integrity.
           </h2>
           
@@ -111,7 +111,7 @@ export default function Landing() {
                 <Microscope className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1">Rigorous product ingredient standards</h3>
+                <h3 className="font-medium mb-1">Rigorous product ingredient standards</h3>
                 <p className="text-sm text-muted-foreground">
                   Screened for 400+ acne-causing ingredients.
                 </p>
@@ -123,7 +123,7 @@ export default function Landing() {
                 <FlaskConical className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1">Results-based treatment frameworks</h3>
+                <h3 className="font-medium mb-1">Results-based treatment frameworks</h3>
                 <p className="text-sm text-muted-foreground">
                   We follow clinical data, not Tiktok trends.
                 </p>
@@ -135,7 +135,7 @@ export default function Landing() {
                 <Brain className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1">Customized for your unique skin profile</h3>
+                <h3 className="font-medium mb-1">Customized for your unique skin profile</h3>
                 <p className="text-sm text-muted-foreground">
                   Fine tuned for skin type, tone, and acne type(s).
                 </p>
@@ -147,7 +147,7 @@ export default function Landing() {
                 <Shield className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1">Affordable recommendations</h3>
+                <h3 className="font-medium mb-1">Affordable recommendations</h3>
                 <p className="text-sm text-muted-foreground">
                   Effective and accessible product recommendations.
                 </p>
@@ -161,7 +161,7 @@ export default function Landing() {
                 const howItWorksSection = document.getElementById('how-it-works');
                 howItWorksSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="text-sm text-primary-text hover:text-primary-text/80 font-medium underline"
+              className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline"
               data-testid="link-learn-how"
             >
               Learn how it works →
@@ -173,7 +173,7 @@ export default function Landing() {
       {/* 3️⃣ HOW IT WORKS - Simple Process Visualization */}
       <section id="how-it-works" className="py-20 md:py-24">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold text-center mb-4">
             How AcneAgent helps you clear your skin — safely.
           </h2>
           <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
@@ -192,7 +192,7 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Tell us about your skin.</h3>
+                  <h3 className="font-serif text-xl font-medium">Tell us about your skin.</h3>
                   <p className="text-sm text-muted-foreground">
                     Quick quiz — no photos. We assess acne type, tone, and barrier.
                   </p>
@@ -211,7 +211,7 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">We build your plan.</h3>
+                  <h3 className="font-serif text-xl font-medium">We build your plan.</h3>
                   <p className="text-sm text-muted-foreground">
                     AcneAgent maps your skin profile to clinical acne treatment data to create a regimen of acne-safe products.
                   </p>
@@ -230,7 +230,7 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Commit to your Clear Skin Plan.</h3>
+                  <h3 className="font-serif text-xl font-medium">Commit to your Clear Skin Plan.</h3>
                   <p className="text-sm text-muted-foreground">
                     Ditch your old routine and start your personalized acne-safe plan.
                   </p>
@@ -243,7 +243,7 @@ export default function Landing() {
             <Button
               size="lg"
               onClick={() => window.location.href = '/quiz'}
-              className="px-8 py-6 h-auto rounded-full text-base font-medium"
+              className="px-8 py-6 h-auto rounded-full text-base font-normal"
               data-testid="button-how-it-works-cta"
             >
               Start my free plan
@@ -262,7 +262,7 @@ export default function Landing() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Column - Text */}
             <div className="space-y-6">
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold">
                 AcneAgent takes the risk out of shopping for skincare.
               </h2>
               
@@ -276,7 +276,7 @@ export default function Landing() {
                     const ingredientsSection = document.getElementById('ingredient-science');
                     ingredientsSection?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="text-sm text-primary-text hover:text-primary-text/80 font-medium underline"
+                  className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline"
                   data-testid="link-see-ingredients"
                 >
                   See how we screen ingredients →
@@ -293,7 +293,7 @@ export default function Landing() {
                       <X className="w-6 h-6 text-destructive" />
                     </div>
                     <div className="space-y-2">
-                      <h4 className="font-semibold">Flagged Ingredient</h4>
+                      <h4 className="font-medium">Flagged Ingredient</h4>
                       <p className="text-sm text-muted-foreground">
                         Laureth-4 detected — highly comedogenic surfactant found in many benzoyl peroxide treatments
                       </p>
@@ -312,7 +312,7 @@ export default function Landing() {
                       <Check className="w-6 h-6 text-primary" />
                     </div>
                     <div className="space-y-2">
-                      <h4 className="font-semibold">Approved Product</h4>
+                      <h4 className="font-medium">Approved Product</h4>
                       <p className="text-sm text-muted-foreground">
                         All ingredients verified acne-safe — no known comedogenic triggers
                       </p>
@@ -336,7 +336,7 @@ export default function Landing() {
       <section className="py-20 md:py-24">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
           <div className="text-center space-y-6 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold">
               Everything you need to start — free.
             </h2>
             
@@ -351,28 +351,28 @@ export default function Landing() {
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold">Personalized routine</p>
+                    <p className="font-medium">Personalized routine</p>
                     <p className="text-sm text-muted-foreground">AM + PM plan tailored to your skin</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold">Vetted acne-safe products</p>
+                    <p className="font-medium">Vetted acne-safe products</p>
                     <p className="text-sm text-muted-foreground">Every product screened for 400+ triggers</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold">3 free product ingredient scans</p>
+                    <p className="font-medium">3 free product ingredient scans</p>
                     <p className="text-sm text-muted-foreground">Check any product for acne-causing ingredients</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold">Free to start, no account needed</p>
+                    <p className="font-medium">Free to start, no account needed</p>
                     <p className="text-sm text-muted-foreground">Get your routine without signing up</p>
                   </div>
                 </li>
@@ -382,7 +382,7 @@ export default function Landing() {
                 <Button
                   size="lg"
                   onClick={() => window.location.href = '/quiz'}
-                  className="w-full px-8 py-6 h-auto rounded-full text-base font-medium"
+                  className="w-full px-8 py-6 h-auto rounded-full text-base font-normal"
                   data-testid="button-free-plan-cta"
                 >
                   Generate my free routine
@@ -398,7 +398,7 @@ export default function Landing() {
       <section className="py-20 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="text-center space-y-4 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold">
               Upgrade your routine — and your results.
             </h2>
             
@@ -414,7 +414,7 @@ export default function Landing() {
                   <Beaker className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Unlimited Ingredient Scans</h3>
+                  <h3 className="font-medium mb-2">Unlimited Ingredient Scans</h3>
                   <p className="text-sm text-muted-foreground">
                     Scan any product for acne triggers
                   </p>
@@ -428,7 +428,7 @@ export default function Landing() {
                   <Brain className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Routine Coach</h3>
+                  <h3 className="font-medium mb-2">Routine Coach</h3>
                   <p className="text-sm text-muted-foreground">
                     Detailed step-by-step guidance on ramping up on actives, personalized tips, progress tracking, and more.
                   </p>
@@ -442,7 +442,7 @@ export default function Landing() {
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Product Alternatives</h3>
+                  <h3 className="font-medium mb-2">Product Alternatives</h3>
                   <p className="text-sm text-muted-foreground">
                     Customize your routine without affecting your results. Budget to luxury options that fit your Clear Skin Plan.
                   </p>
@@ -456,7 +456,7 @@ export default function Landing() {
                   <Shield className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Routine History</h3>
+                  <h3 className="font-medium mb-2">Routine History</h3>
                   <p className="text-sm text-muted-foreground">
                     View your complete routine history and take notes to track what works best for you.
                   </p>
@@ -474,7 +474,7 @@ export default function Landing() {
                     Founding Rate
                   </Badge>
                 </div>
-                <p className="text-4xl md:text-5xl font-bold">
+                <p className="text-4xl md:text-5xl font-semibold">
                   <span className="text-muted-foreground line-through text-2xl md:text-3xl">$5.99</span>
                   {" "}$2.99<span className="text-xl text-muted-foreground">/mo</span>
                 </p>
@@ -487,7 +487,7 @@ export default function Landing() {
                 <Button
                   size="lg"
                   asChild
-                  className="w-full px-8 py-6 h-auto rounded-full text-base font-medium"
+                  className="w-full px-8 py-6 h-auto rounded-full text-base font-normal"
                   data-testid="button-premium-cta"
                 >
                   <Link href="/pricing">
@@ -512,7 +512,7 @@ export default function Landing() {
               Coming Soon
             </Badge>
             
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold">
               Premium+ — your skin's personal agent.
             </h2>
             
@@ -533,7 +533,7 @@ export default function Landing() {
       <section className="py-20 md:py-24">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="text-center space-y-4 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold">
               One-time upgrades, lifetime value.
             </h2>
             
@@ -551,11 +551,11 @@ export default function Landing() {
                   </svg>
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Routine PDF Download</h3>
+                  <h3 className="font-serif text-xl font-medium">Routine PDF Download</h3>
                   <p className="text-sm text-muted-foreground">
                     Your plan, formatted for daily use
                   </p>
-                  <p className="text-2xl font-bold">$9.99</p>
+                  <p className="text-2xl font-semibold">$9.99</p>
                 </div>
                 <Button
                   variant="outline"
@@ -574,11 +574,11 @@ export default function Landing() {
                   <Sparkles className="w-8 h-8 text-primary" />
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Product Alternatives Access</h3>
+                  <h3 className="font-serif text-xl font-medium">Product Alternatives Access</h3>
                   <p className="text-sm text-muted-foreground">
                     Unlock all product options for one routine
                   </p>
-                  <p className="text-2xl font-bold">$9.99</p>
+                  <p className="text-2xl font-semibold">$9.99</p>
                 </div>
                 <Button
                   variant="outline"
@@ -597,11 +597,11 @@ export default function Landing() {
                   <Beaker className="w-8 h-8 text-primary" />
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Ingredient Checker Packs</h3>
+                  <h3 className="font-serif text-xl font-medium">Ingredient Checker Packs</h3>
                   <p className="text-sm text-muted-foreground">
                     Scan products for acne triggers
                   </p>
-                  <p className="text-2xl font-bold">From $1.99</p>
+                  <p className="text-2xl font-semibold">From $1.99</p>
                 </div>
                 <Button
                   variant="outline"
@@ -617,7 +617,7 @@ export default function Landing() {
 
           <div className="text-center mt-8">
             <button
-              className="text-sm text-primary-text hover:text-primary-text/80 font-medium underline"
+              className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline"
               onClick={() => window.location.href = '/pricing'}
               data-testid="link-explore-upgrades"
             >
@@ -631,7 +631,7 @@ export default function Landing() {
       <section id="ingredient-science" className="py-10 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="text-center space-y-6 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold">
               The science behind every recommendation.
             </h2>
             <div className="flex justify-center">
@@ -654,7 +654,7 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <TestTube className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg">Benzoyl Peroxide</h3>
+                  <h3 className="font-medium text-lg">Benzoyl Peroxide</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Clears acne bacteria with powerful antimicrobial action
@@ -669,7 +669,7 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <TestTube className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg">Salicylic Acid</h3>
+                  <h3 className="font-medium text-lg">Salicylic Acid</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Unclogs pores with oil-soluble exfoliation
@@ -684,7 +684,7 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <TestTube className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg">Mandelic Acid</h3>
+                  <h3 className="font-medium text-lg">Mandelic Acid</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Gentle exfoliation safe for sensitive skin
@@ -699,7 +699,7 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <TestTube className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg">Niacinamide</h3>
+                  <h3 className="font-medium text-lg">Niacinamide</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Calms and balances skin barrier function
@@ -714,7 +714,7 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <TestTube className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg">Retinol</h3>
+                  <h3 className="font-medium text-lg">Retinol</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Refines texture and accelerates cell turnover
@@ -729,7 +729,7 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <TestTube className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg">Bisabolol</h3>
+                  <h3 className="font-medium text-lg">Bisabolol</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Calms redness and reduces inflammation
@@ -746,7 +746,7 @@ export default function Landing() {
       <section className="py-10 md:py-16 bg-gradient-to-br from-primary/10 to-secondary/10">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
           <div className="text-center space-y-8">
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold">
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold">
               Ready to see your personalized acne-safe routine?
             </h2>
             
@@ -758,7 +758,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 onClick={() => window.location.href = '/quiz'}
-                className="px-12 py-8 h-auto rounded-full text-lg font-medium"
+                className="px-12 py-8 h-auto rounded-full text-lg font-normal"
                 data-testid="button-final-cta"
               >
                 Generate my routine
@@ -784,7 +784,7 @@ export default function Landing() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
+              <h4 className="font-medium mb-4">Product</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <button
@@ -817,7 +817,7 @@ export default function Landing() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Company</h4>
+              <h4 className="font-medium mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link href="/affiliate-disclosure" className="hover:text-foreground transition-colors underline">
@@ -833,7 +833,7 @@ export default function Landing() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Get Started</h4>
+              <h4 className="font-medium mb-4">Get Started</h4>
               <Button
                 onClick={() => window.location.href = '/quiz'}
                 className="w-full rounded-full"
