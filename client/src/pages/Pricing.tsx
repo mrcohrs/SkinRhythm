@@ -45,7 +45,7 @@ export default function Pricing() {
       <div className="container mx-auto px-4 py-16 max-w-7xl">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4" data-testid="text-pricing-title">
+          <h1 className="text-5xl font-light mb-4" data-testid="text-pricing-title">
             Choose Your Plan
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -59,7 +59,7 @@ export default function Pricing() {
             <div className="flex items-center justify-center gap-3 px-6 py-4 bg-primary/10 border-2 border-primary/30 rounded-lg">
               <Crown className="h-5 w-5 text-secondary flex-shrink-0" />
               <div className="text-center">
-                <p className="font-semibold text-foreground">Founding Member Rate Active!</p>
+                <p className="font-normal text-foreground">Founding Member Rate Active!</p>
                 <p className="text-sm text-muted-foreground">
                   Only {foundingRate.purchasesRemaining} spots left at $2.99/month • Lock in this rate forever
                 </p>
@@ -94,7 +94,7 @@ export default function Pricing() {
               <CardContent className="space-y-8">
                 <div className="text-center">
                   <div className="flex items-baseline justify-center gap-2 mb-2">
-                    <span className="text-5xl font-bold">${premiumPrice}</span>
+                    <span className="text-5xl font-light">${premiumPrice}</span>
                     <span className="text-xl text-muted-foreground">/month</span>
                   </div>
                   {isFoundingActive && (
@@ -113,28 +113,28 @@ export default function Pricing() {
                   <div className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Premium Product Alternatives</p>
+                      <p className="font-normal">Premium Product Alternatives</p>
                       <p className="text-sm text-muted-foreground">Access higher-tier options for every routine step</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Personalized Routine Coach</p>
+                      <p className="font-normal">Personalized Routine Coach</p>
                       <p className="text-sm text-muted-foreground">Get ramping instructions and treatment guidance</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Detailed Treatment PDFs</p>
+                      <p className="font-normal">Detailed Treatment PDFs</p>
                       <p className="text-sm text-muted-foreground">Generate professional AM/PM schedules</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Unlimited Ingredient Scans</p>
+                      <p className="font-normal">Unlimited Ingredient Scans</p>
                       <p className="text-sm text-muted-foreground">Check products for acne-causing ingredients anytime</p>
                     </div>
                   </div>
@@ -173,7 +173,7 @@ export default function Pricing() {
         {/* One-Time Purchases Section */}
         <div className="mb-20">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold mb-3">One-Time Purchases</h2>
+            <h2 className="text-3xl font-light mb-3">One-Time Purchases</h2>
             <p className="text-muted-foreground">Unlock specific features without a subscription</p>
           </div>
 
@@ -192,7 +192,7 @@ export default function Pricing() {
 
               <CardContent className="space-y-6 flex-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold">${PRODUCT_PRICES.PREMIUM_ROUTINE_ACCESS}</span>
+                  <span className="text-4xl font-light">${PRODUCT_PRICES.PREMIUM_ROUTINE_ACCESS}</span>
                   <span className="text-muted-foreground">one-time</span>
                 </div>
 
@@ -251,7 +251,7 @@ export default function Pricing() {
 
               <CardContent className="space-y-6 flex-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold">${PRODUCT_PRICES.DETAILED_PDF}</span>
+                  <span className="text-4xl font-light">${PRODUCT_PRICES.DETAILED_PDF}</span>
                   <span className="text-muted-foreground">one-time</span>
                 </div>
 
@@ -301,7 +301,7 @@ export default function Pricing() {
         {/* Ingredient Scanner Section */}
         <div className="mb-16">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold mb-3">Ingredient Scanner</h2>
+            <h2 className="text-3xl font-light mb-3">Ingredient Scanner</h2>
             <p className="text-muted-foreground">Check products for acne-causing ingredients</p>
           </div>
 
@@ -319,7 +319,7 @@ export default function Pricing() {
 
                 <CardContent className="space-y-4 flex-1">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold">${PRODUCT_PRICES.UNLIMITED_SCANNER}</span>
+                    <span className="text-3xl font-light">${PRODUCT_PRICES.UNLIMITED_SCANNER}</span>
                     <span className="text-muted-foreground">/month</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -363,7 +363,7 @@ export default function Pricing() {
 
               <CardContent className="space-y-4 flex-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold">${PRODUCT_PRICES.SCAN_PACK_5}</span>
+                  <span className="text-3xl font-light">${PRODUCT_PRICES.SCAN_PACK_5}</span>
                   <span className="text-muted-foreground">one-time</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Just $0.40 per scan</p>
@@ -400,7 +400,7 @@ export default function Pricing() {
 
               <CardContent className="space-y-4 flex-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold">${PRODUCT_PRICES.SCAN_PACK_20}</span>
+                  <span className="text-3xl font-light">${PRODUCT_PRICES.SCAN_PACK_20}</span>
                   <span className="text-muted-foreground">one-time</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Just $0.20 per scan</p>

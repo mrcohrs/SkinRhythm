@@ -210,7 +210,7 @@ Hyaluronic Acid"
                     </CardHeader>
                     <CardContent className="space-y-2">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold">${PRODUCT_PRICES.SCAN_PACK_20}</span>
+                        <span className="text-2xl font-light">${PRODUCT_PRICES.SCAN_PACK_20}</span>
                         <span className="text-sm text-muted-foreground">one-time</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
@@ -237,7 +237,7 @@ Hyaluronic Acid"
                     </CardHeader>
                     <CardContent className="space-y-2">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold">${PRODUCT_PRICES.SCAN_PACK_5}</span>
+                        <span className="text-2xl font-light">${PRODUCT_PRICES.SCAN_PACK_5}</span>
                         <span className="text-sm text-muted-foreground">one-time</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
@@ -288,7 +288,7 @@ Hyaluronic Acid"
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center p-4 rounded-lg bg-muted/50">
-                      <div className="text-3xl font-bold text-foreground">
+                      <div className="text-3xl font-light text-foreground">
                         {results.totalChecked}
                       </div>
                       <div className="text-sm text-muted-foreground mt-1">
@@ -296,7 +296,7 @@ Hyaluronic Acid"
                       </div>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-destructive/10">
-                      <div className="text-3xl font-bold text-destructive">
+                      <div className="text-3xl font-light text-destructive">
                         {results.foundIngredients.length}
                       </div>
                       <div className="text-sm text-muted-foreground mt-1">
@@ -304,7 +304,7 @@ Hyaluronic Acid"
                       </div>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-primary/10">
-                      <div className="text-3xl font-bold text-primary">
+                      <div className="text-3xl font-light text-primary">
                         {results.safeIngredients.length}
                       </div>
                       <div className="text-sm text-muted-foreground mt-1">
@@ -388,7 +388,7 @@ Hyaluronic Acid"
                     <div className="flex items-center gap-3">
                       <CheckCircle className="h-8 w-8 text-primary flex-shrink-0" />
                       <div>
-                        <h3 className="font-semibold text-lg text-primary">
+                        <h3 className="font-normal text-lg text-primary">
                           All Clear!
                         </h3>
                         <p className="text-muted-foreground">
@@ -444,7 +444,7 @@ Hyaluronic Acid"
                     </CardHeader>
                     <CardContent className="space-y-2">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold">${PRODUCT_PRICES.SCAN_PACK_20}</span>
+                        <span className="text-2xl font-light">${PRODUCT_PRICES.SCAN_PACK_20}</span>
                         <span className="text-sm text-muted-foreground">one-time</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
@@ -471,7 +471,7 @@ Hyaluronic Acid"
                     </CardHeader>
                     <CardContent className="space-y-2">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold">${PRODUCT_PRICES.SCAN_PACK_5}</span>
+                        <span className="text-2xl font-light">${PRODUCT_PRICES.SCAN_PACK_5}</span>
                         <span className="text-sm text-muted-foreground">one-time</span>
                       </div>
                       <p className="text-sm text-muted-foreground">

@@ -157,7 +157,7 @@ export default function Marketplace() {
         <section className="py-12 md:py-16 bg-muted/30 border-b">
           <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
             <div className="max-w-3xl mx-auto text-center space-y-4">
-              <h1 className="font-serif text-4xl md:text-5xl font-semibold">
+              <h1 className="font-serif text-4xl md:text-5xl font-light">
                 Acne-Safe Marketplace
               </h1>
               <p className="text-lg text-muted-foreground">
@@ -175,7 +175,7 @@ export default function Marketplace() {
                   <Lock className="w-8 h-8 text-primary" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="font-serif text-2xl font-semibold">Sign In Required</h2>
+                  <h2 className="font-serif text-2xl font-light">Sign In Required</h2>
                   <p className="text-muted-foreground">
                     Please sign in to access the acne-safe marketplace.
                   </p>
@@ -203,7 +203,7 @@ export default function Marketplace() {
         <section className="py-12 md:py-16 bg-muted/30 border-b">
           <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
             <div className="max-w-3xl mx-auto text-center space-y-4">
-              <h1 className="font-serif text-4xl md:text-5xl font-semibold">
+              <h1 className="font-serif text-4xl md:text-5xl font-light">
                 Acne-Safe Marketplace
               </h1>
               <p className="text-lg text-muted-foreground">
@@ -221,7 +221,7 @@ export default function Marketplace() {
                   <Crown className="w-8 h-8 text-primary" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="font-serif text-2xl font-semibold">Premium Feature</h2>
+                  <h2 className="font-serif text-2xl font-light">Premium Feature</h2>
                   <p className="text-muted-foreground">
                     The acne-safe marketplace is available exclusively to Premium members. Browse our curated collection of verified products, all screened for 400+ acne-causing ingredients.
                   </p>
@@ -322,7 +322,7 @@ export default function Marketplace() {
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Filters:</span>
+                <span className="text-sm font-normal">Filters:</span>
               </div>
 
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>

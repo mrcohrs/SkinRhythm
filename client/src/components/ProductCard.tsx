@@ -85,7 +85,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
         <div className="absolute inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm rounded-xl z-10">
           <div className="text-center">
             <Lock className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-            <p className="text-sm font-medium">Premium Only</p>
+            <p className="text-sm font-normal">Premium Only</p>
           </div>
         </div>
       )}
@@ -125,7 +125,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
           </p>
           
           <h3 
-            className="font-serif text-base md:text-lg font-semibold text-foreground leading-tight mb-3 min-h-[3.5rem]" 
+            className="font-serif text-base md:text-lg font-normal text-foreground leading-tight mb-3 min-h-[3.5rem]" 
             style={{ 
               display: '-webkit-box',
               WebkitLineClamp: 2,
@@ -139,7 +139,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
             {product.name}
           </h3>
           
-          <p className="text-sm font-medium text-foreground mb-4" data-testid="text-price-range">
+          <p className="text-sm font-normal text-foreground mb-4" data-testid="text-price-range">
             {product.priceRange || `$${product.price}`}
           </p>
           

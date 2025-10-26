@@ -15,7 +15,7 @@ export function PremiumUpsell({
     <div className="border border-primary/30 rounded-2xl p-8 md:p-10 bg-primary/5">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
-          <h3 className="font-serif text-2xl font-semibold mb-2">{title}</h3>
+          <h3 className="font-serif text-2xl font-light mb-2">{title}</h3>
           <p className="text-muted-foreground">
             {description}
           </p>
