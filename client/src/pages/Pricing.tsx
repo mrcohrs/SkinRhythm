@@ -186,7 +186,7 @@ export default function Pricing() {
                   <CardTitle className="text-xl">Premium Routine Access</CardTitle>
                 </div>
                 <CardDescription className="text-base">
-                  Get access to AcneAgent's highest-scoring routine matched to your unique skin profile
+                  Get access to SkinRhythm's highest-scoring routine matched to your unique skin profile
                 </CardDescription>
               </CardHeader>
 

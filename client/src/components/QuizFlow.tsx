@@ -228,7 +228,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
       <header className="border-b border-border/50">
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
-            <div className="font-serif text-3xl font-normal text-foreground">AcneAgent</div>
+            <div className="font-serif text-3xl font-normal text-foreground">SkinRhythm</div>
             <Button
               variant="ghost"
               size="sm"
@@ -277,7 +277,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
             <div className="space-y-6">
               <div>
                 <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What is your age?</h2>
-                <p className="text-muted-foreground text-lg">Our skin's needs change as we get older. This information helps AcneAgent recommend the right products for you.</p>
+                <p className="text-muted-foreground text-lg">Our skin's needs change as we get older. This information helps SkinRhythm recommend the right products for you.</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="age">Your Age</Label>
@@ -304,7 +304,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
             <div className="space-y-6">
               <div>
                 <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What's your skin type?</h2>
-                <p className="text-muted-foreground text-lg">This helps AcneAgent choose the right concentration for your actives, and provides insight into why you might be breaking out. </p>
+                <p className="text-muted-foreground text-lg">This helps SkinRhythm choose the right concentration for your actives, and provides insight into why you might be breaking out. </p>
               </div>
               <RadioGroup
                 value={answers.skinType}
