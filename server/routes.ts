@@ -474,7 +474,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Set response headers
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename="AcneAgent-Routine-${Date.now()}.pdf"`);
+      res.setHeader('Content-Disposition', `attachment; filename="SkinRhythm-Routine-${Date.now()}.pdf"`);
       
       // Pipe the PDF to the response
       doc.pipe(res);

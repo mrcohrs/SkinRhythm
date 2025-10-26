@@ -2,7 +2,7 @@
  * Google Analytics 4 Event Tracking
  * 
  * This utility provides type-safe event tracking for all key business events
- * in AcneAgent. Events are automatically sent to GA4 for funnel analysis,
+ * in SkinRhythm. Events are automatically sent to GA4 for funnel analysis,
  * revenue tracking, and user behavior insights.
  */
 
