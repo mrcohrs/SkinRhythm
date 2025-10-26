@@ -11,15 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, Filter, Crown, Lock, LogOut } from 'lucide-react';
+import { Search, Filter, Crown, Lock } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
-import { Link, useLocation } from 'wouter';
-import logoPath from "@assets/neweww_1761485311132.png";
+import { Link } from 'wouter';
 import { ProductCard } from '@/components/ProductCard';
 import type { Product as ProductCardType } from '@/components/ProductCard';
-import { LoginModal } from '@/components/LoginModal';
 import { trackMarketplaceVisit } from '@/lib/analytics';
+import { Header } from '@/components/Header';
 
 interface SpecificProduct {
   specificProductName: string;
@@ -45,8 +44,6 @@ interface MarketplaceData {
 
 export default function Marketplace() {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const [, setLocation] = useLocation();
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPriceTier, setSelectedPriceTier] = useState<string>('all');
@@ -58,11 +55,6 @@ export default function Marketplace() {
       trackMarketplaceVisit();
     }
   }, [isAuthenticated]);
-
-  const handleLoginSuccess = () => {
-    setShowLoginModal(false);
-    window.location.reload(); // Reload to refresh auth state and marketplace data
-  };
 
   const { data, isLoading, error } = useQuery<MarketplaceData>({
     queryKey: ['/api/marketplace'],
@@ -154,6 +146,7 @@ export default function Marketplace() {
   if (isNotAuthenticated) {
     return (
       <div className="min-h-screen bg-background">
+        <Header />
         <section className="py-12 md:py-16 bg-muted/30 border-b">
           <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
             <div className="max-w-3xl mx-auto text-center space-y-4">
@@ -182,11 +175,11 @@ export default function Marketplace() {
                 </div>
                 <Button
                   size="lg"
-                  onClick={() => setShowLoginModal(true)}
+                  asChild
                   className="rounded-full"
                   data-testid="button-login"
                 >
-                  Sign In
+                  <Link href="/">Sign In</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -200,6 +193,7 @@ export default function Marketplace() {
   if (isPremiumRequired) {
     return (
       <div className="min-h-screen bg-background">
+        <Header />
         <section className="py-12 md:py-16 bg-muted/30 border-b">
           <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
             <div className="max-w-3xl mx-auto text-center space-y-4">
@@ -251,38 +245,7 @@ export default function Marketplace() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation Header */}
-      <header className="border-b border-border/50">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <div className="flex h-16 items-center justify-between">
-            <Link href="/dashboard">
-              <img src={logoPath} alt="SkinRhythm" className="h-8 cursor-pointer" data-testid="logo-link" />
-            </Link>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                asChild
-                data-testid="link-dashboard"
-              >
-                <Link href="/dashboard">
-                  Dashboard
-                </Link>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-2"
-                onClick={() => window.location.href = '/api/auth/logout'}
-                data-testid="button-logout"
-              >
-                <LogOut className="h-4 w-4" />
-                Log Out
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="py-12 md:py-16 bg-muted/30 border-b">
@@ -434,12 +397,6 @@ export default function Marketplace() {
           )}
         </div>
       </section>
-
-      <LoginModal 
-        open={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onSuccess={handleLoginSuccess}
-      />
     </div>
   );
 }

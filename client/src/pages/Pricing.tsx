@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntitlements } from "@/hooks/useEntitlements";
 import { useFoundingRate } from "@/hooks/useFoundingRate";
@@ -8,21 +7,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { STRIPE_PRICE_IDS, PRODUCT_PRICES } from "@/lib/stripe";
-import { Check, Sparkles, FileText, Scan, Crown, ArrowLeft, Star } from "lucide-react";
-import { Link, useLocation } from "wouter";
-import { LoginModal } from "@/components/LoginModal";
+import { Check, Sparkles, FileText, Scan, Crown, Star } from "lucide-react";
+import { Link } from "wouter";
+import { Header } from "@/components/Header";
 
 export default function Pricing() {
   const { user } = useAuth();
-  const [, setLocation] = useLocation();
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const { data: entitlements, isLoading: entitlementsLoading } = useEntitlements();
   const { data: foundingRate, isLoading: foundingRateLoading } = useFoundingRate();
-
-  const handleLoginSuccess = () => {
-    setShowLoginModal(false);
-    window.location.reload(); // Reload to refresh user state
-  };
 
   const isFoundingActive = foundingRate?.active ?? false;
   const premiumPrice = isFoundingActive ? PRODUCT_PRICES.PREMIUM_FOUNDING : PRODUCT_PRICES.PREMIUM_STANDARD;
@@ -30,17 +22,7 @@ export default function Pricing() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border/50">
-        <div className="container mx-auto px-4 py-4">
-          <Link href="/">
-            <Button variant="ghost" size="sm" className="gap-2" data-testid="button-back-home">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Home
-            </Button>
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       <div className="container mx-auto px-4 py-16 max-w-7xl">
         {/* Hero Section */}
@@ -144,12 +126,12 @@ export default function Pricing() {
               <CardFooter className="pt-6 pb-8">
                 {!user ? (
                   <Button 
-                    onClick={() => setShowLoginModal(true)}
+                    asChild
                     className="w-full" 
                     size="lg" 
                     data-testid="button-signup-premium"
                   >
-                    Get Premium Access
+                    <Link href="/">Get Premium Access</Link>
                   </Button>
                 ) : entitlements?.isPremium ? (
                   <Button disabled className="w-full" size="lg" variant="outline">
@@ -215,11 +197,11 @@ export default function Pricing() {
               <CardFooter>
                 {!user ? (
                   <Button 
-                    onClick={() => setShowLoginModal(true)}
+                    asChild
                     className="w-full" 
                     data-testid="button-signup-routine-access"
                   >
-                    Sign Up to Purchase
+                    <Link href="/">Sign Up to Purchase</Link>
                   </Button>
                 ) : entitlements?.hasPremiumRoutineAccess ? (
                   <Button disabled className="w-full" variant="outline">
@@ -274,11 +256,11 @@ export default function Pricing() {
               <CardFooter>
                 {!user ? (
                   <Button 
-                    onClick={() => setShowLoginModal(true)}
+                    asChild
                     className="w-full" 
                     data-testid="button-signup-pdf"
                   >
-                    Sign Up to Purchase
+                    <Link href="/">Sign Up to Purchase</Link>
                   </Button>
                 ) : entitlements?.hasDetailedPdfAccess ? (
                   <Button disabled className="w-full" variant="outline">
@@ -330,11 +312,11 @@ export default function Pricing() {
                 <CardFooter>
                   {!user ? (
                     <Button 
-                      onClick={() => setShowLoginModal(true)}
+                      asChild
                       className="w-full" 
                       data-testid="button-signup-unlimited-scans"
                     >
-                      Subscribe
+                      <Link href="/">Subscribe</Link>
                     </Button>
                   ) : entitlements?.hasUnlimitedScans ? (
                     <Button disabled className="w-full" variant="outline">
@@ -372,11 +354,11 @@ export default function Pricing() {
               <CardFooter>
                 {!user ? (
                   <Button 
-                    onClick={() => setShowLoginModal(true)}
+                    asChild
                     className="w-full" 
                     data-testid="button-signup-scan-5"
                   >
-                    Purchase
+                    <Link href="/">Purchase</Link>
                   </Button>
                 ) : (
                   <CheckoutButton
@@ -409,11 +391,11 @@ export default function Pricing() {
               <CardFooter>
                 {!user ? (
                   <Button 
-                    onClick={() => setShowLoginModal(true)}
+                    asChild
                     className="w-full" 
                     data-testid="button-signup-scan-20"
                   >
-                    Purchase
+                    <Link href="/">Purchase</Link>
                   </Button>
                 ) : (
                   <CheckoutButton
@@ -455,12 +437,6 @@ export default function Pricing() {
           </Card>
         </div>
       </div>
-
-      <LoginModal 
-        open={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onSuccess={handleLoginSuccess}
-      />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,45 +24,14 @@ import algaeImg from "@assets/algae_1761481865848.png";
 import coconutImg from "@assets/coconut_1761481865855.png";
 import sheaImg from "@assets/shea_1761481865855.png";
 import beakerImg from "@assets/beaker_1761482228536.png";
-import { LoginModal } from "@/components/LoginModal";
+import { Header } from "@/components/Header";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-
-  const handleLoginSuccess = () => {
-    setShowLoginModal(false);
-    setLocation('/dashboard');
-  };
 
   return (
     <div className="min-h-screen bg-background">
-      {/* HEADER */}
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/50">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <img src={logoPath} alt="SkinRhythm" className="h-8" />
-            </div>
-            <div className="flex items-center gap-6">
-              <button 
-                onClick={() => setShowLoginModal(true)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                data-testid="link-login"
-              >
-                log in
-              </button>
-              <button
-                onClick={() => window.location.href = '/quiz'}
-                className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline transition-colors"
-                data-testid="link-quiz-header"
-              >
-                find your skinrhythm
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* 1️⃣ HERO - The Emotional Hook + Core Promise */}
       <section className="relative py-16 md:py-24 lg:py-32">
@@ -858,12 +826,6 @@ export default function Landing() {
           </div>
         </div>
       </footer>
-
-      <LoginModal 
-        open={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onSuccess={handleLoginSuccess}
-      />
     </div>
   );
 }
