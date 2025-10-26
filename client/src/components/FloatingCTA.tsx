@@ -23,12 +23,13 @@ export function FloatingCTA({ premiumSectionId }: FloatingCTAProps) {
       observerRef.current = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
+            // Update state when premium section enters or leaves viewport
             setIsInPremiumSection(entry.isIntersecting);
           });
         },
         {
-          threshold: 0.3, // Trigger when 30% of the section is visible
-          rootMargin: '-100px 0px -100px 0px', // Adjust trigger point
+          threshold: 0.1, // Trigger when 10% of the section is visible
+          rootMargin: '0px 0px -200px 0px', // Trigger before bottom of viewport
         }
       );
 
@@ -59,7 +60,8 @@ export function FloatingCTA({ premiumSectionId }: FloatingCTAProps) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 max-w-md w-full"
+          className="fixed bottom-4 left-0 right-0 z-50 px-4"
+          style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
           data-testid="floating-cta"
         >
           <motion.div
@@ -68,23 +70,24 @@ export function FloatingCTA({ premiumSectionId }: FloatingCTAProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
+            className="max-w-md mx-auto"
           >
             <Button
               onClick={handleClick}
               size="lg"
-              className="w-full rounded-full h-auto py-4 px-6 shadow-lg hover:shadow-xl transition-shadow bg-primary text-primary-foreground"
+              className="w-full rounded-full h-auto py-3 px-6 shadow-lg hover:shadow-xl transition-shadow bg-primary text-primary-foreground"
               data-testid={isInPremiumSection ? "floating-cta-premium" : "floating-cta-quiz"}
             >
               {isInPremiumSection ? (
-                <div className="flex items-center justify-center gap-3">
-                  <Crown className="h-5 w-5" />
-                  <span className="font-normal text-base">Upgrade to Premium</span>
-                  <ArrowRight className="h-5 w-5" />
+                <div className="flex items-center justify-center gap-2">
+                  <Crown className="h-4 w-4 flex-shrink-0" />
+                  <span className="font-normal text-sm sm:text-base">Upgrade to Premium</span>
+                  <ArrowRight className="h-4 w-4 flex-shrink-0" />
                 </div>
               ) : (
-                <div className="flex items-center justify-center gap-3">
-                  <span className="font-normal text-base">Find Your SkinRhythm</span>
-                  <ArrowRight className="h-5 w-5" />
+                <div className="flex items-center justify-center gap-2">
+                  <span className="font-normal text-sm sm:text-base">Find Your SkinRhythm</span>
+                  <ArrowRight className="h-4 w-4 flex-shrink-0" />
                 </div>
               )}
             </Button>
