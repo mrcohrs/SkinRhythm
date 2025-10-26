@@ -15,18 +15,18 @@
   --elevate-2: rgba(0,0,0, .08);
 
   /* Paper White - Gentle off-white base */
-  --background: 210 25% 98%;
+  --background: 210deg 20% 98.04%;
 
   /* Graphite Ink - Deep gray with trace of blue for text */
-  --foreground: 206 18% 22%;
+  --foreground: 206.67deg 20.93% 8.43%;
 
   /* Subtle border color */
-  --border: 174 20% 90%;
+  --border: 30deg 10.98% 67.84%;
 
   /* Card backgrounds use Paper White */
-  --card: 210 25% 98%;
+  --card: 0deg 0% 100%;
 
-  --card-foreground: 206 18% 22%;
+  --card-foreground: 206.67deg 20.93% 8.43%;
 
   --card-border: 174 20% 92%;
 
@@ -49,14 +49,14 @@
 
   --sidebar-ring: 185 55% 61%;
 
-  --popover: 210 25% 98%;
+  --popover: 50deg 12% 90.2%;
 
-  --popover-foreground: 206 18% 22%;
+  --popover-foreground: 206.67deg 20.93% 8.43%;
 
   --popover-border: 174 20% 92%;
 
   /* Primary: Clearwater Blue - A light blue-green for clarity and freshness */
-  --primary: 184.95deg 54.77% 60.98%;
+  --primary: 180deg 100% 32.55%;
 
   --primary-foreground: 0deg 0% 100%;
 
@@ -64,42 +64,42 @@
   --primary-text: 185 55% 40%;
 
   /* Secondary: Restorative Peach - Soft, skin-inspired neutral */
-  --secondary: 23.24deg 83.46% 73.92%;
+  --secondary: 222.9deg 100% 59.41%;
 
-  --secondary-foreground: 206 18% 22%;
+  --secondary-foreground: 0deg 0% 100%;
 
   /* Muted: Hydro Mist - Pale bluish green for cards and backgrounds */
-  --muted: 174 35% 87%;
+  --muted: 50deg 12% 90.2%;
 
-  --muted-foreground: 206 18% 40%;
+  --muted-foreground: 225deg 5.56% 28.24%;
 
   /* Accent: Soft Apricot - Human touch highlights */
-  --accent: 22.73deg 100% 87.06%;
+  --accent: 177.86deg 100% 43.92%;
 
-  --accent-foreground: 206 18% 22%;
+  --accent-foreground: 206.67deg 20.93% 8.43%;
 
   /* Destructive: Clinical Red - Softened red for warnings */
-  --destructive: 2 71% 64%;
+  --destructive: 345.61deg 100% 61.57%;
 
-  --destructive-foreground: 210 25% 98%;
+  --destructive-foreground: 0deg 0% 100%;
 
   /* Success: Verdant Calm - Muted sage for verified/approved */
   --success: 145 38% 67%;
 
   --success-foreground: 206 18% 22%;
 
-  --input: 174 20% 85%;
-  --ring: 185 55% 61%;
-  --chart-1: 185 55% 61%;
-  --chart-2: 145 38% 67%;
-  --chart-3: 23 84% 74%;
-  --chart-4: 174 35% 70%;
-  --chart-5: 23 100% 75%;
+  --input: 0deg 0% 100%;
+  --ring: 180deg 100% 32.55%;
+  --chart-1: 180deg 100% 32.55%;
+  --chart-2: 222.9deg 100% 59.41%;
+  --chart-3: 177.86deg 100% 43.92%;
+  --chart-4: 14.17deg 100% 75.1%;
+  --chart-5: 208deg 15.79% 37.25%;
 
   --font-sans: 'Roboto', sans-serif;
   --font-serif: 'Cormorant Garamond', serif;
   --font-mono: 'Ubuntu Mono', monospace;
-  --radius: 0.7rem; /* 8px */
+  --radius: 0rem; /* 8px */
   --shadow-2xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.04);
   --shadow-xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.06);
   --shadow-sm: 0px 2px 4px -1px hsl(220 15% 20% / 0.06), 0px 1px 2px -1px hsl(220 15% 20% / 0.08);
