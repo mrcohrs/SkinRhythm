@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Lock } from "lucide-react";
 import { extractProductName } from "@/lib/extractProductName";
+import { trackAffiliateClick } from "@/lib/analytics";
 
 import cleanserImg from "@assets/Cleanser_1760341831448.png";
 import tonerImg from "@assets/Toner_1760341831459.png";
@@ -66,6 +67,17 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
   
   // Show alternatives section if we have alternatives AND not using explore button
   const showAlternativesSection = isPremiumUser && product.premiumOptions && product.premiumOptions.length > 0 && !showExploreButton;
+
+  // Track affiliate link clicks
+  const handleAffiliateClick = () => {
+    trackAffiliateClick({
+      category: product.category,
+      productName: product.name,
+      brand: product.brand,
+      link: product.affiliateLink,
+      isRecommended: product.isRecommended
+    });
+  };
 
   return (
     <Card className={`flex flex-col h-full w-full group relative border-card-border hover-elevate transition-all ${isLocked ? "opacity-60" : ""}`}>
@@ -155,7 +167,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
                   asChild
                   data-testid={`button-buy-now-${product.name.replace(/\s/g, '-')}`}
                 >
-                  <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer">
+                  <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer" onClick={handleAffiliateClick}>
                     Shop Now
                     <ArrowRight className="h-4 w-4" />
                   </a>
