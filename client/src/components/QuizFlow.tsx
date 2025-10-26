@@ -250,7 +250,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 0 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What's your name?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">What's your name?</h2>
                 <p className="text-muted-foreground text-lg">Let's personalize your experience</p>
               </div>
               <div className="space-y-2">
@@ -276,7 +276,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What is your age?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">What is your age?</h2>
                 <p className="text-muted-foreground text-lg">Our skin's needs change as we get older. This information helps SkinRhythm recommend the right products for you.</p>
               </div>
               <div className="space-y-2">
@@ -303,7 +303,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 2 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What's your skin type?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">What's your skin type?</h2>
                 <p className="text-muted-foreground text-lg">This helps SkinRhythm choose the right concentration for your actives, and provides insight into why you might be breaking out. </p>
               </div>
               <RadioGroup
@@ -325,7 +325,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Which of the following is closest to your natural skin tone?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">Which of the following is closest to your natural skin tone?</h2>
                 <p className="text-muted-foreground text-lg">This is often overlooked in acne treatment, but is critical for preventing hyperpigmentation and scarring.</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -355,7 +355,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <p className="text-sm font-medium text-center">{option.label}</p>
+                    <p className="text-sm font-normal text-center">{option.label}</p>
                   </button>
                 ))}
               </div>
@@ -365,7 +365,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 4 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">When you're in the sun without SPF, what usually happens?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">When you're in the sun without SPF, what usually happens?</h2>
                 <p className="text-muted-foreground text-lg">This is often overlooked in acne treatment, but is critical for preventing hyperpigmentation and scarring.</p>
               </div>
               <div className="space-y-3">
@@ -395,7 +395,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 5 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">What type(s) of acne do you have?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">What type(s) of acne do you have?</h2>
                 <p className="text-muted-foreground text-lg">If you have more than one or even all three, select all that apply.</p>
               </div>
               <div className="space-y-3">
@@ -425,7 +425,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
                       className="mt-1"
                     />
                     <div className="flex-1 cursor-pointer" onClick={() => toggleAcneType(type.id)}>
-                      <Label htmlFor={type.id} className="text-lg font-semibold cursor-pointer">
+                      <Label htmlFor={type.id} className="text-lg font-normal cursor-pointer">
                         {type.title}
                       </Label>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -441,7 +441,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 6 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">How severe is your acne?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">How severe is your acne?</h2>
                 <p className="text-muted-foreground text-lg">This helps us find the right treatment strength</p>
               </div>
 
@@ -451,24 +451,24 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left py-2 px-3 font-semibold">Severity</th>
-                        <th className="text-left py-2 px-3 font-semibold">Definition (Total Lesions)</th>
-                        <th className="text-left py-2 px-3 font-semibold">Other Criteria</th>
+                        <th className="text-left py-2 px-3 font-normal">Severity</th>
+                        <th className="text-left py-2 px-3 font-normal">Definition (Total Lesions)</th>
+                        <th className="text-left py-2 px-3 font-normal">Other Criteria</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="border-b">
-                        <td className="py-2 px-3 font-medium">Mild</td>
+                        <td className="py-2 px-3 font-normal">Mild</td>
                         <td className="py-2 px-3">&lt; 30 total lesions</td>
                         <td className="py-2 px-3">&lt; 20 comedones or &lt; 15 inflammatory lesions</td>
                       </tr>
                       <tr className="border-b">
-                        <td className="py-2 px-3 font-medium">Moderate</td>
+                        <td className="py-2 px-3 font-normal">Moderate</td>
                         <td className="py-2 px-3">30–125 total lesions</td>
                         <td className="py-2 px-3">20–100 comedones or 15–50 inflammatory lesions</td>
                       </tr>
                       <tr>
-                        <td className="py-2 px-3 font-medium">Severe</td>
+                        <td className="py-2 px-3 font-normal">Severe</td>
                         <td className="py-2 px-3">&gt; 125 total lesions</td>
                         <td className="py-2 px-3">&gt; 100 comedones or &gt; 50 inflammatory lesions</td>
                       </tr>
@@ -506,7 +506,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 7 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Do you use any of the following?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">Do you use any of the following?</h2>
                 <p className="text-muted-foreground text-lg">Select all that apply</p>
               </div>
               <div className="space-y-3">
@@ -546,7 +546,7 @@ export function QuizFlow({ onComplete, onBack, userName }: QuizFlowProps) {
           {currentStep === 8 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Are you pregnant or nursing?</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-light mb-3">Are you pregnant or nursing?</h2>
                 <p className="text-muted-foreground text-lg">Some ingredients aren't safe during pregnancy</p>
               </div>
               <RadioGroup
