@@ -227,7 +227,7 @@ export function RoutineDisplay({
               Your Personalized Routine
             </Badge>
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold mb-6" data-testid="text-greeting">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light mb-6" data-testid="text-greeting">
             {userName}
           </h1>
           <div className="mb-8">
@@ -334,7 +334,7 @@ export function RoutineDisplay({
           {/* Shoppable Product List - Horizontal Carousel */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-serif text-2xl font-semibold" data-testid="heading-shoppable-products">Your Routine Products</h3>
+              <h3 className="font-serif text-2xl font-light" data-testid="heading-shoppable-products">Your Routine Products</h3>
               {beautyCTA && (
                 <Button
                   variant="outline"
@@ -402,7 +402,7 @@ export function RoutineDisplay({
           {/* Ice Globes Upsell - For inflamed routines */}
           {hasIceStep && iceGlobesProduct && (
             <div className="space-y-2">
-              <h4 className="text-sm font-semibold text-muted-foreground">
+              <h4 className="text-sm font-normal text-muted-foreground">
                 Recommended tool for people with inflamed acne
               </h4>
               <CompactProductCard 
@@ -420,11 +420,11 @@ export function RoutineDisplay({
 
           {/* Visual AM/PM Routine Display */}
           <div className="space-y-6">
-            <h3 className="font-serif text-2xl font-semibold" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
+            <h3 className="font-serif text-2xl font-light" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
             
             {/* Morning Routine Visual */}
             <div>
-              <h4 className="text-lg font-medium mb-4 flex items-center gap-2" data-testid="tab-morning">
+              <h4 className="text-lg font-normal mb-4 flex items-center gap-2" data-testid="tab-morning">
                 <Sun className="h-5 w-5 text-yellow-500" /> Morning Routine
               </h4>
               <div className="space-y-2">
@@ -432,7 +432,7 @@ export function RoutineDisplay({
                   const productImage = getCategoryImage(product.category);
                   return (
                     <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-normal text-foreground">
                         {index + 1}
                       </span>
                       <div className="flex-shrink-0 w-20 flex flex-col items-center justify-start gap-1">
@@ -442,10 +442,10 @@ export function RoutineDisplay({
                         <Badge variant="outline" className="text-xs whitespace-nowrap leading-tight">{product.category}</Badge>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">{product.name}</p>
+                        <p className="font-normal truncate">{product.name}</p>
                         {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
                         {(product.priceRange || product.price) && (
-                          <p className="text-xs font-medium text-foreground mt-0.5">
+                          <p className="text-xs font-normal text-foreground mt-0.5">
                             {product.priceRange || `$${product.price}`}
                           </p>
                         )}
@@ -475,7 +475,7 @@ export function RoutineDisplay({
             )}
             {/* Evening Routine Visual */}
             <div>
-              <h4 className="text-lg font-medium mb-4 flex items-center gap-2" data-testid="tab-evening">
+              <h4 className="text-lg font-normal mb-4 flex items-center gap-2" data-testid="tab-evening">
                 <Moon className="h-5 w-5 text-blue-400" /> Evening Routine
               </h4>
               <div className="space-y-2">
@@ -483,7 +483,7 @@ export function RoutineDisplay({
                   const productImage = getCategoryImage(product.category);
                   return (
                     <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-card text-sm">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-foreground">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-normal text-foreground">
                         {index + 1}
                       </span>
                       <div className="flex-shrink-0 w-20 flex flex-col items-center justify-start gap-1">
@@ -493,10 +493,10 @@ export function RoutineDisplay({
                         <Badge variant="outline" className="text-xs whitespace-nowrap leading-tight">{product.category}</Badge>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">{product.name}</p>
+                        <p className="font-normal truncate">{product.name}</p>
                         {product.brand && <p className="text-muted-foreground text-xs">{product.brand}</p>}
                         {(product.priceRange || product.price) && (
-                          <p className="text-xs font-medium text-foreground mt-0.5">
+                          <p className="text-xs font-normal text-foreground mt-0.5">
                             {product.priceRange || `$${product.price}`}
                           </p>
                         )}
@@ -532,7 +532,7 @@ export function RoutineDisplay({
           <div className="mt-16 p-8 rounded-lg bg-muted/50 border border-border">
             <div className="max-w-2xl mx-auto text-center">
               <Mail className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h3 className="font-serif text-2xl font-semibold mb-2">
+              <h3 className="font-serif text-2xl font-light mb-2">
                 Get Acne-Safe Tips & Tricks
               </h3>
               <p className="text-muted-foreground mb-6">
@@ -596,7 +596,7 @@ export function RoutineDisplay({
                       <img src={productImage} alt={product.category} className="max-w-full max-h-full object-contain" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold mb-1">{product.name}</p>
+                      <p className="font-normal mb-1">{product.name}</p>
                       <p className="text-sm text-muted-foreground">{product.category}</p>
                     </div>
                     <Button
