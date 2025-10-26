@@ -151,7 +151,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
               <>
                 <Button
                   size="sm"
-                  className="w-full gap-2"
+                  className="w-full gap-1"
                   asChild
                   data-testid={`button-buy-now-${product.name.replace(/\s/g, '-')}`}
                 >
