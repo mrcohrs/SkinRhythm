@@ -105,12 +105,13 @@ export default function Landing() {
             Rooted in science. Built on ingredient integrity.
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="space-y-8 max-w-4xl mx-auto">
+            {/* Item 1 - Icon Left */}
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Microscope className="w-8 h-8 text-primary" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h3 className="font-medium mb-1">Rigorous product ingredient standards</h3>
                 <p className="text-sm text-muted-foreground">
                   Screened for 400+ acne-causing ingredients.
@@ -118,23 +119,25 @@ export default function Landing() {
               </div>
             </div>
 
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <FlaskConical className="w-8 h-8 text-primary" />
-              </div>
-              <div>
+            {/* Item 2 - Icon Right */}
+            <div className="flex items-center gap-6">
+              <div className="flex-1 text-right">
                 <h3 className="font-medium mb-1">Results-based treatment frameworks</h3>
                 <p className="text-sm text-muted-foreground">
                   We follow clinical data, not Tiktok trends.
                 </p>
               </div>
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <FlaskConical className="w-8 h-8 text-primary" />
+              </div>
             </div>
 
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+            {/* Item 3 - Icon Left */}
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Brain className="w-8 h-8 text-primary" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h3 className="font-medium mb-1">Customized for your unique skin profile</h3>
                 <p className="text-sm text-muted-foreground">
                   Fine tuned for skin type, tone, and acne type(s).
@@ -142,15 +145,16 @@ export default function Landing() {
               </div>
             </div>
 
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Shield className="w-8 h-8 text-primary" />
-              </div>
-              <div>
+            {/* Item 4 - Icon Right */}
+            <div className="flex items-center gap-6">
+              <div className="flex-1 text-right">
                 <h3 className="font-medium mb-1">Affordable recommendations</h3>
                 <p className="text-sm text-muted-foreground">
                   Effective and accessible product recommendations.
                 </p>
+              </div>
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Shield className="w-8 h-8 text-primary" />
               </div>
             </div>
           </div>
