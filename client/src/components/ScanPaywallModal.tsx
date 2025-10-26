@@ -108,6 +108,8 @@ export function ScanPaywallModal({ open, onClose }: ScanPaywallModalProps) {
                   label={isFoundingActive ? "Lock In Founding Rate" : "Upgrade to Premium"}
                   size="lg"
                   className="w-full"
+                  productType="premium_subscription"
+                  amount={isFoundingActive ? PRODUCT_PRICES.PREMIUM_FOUNDING : PRODUCT_PRICES.PREMIUM_STANDARD}
                 />
               </CardFooter>
             </Card>
@@ -146,6 +148,8 @@ export function ScanPaywallModal({ open, onClose }: ScanPaywallModalProps) {
                     label="Purchase 20 Scans"
                     variant="default"
                     className="w-full"
+                    productType="scan_pack_20"
+                    amount={PRODUCT_PRICES.SCAN_PACK_20}
                   />
                 </CardFooter>
               </Card>
@@ -173,6 +177,8 @@ export function ScanPaywallModal({ open, onClose }: ScanPaywallModalProps) {
                     label="Purchase 5 Scans"
                     variant="outline"
                     className="w-full"
+                    productType="scan_pack_5"
+                    amount={PRODUCT_PRICES.SCAN_PACK_5}
                   />
                 </CardFooter>
               </Card>
@@ -207,6 +213,8 @@ export function ScanPaywallModal({ open, onClose }: ScanPaywallModalProps) {
                     label="Subscribe for Unlimited"
                     variant="default"
                     className="w-full"
+                    productType="unlimited_scanner"
+                    amount={PRODUCT_PRICES.UNLIMITED_SCANNER}
                   />
                 </CardFooter>
               </Card>

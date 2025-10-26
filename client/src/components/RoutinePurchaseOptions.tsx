@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckoutButton } from "./checkout/CheckoutButton";
-import { STRIPE_PRICE_IDS } from "@/lib/stripe";
+import { STRIPE_PRICE_IDS, PRODUCT_PRICES } from "@/lib/stripe";
 import { FileText, Star, Crown } from "lucide-react";
 
 interface RoutinePurchaseOptionsProps {
@@ -52,6 +52,8 @@ export function RoutinePurchaseOptions({ isAuthenticated, className }: RoutinePu
               label="Purchase PDF ($9.99)"
               className="w-full"
               variant="secondary"
+              productType="detailed_pdf"
+              amount={PRODUCT_PRICES.DETAILED_PDF}
             />
           </CardContent>
         </Card>
@@ -90,6 +92,8 @@ export function RoutinePurchaseOptions({ isAuthenticated, className }: RoutinePu
               label="Purchase Access ($9.99)"
               className="w-full"
               variant="secondary"
+              productType="premium_routine_access"
+              amount={PRODUCT_PRICES.PREMIUM_ROUTINE_ACCESS}
             />
           </CardContent>
         </Card>
@@ -114,6 +118,8 @@ export function RoutinePurchaseOptions({ isAuthenticated, className }: RoutinePu
             priceId={STRIPE_PRICE_IDS.PREMIUM_FOUNDING}
             label="Unlock Premium Membership"
             className="w-full"
+            productType="premium_subscription"
+            amount={PRODUCT_PRICES.PREMIUM_FOUNDING}
           />
         </CardContent>
       </Card>

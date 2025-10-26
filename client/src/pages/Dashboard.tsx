@@ -33,6 +33,7 @@ import { Link } from "wouter";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 import { getCategoryImage } from "@/lib/categoryImages";
+import { trackPurchase } from "@/lib/analytics";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -109,6 +110,32 @@ export default function Dashboard() {
     emblaApi.on('select', onSelect);
     emblaApi.on('reInit', onSelect);
   }, [emblaApi, onSelect]);
+
+  // Track purchase completion when returning from Stripe
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment');
+    const productType = urlParams.get('product');
+    const amount = urlParams.get('amount');
+    
+    if (paymentStatus === 'success' && productType && amount) {
+      // Track purchase event
+      trackPurchase({
+        productType: decodeURIComponent(productType),
+        amount: parseFloat(amount),
+        currency: 'USD'
+      });
+      
+      // Clean up URL parameters
+      window.history.replaceState({}, '', '/dashboard');
+      
+      // Show success toast
+      toast({
+        title: "Purchase successful!",
+        description: "Your purchase has been completed. Thank you!",
+      });
+    }
+  }, [toast]);
 
   const { data: currentRoutine, isLoading, isFetching } = useQuery<Routine>({
     queryKey: ['/api/routines/current'],

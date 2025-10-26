@@ -210,6 +210,8 @@ Hyaluronic Acid"
                         variant="default"
                         className="w-full"
                         data-testid="button-buy-20-scans"
+                        productType="scan_pack_20"
+                        amount={PRODUCT_PRICES.SCAN_PACK_20}
                       />
                     </CardFooter>
                   </Card>
@@ -235,6 +237,8 @@ Hyaluronic Acid"
                         variant="outline"
                         className="w-full"
                         data-testid="button-buy-5-scans"
+                        productType="scan_pack_5"
+                        amount={PRODUCT_PRICES.SCAN_PACK_5}
                       />
                     </CardFooter>
                   </Card>
@@ -440,6 +444,8 @@ Hyaluronic Acid"
                         variant="default"
                         className="w-full"
                         data-testid="button-buy-20-scans-bottom"
+                        productType="scan_pack_20"
+                        amount={PRODUCT_PRICES.SCAN_PACK_20}
                       />
                     </CardFooter>
                   </Card>
@@ -465,6 +471,8 @@ Hyaluronic Acid"
                         variant="outline"
                         className="w-full"
                         data-testid="button-buy-5-scans-bottom"
+                        productType="scan_pack_5"
+                        amount={PRODUCT_PRICES.SCAN_PACK_5}
                       />
                     </CardFooter>
                   </Card>

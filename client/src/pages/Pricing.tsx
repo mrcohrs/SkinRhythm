@@ -161,6 +161,8 @@ export default function Pricing() {
                     label={isFoundingActive ? "Lock In Founding Rate" : "Upgrade to Premium"}
                     size="lg"
                     className="w-full"
+                    productType="premium_subscription"
+                    amount={premiumPrice}
                   />
                 )}
               </CardFooter>
@@ -228,6 +230,8 @@ export default function Pricing() {
                     priceId={STRIPE_PRICE_IDS.PREMIUM_ROUTINE_ACCESS}
                     label="Purchase Access"
                     className="w-full"
+                    productType="premium_routine_access"
+                    amount={PRODUCT_PRICES.PREMIUM_ROUTINE_ACCESS}
                   />
                 )}
               </CardFooter>
@@ -285,6 +289,8 @@ export default function Pricing() {
                     priceId={STRIPE_PRICE_IDS.DETAILED_PDF}
                     label="Purchase PDF Access"
                     className="w-full"
+                    productType="detailed_pdf"
+                    amount={PRODUCT_PRICES.DETAILED_PDF}
                   />
                 )}
               </CardFooter>
@@ -339,6 +345,8 @@ export default function Pricing() {
                       priceId={STRIPE_PRICE_IDS.UNLIMITED_SCANNER}
                       label="Subscribe"
                       className="w-full"
+                      productType="unlimited_scanner"
+                      amount={PRODUCT_PRICES.UNLIMITED_SCANNER}
                     />
                   )}
                 </CardFooter>
@@ -375,6 +383,8 @@ export default function Pricing() {
                     priceId={STRIPE_PRICE_IDS.SCAN_PACK_5}
                     label="Purchase 5 Scans"
                     className="w-full"
+                    productType="scan_pack_5"
+                    amount={PRODUCT_PRICES.SCAN_PACK_5}
                   />
                 )}
               </CardFooter>
@@ -410,6 +420,8 @@ export default function Pricing() {
                     priceId={STRIPE_PRICE_IDS.SCAN_PACK_20}
                     label="Purchase 20 Scans"
                     className="w-full"
+                    productType="scan_pack_20"
+                    amount={PRODUCT_PRICES.SCAN_PACK_20}
                   />
                 )}
               </CardFooter>
