@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
             
             <div className="prose prose-lg max-w-none space-y-6 text-foreground/90">
               <p>
-                At AcneAgent, we value your privacy. We collect only the information necessary to 
+                At SkinRhythm, we value your privacy. We collect only the information necessary to 
                 deliver your personalized acne routine and improve your experience. This may include 
                 responses to our quiz, site usage data, and anonymized analytics.
               </p>
@@ -27,8 +27,8 @@ export default function PrivacyPolicy() {
               <p>
                 You can disable cookies in your browser settings at any time. If you have any questions 
                 about our data practices, please contact us at{" "}
-                <a href="mailto:acne-agent-help@gmail.com" className="text-primary-text underline hover:no-underline">
-                  acne-agent-help@gmail.com
+                <a href="mailto:skinrhythm-help@gmail.com" className="text-primary-text underline hover:no-underline">
+                  skinrhythm-help@gmail.com
                 </a>.
               </p>
             </div>

@@ -1,7 +1,7 @@
-# AcneAgent - Personalized Acne Skincare Application
+# SkinRhythm - Personalized Acne Skincare Application
 
 ## Overview
-AcneAgent is a personalized acne skincare application that provides customized skincare routines. It analyzes user skin type, Fitzpatrick type, acne concerns, and pregnancy status through an interactive quiz to recommend morning and evening skincare products across budget, standard, and premium price tiers. The application supports user authentication, routine saving, and offers a personalized dashboard with product recommendations and detailed treatment plans. Its purpose is to deliver a clinical yet elegant user experience, guiding users towards effective acne management with a vision to build an AI recommendation engine that learns from real user results for increasingly accurate skincare advice.
+SkinRhythm is a personalized acne skincare application that provides customized skincare routines. It analyzes user skin type, Fitzpatrick type, acne concerns, and pregnancy status through an interactive quiz to recommend morning and evening skincare products across budget, standard, and premium price tiers. The application supports user authentication, routine saving, and offers a personalized dashboard with product recommendations and detailed treatment plans. Its purpose is to deliver a clinical yet elegant user experience, guiding users towards effective acne management with a vision to build an AI recommendation engine that learns from real user results for increasingly accurate skincare advice.
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -37,4 +37,4 @@ The application is designed for scalability and maintainability, emphasizing a c
 - **UI Components**: Radix UI primitives (`@radix-ui/*`).
 - **Form Management**: React Hook Form with Zod resolver.
 - **Fonts**: Inter and Playfair Display from Google Fonts CDN.
-- **Branding**: Custom AcneAgent logo and favicon.
+- **Branding**: Custom SkinRhythm logo and favicon.
