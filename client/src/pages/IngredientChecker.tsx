@@ -13,6 +13,7 @@ import { Link } from "wouter";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import { CheckoutButton } from "@/components/checkout/CheckoutButton";
 import { STRIPE_PRICE_IDS, PRODUCT_PRICES } from "@/lib/stripe";
+import { trackIngredientScan, trackScanLimitReached } from "@/lib/analytics";
 
 export default function IngredientChecker() {
   const [inputText, setInputText] = useState("");
@@ -38,6 +39,11 @@ export default function IngredientChecker() {
     
     // Check if user can scan
     if (!canScan) {
+      // Track scan limit reached
+      trackScanLimitReached({
+        remainingScans: 0,
+        hasUnlimitedScans: false
+      });
       setShowPaywall(true);
       return;
     }
@@ -46,6 +52,14 @@ export default function IngredientChecker() {
     const checkResults = checkIngredients(inputText);
     setResults(checkResults);
     setHasChecked(true);
+
+    // Track the scan completion
+    trackIngredientScan({
+      totalChecked: checkResults.totalChecked,
+      foundCount: checkResults.foundIngredients.length,
+      safeCount: checkResults.safeIngredients.length,
+      remainingScans: hasUnlimited ? 'unlimited' : remainingScans - 1
+    });
 
     // Track the scan usage on backend
     if (!hasUnlimited) {
