@@ -565,7 +565,7 @@ export default function Landing() {
                 <div className="text-center space-y-3">
                   <h3 className="font-serif text-xl font-medium">Routine PDF Download</h3>
                   <p className="text-sm text-muted-foreground">
-                    Your plan, formatted for daily use
+                    A PDF download with detailed instructions for your routine, ramping up on actives, and tips and tricks for your clear skin journey.
                   </p>
                   <p className="text-2xl font-semibold">$9.99</p>
                 </div>
@@ -588,7 +588,7 @@ export default function Landing() {
                 <div className="text-center space-y-3">
                   <h3 className="font-serif text-xl font-medium">Product Alternatives Access</h3>
                   <p className="text-sm text-muted-foreground">
-                    Unlock all product options for one routine
+                    Unlock all product options for your current Clear Skin Plan.
                   </p>
                   <p className="text-2xl font-semibold">$9.99</p>
                 </div>
