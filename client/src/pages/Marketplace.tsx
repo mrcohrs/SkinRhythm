@@ -14,10 +14,11 @@ import {
 import { Search, Filter, Crown, Lock, LogOut } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import { ProductCard } from '@/components/ProductCard';
 import type { Product as ProductCardType } from '@/components/ProductCard';
+import { LoginModal } from '@/components/LoginModal';
 
 interface SpecificProduct {
   specificProductName: string;
@@ -43,10 +44,17 @@ interface MarketplaceData {
 
 export default function Marketplace() {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const [, setLocation] = useLocation();
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPriceTier, setSelectedPriceTier] = useState<string>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
+
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    window.location.reload(); // Reload to refresh auth state and marketplace data
+  };
 
   const { data, isLoading, error } = useQuery<MarketplaceData>({
     queryKey: ['/api/marketplace'],
@@ -166,7 +174,7 @@ export default function Marketplace() {
                 </div>
                 <Button
                   size="lg"
-                  onClick={() => window.location.href = '/api/login'}
+                  onClick={() => setShowLoginModal(true)}
                   className="rounded-full"
                   data-testid="button-login"
                 >
@@ -257,7 +265,7 @@ export default function Marketplace() {
                 variant="ghost"
                 size="sm"
                 className="gap-2"
-                onClick={() => window.location.href = '/api/logout'}
+                onClick={() => window.location.href = '/api/auth/logout'}
                 data-testid="button-logout"
               >
                 <LogOut className="h-4 w-4" />
@@ -418,6 +426,12 @@ export default function Marketplace() {
           )}
         </div>
       </section>
+
+      <LoginModal 
+        open={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={handleLoginSuccess}
+      />
     </div>
   );
 }

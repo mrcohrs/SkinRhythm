@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { 
   ArrowRight, 
   Brain,
@@ -20,8 +21,17 @@ import {
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import productsIllustration from "@assets/product lineup_1761438760613.png";
 import routineIllustration from "@assets/Frame 58_1761434440825.png";
+import { LoginModal } from "@/components/LoginModal";
 
 export default function Landing() {
+  const [, setLocation] = useLocation();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    setLocation('/dashboard');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* HEADER */}
@@ -33,7 +43,7 @@ export default function Landing() {
             </div>
             <div className="flex items-center gap-6">
               <button 
-                onClick={() => window.location.href = '/api/login'}
+                onClick={() => setShowLoginModal(true)}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 data-testid="link-login"
               >
@@ -860,6 +870,12 @@ export default function Landing() {
           </div>
         </div>
       </footer>
+
+      <LoginModal 
+        open={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={handleLoginSuccess}
+      />
     </div>
   );
 }

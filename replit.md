@@ -13,7 +13,8 @@ The frontend is built with React and TypeScript, utilizing `shadcn/ui` with Radi
 
 ### Technical Implementations
 - **Frontend**: React with TypeScript (Vite), Wouter for routing, TanStack Query for server state, and a custom `useAuth` hook.
-- **Backend**: Express.js with TypeScript (Node.js), using OpenID Connect (OIDC) via Replit Auth and Passport.js for authentication, backed by `express-session` with a PostgreSQL store.
+- **Backend**: Express.js with TypeScript (Node.js), using custom email/password authentication via Passport.js local strategy with bcrypt password hashing, backed by `express-session` with a PostgreSQL store.
+- **Authentication Flow**: Custom LoginModal component handles user authentication across Landing, Marketplace, and Pricing pages. Users sign up/login via email and password (no Replit branding in production).
 - **Database**: PostgreSQL (Neon serverless driver) managed with Drizzle ORM and Drizzle Kit for migrations.
 - **Core Features**:
     - **Quiz Flow**: A 9-step questionnaire with conditional logic, including a two-step Fitzpatrick determination process (visual skin tone selection followed by a conditional sun reaction question).
@@ -30,7 +31,7 @@ The frontend is built with React and TypeScript, utilizing `shadcn/ui` with Radi
 The application is designed for scalability and maintainability, emphasizing a clear separation of concerns between frontend and backend. Data storage includes sessions, users, routine data, purchase records, and interaction tracking for cards and banners. Consent infrastructure is a foundational element, ensuring legal compliance for data collection and future AI model training. The system is built to support a future AI recommendation engine that learns from user data to refine product recommendations.
 
 ## External Dependencies
-- **Authentication**: Replit OIDC provider.
+- **Authentication**: Custom email/password authentication with bcrypt password hashing and Passport.js local strategy.
 - **Database**: Neon serverless PostgreSQL.
 - **Product Data**: CSV files for product recommendations, affiliate link mappings (38 links), and routine logic. A centralized `productLibrary.ts` holds 21 products across 8 categories.
 - **UI Components**: Radix UI primitives (`@radix-ui/*`).

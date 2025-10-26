@@ -127,4 +127,17 @@ export function setupLocalAuth(app: Express) {
       });
     })(req, res, next);
   });
+
+  // Logout route
+  app.get("/api/auth/logout", (req, res) => {
+    req.logout(() => {
+      req.session.destroy((err) => {
+        if (err) {
+          console.error("Error destroying session:", err);
+        }
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+      });
+    });
+  });
 }

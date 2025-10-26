@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntitlements } from "@/hooks/useEntitlements";
 import { useFoundingRate } from "@/hooks/useFoundingRate";
@@ -8,12 +9,20 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { STRIPE_PRICE_IDS, PRODUCT_PRICES } from "@/lib/stripe";
 import { Check, Sparkles, FileText, Scan, Crown, ArrowLeft, Star } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { LoginModal } from "@/components/LoginModal";
 
 export default function Pricing() {
   const { user } = useAuth();
+  const [, setLocation] = useLocation();
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const { data: entitlements, isLoading: entitlementsLoading } = useEntitlements();
   const { data: foundingRate, isLoading: foundingRateLoading } = useFoundingRate();
+
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    window.location.reload(); // Reload to refresh user state
+  };
 
   const isFoundingActive = foundingRate?.active ?? false;
   const premiumPrice = isFoundingActive ? PRODUCT_PRICES.PREMIUM_FOUNDING : PRODUCT_PRICES.PREMIUM_STANDARD;
@@ -134,8 +143,13 @@ export default function Pricing() {
 
               <CardFooter className="pt-6 pb-8">
                 {!user ? (
-                  <Button asChild className="w-full" size="lg" data-testid="button-signup-premium">
-                    <a href="/api/login">Get Premium Access</a>
+                  <Button 
+                    onClick={() => setShowLoginModal(true)}
+                    className="w-full" 
+                    size="lg" 
+                    data-testid="button-signup-premium"
+                  >
+                    Get Premium Access
                   </Button>
                 ) : entitlements?.isPremium ? (
                   <Button disabled className="w-full" size="lg" variant="outline">
@@ -198,8 +212,12 @@ export default function Pricing() {
 
               <CardFooter>
                 {!user ? (
-                  <Button asChild className="w-full" data-testid="button-signup-routine-access">
-                    <a href="/api/login">Sign Up to Purchase</a>
+                  <Button 
+                    onClick={() => setShowLoginModal(true)}
+                    className="w-full" 
+                    data-testid="button-signup-routine-access"
+                  >
+                    Sign Up to Purchase
                   </Button>
                 ) : entitlements?.hasPremiumRoutineAccess ? (
                   <Button disabled className="w-full" variant="outline">
@@ -251,8 +269,12 @@ export default function Pricing() {
 
               <CardFooter>
                 {!user ? (
-                  <Button asChild className="w-full" data-testid="button-signup-pdf">
-                    <a href="/api/login">Sign Up to Purchase</a>
+                  <Button 
+                    onClick={() => setShowLoginModal(true)}
+                    className="w-full" 
+                    data-testid="button-signup-pdf"
+                  >
+                    Sign Up to Purchase
                   </Button>
                 ) : entitlements?.hasDetailedPdfAccess ? (
                   <Button disabled className="w-full" variant="outline">
@@ -301,8 +323,12 @@ export default function Pricing() {
 
                 <CardFooter>
                   {!user ? (
-                    <Button asChild className="w-full" data-testid="button-signup-unlimited-scans">
-                      <a href="/api/login">Subscribe</a>
+                    <Button 
+                      onClick={() => setShowLoginModal(true)}
+                      className="w-full" 
+                      data-testid="button-signup-unlimited-scans"
+                    >
+                      Subscribe
                     </Button>
                   ) : entitlements?.hasUnlimitedScans ? (
                     <Button disabled className="w-full" variant="outline">
@@ -337,8 +363,12 @@ export default function Pricing() {
 
               <CardFooter>
                 {!user ? (
-                  <Button asChild className="w-full" data-testid="button-signup-scan-5">
-                    <a href="/api/login">Purchase</a>
+                  <Button 
+                    onClick={() => setShowLoginModal(true)}
+                    className="w-full" 
+                    data-testid="button-signup-scan-5"
+                  >
+                    Purchase
                   </Button>
                 ) : (
                   <CheckoutButton
@@ -368,8 +398,12 @@ export default function Pricing() {
 
               <CardFooter>
                 {!user ? (
-                  <Button asChild className="w-full" data-testid="button-signup-scan-20">
-                    <a href="/api/login">Purchase</a>
+                  <Button 
+                    onClick={() => setShowLoginModal(true)}
+                    className="w-full" 
+                    data-testid="button-signup-scan-20"
+                  >
+                    Purchase
                   </Button>
                 ) : (
                   <CheckoutButton
@@ -409,6 +443,12 @@ export default function Pricing() {
           </Card>
         </div>
       </div>
+
+      <LoginModal 
+        open={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={handleLoginSuccess}
+      />
     </div>
   );
 }

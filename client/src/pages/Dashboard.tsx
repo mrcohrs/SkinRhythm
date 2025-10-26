@@ -407,7 +407,7 @@ export default function Dashboard() {
                   variant="ghost"
                   size="sm"
                   className="gap-2"
-                  onClick={() => window.location.href = '/api/logout'}
+                  onClick={() => window.location.href = '/api/auth/logout'}
                   data-testid="button-logout"
                 >
                   <LogOut className="h-4 w-4" />
@@ -538,7 +538,7 @@ export default function Dashboard() {
                 variant="ghost"
                 size="sm"
                 className="gap-2"
-                onClick={() => window.location.href = '/api/logout'}
+                onClick={() => window.location.href = '/api/auth/logout'}
                 data-testid="button-logout"
               >
                 <LogOut className="h-4 w-4" />
