@@ -767,7 +767,7 @@ export default function Dashboard() {
               {!canAccessProductAlternatives && (
                 <Card className="border-primary/20" data-testid="card-products-upgrade">
                   <CardContent className="p-4">
-                    <div className="flex items-center justify-between gap-6">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
                       <div className="flex items-center gap-3">
                         <Crown className="h-8 w-8 text-primary flex-shrink-0" />
                         <div>
@@ -775,7 +775,7 @@ export default function Dashboard() {
                           <p className="text-sm text-muted-foreground">6-week routine coach, ingredient scanner, multiple product options to choose from for each routine step, and your routine library with notes to track what works.</p>
                         </div>
                       </div>
-                      <Button data-testid="button-upgrade-products" className="flex-shrink-0" asChild>
+                      <Button data-testid="button-upgrade-products" className="flex-shrink-0 w-full md:w-auto" asChild>
                         <Link href="/pricing">Upgrade to Premium</Link>
                       </Button>
                     </div>
