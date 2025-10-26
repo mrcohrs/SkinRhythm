@@ -18,7 +18,7 @@ import {
   X
 } from "lucide-react";
 import logoPath from "@assets/acne agent brand logo_1760328618927.png";
-import productsIllustration from "@assets/product lineup_1761431861365.png";
+import productsIllustration from "@assets/product lineup_1761438760613.png";
 import routineIllustration from "@assets/Frame 58_1761434440825.png";
 
 export default function Landing() {
@@ -57,7 +57,7 @@ export default function Landing() {
           <div className="flex flex-col items-center text-center space-y-12">
             {/* Headline */}
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-5xl">
-              We understand acne — so you can finally stop guessing.
+              AcneAgent understands your acne so you don't have to.
             </h1>
             
             {/* Hero Illustration */}
@@ -102,7 +102,7 @@ export default function Landing() {
       <section className="py-12 md:py-16 bg-muted/30">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <h2 className="text-center font-serif text-2xl md:text-3xl font-bold mb-12">
-            Built on clinical expertise. Verified by Ingredient Integrity.
+            Rooted in science. Built on ingredient integrity.
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -111,9 +111,9 @@ export default function Landing() {
                 <Microscope className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1">400+ pore-clogging ingredients screened</h3>
+                <h3 className="font-semibold mb-1">Rigorous product ingredient standards</h3>
                 <p className="text-sm text-muted-foreground">
-                  Every product verified for safety
+                  Screened for 400+ acne-causing ingredients.
                 </p>
               </div>
             </div>
@@ -123,9 +123,9 @@ export default function Landing() {
                 <FlaskConical className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1">Dermatology-inspired treatment structure</h3>
+                <h3 className="font-semibold mb-1">Results-based treatment frameworks</h3>
                 <p className="text-sm text-muted-foreground">
-                  Clinical logic, not trends
+                  We follow clinical data, not Tiktok trends.
                 </p>
               </div>
             </div>
@@ -135,9 +135,9 @@ export default function Landing() {
                 <Brain className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1">Personalized for tone, type, and barrier</h3>
+                <h3 className="font-semibold mb-1">Customized for your unique skin profile</h3>
                 <p className="text-sm text-muted-foreground">
-                  Built for your unique skin
+                  Fine tuned for skin type, tone, and acne type(s).
                 </p>
               </div>
             </div>
@@ -147,9 +147,9 @@ export default function Landing() {
                 <Shield className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1">Budget-first recommendations</h3>
+                <h3 className="font-semibold mb-1">Affordable recommendations</h3>
                 <p className="text-sm text-muted-foreground">
-                  Effective and affordable
+                  Effective and accessible product recommendations.
                 </p>
               </div>
             </div>
@@ -177,7 +177,7 @@ export default function Landing() {
             How AcneAgent helps you clear your skin — safely.
           </h2>
           <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-            Three simple steps to your personalized acne-safe routine.
+            Three simple steps to your personalized Clear Skin Plan.
           </p>
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -213,7 +213,7 @@ export default function Landing() {
                 <div className="space-y-3">
                   <h3 className="font-serif text-xl font-semibold">We build your plan.</h3>
                   <p className="text-sm text-muted-foreground">
-                    AI maps clinical acne treatment logic to acne-safe products.
+                    AcneAgent maps your skin profile to clinical acne treatment data to create a regimen of acne-safe products.
                   </p>
                 </div>
               </CardContent>
@@ -230,9 +230,9 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-semibold">Start seeing results.</h3>
+                  <h3 className="font-serif text-xl font-semibold">Commit to your Clear Skin Plan.</h3>
                   <p className="text-sm text-muted-foreground">
-                    Follow your plan knowing every product is verified for safety.
+                    Ditch your old routine and start your personalized acne-safe plan.
                   </p>
                 </div>
               </CardContent>
@@ -263,11 +263,11 @@ export default function Landing() {
             {/* Left Column - Text */}
             <div className="space-y-6">
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
-                Real results come from what's inside the formula.
+                AcneAgent takes the risk out of shopping for skincare.
               </h2>
               
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Most "acne-safe" products still contain pore-clogging ingredients like Laureth-4. AcneAgent screens every formula for over 400 known triggers — so your routine truly supports your skin's healing process.
+                Most "acne-safe" products still contain pore-clogging ingredients like coconut oil, shea butter, and Laureth-4. AcneAgent screens every formula for over 400 known acne triggers before adding it to our marketplace — so you can shop our recommendations with confidence.
               </p>
 
               <div className="pt-4">
@@ -341,7 +341,7 @@ export default function Landing() {
             </h2>
             
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Get your personalized acne-safe AM + PM routine instantly. We recommend clinically effective products within your budget, verified for Ingredient Integrity.
+              Get your personalized acne-safe AM + PM routine instantly. We recommend clinically effective products to address your unique concerns within your budget.
             </p>
           </div>
 
@@ -365,8 +365,8 @@ export default function Landing() {
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold">Clear daily structure</p>
-                    <p className="text-sm text-muted-foreground">Know exactly what to use and when</p>
+                    <p className="font-semibold">3 free product ingredient scans</p>
+                    <p className="text-sm text-muted-foreground">Check any product for acne-causing ingredients</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -403,7 +403,7 @@ export default function Landing() {
             </h2>
             
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Premium gives you control and insight into every step of your clear-skin journey.
+              Premium gives you control, unparalleled guidance, and insight into every step of your clear-skin journey.
             </p>
           </div>
 
@@ -414,7 +414,7 @@ export default function Landing() {
                   <Beaker className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Ingredient Checker</h3>
+                  <h3 className="font-semibold mb-2">Unlimited Ingredient Scans</h3>
                   <p className="text-sm text-muted-foreground">
                     Scan any product for acne triggers
                   </p>
@@ -430,7 +430,7 @@ export default function Landing() {
                 <div>
                   <h3 className="font-semibold mb-2">Routine Coach</h3>
                   <p className="text-sm text-muted-foreground">
-                    Track progress & adjust over time
+                    Detailed step-by-step guidance on ramping up on actives, personalized tips, progress tracking, and more.
                   </p>
                 </div>
               </CardContent>
@@ -444,7 +444,7 @@ export default function Landing() {
                 <div>
                   <h3 className="font-semibold mb-2">Product Alternatives</h3>
                   <p className="text-sm text-muted-foreground">
-                    Budget to luxury, all vetted
+                    Customize your routine without affecting your results. Budget to luxury options that fit your Clear Skin Plan.
                   </p>
                 </div>
               </CardContent>
@@ -456,9 +456,9 @@ export default function Landing() {
                   <Shield className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Barrier Sensitivity Adjustments</h3>
+                  <h3 className="font-semibold mb-2">Routine History</h3>
                   <p className="text-sm text-muted-foreground">
-                    Customize for your skin type
+                    View your complete routine history and take notes to track what works best for you.
                   </p>
                 </div>
               </CardContent>
@@ -479,7 +479,7 @@ export default function Landing() {
                   {" "}$2.99<span className="text-xl text-muted-foreground">/mo</span>
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Limited founding member rate — locks in forever
+                  Limited founding member rate — locks in forever and locks in discounted rate for Premium+.
                 </p>
               </div>
 
@@ -517,12 +517,12 @@ export default function Landing() {
             </h2>
             
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              AI-driven ingredient interaction tracking, seasonal adjustments, and dermatologist-style insights — all in one system built for long-term clarity.
+              AI-driven ingredient interaction tracking, seasonal adjustments, and image-based progress tracking to automatically adapt your routine to your unique skin.
             </p>
 
             <div className="pt-4">
               <p className="text-sm text-muted-foreground">
-                Advanced features for those who want complete control over their clear-skin journey.
+                Advanced features for getting clear, staying clear, and the rest of your skincare journey.
               </p>
             </div>
           </div>
@@ -628,13 +628,19 @@ export default function Landing() {
       </section>
 
       {/* 9️⃣ EDUCATIONAL / INGREDIENT SCIENCE SECTION */}
-      <section id="ingredient-science" className="py-20 md:py-24 bg-muted/30">
+      <section id="ingredient-science" className="py-10 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="text-center space-y-6 mb-12">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
               The science behind every recommendation.
             </h2>
-            
+            <div className="flex justify-center">
+              <img 
+                src={productsIllustration} 
+                alt="Skincare products illustration" 
+                className="w-full max-w-6xl rounded-2xl"
+              />
+            </div>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               AcneAgent uses proven actives balanced with barrier-supporting ingredients — because true clarity requires both science and safety.
             </p>
@@ -708,7 +714,7 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <TestTube className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg">Retinal</h3>
+                  <h3 className="font-semibold text-lg">Retinol</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Refines texture and accelerates cell turnover
@@ -723,27 +729,21 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <TestTube className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg">Zinc PCA</h3>
+                  <h3 className="font-semibold text-lg">Bisabolol</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Regulates oil and reduces inflammation
+                  Calms redness and reduces inflammation
                 </p>
               </CardContent>
             </Card>
           </div>
 
-          <div className="flex justify-center">
-            <img 
-              src={productsIllustration} 
-              alt="Skincare products illustration" 
-              className="w-full max-w-3xl rounded-2xl"
-            />
-          </div>
+          
         </div>
       </section>
 
       {/* 🔟 FINAL CTA - Conversion Close */}
-      <section className="py-20 md:py-32 bg-gradient-to-br from-primary/10 to-secondary/10">
+      <section className="py-10 md:py-16 bg-gradient-to-br from-primary/10 to-secondary/10">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
           <div className="text-center space-y-8">
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold">
