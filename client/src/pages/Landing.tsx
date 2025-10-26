@@ -301,29 +301,9 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Right Column - Comparison Visual */}
-            <div className="space-y-4">
-              <Card className="border-destructive/20 bg-destructive/5 rounded-2xl">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-full bg-destructive/20 flex items-center justify-center flex-shrink-0">
-                      <X className="w-6 h-6 text-destructive" />
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="font-normal">rapid clear by neutrogena</h4>
-                      <p className="text-sm text-muted-foreground">
-                        laureth-4 detected — highly comedogenic surfactant found in nearly all drugstore benzoyl peroxide creams.
-                      </p>
-                      <Badge variant="destructive" className="rounded-full text-xs">
-                        pore-clogging
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
 
               <div className="space-y-6">
-                <h4 className="font-normal text-center">common comedogenic ingredients to avoid:</h4>
+                <h4 className="font-normal text-center">common comedogenics often labeled non-comedogenic:</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="flex flex-col items-center gap-2 text-center">
                     <img src={coconutImg} alt="Coconut oil" className="w-20 h-20 object-contain" />
