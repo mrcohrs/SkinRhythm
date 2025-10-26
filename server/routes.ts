@@ -20,14 +20,42 @@ import { STRIPE_PRICE_IDS, PRODUCT_DETAILS } from './stripe-config';
 import express from 'express';
 import { generateRoutinePDF } from './pdfGenerator';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-11-20.acacia' as any });
+// Initialize Stripe with error handling
+let stripe: Stripe;
+try {
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  if (!stripeKey) {
+    console.warn('WARNING: STRIPE_SECRET_KEY not set - payment features will be disabled');
+    // Create a dummy stripe object to prevent crashes
+    stripe = null as any;
+  } else {
+    stripe = new Stripe(stripeKey, { apiVersion: '2024-11-20.acacia' as any });
+    console.log('Stripe initialized successfully');
+  }
+} catch (error) {
+  console.error('ERROR: Failed to initialize Stripe:', error);
+  stripe = null as any;
+}
 
-parseExcelFile();
+// Load product data with error handling
+try {
+  parseExcelFile();
+  console.log('Product data loaded successfully');
+} catch (error) {
+  console.error('ERROR: Failed to load product data:', error);
+  // Continue anyway - some features may still work
+}
 
 // Export webhook handler to be registered BEFORE express.json()
 export function registerWebhook(app: Express): void {
   // Stripe Webhook Handler - MUST be registered before express.json()
   app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), async (req: any, res) => {
+    // Check if Stripe is available
+    if (!stripe) {
+      console.error('Stripe is not initialized - webhook processing disabled');
+      return res.status(503).json({ message: "Payment system is temporarily unavailable" });
+    }
+    
     const sig = req.headers['stripe-signature'];
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     
@@ -804,6 +832,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // 1. Create Checkout Session
   app.post('/api/payments/create-checkout', isAuthenticated, async (req: any, res) => {
     try {
+      // Check if Stripe is available
+      if (!stripe) {
+        console.error('Stripe is not initialized - payment features disabled');
+        return res.status(503).json({ message: "Payment system is temporarily unavailable" });
+      }
+      
       const userId = req.user.claims.sub;
       const { priceId, successUrl, cancelUrl } = req.body;
       
