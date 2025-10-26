@@ -366,7 +366,7 @@ export function trackConsentSubmitted(consent: {
  */
 export function trackPageView(pagePath: string, pageTitle?: string) {
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('config', 'G-46SGR1V6LN', {
+    window.gtag('config', 'G-D7MPP707ZJ', {
       page_path: pagePath,
       page_title: pageTitle || document.title
     });
@@ -414,7 +414,7 @@ export function setUserProperties(properties: {
     });
     
     if (properties.userId) {
-      window.gtag('config', 'G-46SGR1V6LN', {
+      window.gtag('config', 'G-D7MPP707ZJ', {
         user_id: properties.userId
       });
     }
