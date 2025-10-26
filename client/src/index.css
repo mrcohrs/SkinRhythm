@@ -96,8 +96,8 @@
   --chart-4: 174 35% 70%;
   --chart-5: 23 100% 75%;
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Poppins', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
   --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
   --radius: 0.7rem; /* 8px */
   --shadow-2xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.04);
