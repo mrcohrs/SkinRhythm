@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Shield, Brain, Lock } from "lucide-react";
+import { trackConsentSubmitted } from "@/lib/analytics";
 
 interface ConsentModalProps {
   open: boolean;
@@ -30,6 +31,12 @@ export function ConsentModal({
   const [aiTrainingConsent, setAiTrainingConsent] = useState(false);
 
   const handleSubmit = () => {
+    // Track consent submission
+    trackConsentSubmitted({
+      dataCollection: dataCollectionConsent,
+      aiTraining: aiTrainingConsent
+    });
+    
     onConsent(dataCollectionConsent, aiTrainingConsent);
   };
 

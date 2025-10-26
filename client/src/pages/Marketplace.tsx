@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +19,7 @@ import logoPath from "@assets/acne agent brand logo_1760328618927.png";
 import { ProductCard } from '@/components/ProductCard';
 import type { Product as ProductCardType } from '@/components/ProductCard';
 import { LoginModal } from '@/components/LoginModal';
+import { trackMarketplaceVisit } from '@/lib/analytics';
 
 interface SpecificProduct {
   specificProductName: string;
@@ -50,6 +51,13 @@ export default function Marketplace() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPriceTier, setSelectedPriceTier] = useState<string>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
+
+  // Track marketplace visit when page loads
+  useEffect(() => {
+    if (isAuthenticated) {
+      trackMarketplaceVisit();
+    }
+  }, [isAuthenticated]);
 
   const handleLoginSuccess = () => {
     setShowLoginModal(false);

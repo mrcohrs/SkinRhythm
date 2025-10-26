@@ -33,7 +33,7 @@ import { Link } from "wouter";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 import { getCategoryImage } from "@/lib/categoryImages";
-import { trackPurchase } from "@/lib/analytics";
+import { trackPurchase, trackRoutineModeChanged, trackProductAlternativeSelected, trackCardInteraction, trackBannerInteraction } from "@/lib/analytics";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -77,6 +77,12 @@ export default function Dashboard() {
   // Card interaction mutation
   const cardInteractMutation = useMutation({
     mutationFn: async ({ cardId, action }: { cardId: string; action: string }) => {
+      // Track card interaction
+      trackCardInteraction({
+        cardId,
+        action: action as 'viewed' | 'clicked' | 'dismissed',
+        page: 'dashboard'
+      });
       return apiRequest('POST', '/api/cards/interact', { cardId, action });
     },
   });
@@ -84,6 +90,11 @@ export default function Dashboard() {
   // Banner interaction mutation
   const bannerInteractMutation = useMutation({
     mutationFn: async ({ bannerId, action }: { bannerId: string; action: string }) => {
+      // Track banner interaction
+      trackBannerInteraction({
+        bannerId,
+        action: action as 'viewed' | 'clicked' | 'dismissed'
+      });
       const response = await apiRequest('POST', '/api/banners/interact', { bannerId, action });
       queryClient.invalidateQueries({ queryKey: ['/api/banners/current'] });
       return response;
@@ -251,6 +262,13 @@ export default function Dashboard() {
       queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
       queryClient.invalidateQueries({ queryKey: ['/api/routines'] });
       setRoutineMode(newMode);
+      
+      // Track routine mode change
+      trackRoutineModeChanged({
+        from: newMode === 'premium' ? 'basic' : 'premium',
+        to: newMode
+      });
+      
       toast({
         title: "Routine updated",
         description: newMode === 'premium' ? "Now showing the products that AcneAgent scores highest for your skin profile" : "Now showing the best budget-friendly products for your skin profile",
@@ -301,7 +319,14 @@ export default function Dashboard() {
       });
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
+      // Track product alternative selection
+      trackProductAlternativeSelected({
+        category: variables.category,
+        newProduct: variables.productName,
+        routineId: currentRoutine?.id || ''
+      });
+      
       queryClient.invalidateQueries({ queryKey: ['/api/routines/current'] });
       toast({
         title: "Product updated",
