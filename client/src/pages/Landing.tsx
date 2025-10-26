@@ -24,6 +24,7 @@ import routineIllustration from "@assets/Frame 58_1761434440825.png";
 import algaeImg from "@assets/algae_1761481865848.png";
 import coconutImg from "@assets/coconut_1761481865855.png";
 import sheaImg from "@assets/shea_1761481865855.png";
+import beakerImg from "@assets/beaker_1761482228536.png";
 import { LoginModal } from "@/components/LoginModal";
 
 export default function Landing() {
@@ -301,6 +302,9 @@ export default function Landing() {
               </div>
             </div>
 
+            {/* Right Column - Comparison Visual */}
+            <div className="space-y-4">
+              
 
               <div className="space-y-6">
                 <h4 className="font-normal text-center">common comedogenics often labeled non-comedogenic:</h4>
@@ -318,9 +322,7 @@ export default function Landing() {
                     <p className="text-sm text-muted-foreground">algae</p>
                   </div>
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <div className="w-20 h-20 rounded-full bg-destructive/10 flex items-center justify-center">
-                      <X className="w-10 h-10 text-destructive" />
-                    </div>
+                    <img src={beakerImg} alt="Laureth-4" className="w-20 h-20 object-contain" />
                     <p className="text-sm text-muted-foreground">laureth-4</p>
                   </div>
                 </div>
