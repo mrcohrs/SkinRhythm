@@ -26,6 +26,8 @@ import sheaImg from "@assets/shea_1761481865855.png";
 import beakerImg from "@assets/beaker_1761482228536.png";
 import { Header } from "@/components/Header";
 import { FloatingCTA } from "@/components/FloatingCTA";
+import { ComedogenicCarousel } from "@/components/ComedogenicCarousel";
+import { ActiveIngredientsCarousel } from "@/components/ActiveIngredientsCarousel";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
@@ -276,27 +278,7 @@ export default function Landing() {
             <div className="space-y-4">
               
 
-              <div className="space-y-6">
-                <h4 className="font-medium text-center">common comedogenic ingredients labeled non-comedogenic:</h4>
-                <div className="grid grid-cols-2 md:grid-cols-2 gap-24">
-                  <div className="flex flex-col items-center gap-2 text-center">
-                    <img src={coconutImg} alt="Coconut oil" className="w-60 h-60 object-contain" />
-                    <p className="text-sm text-muted-foreground"><b>coconut oil:</b> widely used in personal care products. the brand cocokind even has a line of acne products that almost all contain this pore-clogger.</p>
-                  </div>
-                  <div className="flex flex-col items-center gap-2 text-center">
-                    <img src={sheaImg} alt="Shea butter" className="w-60 h-60 object-contain" />
-                    <p className="text-sm text-muted-foreground"><b>shea butter:</b> ubiquitous in personal care. finding moisturizers without shea butter is harder than a needle in a haystack.</p>
-                  </div>
-                  <div className="flex flex-col items-center gap-2 text-center">
-                    <img src={algaeImg} alt="Algae" className="w-60 h-60 object-contain" />
-                    <p className="text-sm text-muted-foreground"><b>algae:</b> a trendy ingredient that has popped up in many personal care products, but that has high levels of iodine that can trigger breakouts.</p>
-                  </div>
-                  <div className="flex flex-col items-center gap-2 text-center">
-                    <img src={beakerImg} alt="Laureth-4" className="w-60 h-60 object-contain" />
-                    <p className="text-sm text-muted-foreground"><b>laureth-4:</b> a surfactant used in 90% of benzoyl peroxide cream formulations (intended to treat acne) that is extremely comedogenic.</p>
-                  </div>
-                </div>
-              </div>
+              <ComedogenicCarousel />
             </div>
           </div>
         </div>
@@ -618,98 +600,7 @@ export default function Landing() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* Mandelic Acid */}
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <TestTube className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-normal text-lg">mandelic acid</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  skinrhythm's lead singer: gentle but thorough exfoliant that kills bacteria and fungus, reduces inflammation, and fades hyperpigmentation.
-                </p>
-              </CardContent>
-            </Card>
-            {/* Benzoyl Peroxide */}
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <TestTube className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-normal text-lg">benzoyl peroxide</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  powerful antimicrobial that kills acne-causing bacteria
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Salicylic Acid */}
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <TestTube className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-normal text-lg">salicylic acid</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  oil-soluble exfoliant that unclogs pores and kills bacteria
-                </p>
-              </CardContent>
-            </Card>
-
-           
-
-            {/* Niacinamide */}
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <TestTube className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-normal text-lg">niacinamide</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  calms and balances skin barrier function, improves uneven tone, regulates sebum, and improves hydration.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Retinal */}
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <TestTube className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-normal text-lg">retinol</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  refines texture, accelerates cell turnover, and improves uneven tone.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Zinc PCA */}
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <TestTube className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-normal text-lg">bisabolol</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  calms redness and reduces inflammation, aids in healing, and improves absorption of other actives.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          <ActiveIngredientsCarousel />
 
           
         </div>
