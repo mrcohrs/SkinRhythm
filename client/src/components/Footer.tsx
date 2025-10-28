@@ -10,6 +10,13 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-6">
             <Link 
+              href="/about"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              data-testid="link-footer-about"
+            >
+              About
+            </Link>
+            <Link 
               href="/affiliate-disclosure"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               data-testid="link-footer-affiliate"

@@ -41,6 +41,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
 
   const navLinks = [
     { label: 'home', href: '/' },
+    { label: 'about', href: '/about' },
     { label: 'marketplace', href: '/marketplace' },
     { label: 'pricing', href: '/pricing' },
   ];
