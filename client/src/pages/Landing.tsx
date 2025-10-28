@@ -43,7 +43,7 @@ export default function Landing() {
           <div className="flex flex-col items-center text-center space-y-12">
             {/* Headline */}
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light leading-tight max-w-5xl">
-              skin∙rhythm composes custom acne routines perfectly tuned to make skin sing.
+              skin∙rhythm tunes into your skin's unique patterns to compose a custom acne-safe routine.
             </h1>
             
             {/* Hero Illustration */}
@@ -57,7 +57,7 @@ export default function Landing() {
 
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl">
-              based on clinically proven protocols and rigorous ingredient analysis, skinrhythm uses science, not hype, to deliver results.
+              based on clinically proven protocols and committed to rigorous ingredient analysis, skinrhythm uses science, not hype, to deliver results.
             </p>
 
             {/* Tagline */}
