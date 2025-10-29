@@ -43,7 +43,7 @@ export default function Landing() {
           <div className="flex flex-col items-center text-center space-y-12">
             {/* Headline */}
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light leading-tight max-w-5xl">
-              skin∙rhythm tunes into your skin's unique patterns to compose a custom acne-safe routine.
+              SkinRhythm Tunes Into Your Skin's Unique Patterns to Compose a Custom Acne-Safe Routine.
             </h1>
             
             {/* Hero Illustration */}
@@ -57,12 +57,12 @@ export default function Landing() {
 
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl">
-              based on clinically proven protocols and committed to rigorous ingredient analysis, skinrhythm uses science, not hype, to deliver results.
+              Based on clinically proven protocols and committed to rigorous ingredient analysis, SkinRhythm uses science, not hype, to deliver results.
             </p>
 
             {/* Tagline */}
             <p className="text-xl md:text-2xl font-normal">
-              no gimmicks. no guesswork. just clear skin. 
+              No Gimmicks. No Guesswork. Just Clear Skin. 
             </p>
 
             {/* CTA */}
@@ -73,11 +73,11 @@ export default function Landing() {
                 className="px-6 py-3 h-auto rounded-full text-base font-normal"
                 data-testid="button-hero-cta"
               >
-                find your skinrhythm
+                Find Your SkinRhythm
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
-                no login necessary. takes under 2 minutes.
+                No login necessary. Takes under 2 minutes.
               </p>
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function Landing() {
       <section className="py-12 md:py-16 bg-muted/30">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
           <h2 className="text-center font-serif text-2xl md:text-3xl font-light mb-12">
-            rooted in science. built on ingredient integrity.
+            Rooted in Science. Built on Ingredient Integrity.
           </h2>
           
           <div className="space-y-16 max-w-4xl mx-auto">
@@ -100,9 +100,9 @@ export default function Landing() {
                 <FlaskConical className="w-8 h-8 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="font-normal mb-1">results-based treatment frameworks</h3>
+                <h3 className="font-normal mb-1">Results-Based Treatment Frameworks</h3>
                 <p className="text-sm text-muted-foreground">
-                  we follow clinical data, not tiktok trends. your skinrhythm routine is built on evidence-based protocols to clear your acne.
+                  We follow clinical data, not TikTok trends. Your SkinRhythm routine is built on evidence-based protocols to clear your acne.
                 </p>
               </div>
             </div>
@@ -113,9 +113,9 @@ export default function Landing() {
                 <Brain className="w-8 h-8 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="font-normal mb-1">customized for your unique skinrhythm</h3>
+                <h3 className="font-normal mb-1">Customized for Your Unique SkinRhythm</h3>
                 <p className="text-sm text-muted-foreground">
-                  each clear skin plan is fine tuned to your skin's unique needs, including skin type and tone, acne type, and barrier function.
+                  Each clear skin plan is fine-tuned to your skin's unique needs, including skin type and tone, acne type, and barrier function.
                 </p>
               </div>
             </div>
@@ -126,9 +126,9 @@ export default function Landing() {
                 <Shield className="w-8 h-8 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="font-normal mb-1">affordable recommendations</h3>
+                <h3 className="font-normal mb-1">Affordable Recommendations</h3>
                 <p className="text-sm text-muted-foreground">
-                  our basic plans are free and automatically generate the most cost-effective version of your clear skin plan using vetted products from trusted brands.
+                  Our basic plans are free and automatically generate the most cost-effective version of your clear skin plan using vetted products from trusted brands.
                 </p>
               </div>
             </div>
@@ -138,9 +138,9 @@ export default function Landing() {
                 <Microscope className="w-8 h-8 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="font-normal mb-1">the only acne-safe marketplace</h3>
+                <h3 className="font-normal mb-1">The Only Acne-Safe Marketplace</h3>
                 <p className="text-sm text-muted-foreground">
-                  skinrhythm has a zero-tolerance policy for 400+ acne triggers, so you can shop our product recommendations with confidence.
+                  SkinRhythm has a zero-tolerance policy for 400+ acne triggers, so you can shop our product recommendations with confidence.
                 </p>
               </div>
             </div>
@@ -155,7 +155,7 @@ export default function Landing() {
               className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline"
               data-testid="link-learn-how"
             >
-              learn how it works →
+              Learn How It Works →
             </button>
           </div>
         </div>
@@ -165,17 +165,17 @@ export default function Landing() {
       <section id="how-it-works" className="py-20 md:py-24">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light text-center mb-4">
-            how skinrhythm helps you clear your acne
+            How SkinRhythm Helps You Clear Your Acne
           </h2>
           <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-            in just three simple steps.
+            In just three simple steps.
           </p>
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-8 space-y-6">
                 <Badge variant="secondary" className="rounded-full">
-                  step 1
+                  Step 1
                 </Badge>
                 
                 <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
@@ -183,9 +183,9 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-light">tell us about your skin and acne.</h3>
+                  <h3 className="font-serif text-xl font-light">Tell Us About Your Skin and Acne</h3>
                   <p className="text-sm text-muted-foreground">
-                    one quick quiz — no photos. we assess acne type, tone, and barrier to tune into your skinrhythm.
+                    One quick quiz — no photos. We assess acne type, tone, and barrier to tune into your SkinRhythm.
                   </p>
                 </div>
               </CardContent>
@@ -194,7 +194,7 @@ export default function Landing() {
             <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-8 space-y-6">
                 <Badge variant="secondary" className="rounded-full">
-                  step 2
+                  Step 2
                 </Badge>
                 
                 <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
@@ -202,9 +202,9 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-light">we compose your clear skin plan.</h3>
+                  <h3 className="font-serif text-xl font-light">We Compose Your Clear Skin Plan</h3>
                   <p className="text-sm text-muted-foreground">
-                    we map your unique skinrhythm to clinical data and create an optimized regimen of acne-safe products.
+                    We map your unique SkinRhythm to clinical data and create an optimized regimen of acne-safe products.
                   </p>
                 </div>
               </CardContent>
@@ -212,7 +212,7 @@ export default function Landing() {
             <Card className="border-border shadow-sm rounded-2xl">
               <CardContent className="p-8 space-y-6">
                 <Badge variant="secondary" className="rounded-full">
-                  step 3
+                  Step 3
                 </Badge>
                 
                 <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
@@ -220,9 +220,9 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-light">replace your products & see results.</h3>
+                  <h3 className="font-serif text-xl font-light">Replace Your Products & See Results</h3>
                   <p className="text-sm text-muted-foreground">
-                    replace your old routine with your clear skin plan. commit for at least 8 weeks, and your skin will sing.
+                    Replace your old routine with your clear skin plan. Commit for at least 8 weeks, and your skin will sing.
                   </p>
                 </div>
               </CardContent>
@@ -236,11 +236,11 @@ export default function Landing() {
               className="px-6 py-3 h-auto rounded-full text-base font-normal"
               data-testid="button-how-it-works-cta"
             >
-              start my free routine
+              Start My Free Routine
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <p className="text-xs text-muted-foreground">
-              personalized, evidence-based guidance — not medical advice.
+              Personalized, evidence-based guidance — not medical advice.
             </p>
           </div>
         </div>
@@ -253,11 +253,11 @@ export default function Landing() {
             {/* Left Column - Text */}
             <div className="space-y-6">
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-                skinrhythm takes the risk out of shopping for skincare.
+                SkinRhythm Takes the Risk Out of Shopping for Skincare
               </h2>
               
               <p className="text-lg text-muted-foreground leading-relaxed">
-                most "non-comedogenic" products and products marketed for acne prone skin actually contain laundry lists of pore-clogging ingredients. that's why every product in the skinrhythm marketplace is scanned for over 400 known acne triggers — so you can shop our recommendations with confidence.
+                Most "non-comedogenic" products and products marketed for acne-prone skin actually contain laundry lists of pore-clogging ingredients. That's why every product in the SkinRhythm marketplace is scanned for over 400 known acne triggers — so you can shop our recommendations with confidence.
               </p>
 
               <div className="pt-4">
@@ -269,7 +269,7 @@ export default function Landing() {
                   className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline"
                   data-testid="link-see-ingredients"
                 >
-                  all about ingredients →
+                  All About Ingredients →
                 </button>
               </div>
             </div>
@@ -289,11 +289,11 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
           <div className="text-center space-y-6 mb-12">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              everything you need to start — free.
+              Everything You Need to Start — Free
             </h2>
             
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              get your personalized acne-safe am + pm routine instantly. we recommend clinically effective products to address your unique concerns within your budget.
+              Get your personalized acne-safe AM + PM routine instantly. We recommend clinically effective products to address your unique concerns within your budget.
             </p>
           </div>
 
@@ -303,29 +303,29 @@ export default function Landing() {
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-normal">personalized routine</p>
-                    <p className="text-sm text-muted-foreground">am + pm plan tailored to your skin</p>
+                    <p className="font-normal">Personalized Routine</p>
+                    <p className="text-sm text-muted-foreground">AM + PM plan tailored to your skin</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-normal">vetted acne-safe products</p>
-                    <p className="text-sm text-muted-foreground">every product screened for 400+ triggers</p>
+                    <p className="font-normal">Vetted Acne-Safe Products</p>
+                    <p className="text-sm text-muted-foreground">Every product screened for 400+ triggers</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-normal">3 free product ingredient scans</p>
-                    <p className="text-sm text-muted-foreground">check any product for acne-causing ingredients</p>
+                    <p className="font-normal">3 Free Product Ingredient Scans</p>
+                    <p className="text-sm text-muted-foreground">Check any product for acne-causing ingredients</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-normal">free to start, no email needed</p>
-                    <p className="text-sm text-muted-foreground">get your custom skinrhythm routine without signing up</p>
+                    <p className="font-normal">Free to Start, No Email Needed</p>
+                    <p className="text-sm text-muted-foreground">Get your custom SkinRhythm routine without signing up</p>
                   </div>
                 </li>
               </ul>
@@ -337,7 +337,7 @@ export default function Landing() {
                   className="w-full px-6 py-3 h-auto rounded-full text-base font-normal"
                   data-testid="button-free-plan-cta"
                 >
-                  see my free routine
+                  See My Free Routine
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
@@ -351,11 +351,11 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="text-center space-y-4 mb-12">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              upgrade your routine — and your results.
+              Upgrade Your Routine — and Your Results
             </h2>
             
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              premium gives you control, unparalleled guidance, and insight into every step of your clear-skin journey.
+              Premium gives you control, unparalleled guidance, and insight into every step of your clear-skin journey.
             </p>
           </div>
 
@@ -366,9 +366,9 @@ export default function Landing() {
                   <Beaker className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-normal mb-2">unlimited ingredient scans</h3>
+                  <h3 className="font-normal mb-2">Unlimited Ingredient Scans</h3>
                   <p className="text-sm text-muted-foreground">
-                    scan any product for acne triggers to make sure all your products, from your cleanser to your foundation, are acne-safe.
+                    Scan any product for acne triggers to make sure all your products, from your cleanser to your foundation, are acne-safe.
                   </p>
                 </div>
               </CardContent>
@@ -380,9 +380,9 @@ export default function Landing() {
                   <Brain className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-normal mb-2">routine coach & progress tracking</h3>
+                  <h3 className="font-normal mb-2">Routine Coach & Progress Tracking</h3>
                   <p className="text-sm text-muted-foreground">
-                    detailed step-by-step guidance on ramping up on actives, personalized tips, and the ability to take notes on your routine history to track what works best for you.
+                    Detailed step-by-step guidance on ramping up on actives, personalized tips, and the ability to take notes on your routine history to track what works best for you.
                   </p>
                 </div>
               </CardContent>
@@ -394,9 +394,9 @@ export default function Landing() {
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-normal mb-2">premium product alternatives</h3>
+                  <h3 className="font-normal mb-2">Premium Product Alternatives</h3>
                   <p className="text-sm text-muted-foreground">
-                    customize your routine without affecting your results. budget to luxury options that fit your skinrhythm routine.
+                    Customize your routine without affecting your results. Budget to luxury options that fit your SkinRhythm routine.
                   </p>
                 </div>
               </CardContent>
@@ -408,9 +408,9 @@ export default function Landing() {
                   <Shield className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-normal mb-2">full access to the skinrhythm marketplace</h3>
+                  <h3 className="font-normal mb-2">Full Access to the SkinRhythm Marketplace</h3>
                   <p className="text-sm text-muted-foreground">
-                    shop skinrhythm's entire acne-safe marketplace, which includes acne-safe beauty products, tools, and more.
+                    Shop SkinRhythm's entire acne-safe marketplace, which includes acne-safe beauty products, tools, and more.
                   </p>
                 </div>
               </CardContent>
@@ -424,7 +424,7 @@ export default function Landing() {
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Crown className="w-6 h-6 text-primary" />
                   <Badge variant="secondary" className="rounded-full px-4 py-1">
-                    founding rate
+                    Founding Rate
                   </Badge>
                 </div>
                 <p className="text-4xl md:text-5xl font-light">
@@ -432,7 +432,7 @@ export default function Landing() {
                   {" "}$2.99<span className="text-xl text-muted-foreground">/mo</span>
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  limited founding member rate — locks in forever, plus locks in your discounted rate for premium+.
+                  Limited founding member rate — locks in forever, plus locks in your discounted rate for Premium+.
                 </p>
               </div>
 
@@ -444,12 +444,12 @@ export default function Landing() {
                   data-testid="button-premium-cta"
                 >
                   <Link href="/pricing">
-                    unlock premium
+                    Unlock Premium
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
                 <p className="text-xs text-muted-foreground">
-                  keep using free if it's working. no pressure.
+                  Keep using free if it's working. No pressure.
                 </p>
               </div>
             </CardContent>
@@ -461,11 +461,11 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="text-center space-y-4 mb-12">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              one-time upgrades, lifetime value.
+              One-Time Upgrades, Lifetime Value
             </h2>
 
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              choose the features you need without a subscription.
+              Choose the features you need without a subscription.
             </p>
           </div>
 
@@ -478,9 +478,9 @@ export default function Landing() {
                   </svg>
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">detailed routine guidance (.pdf download)</h3>
+                  <h3 className="font-serif text-xl font-light">Detailed Routine Guidance (.pdf Download)</h3>
                   <p className="text-sm text-muted-foreground">
-                    a .pdf download with detailed instructions for your routine, how to ramp up on actives, and tips and tricks for your clear skin journey.
+                    A .pdf download with detailed instructions for your routine, how to ramp up on actives, and tips and tricks for your clear skin journey.
                   </p>
                   <p className="text-2xl font-normal">$9.99</p>
                 </div>
@@ -490,7 +490,7 @@ export default function Landing() {
                   asChild
                   data-testid="button-pdf-upgrade"
                 >
-                  <Link href="/pricing">learn more</Link>
+                  <Link href="/pricing">Learn More</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -501,9 +501,9 @@ export default function Landing() {
                   <Sparkles className="w-8 h-8 text-primary" />
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">access premium product alternatives</h3>
+                  <h3 className="font-serif text-xl font-light">Access Premium Product Alternatives</h3>
                   <p className="text-sm text-muted-foreground">
-                    unlock all product options for each step of your current clear skin routine, from drugstore to luxury brands.
+                    Unlock all product options for each step of your current clear skin routine, from drugstore to luxury brands.
                   </p>
                   <p className="text-2xl font-normal">$9.99</p>
                 </div>
@@ -513,7 +513,7 @@ export default function Landing() {
                   asChild
                   data-testid="button-alternatives-upgrade"
                 >
-                  <Link href="/pricing">learn more</Link>
+                  <Link href="/pricing">Learn More</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -524,11 +524,11 @@ export default function Landing() {
                   <Beaker className="w-8 h-8 text-primary" />
                 </div>
                 <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">ingredient scanner credit packs</h3>
+                  <h3 className="font-serif text-xl font-light">Ingredient Scanner Credit Packs</h3>
                   <p className="text-sm text-muted-foreground">
-                    buy credits to scan products you have (or products you want to try) for acne-causing ingredients.
+                    Buy credits to scan products you have (or products you want to try) for acne-causing ingredients.
                   </p>
-                  <p className="text-2xl font-normal">from $1.99</p>
+                  <p className="text-2xl font-normal">From $1.99</p>
                 </div>
                 <Button
                   variant="outline"
@@ -536,7 +536,7 @@ export default function Landing() {
                   asChild
                   data-testid="button-checker-upgrade"
                 >
-                  <Link href="/pricing">learn more</Link>
+                  <Link href="/pricing">Learn More</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -548,7 +548,7 @@ export default function Landing() {
               onClick={() => window.location.href = '/pricing'}
               data-testid="link-explore-upgrades"
             >
-              explore upgrades →
+              Explore Upgrades →
             </button>
           </div>
         </div>
@@ -559,11 +559,11 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
           <div className="text-center space-y-6">
             <Badge variant="outline" className="rounded-full px-4 py-1.5 border-primary/50">
-              coming soon...
+              Coming Soon...
             </Badge>
             
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              premium+ <p>your skinphony's personal conductor.</p>
+              Premium+ <p>Your Skinphony's Personal Conductor</p>
             </h2>
             
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
@@ -572,7 +572,7 @@ export default function Landing() {
 
             <div className="pt-4">
               <p className="text-sm text-muted-foreground">
-                advanced features for getting clear, staying clear, and the rest of your skincare journey.
+                Advanced features for getting clear, staying clear, and the rest of your skincare journey.
               </p>
             </div>
           </div>
@@ -586,7 +586,7 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="text-center space-y-20 mb-12">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              the science behind our core active and supporting ingredients.
+              The Science Behind Our Core Active and Supporting Ingredients
             </h2>
             <div className="flex justify-center">
               <img 
@@ -596,7 +596,7 @@ export default function Landing() {
               />
             </div>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              skinrhythm uses proven actives balanced with barrier-supporting ingredients, because a resilient barrier is the foundation for clear skin.
+              SkinRhythm uses proven actives balanced with barrier-supporting ingredients, because a resilient barrier is the foundation for clear skin.
             </p>
           </div>
           
@@ -611,11 +611,11 @@ export default function Landing() {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
           <div className="text-center space-y-8">
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-thin">
-              ready for your new skinrhythm routine?
+              Ready for Your New SkinRhythm Routine?
             </h2>
             
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-              it's free, instant, and acne-safe. no email required.
+              It's free, instant, and acne-safe. No email required.
             </p>
 
             <div className="space-y-3 pt-4">
@@ -625,11 +625,11 @@ export default function Landing() {
                 className="px-6 py-3 h-auto rounded-full text-lg font-normal"
                 data-testid="button-final-cta"
               >
-                get my skinrhythm routine
+                Get My SkinRhythm Routine
                 <ArrowRight className="ml-2 h-6 w-6" />
               </Button>
               <p className="text-sm text-muted-foreground">
-                for educational purposes only. skinrhythm does not diagnose, treat, or cure medical conditions.
+                For educational purposes only. SkinRhythm does not diagnose, treat, or cure medical conditions.
               </p>
             </div>
           </div>
@@ -643,12 +643,12 @@ export default function Landing() {
             <div className="space-y-4">
               <img src={logoPath} alt="SkinRhythm" className="h-8" />
               <p className="text-sm text-muted-foreground">
-                personalized acne care built on science and integrity.
+                Personalized acne care built on science and integrity.
               </p>
             </div>
 
             <div>
-              <h4 className="font-normal mb-4">product</h4>
+              <h4 className="font-normal mb-4">Product</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <button
@@ -658,7 +658,7 @@ export default function Landing() {
                     }}
                     className="hover:text-foreground transition-colors underline"
                   >
-                    how it works
+                    How It Works
                   </button>
                 </li>
                 <li>
@@ -669,41 +669,41 @@ export default function Landing() {
                     }}
                     className="hover:text-foreground transition-colors underline"
                   >
-                    ingredient science
+                    Ingredient Science
                   </button>
                 </li>
                 <li>
                   <Link href="/pricing" className="hover:text-foreground transition-colors underline">
-                    premium
+                    Premium
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-normal mb-4">company</h4>
+              <h4 className="font-normal mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link href="/affiliate-disclosure" className="hover:text-foreground transition-colors underline">
-                    affiliate disclosure
+                    Affiliate Disclosure
                   </Link>
                 </li>
                 <li>
                   <Link href="/privacy-policy" className="hover:text-foreground transition-colors underline">
-                    privacy policy
+                    Privacy Policy
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-normal mb-4">find your skinrhythm</h4>
+              <h4 className="font-normal mb-4">Find Your SkinRhythm</h4>
               <Button
                 onClick={() => window.location.href = '/quiz'}
                 className="w-full rounded-full"
                 data-testid="button-footer-cta"
               >
-                take the quiz
+                Take the Quiz
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -711,10 +711,10 @@ export default function Landing() {
 
           <div className="pt-8 border-t border-border/50 space-y-4">
             <p className="text-xs text-muted-foreground text-center">
-              <strong>medical disclaimer:</strong> skinrhythm provides educational skincare guidance, not medical treatment. our ingredient screening and routine recommendations are for informational purposes only and do not constitute medical advice, diagnosis, or treatment. always consult with a qualified healthcare provider or dermatologist before starting any new skincare regimen, especially if you have severe acne, skin conditions, allergies, or are pregnant/nursing.
+              <strong>Medical Disclaimer:</strong> SkinRhythm provides educational skincare guidance, not medical treatment. Our ingredient screening and routine recommendations are for informational purposes only and do not constitute medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider or dermatologist before starting any new skincare regimen, especially if you have severe acne, skin conditions, allergies, or are pregnant/nursing.
             </p>
             <p className="text-xs text-muted-foreground text-center">
-              © 2025 skinrhythm. All rights reserved.
+              © 2025 SkinRhythm. All rights reserved.
             </p>
           </div>
         </div>
