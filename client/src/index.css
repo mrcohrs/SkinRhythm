@@ -64,7 +64,7 @@
   --primary-text: 185 55% 40%;
 
   /* Secondary: Restorative Peach - Soft, skin-inspired neutral */
-  --secondary: 180deg 16.46% 46.47%;
+  --secondary: 329.41deg 57.3% 34.9%;
 
   --secondary-foreground: 0deg 0% 100%;
 
@@ -96,7 +96,7 @@
   --chart-4: 14.17deg 100% 75.1%;
   --chart-5: 208deg 15.79% 37.25%;
 
-  --font-sans: 'Roboto', sans-serif;
+  --font-sans: 'Raleway', sans-serif;
   --font-serif: 'Manrope', sans-serif;
   --font-mono: 'Ubuntu Mono', monospace;
   --radius: 0rem; /* 8px */
