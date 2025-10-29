@@ -62,7 +62,7 @@ export default function Landing() {
 
             {/* Tagline */}
             <p className="text-xl md:text-2xl font-normal">
-              no gimmicks. no guesswork. just clear skin.
+              no gimmicks. no guesswork. just clear skin. 
             </p>
 
             {/* CTA */}
@@ -165,7 +165,7 @@ export default function Landing() {
       <section id="how-it-works" className="py-20 md:py-24">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light text-center mb-4">
-            how skinrhythm help's you clear your acne
+            how skinrhythm helps you clear your acne
           </h2>
           <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
             in just three simple steps.
