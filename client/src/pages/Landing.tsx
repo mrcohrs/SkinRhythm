@@ -128,7 +128,7 @@ export default function Landing() {
               <div className="flex-1">
                 <h3 className="font-normal mb-1">affordable recommendations</h3>
                 <p className="text-sm text-muted-foreground">
-                  our basic plans are free and automatically generate the most cost-effective version of your clear skin plan.
+                  our basic plans are free and automatically generate the most cost-effective version of your clear skin plan using vetted products from trusted brands.
                 </p>
               </div>
             </div>

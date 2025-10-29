@@ -488,7 +488,7 @@ export default function Dashboard() {
                   </SheetTrigger>
                   <SheetContent side="right" className="w-64">
                     <SheetHeader>
-                      <SheetTitle className="text-left">menu</SheetTitle>
+                      <SheetTitle className="text-left">Menu</SheetTitle>
                     </SheetHeader>
                     <nav className="flex flex-col gap-4 mt-8">
                       {isPremium && (
@@ -500,7 +500,7 @@ export default function Dashboard() {
                           className="text-left py-2 text-muted-foreground"
                           data-testid="mobile-link-marketplace"
                         >
-                          acne-safe marketplace
+                          Acne-Safe Marketplace
                         </button>
                       )}
                       <button
@@ -511,7 +511,7 @@ export default function Dashboard() {
                         className="text-left py-2 text-muted-foreground"
                         data-testid="mobile-link-pricing"
                         >
-                          pricing
+                          Pricing
                         </button>
                       <button
                         onClick={() => {
@@ -522,7 +522,7 @@ export default function Dashboard() {
                         data-testid="mobile-button-refer-friend"
                       >
                         <Share2 className="h-4 w-4" />
-                        refer a friend
+                        Refer a Friend
                       </button>
                       <div className="border-t pt-4 mt-2">
                         <button
@@ -533,7 +533,7 @@ export default function Dashboard() {
                           data-testid="mobile-button-logout"
                         >
                           <LogOut className="h-4 w-4" />
-                          log out
+                          Log Out
                         </button>
                       </div>
                     </nav>
@@ -688,7 +688,7 @@ export default function Dashboard() {
                 </SheetTrigger>
                 <SheetContent side="right" className="w-64">
                   <SheetHeader>
-                    <SheetTitle className="text-left">menu</SheetTitle>
+                    <SheetTitle className="text-left">Menu</SheetTitle>
                   </SheetHeader>
                   <nav className="flex flex-col gap-4 mt-8">
                     {isPremium && (
@@ -700,7 +700,7 @@ export default function Dashboard() {
                         className="text-left py-2 text-muted-foreground"
                         data-testid="mobile-link-marketplace"
                       >
-                        acne-safe marketplace
+                        Acne-Safe Marketplace
                       </button>
                     )}
                     <button
@@ -711,7 +711,7 @@ export default function Dashboard() {
                       className="text-left py-2 text-muted-foreground"
                       data-testid="mobile-link-pricing"
                     >
-                      pricing
+                      Pricing
                     </button>
                     <button
                       onClick={() => {
@@ -722,7 +722,7 @@ export default function Dashboard() {
                       data-testid="mobile-button-refer-friend"
                     >
                       <Share2 className="h-4 w-4" />
-                      refer a friend
+                      Refer a Friend
                     </button>
                     <div className="border-t pt-4 mt-2">
                       <button
@@ -733,7 +733,7 @@ export default function Dashboard() {
                         data-testid="mobile-button-logout"
                       >
                         <LogOut className="h-4 w-4" />
-                        log out
+                        Log Out
                       </button>
                     </div>
                   </nav>

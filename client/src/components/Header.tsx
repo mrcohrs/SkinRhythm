@@ -40,10 +40,10 @@ export function Header({ showNavigation = true }: HeaderProps) {
   };
 
   const navLinks = [
-    { label: 'home', href: '/' },
-    { label: 'about', href: '/about' },
-    { label: 'marketplace', href: '/marketplace' },
-    { label: 'pricing', href: '/pricing' },
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Marketplace', href: '/marketplace' },
+    { label: 'Pricing', href: '/pricing' },
   ];
 
   return (
@@ -82,14 +82,14 @@ export function Header({ showNavigation = true }: HeaderProps) {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="link-login"
                 >
-                  log in
+                  Log In
                 </button>
                 <button
                   onClick={() => setLocation('/quiz')}
                   className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline transition-colors"
                   data-testid="link-quiz-header"
                 >
-                  find your skinrhythm
+                  Find Your SkinRhythm
                 </button>
               </div>
             )}
@@ -113,18 +113,18 @@ export function Header({ showNavigation = true }: HeaderProps) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => setLocation('/dashboard')} data-testid="menu-dashboard">
-                      dashboard
+                      Dashboard
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setLocation('/marketplace')} data-testid="menu-marketplace">
-                      marketplace
+                      Marketplace
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setLocation('/pricing')} data-testid="menu-pricing">
-                      pricing
+                      Pricing
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} data-testid="menu-logout">
                       <LogOut className="h-4 w-4 mr-2" />
-                      log out
+                      Log Out
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -146,7 +146,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
                   </SheetTrigger>
                   <SheetContent side="right" className="w-64">
                     <SheetHeader>
-                      <SheetTitle className="text-left">menu</SheetTitle>
+                      <SheetTitle className="text-left">Menu</SheetTitle>
                     </SheetHeader>
                     <nav className="flex flex-col gap-4 mt-8">
                       {!isAuthenticated ? (
@@ -177,7 +177,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
                               className="w-full text-left py-2 text-muted-foreground"
                               data-testid="mobile-link-login"
                             >
-                              log in
+                              Log In
                             </button>
                             <button
                               onClick={() => {
@@ -187,7 +187,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
                               className="w-full text-left py-2 text-primary-text font-normal"
                               data-testid="mobile-link-quiz"
                             >
-                              find your skinrhythm
+                              Find Your SkinRhythm
                             </button>
                           </div>
                         </>
@@ -201,7 +201,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
                             className="text-left py-2 text-muted-foreground"
                             data-testid="mobile-link-dashboard"
                           >
-                            dashboard
+                            Dashboard
                           </button>
                           <button
                             onClick={() => {
@@ -211,7 +211,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
                             className="text-left py-2 text-muted-foreground"
                             data-testid="mobile-link-marketplace"
                           >
-                            marketplace
+                            Marketplace
                           </button>
                           <button
                             onClick={() => {
@@ -221,7 +221,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
                             className="text-left py-2 text-muted-foreground"
                             data-testid="mobile-link-pricing"
                           >
-                            pricing
+                            Pricing
                           </button>
                           <div className="border-t pt-4 mt-2">
                             <div className="py-2 text-sm text-muted-foreground">
@@ -239,7 +239,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
                               data-testid="mobile-link-logout"
                             >
                               <LogOut className="h-4 w-4" />
-                              log out
+                              Log Out
                             </button>
                           </div>
                         </>
