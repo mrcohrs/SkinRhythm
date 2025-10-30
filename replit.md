@@ -9,7 +9,7 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### UI/UX Decisions
-The frontend is built with React and TypeScript, utilizing `shadcn/ui` with Radix UI primitives and Tailwind CSS, adhering to a "New York" style variant inspired by clinical aesthetics (e.g., Curology, Hims & Hers). It supports both light and dark modes. The routine display uses eyebrow-style badge tags for skin characteristics with outline-only borders and black text for clear visual hierarchy.
+The frontend is built with React and TypeScript, utilizing `shadcn/ui` with Radix UI primitives and Tailwind CSS, adhering to a "New York" style variant inspired by clinical aesthetics (e.g., Curology, Hims & Hers). It supports both light and dark modes. The routine display uses eyebrow-style badge tags for skin characteristics with outline-only borders and black text for clear visual hierarchy. The Dashboard mobile navigation features a carousel-style tab selector with left/right chevron arrows for quick navigation, swipe gesture support for natural mobile interaction, and a center tap-to-dropdown for direct tab access.
 
 ### Technical Implementations
 - **Frontend**: React with TypeScript (Vite), Wouter for routing, TanStack Query for server state, and a custom `useAuth` hook.
