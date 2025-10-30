@@ -75,7 +75,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
       )}
       
       <CardContent className="p-0 flex flex-col h-full">
-        <div className="relative w-full aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-8 flex-shrink-0">
+        <div className="relative w-full aspect-square bg-gradient-to-br from-muted/30 to-muted/10 flex items-center justify-center overflow-hidden p-4 flex-shrink-0">
           {/* Best for Your Skin badge positioned at top center on image */}
           {product.isRecommended && (
             <img 
