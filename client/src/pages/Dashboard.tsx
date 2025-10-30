@@ -869,7 +869,7 @@ export default function Dashboard() {
 
               {/* Center Button - Current Tab (Clickable for Dropdown) with Swipe Support */}
               <Button
-                variant="outline"
+                variant="secondary"
                 className="flex-1 justify-center relative"
                 onClick={() => {
                   // Only toggle dropdown if a swipe wasn't detected
