@@ -83,7 +83,7 @@ export default function About() {
             </p>
 
             <h3 className="text-xl font-normal mt-8 mb-4">
-              2. A zero-tolerance ingredient policy
+              2. A zero-tolerance policy for acne triggers
             </h3>
 
             <p>
@@ -120,13 +120,13 @@ export default function About() {
 
             <ul className="space-y-3 list-disc pl-6">
               <li>
-                <strong>There's no single product that works for everyone.</strong> But there is an answer for every kind of acne — and it starts with understanding your acne type and matching the right active ingredients at the right strengths.
+                <strong>There's no single product that works for everyone.</strong> But there is an answer for every kind of acne — and it starts with fortifying your skin's barrier, understanding your acne type, and selecting the right active ingredients at the right strengths.
               </li>
               <li>
                 You need tools that help you avoid hidden breakout triggers in your skincare, makeup, and diet.
               </li>
               <li>
-                You have to stop trusting marketing terms like "non-comedogenic." That label is not regulated by the FDA. Brands can put it on basically anything, even if it still contains known pore-clogging ingredients. (This is why we built our own acne ingredient checker instead of trusting the label.)
+                Marketing terms like "non-comedogenic" don't mean anything. That label is not regulated by the FDA. Brands can put it on basically anything, even if it still contains known pore-clogging ingredients. This is why it's critical to check every ingredient in every product you use. 
               </li>
             </ul>
 
