@@ -2,15 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
-
-import cleanserImg from "@assets/Cleanser_1760341831448.png";
-import tonerImg from "@assets/Toner_1760341831459.png";
-import serumImg from "@assets/acid_1760944347974.png";
-import hydratorImg from "@assets/hydra_1760944347978.png";
-import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
-import spfImg from "@assets/SPF_1760341636654.png";
-import spotTreatmentImg from "@assets/bpooo_1760944347978.png";
-import iceGlobesImg from "@assets/ciice_1760874110365.png";
+import { getProductImage } from "@/lib/productImages";
 import bestForYourSkinBadge from "@assets/bestforyourskin_1761112317047.png";
 
 export interface CompactProduct {
@@ -21,6 +13,7 @@ export interface CompactProduct {
   priceRange?: string;
   affiliateLink: string;
   isRecommended?: boolean;
+  sku?: string; // Product SKU for image mapping
 }
 
 interface CompactProductCardProps {
@@ -28,19 +21,9 @@ interface CompactProductCardProps {
   description?: string;
 }
 
-const categoryImages: Record<string, string> = {
-  "Cleanser": cleanserImg,
-  "Toner": tonerImg,
-  "Serum": serumImg,
-  "Hydrator": hydratorImg,
-  "Moisturizer": moisturizerImg,
-  "SPF": spfImg,
-  "Treatment": spotTreatmentImg,
-  "Tool": iceGlobesImg,
-};
-
 export function CompactProductCard({ product, description }: CompactProductCardProps) {
-  const productImage = categoryImages[product.category] || categoryImages["Serum"];
+  // Use SKU-based image if available, otherwise fallback to category image
+  const productImage = getProductImage(product.sku, product.category);
 
   return (
     <Card className="relative border-card-border hover-elevate transition-all" data-testid="card-compact-product">

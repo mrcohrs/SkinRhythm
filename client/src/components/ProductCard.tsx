@@ -4,14 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Lock } from "lucide-react";
 import { extractProductName } from "@/lib/extractProductName";
 import { trackAffiliateClick } from "@/lib/analytics";
-
-import cleanserImg from "@assets/Cleanser_1760341831448.png";
-import tonerImg from "@assets/Toner_1760341831459.png";
-import serumImg from "@assets/acid_1760944347974.png";
-import hydratorImg from "@assets/hydra_1760944347978.png";
-import moisturizerImg from "@assets/Moisturizer_1760341636653.png";
-import spfImg from "@assets/SPF_1760341636654.png";
-import spotTreatmentImg from "@assets/bpooo_1760944347978.png";
+import { getProductImage } from "@/lib/productImages";
 import bestForYourSkinBadge from "@assets/bestforyourskin_1761112317047.png";
 
 export interface Product {
@@ -27,6 +20,7 @@ export interface Product {
   imageUrl?: string;
   isPremiumOnly?: boolean;
   isRecommended?: boolean; // True if this is the recommended product for premium users
+  sku?: string; // Product SKU for image mapping
   premiumOptions?: Array<{
     originalLink: string;
     affiliateLink: string;
@@ -47,20 +41,10 @@ interface ProductCardProps {
   showExploreButton?: boolean;
 }
 
-const categoryImages: Record<string, string> = {
-  "Cleanser": cleanserImg,
-  "Toner": tonerImg,
-  "Serum": serumImg,
-  "Hydrator": hydratorImg,
-  "Moisturizer": moisturizerImg,
-  "SPF": spfImg,
-  "Treatment": spotTreatmentImg,
-};
-
 export function ProductCard({ product, isPremiumUser = false, routineId, currentProductSelections, onProductSelect, onExploreAlternatives, showExploreButton = false }: ProductCardProps) {
   const isLocked = product.isPremiumOnly && !isPremiumUser;
-  // Always use category-based images, ignore any imageUrl from backend
-  const productImage = categoryImages[product.category] || categoryImages["Serum"];
+  // Use SKU-based image if available, otherwise fallback to category image
+  const productImage = getProductImage(product.sku, product.category);
   
   // Check if this is the current product for this category
   const isCurrentProduct = currentProductSelections?.[product.category] === product.name;

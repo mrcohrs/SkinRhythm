@@ -102,6 +102,13 @@ export async function resolveRoutineProducts(routine: RoutineRecommendation | an
         
         console.log(`[Resolver] Resolved ${id} -> ${currentVariant.productName} (mode: ${useRecommended ? 'premium' : 'basic'}, isCurrent based on: ${userSelection ? 'user selection' : useRecommended ? 'isRecommended' : 'isDefault'})`);
         
+        // Find the current variant object to get its SKU
+        const currentVariantFull = allVariants.find(v => 
+          userSelection 
+            ? v.specificProductName === userSelection
+            : (useRecommended ? v.isRecommended : v.isDefault)
+        ) || allVariants[0];
+        
         return {
           name: currentVariant.productName,
           brand: currentVariant.brand,
@@ -113,6 +120,7 @@ export async function resolveRoutineProducts(routine: RoutineRecommendation | an
           affiliateLink: currentVariant.affiliateLink,
           originalLink: currentVariant.originalLink,
           isRecommended: currentVariant.isRecommended,
+          sku: currentVariantFull.sku, // Add SKU for product image mapping
           premiumOptions,
         };
       })
@@ -233,6 +241,13 @@ export async function resolveSavedRoutineProducts(
         
         const currentVariant = premiumOptions.find(v => v.isCurrent) || premiumOptions[0];
         
+        // Find the current variant object to get its SKU
+        const currentVariantFull = allVariants.find(v => 
+          userSelection 
+            ? v.specificProductName === userSelection
+            : (useRecommended ? v.isRecommended : v.isDefault)
+        ) || allVariants[0];
+        
         return {
           name: currentVariant.productName,
           brand: currentVariant.brand,
@@ -244,6 +259,7 @@ export async function resolveSavedRoutineProducts(
           affiliateLink: currentVariant.affiliateLink,
           originalLink: currentVariant.originalLink,
           isRecommended: currentVariant.isRecommended,
+          sku: currentVariantFull.sku, // Add SKU for product image mapping
           premiumOptions,
         };
       }).filter((p): p is NonNullable<typeof p> => p !== null);
@@ -322,6 +338,13 @@ export async function resolveSavedRoutineProducts(
       
       const currentVariant = premiumOptions.find(v => v.isCurrent) || premiumOptions[0];
 
+      // Find the current variant object to get its SKU
+      const currentVariantFull = allVariants.find(v => 
+        userSelection 
+          ? v.specificProductName === userSelection
+          : (useRecommended ? v.isRecommended : v.isDefault)
+      ) || allVariants[0];
+
       // Use centralized product data
       return {
         name: currentVariant.productName,
@@ -334,6 +357,7 @@ export async function resolveSavedRoutineProducts(
         affiliateLink: currentVariant.affiliateLink,
         originalLink: currentVariant.originalLink,
         isRecommended: currentVariant.isRecommended,
+        sku: currentVariantFull.sku, // Add SKU for product image mapping
         premiumOptions,
       };
     };
