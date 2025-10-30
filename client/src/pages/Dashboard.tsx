@@ -51,7 +51,8 @@ export default function Dashboard() {
   const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
   const [selectedRoutineId, setSelectedRoutineId] = useState<string | null>(null);
   const [showRoutineModal, setShowRoutineModal] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showTabMenu, setShowTabMenu] = useState(false);
+  const [showHeaderMenu, setShowHeaderMenu] = useState(false);
   
   // Consent modal state
   const [showConsentModal, setShowConsentModal] = useState(false);
@@ -476,12 +477,12 @@ export default function Dashboard() {
 
               {/* Mobile Hamburger Menu */}
               <div className="md:hidden">
-                <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
+                <Sheet open={showHeaderMenu} onOpenChange={setShowHeaderMenu}>
                   <SheetTrigger asChild>
                     <Button 
                       variant="ghost" 
                       size="icon"
-                      data-testid="button-mobile-menu"
+                      data-testid="button-header-menu"
                     >
                       <Menu className="h-5 w-5" />
                     </Button>
@@ -495,7 +496,7 @@ export default function Dashboard() {
                         <button
                           onClick={() => {
                             setLocation('/marketplace');
-                            setShowMobileMenu(false);
+                            setShowHeaderMenu(false);
                           }}
                           className="text-left py-2 text-muted-foreground"
                           data-testid="mobile-link-marketplace"
@@ -506,7 +507,7 @@ export default function Dashboard() {
                       <button
                         onClick={() => {
                           setLocation('/pricing');
-                          setShowMobileMenu(false);
+                          setShowHeaderMenu(false);
                         }}
                         className="text-left py-2 text-muted-foreground"
                         data-testid="mobile-link-pricing"
@@ -516,7 +517,7 @@ export default function Dashboard() {
                       <button
                         onClick={() => {
                           handleReferFriend();
-                          setShowMobileMenu(false);
+                          setShowHeaderMenu(false);
                         }}
                         className="w-full text-left py-2 text-muted-foreground flex items-center gap-2"
                         data-testid="mobile-button-refer-friend"
@@ -676,12 +677,12 @@ export default function Dashboard() {
 
             {/* Mobile Hamburger Menu */}
             <div className="md:hidden">
-              <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
+              <Sheet open={showHeaderMenu} onOpenChange={setShowHeaderMenu}>
                 <SheetTrigger asChild>
                   <Button 
                     variant="ghost" 
                     size="icon"
-                    data-testid="button-mobile-menu"
+                    data-testid="button-header-menu"
                   >
                     <Menu className="h-5 w-5" />
                   </Button>
@@ -695,7 +696,7 @@ export default function Dashboard() {
                       <button
                         onClick={() => {
                           setLocation('/marketplace');
-                          setShowMobileMenu(false);
+                          setShowHeaderMenu(false);
                         }}
                         className="text-left py-2 text-muted-foreground"
                         data-testid="mobile-link-marketplace"
@@ -706,7 +707,7 @@ export default function Dashboard() {
                     <button
                       onClick={() => {
                         setLocation('/pricing');
-                        setShowMobileMenu(false);
+                        setShowHeaderMenu(false);
                       }}
                       className="text-left py-2 text-muted-foreground"
                       data-testid="mobile-link-pricing"
@@ -716,7 +717,7 @@ export default function Dashboard() {
                     <button
                       onClick={() => {
                         handleReferFriend();
-                        setShowMobileMenu(false);
+                        setShowHeaderMenu(false);
                       }}
                       className="w-full text-left py-2 text-muted-foreground flex items-center gap-2"
                       data-testid="mobile-button-refer-friend"
@@ -848,7 +849,7 @@ export default function Dashboard() {
             <Button
               variant="outline"
               className="w-full justify-between"
-              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              onClick={() => setShowTabMenu(!showTabMenu)}
               data-testid="button-mobile-menu"
             >
               <span className="flex items-center gap-2">
@@ -859,13 +860,13 @@ export default function Dashboard() {
                 {activeTab === 'library' && 'Routine Library'}
               </span>
             </Button>
-            {showMobileMenu && (
+            {showTabMenu && (
               <Card className="mt-2 border-border">
                 <CardContent className="p-2 space-y-1">
                   <Button
                     variant={activeTab === 'products' ? 'default' : 'ghost'}
                     className="w-full justify-start"
-                    onClick={() => { setActiveTab('products'); setShowMobileMenu(false); }}
+                    onClick={() => { setActiveTab('products'); setShowTabMenu(false); }}
                     data-testid="tab-products-mobile"
                   >
                     My Products
@@ -873,7 +874,7 @@ export default function Dashboard() {
                   <Button
                     variant={activeTab === 'treatment' ? 'default' : 'ghost'}
                     className="w-full justify-start gap-2"
-                    onClick={() => { setActiveTab('treatment'); setShowMobileMenu(false); }}
+                    onClick={() => { setActiveTab('treatment'); setShowTabMenu(false); }}
                     data-testid="tab-treatment-mobile"
                   >
                     <span>Routine Coach</span>
@@ -882,7 +883,7 @@ export default function Dashboard() {
                   <Button
                     variant={activeTab === 'ingredient-checker' ? 'default' : 'ghost'}
                     className="w-full justify-start gap-2"
-                    onClick={() => { setActiveTab('ingredient-checker'); setShowMobileMenu(false); }}
+                    onClick={() => { setActiveTab('ingredient-checker'); setShowTabMenu(false); }}
                     data-testid="tab-ingredient-checker-mobile"
                   >
                     <span>Ingredient Scanner</span>
@@ -891,7 +892,7 @@ export default function Dashboard() {
                   <Button
                     variant={activeTab === 'library' ? 'default' : 'ghost'}
                     className="w-full justify-start gap-2"
-                    onClick={() => { setActiveTab('library'); setShowMobileMenu(false); }}
+                    onClick={() => { setActiveTab('library'); setShowTabMenu(false); }}
                     data-testid="tab-library-mobile"
                   >
                     <span>Routine Library</span>
