@@ -19,6 +19,7 @@ The frontend is built with React and TypeScript, utilizing `shadcn/ui` with Radi
 - **Core Features**:
     - **Quiz Flow**: A 9-step questionnaire with conditional logic, including a two-step Fitzpatrick determination process (visual skin tone selection followed by a conditional sun reaction question).
     - **Routine Generation**: A CSV-based product recommendation engine matches user profiles (skin type, Fitzpatrick type, acne types, age, pregnancy status) to recommend product sets, supporting premium product alternatives and a multi-level specificity scoring system.
+    - **Product Images**: SKU-based product image system displays specific product photos for default products (19 SKU-named images: AC-1, B1-1, B2-1, B5-1, CC-3, CS-1, ES-1, GC-2, HM-1, HS-1, LM-1, MS-1, MSFS-2, MT-2, RET-1, RS-1, RT-2, ST-1, VS-1) with graceful fallback to category-based images for non-default products. Centralized helper function in `productImages.ts` ensures consistent image resolution across all product card components.
     - **Dashboard**: Authenticated users access a personalized view of saved routines, detailed premium treatment plans, and routine management features.
     - **Ingredient Checker**: Allows authenticated users to identify 348 acne-causing ingredients using word-boundary matching. Features contextual scanner pack upsells when users have 0 scans (prominent card) or fewer than 3 scans remaining (bottom card).
     - **Monetization**: Implements a three-tier membership system (free, premium, premium_plus) with feature gating for ingredient scans, product alternatives, and routine coaching. Includes an entitlements system for managing feature access and tracking scan usage.
@@ -33,7 +34,7 @@ The application is designed for scalability and maintainability, emphasizing a c
 ## External Dependencies
 - **Authentication**: Custom email/password authentication with bcrypt password hashing and Passport.js local strategy.
 - **Database**: Neon serverless PostgreSQL.
-- **Product Data**: CSV files for product recommendations, affiliate link mappings (38 links), and routine logic. A centralized `productLibrary.ts` holds 21 products across 8 categories.
+- **Product Data**: CSV file (`AcneSafe_Products_Combined`) with SKU field for product recommendations, affiliate link mappings (38 links), and routine logic. A centralized `productLibrary.ts` holds 21 products across 8 categories with SKU-based image mapping.
 - **UI Components**: Radix UI primitives (`@radix-ui/*`).
 - **Form Management**: React Hook Form with Zod resolver.
 - **Fonts**: Inter and Playfair Display from Google Fonts CDN.
