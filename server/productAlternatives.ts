@@ -169,7 +169,7 @@ function extractProductNameFromURL(url: string): string {
 }
 
 export function enrichProductLibraryFromCSV() {
-  const csvPath = path.join(process.cwd(), 'attached_assets', 'AcneAgent_Products_Combined.csv');
+  const csvPath = path.join(process.cwd(), 'attached_assets', 'AcneSafe_Products_Combined 10-30-25.xlsx - Routine Products (1)_1761865518058.csv');
   
   if (!fs.existsSync(csvPath)) {
     console.error('Combined products CSV not found at:', csvPath);
@@ -187,6 +187,7 @@ export function enrichProductLibraryFromCSV() {
   // Parse CSV header to get column indices
   const header = lines[0].split(',').map(h => h.trim());
   const colIndexes = {
+    sku: header.indexOf('Product Number (\'SKU\')'),
     specificProductName: header.indexOf('Specific Product Name'),
     brand: header.indexOf('Brand'),
     priceRange: header.indexOf('Price Range'),
@@ -254,6 +255,7 @@ export function enrichProductLibraryFromCSV() {
     
     // Add this specific product variant
     product.products.push({
+      sku: columns[colIndexes.sku],
       specificProductName: columns[colIndexes.specificProductName],
       brand: columns[colIndexes.brand],
       priceRange: columns[colIndexes.priceRange],

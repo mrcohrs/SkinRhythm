@@ -1,4 +1,5 @@
 export interface SpecificProduct {
+  sku: string;
   specificProductName: string;
   brand: string;
   priceRange: string;
