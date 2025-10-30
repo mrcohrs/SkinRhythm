@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntitlements } from "@/hooks/useEntitlements";
@@ -53,6 +53,9 @@ export default function Dashboard() {
   const [showRoutineModal, setShowRoutineModal] = useState(false);
   const [showTabMenu, setShowTabMenu] = useState(false);
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
+  
+  // Swipe tracking for mobile tab selector
+  const swipeDetectedRef = useRef(false);
   
   // Consent modal state
   const [showConsentModal, setShowConsentModal] = useState(false);
@@ -844,22 +847,100 @@ export default function Dashboard() {
           )}
 
 
-          {/* Mobile Tab Dropdown Menu */}
+          {/* Mobile Tab Carousel + Dropdown */}
           <div className="md:hidden">
-            <Button
-              variant="outline"
-              className="w-full justify-between"
-              onClick={() => setShowTabMenu(!showTabMenu)}
-              data-testid="button-mobile-menu"
-            >
-              <span className="flex items-center gap-2">
-                <Menu className="h-4 w-4" />
-                {activeTab === 'products' && 'My Products'}
-                {activeTab === 'treatment' && 'Routine Coach'}
-                {activeTab === 'ingredient-checker' && 'Ingredient Scanner'}
-                {activeTab === 'library' && 'Routine Library'}
-              </span>
-            </Button>
+            <div className="flex items-center gap-2">
+              {/* Left Arrow */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="flex-shrink-0"
+                onClick={() => {
+                  const tabs = ['products', 'treatment', 'ingredient-checker', 'library'];
+                  const currentIndex = tabs.indexOf(activeTab);
+                  const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+                  setActiveTab(tabs[prevIndex]);
+                }}
+                aria-label="Previous tab"
+                data-testid="button-tab-prev"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+
+              {/* Center Button - Current Tab (Clickable for Dropdown) with Swipe Support */}
+              <Button
+                variant="outline"
+                className="flex-1 justify-center relative"
+                onClick={() => {
+                  // Only toggle dropdown if a swipe wasn't detected
+                  if (!swipeDetectedRef.current) {
+                    setShowTabMenu(!showTabMenu);
+                  }
+                }}
+                onTouchStart={(e) => {
+                  swipeDetectedRef.current = false;
+                  const touch = e.touches[0];
+                  (e.currentTarget as any).touchStartX = touch.clientX;
+                }}
+                onTouchEnd={(e) => {
+                  const touch = e.changedTouches[0];
+                  const startX = (e.currentTarget as any).touchStartX;
+                  if (!startX) return;
+                  
+                  const diffX = touch.clientX - startX;
+                  const threshold = 50;
+                  
+                  if (Math.abs(diffX) > threshold) {
+                    swipeDetectedRef.current = true;
+                    const tabs = ['products', 'treatment', 'ingredient-checker', 'library'];
+                    const currentIndex = tabs.indexOf(activeTab);
+                    
+                    if (diffX > 0) {
+                      // Swipe right - go to previous tab
+                      const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+                      setActiveTab(tabs[prevIndex]);
+                    } else {
+                      // Swipe left - go to next tab
+                      const nextIndex = currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
+                      setActiveTab(tabs[nextIndex]);
+                    }
+                    
+                    // Reset swipe detection after a short delay
+                    setTimeout(() => {
+                      swipeDetectedRef.current = false;
+                    }, 100);
+                  }
+                }}
+                data-testid="button-mobile-menu"
+              >
+                <span className="flex items-center gap-2">
+                  {activeTab === 'products' && 'My Products'}
+                  {activeTab === 'treatment' && 'Routine Coach'}
+                  {activeTab === 'ingredient-checker' && 'Ingredient Scanner'}
+                  {activeTab === 'library' && 'Routine Library'}
+                  <Menu className="h-4 w-4" />
+                </span>
+              </Button>
+
+              {/* Right Arrow */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="flex-shrink-0"
+                onClick={() => {
+                  const tabs = ['products', 'treatment', 'ingredient-checker', 'library'];
+                  const currentIndex = tabs.indexOf(activeTab);
+                  const nextIndex = currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
+                  setActiveTab(tabs[nextIndex]);
+                }}
+                aria-label="Next tab"
+                data-testid="button-tab-next"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
+
+            {/* Dropdown Menu */}
             {showTabMenu && (
               <Card className="mt-2 border-border">
                 <CardContent className="p-2 space-y-1">
