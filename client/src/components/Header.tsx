@@ -18,8 +18,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import logoPath from "@assets/neweww_1761485311132.png";
-
 interface HeaderProps {
   showNavigation?: boolean;
 }
@@ -48,16 +46,31 @@ export function Header({ showNavigation = true }: HeaderProps) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/50">
+      <header className="sticky top-0 z-50 backdrop-blur-[10px] border-b" style={{ 
+        background: 'rgba(255, 249, 240, 0.95)',
+        borderColor: 'rgba(212, 165, 154, 0.15)'
+      }}>
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <div className="flex h-16 items-center justify-between">
+          <div className="flex h-16 md:h-20 items-center justify-between">
             {/* Logo */}
             <button 
               onClick={() => setLocation('/')}
-              className="flex items-center gap-2"
+              className="flex items-center text-[18px] md:text-[22px]"
               data-testid="button-logo"
+              style={{
+                fontWeight: 400,
+                color: '#3E4E3D',
+                letterSpacing: '2px'
+              }}
             >
-              <img src={logoPath} alt="SkinRhythm" className="h-8" />
+              <style>{`
+                @media (min-width: 768px) {
+                  [data-testid="button-logo"] {
+                    letter-spacing: 3px;
+                  }
+                }
+              `}</style>
+              skin<span style={{ color: '#D4A59A', margin: '0 2px' }}>∙</span>rhythm
             </button>
 
             {/* Desktop Navigation */}
@@ -86,10 +99,29 @@ export function Header({ showNavigation = true }: HeaderProps) {
                 </button>
                 <button
                   onClick={() => setLocation('/quiz')}
-                  className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline transition-colors"
+                  className="transition-all duration-400 hover:-translate-y-0.5"
+                  style={{
+                    background: 'transparent',
+                    color: '#C4958A',
+                    border: '1.5px solid #C4958A',
+                    padding: '10px 28px',
+                    fontSize: '13px',
+                    fontWeight: 400,
+                    letterSpacing: '1.5px',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#C4958A';
+                    e.currentTarget.style.color = '#FFF9F0';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = '#C4958A';
+                  }}
                   data-testid="link-quiz-header"
                 >
-                  Find Your SkinRhythm
+                  Find Your Rhythm
                 </button>
               </div>
             )}
@@ -184,10 +216,15 @@ export function Header({ showNavigation = true }: HeaderProps) {
                                 setLocation('/quiz');
                                 setMobileMenuOpen(false);
                               }}
-                              className="w-full text-left py-2 text-primary-text font-normal"
+                              className="w-full text-left py-2 font-normal"
+                              style={{
+                                color: '#C4958A',
+                                fontSize: '15px',
+                                letterSpacing: '1px'
+                              }}
                               data-testid="mobile-link-quiz"
                             >
-                              Find Your SkinRhythm
+                              Find Your Rhythm
                             </button>
                           </div>
                         </>
