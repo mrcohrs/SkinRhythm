@@ -1,29 +1,97 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export function ScrollingDots() {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const heroPatternRef = useRef<HTMLDivElement>(null);
+  const rhythmGuideRef = useRef<HTMLDivElement>(null);
+  const patternDotsRef = useRef<HTMLDivElement[]>([]);
+  const guideDotsRef = useRef<HTMLDivElement[]>([]);
+  const pulseDotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const heroPattern = heroPatternRef.current;
+    const rhythmGuide = rhythmGuideRef.current;
+    const hero = document.querySelector('section') as HTMLElement;
+    
+    if (!heroPattern || !rhythmGuide || !hero) return;
+
+    function updateGuide() {
       const scrollPos = window.scrollY;
-      const heroSection = document.querySelector('section') as HTMLElement;
-      const heroBottom = heroSection 
-        ? heroSection.offsetTop + heroSection.offsetHeight 
-        : window.innerHeight;
+      const windowHeight = window.innerHeight;
+      const heroBottom = hero.offsetTop + hero.offsetHeight;
+      const scrollProgress = Math.min(scrollPos / (heroBottom * 0.7), 1);
       
-      const progress = Math.min(scrollPos / (heroBottom * 0.7), 1);
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
+      // Move hero dots to tracker
+      if (scrollPos > 0) {
+        const guideRect = rhythmGuide!.getBoundingClientRect();
+        const heroPatternRect = heroPattern!.getBoundingClientRect();
+        
+        patternDotsRef.current.forEach((dot, index) => {
+          if (!dot) return;
+          dot.classList.add('transitioning');
+          
+          const targetX = guideRect.left - heroPatternRect.left + 26;
+          const targetY = (guideRect.top - heroPatternRect.top) + (index * 40) + 100;
+          
+          const dotProgress = Math.max(0, Math.min(1, (scrollProgress - (index * 0.02)) * 1.1));
+          const currentX = targetX * dotProgress;
+          const currentY = targetY * dotProgress;
+          const currentScale = 1 - (dotProgress * 0.4);
+          const fadeOutOpacity = Math.max(0, 0.6 - (dotProgress * 0.6));
+          
+          dot.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
+          dot.style.opacity = String(fadeOutOpacity);
+        });
+        
+        if (scrollProgress > 0.25) {
+          rhythmGuide!.style.opacity = String((scrollProgress - 0.25) / 0.75);
+          rhythmGuide!.classList.add('visible');
+        } else {
+          rhythmGuide!.style.opacity = '0';
+          rhythmGuide!.classList.remove('visible');
+        }
+      } else {
+        rhythmGuide!.style.opacity = '0';
+        rhythmGuide!.classList.remove('visible');
+        
+        patternDotsRef.current.forEach((dot) => {
+          if (!dot) return;
+          dot.classList.remove('transitioning');
+          dot.style.transform = '';
+          dot.style.opacity = '';
+        });
+      }
+      
+      // Update active section for tracker dots
+      const sections = document.querySelectorAll('section');
+      sections.forEach((section, index) => {
+        const sectionTop = section.getBoundingClientRect().top + scrollPos;
+        const sectionHeight = section.clientHeight;
+        
+        if (scrollPos >= sectionTop - windowHeight / 2 && 
+            scrollPos < sectionTop + sectionHeight - windowHeight / 2) {
+          guideDotsRef.current.forEach(dot => dot?.classList.remove('active'));
+          if (guideDotsRef.current[index]) {
+            guideDotsRef.current[index].classList.add('active');
+            
+            const dotRect = guideDotsRef.current[index].getBoundingClientRect();
+            const guideRect = rhythmGuide!.getBoundingClientRect();
+            if (pulseDotRef.current) {
+              pulseDotRef.current.style.top = (dotRect.top - guideRect.top) + 'px';
+            }
+          }
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', updateGuide);
+    updateGuide();
+    
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', updateGuide);
     };
   }, []);
 
-  // Pattern dot positions
+  // Pattern dot positions (from HTML)
   const patternDots = [
     { top: '10%', left: '15%', size: 12, delay: 0 },
     { top: '25%', left: '45%', size: 8, delay: 0.5 },
@@ -39,101 +107,67 @@ export function ScrollingDots() {
     { top: '5%', left: '40%', size: 10, delay: 1.6 },
   ];
 
-  const isTransitioning = scrollProgress > 0;
-  
-  // Tracker fades in as dots move (same progress, opposite direction)
-  const guideOpacity = scrollProgress;
-  
-  // Calculate which tracker dot should be active based on scroll
-  const activeTrackerDot = Math.floor(scrollProgress * 6);
-
   return (
     <>
       {/* Hero Pattern Dots - Right Side */}
-      <div className="absolute right-4 md:right-20 lg:right-32 top-1/2 -translate-y-1/2 w-[300px] md:w-[400px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px] pointer-events-none z-[50]">
-        {patternDots.map((dot, index) => {
-          const dotProgress = Math.max(0, Math.min(1, (scrollProgress - (index * 0.02)) * 1.1));
-          
-          // Move dots across the entire viewport width (from right side to left)
-          // The dots start on the right, need to travel the full width
-          const fullWidth = typeof window !== 'undefined' ? window.innerWidth : 1440;
-          const moveX = -fullWidth * dotProgress; // Travel full width left
-          const scale = 1 - (dotProgress * 0.4);
-          
-          // Fade out in the last 20% of movement (when dotProgress > 0.8)
-          let fadeOpacity: number;
-          if (!isTransitioning) {
-            fadeOpacity = 0.6; // Always visible when not scrolling
-          } else if (dotProgress > 0.8) {
-            // Fade out in last 20% of movement
-            fadeOpacity = (1 - dotProgress) / 0.2; // Goes from 1 to 0 as progress goes 0.8 to 1
-          } else {
-            fadeOpacity = 0.6; // Visible during first 80% of movement
-          }
-
-          return (
-            <div
-              key={index}
-              className="absolute rounded-full"
-              style={{
-                top: dot.top,
-                left: dot.left,
-                width: `${dot.size}px`,
-                height: `${dot.size}px`,
-                backgroundColor: '#C4958A',
-                boxShadow: '0 2px 8px rgba(196, 149, 138, 0.3)',
-                animation: isTransitioning ? 'none' : `pattern-pulse 4s ease-in-out infinite`,
-                animationDelay: `${dot.delay}s`,
-                transform: isTransitioning ? `translate(${moveX}px, 0) scale(${scale})` : 'none',
-                opacity: fadeOpacity,
-                transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
-              }}
-            />
-          );
-        })}
+      <div 
+        ref={heroPatternRef}
+        className="absolute right-[120px] top-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-[1]"
+      >
+        {patternDots.map((dot, index) => (
+          <div
+            key={index}
+            ref={(el) => { if (el) patternDotsRef.current[index] = el; }}
+            className="pattern-dot absolute rounded-full bg-[#C4958A]"
+            style={{
+              top: dot.top,
+              left: dot.left,
+              width: `${dot.size}px`,
+              height: `${dot.size}px`,
+              boxShadow: '0 2px 8px rgba(196, 149, 138, 0.3)',
+              animation: `pattern-pulse 4s ease-in-out infinite`,
+              animationDelay: `${dot.delay}s`,
+            }}
+          />
+        ))}
       </div>
 
-      {/* Rhythm Guide - Left Side Tracker */}
+      {/* Rhythm Guide - Left Side */}
       <div
-        className="fixed left-8 md:left-16 lg:left-20 top-1/2 -translate-y-1/2 w-[60px] h-[300px] z-[100] pointer-events-none"
-        style={{
-          opacity: guideOpacity,
-          transition: 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
+        ref={rhythmGuideRef}
+        className="rhythm-guide fixed left-[80px] top-1/2 -translate-y-1/2 w-[60px] h-[300px] z-[100] pointer-events-none opacity-0 transition-opacity duration-300"
       >
-        <div className="relative flex flex-col gap-[45px] items-center">
-          {[0, 1, 2, 3, 4, 5].map((index) => {
-            const isActive = index === activeTrackerDot;
-            
-            return (
-              <div
-                key={index}
-                className="w-2 h-2 rounded-full relative"
-                style={{
-                  backgroundColor: '#D4A59A',
-                  opacity: isActive ? 1 : 0.3,
-                  transform: isActive ? 'scale(1.5)' : 'scale(1)',
-                  boxShadow: isActive ? '0 0 20px rgba(212, 165, 154, 0.5)' : 'none',
-                  transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-              >
-                {/* Pulse ring on active dot */}
-                {isActive && (
-                  <div
-                    className="absolute w-6 h-6 border-2 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                    style={{
-                      borderColor: '#D4A59A',
-                      animation: 'pulse-ring 2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
-                    }}
-                  />
-                )}
-              </div>
-            );
-          })}
+        <div className="rhythm-dots flex flex-col gap-[45px] items-center">
+          {[0, 1, 2, 3, 4, 5].map((index) => (
+            <div
+              key={index}
+              ref={(el) => { if (el) guideDotsRef.current[index] = el; }}
+              className="guide-dot w-2 h-2 rounded-full bg-[#D4A59A] opacity-30 transition-all duration-[600ms]"
+            />
+          ))}
         </div>
+
+        {/* Pulse ring animation */}
+        <div
+          ref={pulseDotRef}
+          className="guide-pulse absolute w-6 h-6 border-2 border-[#D4A59A] rounded-full left-1/2 -translate-x-1/2 opacity-0"
+          style={{
+            animation: 'pulse-ring 2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+          }}
+        />
       </div>
 
       <style>{`
+        .pattern-dot.transitioning {
+          animation: none !important;
+        }
+
+        .guide-dot.active {
+          opacity: 1 !important;
+          transform: scale(1.5);
+          box-shadow: 0 0 20px rgba(212, 165, 154, 0.5);
+        }
+
         @keyframes pattern-pulse {
           0%, 100% {
             opacity: 0.4;
@@ -148,14 +182,14 @@ export function ScrollingDots() {
         @keyframes pulse-ring {
           0% {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(0.5);
+            transform: translateX(-50%) scale(0.5);
           }
           50% {
             opacity: 0.8;
           }
           100% {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(2);
+            transform: translateX(-50%) scale(2);
           }
         }
       `}</style>
