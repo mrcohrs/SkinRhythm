@@ -636,11 +636,55 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
+      <style>{`
+        /* skin∙rhythm Tab Styling */
+        [role="tablist"] {
+          border-bottom: 1px solid rgba(212, 165, 154, 0.15) !important;
+        }
+        
+        [role="tab"] {
+          border-bottom: 2px solid transparent !important;
+          color: #3E4E3D !important;
+          font-size: 15px !important;
+          font-weight: 400 !important;
+          letter-spacing: 0.3px !important;
+          padding: 16px 32px !important;
+          transition: all 0.3s !important;
+        }
+        
+        [role="tab"]:hover {
+          color: #2E3E2D !important;
+        }
+        
+        [role="tab"][data-state="active"] {
+          color: #1A1512 !important;
+          border-bottom-color: #C4958A !important;
+          font-weight: 500 !important;
+          background: transparent !important;
+        }
+      `}</style>
       {/* Header */}
-      <header className="border-b border-border/50">
+      <header className="border-b" style={{ borderColor: 'rgba(212, 165, 154, 0.15)' }}>
         <div className="container mx-auto px-4 md:px-8 lg:px-16">
           <div className="flex h-16 items-center justify-between">
-            <img src={logoPath} alt="SkinRhythm" className="h-10" />
+            <button 
+              onClick={() => setLocation('/')}
+              className="flex items-center text-[18px] md:text-[22px]"
+              style={{
+                fontWeight: 400,
+                color: '#3E4E3D',
+                letterSpacing: '2px'
+              }}
+            >
+              <style>{`
+                @media (min-width: 768px) {
+                  .dashboard-logo {
+                    letter-spacing: 3px;
+                  }
+                }
+              `}</style>
+              <span className="dashboard-logo">skin<span style={{ color: '#D4A59A', margin: '0 2px' }}>∙</span>rhythm</span>
+            </button>
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-2">
@@ -766,7 +810,7 @@ export default function Dashboard() {
                 )}
               </div>
               <div className="text-muted-foreground text-sm">
-                {currentRoutine.skinType} skin • {currentRoutine.acneTypes && currentRoutine.acneTypes.length > 0 
+                {currentRoutine.skinType} skin â€¢ {currentRoutine.acneTypes && currentRoutine.acneTypes.length > 0 
                   ? currentRoutine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
                   : 'acne'} ({currentRoutine.acneSeverity})
               </div>
@@ -1205,7 +1249,16 @@ export default function Dashboard() {
 
               {/* Shoppable Product List - Horizontal Carousel */}
               <div>
-                <h3 className="font-serif text-2xl font-light mb-4" data-testid="heading-shoppable-products">Your Routine Products</h3>
+                <h3 className="text-[13px] uppercase mb-4" 
+                  style={{ 
+                    letterSpacing: '3px',
+                    color: '#A67368',
+                    fontWeight: 500
+                  }} 
+                  data-testid="heading-shoppable-products"
+                >
+                  Your Routine Products
+                </h3>
                 
                 {/* Affiliate Disclosure */}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
@@ -1280,7 +1333,16 @@ export default function Dashboard() {
 
               {/* Visual AM/PM Routine Display */}
               <div className="space-y-6">
-                <h3 className="font-serif text-2xl font-light" data-testid="heading-routine-schedule">Your Routine Schedule</h3>
+                <h3 className="text-[13px] uppercase" 
+                  style={{ 
+                    letterSpacing: '3px',
+                    color: '#A67368',
+                    fontWeight: 500
+                  }} 
+                  data-testid="heading-routine-schedule"
+                >
+                  Your Routine Schedule
+                </h3>
                 
                 {/* Morning Routine Visual */}
                 <div>
@@ -1310,18 +1372,30 @@ export default function Dashboard() {
                               </p>
                             )}
                           </div>
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            className="flex-shrink-0 gap-1"
-                            asChild
+                          <button
+                            className="flex-shrink-0 gap-1 flex items-center transition-all"
+                            style={{
+                              background: '#3E4E3D',
+                              color: '#FFF9F0',
+                              border: 'none',
+                              padding: '10px 24px',
+                              fontSize: '13px',
+                              fontWeight: 400,
+                              letterSpacing: '0.5px',
+                              cursor: 'pointer'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = '#2E3E2D';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = '#3E4E3D';
+                            }}
+                            onClick={() => window.open(product.affiliateLink, '_blank')}
                             data-testid={`button-buy-now-morning-${index}`}
                           >
-                            <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer">
-                              Buy Now
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          </Button>
+                            Buy Now
+                            <ExternalLink className="w-3 h-3" />
+                          </button>
                         </div>
                       );
                     })}
@@ -1375,18 +1449,30 @@ export default function Dashboard() {
                               </p>
                             )}
                           </div>
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            className="flex-shrink-0 gap-1"
-                            asChild
+                          <button
+                            className="flex-shrink-0 gap-1 flex items-center transition-all"
+                            style={{
+                              background: '#3E4E3D',
+                              color: '#FFF9F0',
+                              border: 'none',
+                              padding: '10px 24px',
+                              fontSize: '13px',
+                              fontWeight: 400,
+                              letterSpacing: '0.5px',
+                              cursor: 'pointer'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = '#2E3E2D';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = '#3E4E3D';
+                            }}
+                            onClick={() => window.open(product.affiliateLink, '_blank')}
                             data-testid={`button-buy-now-evening-${index}`}
                           >
-                            <a href={product.affiliateLink} target="_blank" rel="noopener noreferrer">
-                              Buy Now
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          </Button>
+                            Buy Now
+                            <ExternalLink className="w-3 h-3" />
+                          </button>
                         </div>
                       );
                     })}
