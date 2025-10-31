@@ -86,7 +86,7 @@ export function ProductCard({ product, isPremiumUser = false, routineId, current
             />
           )}
           
-          <div className="w-32 h-32 flex items-center justify-center">
+          <div className="w-[70%] h-[70%] flex items-center justify-center">
             <img 
               src={productImage} 
               alt={product.name} 

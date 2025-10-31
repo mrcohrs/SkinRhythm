@@ -29,7 +29,7 @@ export function CompactProductCard({ product, description }: CompactProductCardP
     <Card className="relative border-card-border hover-elevate transition-all" data-testid="card-compact-product">
       <CardContent className="p-4">
         <div className="flex gap-4 items-center">
-          <div className="relative w-20 h-20 flex-shrink-0 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1">
+          <div className="relative w-28 h-28 flex-shrink-0 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center p-1">
             {/* Category badge positioned at top-left on image */}
             <Badge 
               variant="outline" 
