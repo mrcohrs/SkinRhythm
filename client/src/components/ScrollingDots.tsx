@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function ScrollingDots() {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const heroPatternRef = useRef<HTMLDivElement>(null);
-  const rhythmGuideRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,48 +16,14 @@ export function ScrollingDots() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initialize
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  // Calculate individual dot positions and opacity
-  const getDotStyle = (index: number) => {
-    if (scrollProgress === 0) {
-      return {
-        transform: '',
-        opacity: '',
-      };
-    }
-
-    const guideRect = rhythmGuideRef.current?.getBoundingClientRect();
-    const heroPatternRect = heroPatternRef.current?.getBoundingClientRect();
-
-    if (!guideRect || !heroPatternRect) {
-      return { transform: '', opacity: '' };
-    }
-
-    const targetX = guideRect.left - heroPatternRect.left + 26;
-    const targetY = (guideRect.top - heroPatternRect.top) + (index * 40) + 100;
-
-    const dotProgress = Math.max(0, Math.min(1, (scrollProgress - (index * 0.02)) * 1.1));
-    const currentX = targetX * dotProgress;
-    const currentY = targetY * dotProgress;
-    const currentScale = 1 - (dotProgress * 0.4);
-    const fadeOutOpacity = Math.max(0, 0.6 - (dotProgress * 0.6));
-
-    return {
-      transform: `translate(${currentX}px, ${currentY}px) scale(${currentScale})`,
-      opacity: fadeOutOpacity,
-    };
-  };
-
-  // Guide visibility based on scroll
-  const guideOpacity = scrollProgress > 0.25 ? (scrollProgress - 0.25) / 0.75 : 0;
-
-  // Pattern dot positions (matching HTML positioning)
+  // Pattern dot positions
   const patternDots = [
     { top: '10%', left: '15%', size: 12, delay: 0 },
     { top: '25%', left: '45%', size: 8, delay: 0.5 },
@@ -75,17 +39,21 @@ export function ScrollingDots() {
     { top: '5%', left: '40%', size: 10, delay: 1.6 },
   ];
 
+  const isTransitioning = scrollProgress > 0;
+  const guideOpacity = scrollProgress > 0.25 ? (scrollProgress - 0.25) / 0.75 : 0;
+
   return (
     <>
       {/* Hero Pattern Dots - Right Side */}
-      <div 
-        ref={heroPatternRef}
-        className="absolute right-[120px] top-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-[1]"
-        style={{ position: 'absolute' }}
-      >
+      <div className="absolute right-4 md:right-20 lg:right-32 top-1/2 -translate-y-1/2 w-[300px] md:w-[400px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px] pointer-events-none z-[5]">
         {patternDots.map((dot, index) => {
-          const dotStyle = getDotStyle(index);
-          const isTransitioning = scrollProgress > 0;
+          const dotProgress = Math.max(0, Math.min(1, (scrollProgress - (index * 0.02)) * 1.1));
+          
+          // Calculate movement: dots slide to the left (negative X) as user scrolls
+          const moveX = -window.innerWidth * 0.4 * dotProgress;
+          const moveY = 0;
+          const scale = 1 - (dotProgress * 0.4);
+          const fadeOpacity = Math.max(0, 0.6 - (dotProgress * 0.6));
 
           return (
             <div
@@ -99,44 +67,42 @@ export function ScrollingDots() {
                 boxShadow: '0 2px 8px rgba(196, 149, 138, 0.3)',
                 animation: isTransitioning ? 'none' : `pattern-pulse 4s ease-in-out infinite`,
                 animationDelay: `${dot.delay}s`,
-                transform: dotStyle.transform,
-                opacity: dotStyle.opacity || 0.4,
-                transition: isTransitioning ? 'none' : 'all 0.3s ease',
+                transform: isTransitioning ? `translate(${moveX}px, ${moveY}px) scale(${scale})` : '',
+                opacity: isTransitioning ? fadeOpacity : 0.4,
+                transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
               }}
             />
           );
         })}
       </div>
 
-      {/* Rhythm Guide - Left Side */}
+      {/* Rhythm Guide - Left Side Tracker */}
       <div
-        ref={rhythmGuideRef}
-        className="fixed left-[80px] top-1/2 -translate-y-1/2 w-[60px] h-[300px] z-[100] pointer-events-none"
+        className="fixed left-8 md:left-16 lg:left-20 top-1/2 -translate-y-1/2 w-[60px] h-[300px] z-[100] pointer-events-none"
         style={{
           opacity: guideOpacity,
           transition: 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        <div className="flex flex-col gap-[45px] items-center">
+        <div className="relative flex flex-col gap-[45px] items-center">
           {[0, 1, 2, 3, 4, 5].map((index) => (
             <div
               key={index}
-              className="w-2 h-2 rounded-full bg-[#D4A59A] transition-all duration-[600ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+              className="w-2 h-2 rounded-full bg-[#D4A59A]"
               style={{
                 opacity: 0.3,
               }}
             />
           ))}
+          
+          {/* Pulse ring animation on first dot */}
+          <div
+            className="absolute w-6 h-6 border-2 border-[#D4A59A] rounded-full top-0 left-1/2 -translate-x-1/2"
+            style={{
+              animation: 'pulse-ring 2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+            }}
+          />
         </div>
-
-        {/* Pulse ring animation */}
-        <div
-          className="absolute w-6 h-6 border-2 border-[#D4A59A] rounded-full top-0 left-1/2 -translate-x-1/2"
-          style={{
-            opacity: 0,
-            animation: 'pulse-ring 2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
-          }}
-        />
       </div>
 
       <style>{`
