@@ -1,724 +1,634 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Link, useLocation } from "wouter";
-import { 
-  ArrowRight, 
-  Brain,
-  FlaskConical,
-  Shield,
-  ClipboardCheck,
-  Sparkles,
-  CheckCircle2,
-  Crown,
-  Microscope,
-  Beaker,
-  TestTube,
-  Check,
-  X
-} from "lucide-react";
-import logoPath from "@assets/neweww_1761485311132.png";
-import productsIllustration from "@assets/product lineup_1761438760613.png";
-import routineIllustration from "@assets/Frame 58_1761434440825.png";
-import algaeImg from "@assets/algae_1761481865848.png";
-import coconutImg from "@assets/coconut_1761481865855.png";
-import sheaImg from "@assets/shea_1761481865855.png";
-import beakerImg from "@assets/beaker_1761482228536.png";
+import { useLocation } from "wouter";
+import { useEffect, useState, useRef } from "react";
 import { Header } from "@/components/Header";
 import { FloatingCTA } from "@/components/FloatingCTA";
 import { ComedogenicCarousel } from "@/components/ComedogenicCarousel";
-import { ActiveIngredientsCarousel } from "@/components/ActiveIngredientsCarousel";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
+  const [activeSection, setActiveSection] = useState(0);
+  const [rhythmGuideVisible, setRhythmGuideVisible] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+  const sectionsRef = useRef<(HTMLElement | null)[]>([]);
+
+  // Pulsing dots animation
+  useEffect(() => {
+    const dots = document.querySelectorAll('.pulse-dot');
+    dots.forEach((dot, index) => {
+      const delay = index * 0.6;
+      (dot as HTMLElement).style.animationDelay = `${delay}s`;
+    });
+  }, []);
+
+  // Scroll tracker and dot movement
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!heroRef.current) return;
+
+      const heroRect = heroRef.current.getBoundingClientRect();
+      const heroHeight = heroRect.height;
+      const scrollProgress = Math.max(0, Math.min(1, -heroRect.top / heroHeight));
+
+      // Move and fade dots
+      const dots = document.querySelectorAll('.pulse-dot');
+      dots.forEach((dot) => {
+        const htmlDot = dot as HTMLElement;
+        const initialLeft = parseFloat(htmlDot.dataset.initialLeft || '0');
+        const moveDistance = initialLeft * scrollProgress;
+        const fadeAmount = Math.max(0, 1 - (scrollProgress * 2));
+        
+        htmlDot.style.transform = `translateX(-${moveDistance}px)`;
+        htmlDot.style.opacity = fadeAmount.toString();
+      });
+
+      // Show/hide rhythm guide
+      if (scrollProgress > 0.25) {
+        setRhythmGuideVisible(true);
+      } else {
+        setRhythmGuideVisible(false);
+      }
+
+      // Update active section for rhythm tracker
+      const windowHeight = window.innerHeight;
+      const sections = sectionsRef.current.filter(Boolean);
+      
+      let newActiveSection = 0;
+      sections.forEach((section, index) => {
+        if (!section) return;
+        const rect = section.getBoundingClientRect();
+        if (rect.top < windowHeight / 2 && rect.bottom > windowHeight / 2) {
+          newActiveSection = index;
+        }
+      });
+      
+      setActiveSection(newActiveSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Track analytics
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'page_view', {
+        page_title: 'Landing Page',
+        page_location: window.location.href,
+        page_path: window.location.pathname
+      });
+    }
+  }, []);
+
+  const sectionTitles = ['How It Works', 'Your Timeline', 'Safety', 'Approach', 'Features'];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <Header />
-      <FloatingCTA premiumSectionId="premium-section" />
+      <FloatingCTA premiumSectionId="features-section" />
 
-      {/* 1️⃣ HERO - The Emotional Hook + Core Promise */}
-      <section className="relative py-16 md:py-24 lg:py-32">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl">
-          <div className="flex flex-col items-center text-center space-y-12">
-            {/* Headline */}
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light leading-tight max-w-5xl">
-              SkinRhythm Tunes Into Your Skin's Unique Patterns to Compose a Custom Acne-Safe Routine.
+      {/* Rhythm Guide - Fixed left sidebar tracker */}
+      <div 
+        className={`hidden lg:block fixed left-[80px] top-[180px] z-50 transition-opacity duration-300 ${
+          rhythmGuideVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="flex flex-col gap-[45px]">
+          {sectionTitles.map((_, index) => (
+            <div
+              key={index}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                activeSection === index
+                  ? 'bg-primary scale-150'
+                  : 'border-2 border-primary bg-transparent'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* HERO SECTION */}
+      <section 
+        ref={heroRef}
+        className="relative py-24 md:py-32 lg:py-40 overflow-hidden"
+      >
+        {/* Pulsing dots - hidden on mobile */}
+        <div className="hidden lg:block absolute inset-0 pointer-events-none">
+          {[
+            { size: 8, top: '15%', right: '12%', initialLeft: 88 },
+            { size: 12, top: '25%', right: '18%', initialLeft: 82 },
+            { size: 6, top: '35%', right: '8%', initialLeft: 92 },
+            { size: 10, top: '45%', right: '22%', initialLeft: 78 },
+            { size: 14, top: '20%', right: '28%', initialLeft: 72 },
+            { size: 7, top: '55%', right: '15%', initialLeft: 85 },
+            { size: 11, top: '65%', right: '10%', initialLeft: 90 },
+            { size: 9, top: '30%', right: '25%', initialLeft: 75 },
+            { size: 8, top: '50%', right: '20%', initialLeft: 80 },
+            { size: 13, top: '40%', right: '14%', initialLeft: 86 },
+            { size: 10, top: '60%', right: '19%', initialLeft: 81 },
+            { size: 6, top: '70%', right: '16%', initialLeft: 84 },
+          ].map((dot, index) => (
+            <div
+              key={index}
+              className="pulse-dot absolute rounded-full bg-primary"
+              data-initial-left={dot.initialLeft}
+              style={{
+                width: `${dot.size}px`,
+                height: `${dot.size}px`,
+                top: dot.top,
+                left: `${dot.initialLeft}%`,
+                opacity: 0.6,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-6xl relative z-10">
+          <div className="flex flex-col items-center text-center space-y-8">
+            {/* Headline - Updated branding */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light leading-tight max-w-5xl text-foreground">
+              skin<span className="text-primary">∙</span>rhythm finds your skin's natural rhythm, 
+              then builds a routine that works with it—not against it.
             </h1>
-            
-            {/* Hero Illustration */}
-            <div className="w-full max-w-4xl">
-              <img 
-                src={routineIllustration} 
-                alt="Personalized routine interface" 
-                className="w-full rounded-2xl"
-              />
-            </div>
 
             {/* Subheadline */}
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl">
-              Based on clinically proven protocols and committed to rigorous ingredient analysis, SkinRhythm uses science, not hype, to deliver results.
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl font-light">
+              Clinical protocols meet personalized care. We screen 400+ acne triggers 
+              so you don't have to guess what's breaking you out.
             </p>
 
-            {/* Tagline */}
-            <p className="text-xl md:text-2xl font-normal">
-              No Gimmicks. No Guesswork. Just Clear Skin. 
-            </p>
-
-            {/* CTA */}
-            <div className="space-y-3">
-              <Button
-                size="lg"
-                onClick={() => window.location.href = '/quiz'}
-                className="px-6 py-3 h-auto rounded-full text-base font-normal"
-                data-testid="button-hero-cta"
-              >
-                Find Your SkinRhythm
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <p className="text-sm text-muted-foreground">
-                No login necessary. Takes under 2 minutes.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2️⃣ TRUST / PROOF STRIP - Science, Not Hype */}
-      <section className="py-12 md:py-16 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
-          <h2 className="text-center font-serif text-2xl md:text-3xl font-light mb-12">
-            Rooted in Science. Built on Ingredient Integrity.
-          </h2>
-          
-          <div className="space-y-16 max-w-4xl mx-auto">
-            
-
-            {/* Item 2 */}
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <FlaskConical className="w-8 h-8 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-normal mb-1">Results-Based Treatment Frameworks</h3>
-                <p className="text-sm text-muted-foreground">
-                  We follow clinical data, not TikTok trends. Your SkinRhythm routine is built on evidence-based protocols to clear your acne.
-                </p>
-              </div>
-            </div>
-
-            {/* Item 3 */}
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Brain className="w-8 h-8 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-normal mb-1">Customized for Your Unique SkinRhythm</h3>
-                <p className="text-sm text-muted-foreground">
-                  Each clear skin plan is fine-tuned to your skin's unique needs, including skin type and tone, acne type, and barrier function.
-                </p>
-              </div>
-            </div>
-
-            {/* Item 4 */}
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Shield className="w-8 h-8 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-normal mb-1">Affordable Recommendations</h3>
-                <p className="text-sm text-muted-foreground">
-                  Our basic plans are free and automatically generate the most cost-effective version of your clear skin plan using vetted products from trusted brands.
-                </p>
-              </div>
-            </div>
-            {/* Item 1 */}
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Microscope className="w-8 h-8 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-normal mb-1">The Only Acne-Safe Marketplace</h3>
-                <p className="text-sm text-muted-foreground">
-                  SkinRhythm has a zero-tolerance policy for 400+ acne triggers, so you can shop our product recommendations with confidence.
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="text-center mt-8">
-            <button
+            {/* Primary CTA */}
+            <Button
               onClick={() => {
-                const howItWorksSection = document.getElementById('how-it-works');
-                howItWorksSection?.scrollIntoView({ behavior: 'smooth' });
+                setLocation('/quiz');
+                if (typeof window !== 'undefined' && (window as any).gtag) {
+                  (window as any).gtag('event', 'click_start_quiz', {
+                    location: 'hero'
+                  });
+                }
               }}
-              className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline"
-              data-testid="link-learn-how"
+              size="lg"
+              className="text-base px-8 py-6 bg-accent hover:bg-accent/90 text-accent-foreground"
+              data-testid="button-hero-start-quiz"
             >
-              Learn How It Works →
-            </button>
+              Find Your Rhythm
+            </Button>
+
+            <p className="text-xs text-muted-foreground font-light tracking-wide">
+              Free • 2 minutes • No login required
+            </p>
           </div>
         </div>
       </section>
 
-      {/* 3️⃣ HOW IT WORKS - Simple Process Visualization */}
-      <section id="how-it-works" className="py-20 md:py-24">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light text-center mb-4">
-            How SkinRhythm Helps You Clear Your Acne
+      {/* HOW IT WORKS - 3 Steps */}
+      <section 
+        ref={(el) => (sectionsRef.current[0] = el)}
+        className="py-20 md:py-28 lg:py-36 bg-card"
+      >
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 lg:pl-[200px] max-w-7xl">
+          <p className="text-xs uppercase tracking-[3px] text-secondary/70 mb-12 font-medium">
+            How It Works
+          </p>
+          
+          <h2 className="text-4xl md:text-5xl font-light mb-6 text-foreground">
+            Three steps to clearer skin
           </h2>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-            In just three simple steps.
+          
+          <p className="text-lg font-light text-foreground/80 mb-16 max-w-2xl leading-relaxed">
+            No guesswork. No trial and error. Just a personalized routine built on science.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-8 space-y-6">
-                <Badge variant="secondary" className="rounded-full">
-                  Step 1
-                </Badge>
-                
-                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                  <ClipboardCheck className="w-12 h-12 text-primary" strokeWidth={1.5} />
+          <div className="grid md:grid-cols-3 gap-12 md:gap-16">
+            {[
+              {
+                number: '01',
+                title: 'Take the Quiz',
+                description: '2-minute questionnaire about your skin type, concerns, and goals. We analyze 9 key factors including Fitzpatrick type and acne severity.'
+              },
+              {
+                number: '02',
+                title: 'Get Your Routine',
+                description: 'Personalized AM/PM routine with products screened against 400+ acne triggers. Budget, standard, and premium options for every step.'
+              },
+              {
+                number: '03',
+                title: 'Track Your Progress',
+                description: 'Premium members get weekly coaching, alternative products, and routine history to see what actually works for your skin over time.'
+              }
+            ].map((step, index) => (
+              <div key={index} className="space-y-4">
+                <div className="text-xs font-medium text-secondary/70 tracking-[3px] uppercase">
+                  Step {step.number}
                 </div>
-
-                <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-light">Tell Us About Your Skin and Acne</h3>
-                  <p className="text-sm text-muted-foreground">
-                    One quick quiz — no photos. We assess acne type, tone, and barrier to tune into your SkinRhythm.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-8 space-y-6">
-                <Badge variant="secondary" className="rounded-full">
-                  Step 2
-                </Badge>
-                
-                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Sparkles className="w-12 h-12 text-primary" strokeWidth={1.5} />
-                </div>
-
-                <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-light">We Compose Your Clear Skin Plan</h3>
-                  <p className="text-sm text-muted-foreground">
-                    We map your unique SkinRhythm to clinical data and create an optimized regimen of acne-safe products.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-8 space-y-6">
-                <Badge variant="secondary" className="rounded-full">
-                  Step 3
-                </Badge>
-                
-                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                  <CheckCircle2 className="w-12 h-12 text-primary" strokeWidth={1.5} />
-                </div>
-
-                <div className="space-y-3">
-                  <h3 className="font-serif text-xl font-light">Replace Your Products & See Results</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Replace your old routine with your clear skin plan. Commit for at least 8 weeks, and your skin will sing.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="text-center space-y-2">
-            <Button
-              size="lg"
-              onClick={() => window.location.href = '/quiz'}
-              className="px-6 py-3 h-auto rounded-full text-base font-normal"
-              data-testid="button-how-it-works-cta"
-            >
-              Start My Free Routine
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <p className="text-xs text-muted-foreground">
-              Personalized, evidence-based guidance — not medical advice.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4️⃣ WHY IT WORKS - Clinical Logic + Ingredient Integrity */}
-      <section className="py-20 md:py-24 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
-          <div className="grid xlg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Column - Text */}
-            <div className="space-y-6">
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-                SkinRhythm Takes the Risk Out of Shopping for Skincare
-              </h2>
-              
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Most "non-comedogenic" products and products marketed for acne-prone skin actually contain laundry lists of pore-clogging ingredients. That's why every product in the SkinRhythm marketplace is scanned for over 400 known acne triggers — so you can shop our recommendations with confidence.
-              </p>
-
-              <div className="pt-4">
-                <button
-                  onClick={() => {
-                    const ingredientsSection = document.getElementById('ingredient-science');
-                    ingredientsSection?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline"
-                  data-testid="link-see-ingredients"
-                >
-                  All About Ingredients →
-                </button>
-              </div>
-            </div>
-
-            {/* Right Column - Comparison Visual */}
-            <div className="space-y-4">
-              
-
-              <ComedogenicCarousel />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5️⃣ FREE PLAN VALUE - Give First, Build Trust */}
-      <section className="py-20 md:py-24">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
-          <div className="text-center space-y-6 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              Everything You Need to Start — Free
-            </h2>
-            
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Get your personalized acne-safe AM + PM routine instantly. We recommend clinically effective products to address your unique concerns within your budget.
-            </p>
-          </div>
-
-          <Card className="border-border shadow-sm rounded-2xl max-w-2xl mx-auto">
-            <CardContent className="p-8 md:p-12">
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-normal">Personalized Routine</p>
-                    <p className="text-sm text-muted-foreground">AM + PM plan tailored to your skin</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-normal">Vetted Acne-Safe Products</p>
-                    <p className="text-sm text-muted-foreground">Every product screened for 400+ triggers</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-normal">3 Free Product Ingredient Scans</p>
-                    <p className="text-sm text-muted-foreground">Check any product for acne-causing ingredients</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-normal">Free to Start, No Email Needed</p>
-                    <p className="text-sm text-muted-foreground">Get your custom SkinRhythm routine without signing up</p>
-                  </div>
-                </li>
-              </ul>
-
-              <div className="text-center space-y-2">
-                <Button
-                  size="lg"
-                  onClick={() => window.location.href = '/quiz'}
-                  className="w-full px-6 py-3 h-auto rounded-full text-base font-normal"
-                  data-testid="button-free-plan-cta"
-                >
-                  See My Free Routine
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* 6️⃣ PREMIUM TIER - Upgrade for Guidance & Control */}
-      <section id="premium-section" className="py-20 md:py-24 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <div className="text-center space-y-4 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              Upgrade Your Routine — and Your Results
-            </h2>
-            
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Premium gives you control, unparalleled guidance, and insight into every step of your clear-skin journey.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Beaker className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-normal mb-2">Unlimited Ingredient Scans</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Scan any product for acne triggers to make sure all your products, from your cleanser to your foundation, are acne-safe.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Brain className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-normal mb-2">Routine Coach & Progress Tracking</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Detailed step-by-step guidance on ramping up on actives, personalized tips, and the ability to take notes on your routine history to track what works best for you.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-normal mb-2">Premium Product Alternatives</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Customize your routine without affecting your results. Budget to luxury options that fit your SkinRhythm routine.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-normal mb-2">Full Access to the SkinRhythm Marketplace</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Shop SkinRhythm's entire acne-safe marketplace, which includes acne-safe beauty products, tools, and more.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-         
-          <Card className="border-primary/20 shadow-sm rounded-2xl max-w-2xl mx-auto">
-            <CardContent className="p-8 md:p-12 text-center space-y-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <Crown className="w-6 h-6 text-primary" />
-                  <Badge variant="secondary" className="rounded-full px-4 py-1">
-                    Founding Rate
-                  </Badge>
-                </div>
-                <p className="text-4xl md:text-5xl font-light">
-                  <span className="text-muted-foreground line-through text-2xl md:text-3xl">$5.99</span>
-                  {" "}$2.99<span className="text-xl text-muted-foreground">/mo</span>
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Limited founding member rate — locks in forever, plus locks in your discounted rate for Premium+.
+                <h3 className="text-xl font-medium text-foreground">
+                  {step.title}
+                </h3>
+                <p className="text-sm font-light text-foreground/70 leading-relaxed">
+                  {step.description}
                 </p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="space-y-2">
-                <Button
-                  size="lg"
-                  asChild
-                  className="w-full px-6 py-3 h-auto rounded-full text-base font-normal"
-                  data-testid="button-premium-cta"
-                >
-                  <Link href="/pricing">
-                    Unlock Premium
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <p className="text-xs text-muted-foreground">
-                  Keep using free if it's working. No pressure.
+      {/* YOUR TIMELINE - Week 2, 6, 12 */}
+      <section 
+        ref={(el) => (sectionsRef.current[1] = el)}
+        className="py-20 md:py-28 lg:py-36 bg-background"
+      >
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 lg:pl-[200px] max-w-7xl">
+          <p className="text-xs uppercase tracking-[3px] text-secondary/70 mb-12 font-medium">
+            Your Timeline
+          </p>
+          
+          <h2 className="text-4xl md:text-5xl font-light mb-6 text-foreground">
+            What to expect
+          </h2>
+          
+          <p className="text-lg font-light text-foreground/80 mb-16 max-w-2xl leading-relaxed">
+            Clear skin doesn't happen overnight. Here's a realistic timeline based on clinical protocols.
+          </p>
+
+          {/* Timeline circles */}
+          <div className="flex flex-col md:flex-row gap-16 md:gap-8 items-center justify-center mb-16">
+            {[
+              { week: '2', label: 'Skin adjusts to routine' },
+              { week: '6', label: 'Visible improvements', pulse: true },
+              { week: '12', label: 'Sustained results' }
+            ].map((milestone, index) => (
+              <div key={index} className="flex flex-col items-center text-center gap-4">
+                <div className={`relative w-24 h-24 rounded-full border-2 border-primary flex items-center justify-center ${
+                  milestone.pulse ? 'pulse-circle' : ''
+                }`}>
+                  <div className="text-2xl font-light text-foreground">
+                    <span className="text-xs uppercase tracking-wider block text-muted-foreground">Week</span>
+                    {milestone.week}
+                  </div>
+                </div>
+                <p className="text-sm font-light text-secondary max-w-[140px]">
+                  {milestone.label}
                 </p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-      {/* 8️⃣ ONE-TIME UPGRADES - Flexible Access */}
-      <section className="py-20 md:py-24">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <div className="text-center space-y-4 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              One-Time Upgrades, Lifetime Value
-            </h2>
-
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose the features you need without a subscription.
-            </p>
+            ))}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-8 space-y-6">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
+          {/* Stats grid */}
+          <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+            {[
+              { stat: '8-12', label: 'weeks to see results' },
+              { stat: '4-7', label: 'products in routine' },
+              { stat: '400+', label: 'acne triggers screened' }
+            ].map((item, index) => (
+              <div key={index} className="text-center">
+                <div className="text-3xl md:text-4xl font-light text-primary mb-2">
+                  {item.stat}
                 </div>
-                <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">Detailed Routine Guidance (.pdf Download)</h3>
-                  <p className="text-sm text-muted-foreground">
-                    A .pdf download with detailed instructions for your routine, how to ramp up on actives, and tips and tricks for your clear skin journey.
-                  </p>
-                  <p className="text-2xl font-normal">$9.99</p>
-                </div>
-                <Button
-                  variant="outline"
-                  className="w-full rounded-full"
-                  asChild
-                  data-testid="button-pdf-upgrade"
-                >
-                  <Link href="/pricing">Learn More</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-8 space-y-6">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <Sparkles className="w-8 h-8 text-primary" />
-                </div>
-                <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">Access Premium Product Alternatives</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Unlock all product options for each step of your current clear skin routine, from drugstore to luxury brands.
-                  </p>
-                  <p className="text-2xl font-normal">$9.99</p>
-                </div>
-                <Button
-                  variant="outline"
-                  className="w-full rounded-full"
-                  asChild
-                  data-testid="button-alternatives-upgrade"
-                >
-                  <Link href="/pricing">Learn More</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border shadow-sm rounded-2xl">
-              <CardContent className="p-8 space-y-6">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <Beaker className="w-8 h-8 text-primary" />
-                </div>
-                <div className="text-center space-y-3">
-                  <h3 className="font-serif text-xl font-light">Ingredient Scanner Credit Packs</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Buy credits to scan products you have (or products you want to try) for acne-causing ingredients.
-                  </p>
-                  <p className="text-2xl font-normal">From $1.99</p>
-                </div>
-                <Button
-                  variant="outline"
-                  className="w-full rounded-full"
-                  asChild
-                  data-testid="button-checker-upgrade"
-                >
-                  <Link href="/pricing">Learn More</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="text-center mt-8">
-            <button
-              className="text-sm text-primary-text hover:text-primary-text/80 font-normal underline"
-              onClick={() => window.location.href = '/pricing'}
-              data-testid="link-explore-upgrades"
-            >
-              Explore Upgrades →
-            </button>
-          </div>
-        </div>
-      </section>
-      
-      {/* 7️⃣ PREMIUM+ TEASER - Future Vision */}
-      <section className="py-20 md:py-24 bg-gradient-to-br from-primary/5 to-secondary/5">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
-          <div className="text-center space-y-6">
-            <Badge variant="outline" className="rounded-full px-4 py-1.5 border-primary/50">
-              Coming Soon...
-            </Badge>
-            
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              Premium+ <p>Your Skinphony's Personal Conductor</p>
-            </h2>
-            
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              AI-driven ingredient interaction tracking, seasonal adjustments, and image-based progress tracking to make sure your skin is always in rhythm.
-            </p>
-
-            <div className="pt-4">
-              <p className="text-sm text-muted-foreground">
-                Advanced features for getting clear, staying clear, and the rest of your skincare journey.
-              </p>
-            </div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                  {item.label}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-     
-
-      {/* 9️⃣ EDUCATIONAL / INGREDIENT SCIENCE SECTION */}
-      <section id="ingredient-science" className="py-10 md:py-24 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
-          <div className="text-center space-y-20 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light">
-              The Science Behind Our Core Active and Supporting Ingredients
-            </h2>
-            <div className="flex justify-center">
-              <img 
-                src={productsIllustration} 
-                alt="Skincare products illustration" 
-                className="w-full max-w-6xl rounded-2xl"
-              />
-            </div>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              SkinRhythm uses proven actives balanced with barrier-supporting ingredients, because a resilient barrier is the foundation for clear skin.
-            </p>
-          </div>
+      {/* INGREDIENT SAFETY - With ComedogenicCarousel */}
+      <section 
+        ref={(el) => (sectionsRef.current[2] = el)}
+        className="py-20 md:py-28 lg:py-36 bg-card"
+      >
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 lg:pl-[200px] max-w-7xl">
+          <p className="text-xs uppercase tracking-[3px] text-secondary/70 mb-12 font-medium">
+            Ingredient Safety
+          </p>
           
-          <ActiveIngredientsCarousel />
-
+          <h2 className="text-4xl md:text-5xl font-light mb-6 text-foreground">
+            Not all "acne-safe" products are safe for acne
+          </h2>
           
-        </div>
-      </section>
+          <p className="text-lg font-light text-foreground/80 mb-12 max-w-3xl leading-relaxed">
+            90% of personal care products contain at least one comedogenic ingredient—even ones 
+            labeled "non-comedogenic." Our database screens against 400+ known acne triggers.
+          </p>
 
-      {/* 🔟 FINAL CTA - Conversion Close */}
-      <section className="py-10 md:py-16 bg-gradient-to-br from-primary/10 to-secondary/10">
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-5xl">
-          <div className="text-center space-y-8">
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-thin">
-              Ready for Your New SkinRhythm Routine?
-            </h2>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-              It's free, instant, and acne-safe. No email required.
+          {/* Highlight box */}
+          <div className="bg-primary/8 border-l-4 border-primary p-8 mb-12 max-w-3xl">
+            <p className="text-base font-light text-foreground leading-relaxed">
+              We found that <strong className="font-medium text-secondary">over 90%</strong> of benzoyl 
+              peroxide formulations (the gold standard acne treatment) contain laureth-4—one of the most 
+              comedogenic ingredients known to dermatology.
             </p>
+          </div>
 
-            <div className="space-y-3 pt-4">
-              <Button
-                size="lg"
-                onClick={() => window.location.href = '/quiz'}
-                className="px-6 py-3 h-auto rounded-full text-lg font-normal"
-                data-testid="button-final-cta"
-              >
-                Get My SkinRhythm Routine
-                <ArrowRight className="ml-2 h-6 w-6" />
-              </Button>
-              <p className="text-sm text-muted-foreground">
-                For educational purposes only. SkinRhythm does not diagnose, treat, or cure medical conditions.
-              </p>
-            </div>
+          {/* Carousel component */}
+          <div className="max-w-4xl">
+            <ComedogenicCarousel />
           </div>
         </div>
       </section>
 
-      {/* FOOTER - Compliance + Brand Anchor */}
-      <footer className="py-12 md:py-16 border-t border-border/50">
+      {/* OUR APPROACH - 3 Principles */}
+      <section 
+        ref={(el) => (sectionsRef.current[3] = el)}
+        className="py-20 md:py-28 lg:py-36 bg-background"
+      >
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 lg:pl-[200px] max-w-7xl">
+          <p className="text-xs uppercase tracking-[3px] text-secondary/70 mb-12 font-medium">
+            Our Approach
+          </p>
+          
+          <h2 className="text-4xl md:text-5xl font-light mb-6 text-foreground max-w-3xl">
+            Clinical protocols. Truly personalized. Brand agnostic.
+          </h2>
+          
+          <p className="text-lg font-light text-foreground/80 mb-20 max-w-2xl leading-relaxed">
+            We're not here to sell you products. We're here to help you find what actually works.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-16">
+            {[
+              {
+                title: 'Clinical Protocols',
+                description: 'Every recommendation follows dermatological best practices. We use the same frameworks that dermatologists use—adjusted for your unique skin.'
+              },
+              {
+                title: 'Truly Personalized',
+                description: 'Not just skin type. We factor in Fitzpatrick classification, acne severity, pregnancy status, and 6 other variables to build your routine.'
+              },
+              {
+                title: 'Brand Agnostic',
+                description: 'We don\'t manufacture products. We recommend the best options across hundreds of brands at budget, standard, and premium price points.'
+              }
+            ].map((principle, index) => (
+              <div key={index} className="space-y-4">
+                <h3 className="text-xl font-medium text-secondary">
+                  {principle.title}
+                </h3>
+                <p className="text-sm font-light text-foreground/70 leading-relaxed">
+                  {principle.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES - 6 Cards with Free/Premium badges */}
+      <section 
+        ref={(el) => (sectionsRef.current[4] = el)}
+        id="features-section"
+        className="py-20 md:py-28 lg:py-36 bg-card"
+      >
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 lg:pl-[200px] max-w-7xl">
+          <p className="text-xs uppercase tracking-[3px] text-secondary/70 mb-12 font-medium">
+            Features
+          </p>
+          
+          <h2 className="text-4xl md:text-5xl font-light mb-16 text-foreground">
+            Everything you need to clear your skin
+          </h2>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Personalized Routine',
+                description: 'AM/PM routine tailored to your skin type, Fitzpatrick classification, and acne severity.',
+                badge: 'Free'
+              },
+              {
+                title: 'Ingredient Scanner',
+                description: 'Paste any ingredient list to check for 400+ acne-causing ingredients instantly.',
+                badge: 'Premium'
+              },
+              {
+                title: 'Routine Coach',
+                description: 'Week-by-week guidance on when to introduce active ingredients and how to layer products.',
+                badge: 'Premium'
+              },
+              {
+                title: 'Product Alternatives',
+                description: 'Don\'t like a recommendation? Browse alternatives at every price point for each step.',
+                badge: 'Premium'
+              },
+              {
+                title: 'Acne-Safe Marketplace',
+                description: 'Shop curated products across hundreds of brands—every one screened for acne triggers.',
+                badge: 'Premium'
+              },
+              {
+                title: 'Routine History',
+                description: 'Track what products you\'ve tried and see what actually worked over time.',
+                badge: 'Premium'
+              }
+            ].map((feature, index) => (
+              <div key={index} className="bg-background p-8 space-y-4">
+                <Badge 
+                  variant={feature.badge === 'Free' ? 'outline' : 'default'}
+                  className={feature.badge === 'Premium' ? 'bg-secondary text-secondary-foreground' : ''}
+                >
+                  {feature.badge}
+                </Badge>
+                <h3 className="text-lg font-medium text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="text-sm font-light text-foreground/70 leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL CTA - With dots swarming */}
+      <section className="py-20 md:py-28 lg:py-36 bg-secondary text-secondary-foreground relative overflow-hidden">
+        {/* Swarming dots */}
+        <div className="absolute inset-0 pointer-events-none">
+          {Array.from({ length: 15 }).map((_, index) => (
+            <div
+              key={index}
+              className="swarm-dot absolute w-2 h-2 rounded-full bg-primary/40"
+              style={{
+                left: `${20 + (index * 5)}%`,
+                top: `${30 + (Math.sin(index) * 20)}%`,
+                animationDelay: `${index * 0.3}s`
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-4xl text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-light mb-6 leading-tight">
+            Ready to find your rhythm?
+          </h2>
+          
+          <p className="text-lg font-light mb-12 opacity-90 leading-relaxed">
+            Get your personalized routine in under 2 minutes. Free. No login required.
+          </p>
+
+          <Button
+            onClick={() => {
+              setLocation('/quiz');
+              if (typeof window !== 'undefined' && (window as any).gtag) {
+                (window as any).gtag('event', 'click_start_quiz', {
+                  location: 'final_cta'
+                });
+              }
+            }}
+            size="lg"
+            variant="outline"
+            className="text-base px-8 py-6 bg-secondary-foreground text-secondary hover:bg-secondary-foreground/90 border-2 border-secondary-foreground"
+            data-testid="button-final-cta-start-quiz"
+          >
+            Start Your Journey
+          </Button>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-12 md:py-16 border-t border-border/50 bg-background">
         <div className="container mx-auto px-4 md:px-8 lg:px-16 max-w-7xl">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div className="space-y-4">
-              <img src={logoPath} alt="SkinRhythm" className="h-8" />
-              <p className="text-sm text-muted-foreground">
+              <div className="text-xl font-light text-foreground">
+                skin<span className="text-primary">∙</span>rhythm
+              </div>
+              <p className="text-sm text-muted-foreground font-light">
                 Personalized acne care built on science and integrity.
               </p>
             </div>
 
             <div>
-              <h4 className="font-normal mb-4">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <h4 className="font-medium mb-4 text-sm text-foreground">Product</h4>
+              <ul className="space-y-2 text-sm">
                 <li>
                   <button
-                    onClick={() => {
-                      const howItWorksSection = document.getElementById('how-it-works');
-                      howItWorksSection?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="hover:text-foreground transition-colors underline"
+                    onClick={() => setLocation('/quiz')}
+                    className="text-muted-foreground hover:text-foreground transition-colors font-light"
                   >
-                    How It Works
+                    Take Quiz
                   </button>
                 </li>
                 <li>
                   <button
-                    onClick={() => {
-                      const ingredientsSection = document.getElementById('ingredient-science');
-                      ingredientsSection?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="hover:text-foreground transition-colors underline"
+                    onClick={() => setLocation('/pricing')}
+                    className="text-muted-foreground hover:text-foreground transition-colors font-light"
                   >
-                    Ingredient Science
+                    Pricing
                   </button>
                 </li>
                 <li>
-                  <Link href="/pricing" className="hover:text-foreground transition-colors underline">
-                    Premium
-                  </Link>
+                  <button
+                    onClick={() => setLocation('/marketplace')}
+                    className="text-muted-foreground hover:text-foreground transition-colors font-light"
+                  >
+                    Marketplace
+                  </button>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-normal mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <h4 className="font-medium mb-4 text-sm text-foreground">Company</h4>
+              <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href="/affiliate-disclosure" className="hover:text-foreground transition-colors underline">
-                    Affiliate Disclosure
-                  </Link>
+                  <button
+                    onClick={() => setLocation('/about')}
+                    className="text-muted-foreground hover:text-foreground transition-colors font-light"
+                  >
+                    About
+                  </button>
                 </li>
                 <li>
-                  <Link href="/privacy-policy" className="hover:text-foreground transition-colors underline">
+                  <button
+                    onClick={() => setLocation('/privacy-policy')}
+                    className="text-muted-foreground hover:text-foreground transition-colors font-light"
+                  >
                     Privacy Policy
-                  </Link>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setLocation('/affiliate-disclosure')}
+                    className="text-muted-foreground hover:text-foreground transition-colors font-light"
+                  >
+                    Affiliate Disclosure
+                  </button>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-normal mb-4">Find Your SkinRhythm</h4>
-              <Button
-                onClick={() => window.location.href = '/quiz'}
-                className="w-full rounded-full"
-                data-testid="button-footer-cta"
-              >
-                Take the Quiz
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <h4 className="font-medium mb-4 text-sm text-foreground">Legal</h4>
+              <p className="text-xs text-muted-foreground font-light leading-relaxed">
+                Our ingredient screening and routine recommendations are for informational purposes only and do not constitute medical advice.
+              </p>
             </div>
           </div>
 
-          <div className="pt-8 border-t border-border/50 space-y-4">
-            <p className="text-xs text-muted-foreground text-center">
-              <strong>Medical Disclaimer:</strong> SkinRhythm provides educational skincare guidance, not medical treatment. Our ingredient screening and routine recommendations are for informational purposes only and do not constitute medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider or dermatologist before starting any new skincare regimen, especially if you have severe acne, skin conditions, allergies, or are pregnant/nursing.
-            </p>
-            <p className="text-xs text-muted-foreground text-center">
-              © 2025 SkinRhythm. All rights reserved.
+          <div className="pt-8 border-t border-border/50">
+            <p className="text-xs text-muted-foreground text-center font-light">
+              © 2025 skin∙rhythm. All rights reserved.
             </p>
           </div>
         </div>
       </footer>
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes pulse-dot {
+          0%, 100% {
+            opacity: 0.4;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.2);
+          }
+        }
+
+        .pulse-dot {
+          animation: pulse-dot 5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-circle {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+          }
+        }
+
+        .pulse-circle {
+          animation: pulse-circle 2s ease-in-out infinite;
+        }
+
+        @keyframes swarm {
+          0%, 100% {
+            transform: translate(0, 0);
+          }
+          25% {
+            transform: translate(20px, -15px);
+          }
+          50% {
+            transform: translate(-15px, 10px);
+          }
+          75% {
+            transform: translate(10px, -20px);
+          }
+        }
+
+        .swarm-dot {
+          animation: swarm 8s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
