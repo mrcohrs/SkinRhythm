@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>skin∙rhythm - Clinical Acne Treatment Built on Science</title>
+    <meta name="description" content="AI-powered acne treatment using clinical protocols and 400+ acne-trigger screening. Get your personalized routine in under 2 minutes—free, no login required.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFF9F0;
+            color: #2A2520;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 249, 240, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212, 165, 154, 0.15);
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: 400;
+            color: #3E4E3D;
+            letter-spacing: 3px;
+        }
+        
+        .logo-dot {
+            color: #D4A59A;
+            margin: 0 2px;
+        }
+        
+        .header-cta {
+            background: transparent;
+            color: #C4958A;
+            border: 1.5px solid #C4958A;
+            padding: 10px 28px;
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        
+        .header-cta:hover {
+            background: #C4958A;
+            color: #FFF9F0;
+            transform: translateY(-1px);
+        }
+        
+        .rhythm-guide {
+            position: fixed;
+            left: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 300px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .rhythm-guide.visible {
+            opacity: 1;
+        }
+        
+        .rhythm-dots {
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+            align-items: center;
+        }
+        
+        .guide-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D4A59A;
+            opacity: 0.3;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .guide-dot.active {
+            opacity: 1;
+            transform: scale(1.5);
+            box-shadow: 0 0 20px rgba(212, 165, 154, 0.5);
+        }
+        
+        .guide-pulse {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #D4A59A;
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0.5);
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) scale(2);
+            }
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 60px 80px 200px;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 680px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero h1 {
+            font-size: 68px;
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 32px;
+            color: #1A1512;
+            letter-spacing: -2px;
+        }
+        
+        .hero h1 strong {
+            font-weight: 500;
+            color: #3E4E3D;
+        }
+        
+        .hero .subhead {
+            font-size: 21px;
+            font-weight: 400;
+            color: #3E4E3D;
+            margin-bottom: 20px;
+            letter-spacing: 0.3px;
+        }
+        
+        .hero p {
+            font-size: 17px;
+            font-weight: 300;
+            color: #3E4E3D;
+            margin-bottom: 48px;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
+        }
+        
+        .cta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        
+        .cta-primary {
+            background: #3E4E3D;
+            color: #FFF9F0;
+            border: none;
+            padding: 18px 52px;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .cta-primary:hover {
+            background: #2E3E2D;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(62, 78, 61, 0.25);
+        }
+        
+        .cta-note {
+            font-size: 13px;
+            color: #5A4F45;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+        
+        .hero-pattern {
+            position: absolute;
+            right: 120px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 500px;
+            z-index: 1;
+        }
+        
+        .pattern-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: #C4958A;
+            animation: pattern-pulse 4s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(196, 149, 138, 0.3);
+        }
+        
+        .pattern-dot.transitioning {
+            animation: none !important;
+        }
+        
+        .pattern-dot:nth-child(1) { width: 12px; height: 12px; top: 10%; left: 15%; animation-delay: 0s; }
+        .pattern-dot:nth-child(2) { width: 8px; height: 8px; top: 25%; left: 45%; animation-delay: 0.5s; }
+        .pattern-dot:nth-child(3) { width: 10px; height: 10px; top: 15%; left: 70%; animation-delay: 1s; }
+        .pattern-dot:nth-child(4) { width: 6px; height: 6px; top: 35%; left: 25%; animation-delay: 1.5s; }
+        .pattern-dot:nth-child(5) { width: 14px; height: 14px; top: 45%; left: 55%; animation-delay: 0.3s; }
+        .pattern-dot:nth-child(6) { width: 9px; height: 9px; top: 40%; left: 85%; animation-delay: 1.2s; }
+        .pattern-dot:nth-child(7) { width: 7px; height: 7px; top: 60%; left: 20%; animation-delay: 0.8s; }
+        .pattern-dot:nth-child(8) { width: 11px; height: 11px; top: 55%; left: 50%; animation-delay: 1.8s; }
+        .pattern-dot:nth-child(9) { width: 8px; height: 8px; top: 70%; left: 75%; animation-delay: 0.6s; }
+        .pattern-dot:nth-child(10) { width: 13px; height: 13px; top: 80%; left: 35%; animation-delay: 1.3s; }
+        .pattern-dot:nth-child(11) { width: 7px; height: 7px; top: 85%; left: 65%; animation-delay: 0.9s; }
+        .pattern-dot:nth-child(12) { width: 10px; height: 10px; top: 5%; left: 40%; animation-delay: 1.6s; }
+        
+        @keyframes pattern-pulse {
+            0%, 100% {
+                opacity: 0.4;
+                transform: scale(0.9);
+            }
+            50% {
+                opacity: 0.85;
+                transform: scale(1.1);
+            }
+        }
+        
+        .how-section {
+            padding: 140px 60px 140px 200px;
+            background: white;
+        }
+        
+        .section-label {
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #A67368;
+            margin-bottom: 48px;
+            font-weight: 500;
+        }
+        
+        .how-section h2 {
+            font-size: 52px;
+            font-weight: 300;
+            margin-bottom: 24px;
+            color: #1A1512;
+            letter-spacing: -1px;
+            max-width: 800px;
+        }
+        
+        .how-section > p {
+            font-size: 18px;
+            font-weight: 300;
+            color: #3E4E3D;
+            margin-bottom: 80px;
+            line-height: 1.8;
+            max-width: 640px;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+            max-width: 1100px;
+        }
+        
+        .step {
+            position: relative;
+        }
+        
+        .step-number {
+            font-size: 13px;
+            font-weight: 500;
+            color: #A67368;
+            margin-bottom: 24px;
+            letter-spacing: 3px;
+        }
+        
+        .step h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: #1A1512;
+            letter-spacing: 0.5px;
+        }
+        
+        .step p {
+            font-size: 15px;
+            font-weight: 300;
+            color: #3E4E3D;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
+        }
+        
+        .timeline-section {
+            padding: 140px 60px 140px 200px;
+            background: #FFF9F0;
+            position: relative;
+        }
+        
+        .timeline-section h2 {
+            font-size: 52px;
+            font-weight: 300;
+            margin-bottom: 24px;
+            color: #1A1512;
+            letter-spacing: -1px;
+            max-width: 700px;
+        }
+        
+        .timeline-section > p {
+            font-size: 18px;
+            font-weight: 300;
+            color: #3E4E3D;
+            margin-bottom: 80px;
+            line-height: 1.8;
+            max-width: 640px;
+        }
+        
+        .timeline-visual {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+        
+        .timeline-circle {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid;
+        }
+        
+        .circle-1 {
+            background: rgba(212, 165, 154, 0.1);
+            border-color: rgba(212, 165, 154, 0.3);
+            color: #D4A59A;
+        }
+        
+        .circle-2 {
+            background: rgba(212, 165, 154, 0.25);
+            border-color: rgba(212, 165, 154, 0.5);
+            color: #C4958A;
+            width: 140px;
+            height: 140px;
+            animation: circle-pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes circle-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(212, 165, 154, 0);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 0 30px rgba(212, 165, 154, 0.3);
+            }
+        }
+        
+        .circle-3 {
+            background: rgba(212, 165, 154, 0.4);
+            border-color: rgba(212, 165, 154, 0.7);
+            color: #B4857A;
+        }
+        
+        .circle-label {
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #5A4F45;
+            font-weight: 500;
+        }
+        
+        .timeline-connector {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(212, 165, 154, 0.3) 0%, rgba(212, 165, 154, 0.7) 100%);
+            margin: 0 -20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+            max-width: 900px;
+        }
+        
+        .stat {
+            border-left: 2px solid rgba(212, 165, 154, 0.3);
+            padding-left: 24px;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 300;
+            color: #3E4E3D;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            font-weight: 400;
+            color: #3E4E3D;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+        
+        .safety-section {
+            padding: 140px 60px 140px 200px;
+            background: white;
+        }
+        
+        .safety-content {
+            max-width: 1100px;
+        }
+        
+        .safety-section h2 {
+            font-size: 52px;
+            font-weight: 300;
+            margin-bottom: 32px;
+            color: #1A1512;
+            letter-spacing: -1px;
+        }
+        
+        .safety-section > p {
+            font-size: 18px;
+            font-weight: 300;
+            color: #3E4E3D;
+            margin-bottom: 60px;
+            line-height: 1.8;
+            max-width: 800px;
+        }
+        
+        .safety-highlight {
+            background: rgba(212, 165, 154, 0.08);
+            padding: 48px;
+            margin-bottom: 60px;
+            border-left: 3px solid #D4A59A;
+        }
+        
+        .safety-highlight p {
+            font-size: 17px;
+            font-weight: 300;
+            color: #2A2520;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
+        }
+        
+        .safety-highlight strong {
+            font-weight: 500;
+            color: #3E4E3D;
+        }
+        
+        .culprits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+        
+        .culprit {
+            padding: 32px;
+            background: rgba(212, 165, 154, 0.05);
+            border-radius: 4px;
+        }
+        
+        .culprit h4 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #3E4E3D;
+            margin-bottom: 12px;
+        }
+        
+        .culprit p {
+            font-size: 14px;
+            font-weight: 300;
+            color: #3E4E3D;
+            line-height: 1.7;
+        }
+        
+        .principles-section {
+            padding: 140px 60px 140px 200px;
+            background: #FFF9F0;
+        }
+        
+        .principles-section h2 {
+            font-size: 52px;
+            font-weight: 300;
+            margin-bottom: 24px;
+            color: #1A1512;
+            letter-spacing: -1px;
+            max-width: 700px;
+        }
+        
+        .principles-section > p {
+            font-size: 18px;
+            font-weight: 300;
+            color: #3E4E3D;
+            margin-bottom: 80px;
+            line-height: 1.8;
+            max-width: 640px;
+        }
+        
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 80px;
+            margin-top: 80px;
+        }
+        
+        .principle {
+            position: relative;
+        }
+        
+        .principle-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(212, 165, 154, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 28px;
+        }
+        
+        .principle h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: #1A1512;
+            letter-spacing: 0.5px;
+        }
+        
+        .principle p {
+            font-size: 15px;
+            font-weight: 300;
+            color: #3E4E3D;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
+        }
+        
+        .features-section {
+            padding: 140px 60px 140px 200px;
+            background: white;
+        }
+        
+        .features-section h2 {
+            font-size: 52px;
+            font-weight: 300;
+            margin-bottom: 24px;
+            color: #1A1512;
+            letter-spacing: -1px;
+            max-width: 800px;
+        }
+        
+        .features-section > p {
+            font-size: 18px;
+            font-weight: 300;
+            color: #3E4E3D;
+            margin-bottom: 80px;
+            line-height: 1.8;
+            max-width: 640px;
+        }
+        
+        .features-grid-main {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            max-width: 1100px;
+        }
+        
+        .feature-card-large {
+            background: rgba(212, 165, 154, 0.05);
+            padding: 40px;
+            border-left: 3px solid rgba(212, 165, 154, 0.3);
+            position: relative;
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #3E4E3D;
+            background: rgba(212, 165, 154, 0.2);
+            padding: 6px 12px;
+            margin-bottom: 20px;
+            border-radius: 2px;
+        }
+        
+        .feature-card-large h3 {
+            font-size: 26px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: #1A1512;
+            letter-spacing: 0.5px;
+        }
+        
+        .feature-card-large p {
+            font-size: 16px;
+            font-weight: 300;
+            color: #3E4E3D;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
+        }
+        
+        .cta-section {
+            background: #3E4E3D;
+            padding: 120px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-pattern {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .cta-pattern-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 249, 240, 0.3);
+            box-shadow: 0 2px 8px rgba(255, 249, 240, 0.2);
+            opacity: 0;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 300;
+            color: #FFF9F0;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+        
+        .cta-section p {
+            color: rgba(255, 249, 240, 0.7);
+            font-size: 17px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+        }
+        
+        .cta-section .cta-note {
+            color: rgba(255, 249, 240, 0.5);
+            font-size: 13px;
+            margin-bottom: 48px;
+        }
+        
+        .cta-secondary {
+            background: transparent;
+            color: #FFF9F0;
+            border: 1.5px solid #FFF9F0;
+            padding: 18px 52px;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .cta-secondary:hover {
+            background: #FFF9F0;
+            color: #3E4E3D;
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            background: #FFF9F0;
+            padding: 48px 60px;
+            border-top: 1px solid rgba(212, 165, 154, 0.15);
+            text-align: center;
+        }
+        
+        .footer p {
+            font-size: 12px;
+            color: #5A4F45;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 1200px) {
+            .rhythm-guide {
+                display: none;
+            }
+            
+            .hero, .timeline-section, .principles-section, .how-section, .safety-section, .features-section {
+                padding-left: 60px;
+            }
+            
+            .hero-pattern {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 1400px) {
+            .hero-pattern {
+                right: 60px;
+                width: 400px;
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 968px) {
+            .header {
+                padding: 20px 24px;
+            }
+            
+            .logo {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+            
+            .hero {
+                padding: 100px 24px 60px;
+            }
+            
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .timeline-section, .principles-section, .how-section, .safety-section {
+                padding: 80px 24px;
+            }
+            
+            .timeline-section h2, .how-section h2, .safety-section h2, .features-section h2 {
+                font-size: 36px;
+            }
+            
+            .timeline-visual {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .timeline-connector {
+                width: 2px;
+                height: 60px;
+                margin: -20px 0;
+            }
+            
+            .stats-grid, .principles-grid, .steps-grid, .culprits-grid, .features-grid-main {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">skin<span class="logo-dot">∙</span>rhythm</div>
+        <button class="header-cta">Start Free Quiz</button>
+    </header>
+    
+    <div class="rhythm-guide">
+        <div class="rhythm-dots">
+            <div class="guide-dot active"></div>
+            <div class="guide-pulse"></div>
+            <div class="guide-dot"></div>
+            <div class="guide-dot"></div>
+            <div class="guide-dot"></div>
+            <div class="guide-dot"></div>
+        </div>
+    </div>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Clear skin through <strong>clinical protocols</strong>, not trends</h1>
+            <p class="subhead">AI-powered routine recommendations using proven dermatological science</p>
+            <p>We don't sell skincare products. We build personalized acne treatment protocols based on clinical research—then match you with acne-safe products from trusted brands that actually work.</p>
+            <div class="cta-group">
+                <button class="cta-primary">Get Your Free Routine</button>
+                <p class="cta-note">Takes under 2 minutes. No login required.</p>
+            </div>
+        </div>
+        <div class="hero-pattern" id="heroPattern"></div>
+    </section>
+    
+    <section class="how-section">
+        <div class="section-label">How It Works</div>
+        <h2>Your clear skin journey in three steps</h2>
+        <p>Science-backed protocols tailored to your skin's unique needs</p>
+        
+        <div class="steps-grid">
+            <div class="step">
+                <div class="step-number">STEP 1</div>
+                <h3>Tell us about your skin</h3>
+                <p>One quick quiz—no photos required. We assess your acne type, skin tone, and barrier function to understand your unique patterns.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">STEP 2</div>
+                <h3>We build your protocol</h3>
+                <p>Our AI maps your skin profile to clinical data and creates an optimized routine of acne-safe products within your budget.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">STEP 3</div>
+                <h3>Follow your routine & see results</h3>
+                <p>Replace your old products with your custom plan. Commit for at least 8 weeks and watch your skin transform.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="timeline-section">
+        <div class="section-label">Your Timeline</div>
+        <h2>Clear skin is a rhythm, not a miracle</h2>
+        <p>Effective acne treatment takes consistency and time. Our protocols are built for sustainable, lasting results—not overnight promises.</p>
+        
+        <div class="timeline-visual">
+            <div class="timeline-circle">
+                <div class="circle circle-1">Week 2</div>
+                <div class="circle-label">Foundation</div>
+            </div>
+            <div class="timeline-connector"></div>
+            <div class="timeline-circle">
+                <div class="circle circle-2">Week 8</div>
+                <div class="circle-label">Progress</div>
+            </div>
+            <div class="timeline-connector"></div>
+            <div class="timeline-circle">
+                <div class="circle circle-3">Week 12+</div>
+                <div class="circle-label">Clear Skin</div>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat">
+                <div class="stat-number">8-12 weeks</div>
+                <div class="stat-label">Minimum commitment for visible improvement</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">4–7</div>
+                <div class="stat-label">Products per personalized routine</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">400+</div>
+                <div class="stat-label">Acne triggers screened in every product</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="safety-section">
+        <div class="section-label">Ingredient Safety</div>
+        <h2>Zero tolerance for acne triggers</h2>
+        <p>Most "non-comedogenic" products contain ingredients that can trigger breakouts. Every product in our recommendations is screened against 400+ known acne-causing ingredients.</p>
+        
+        <div class="safety-highlight">
+            <p><strong>The problem with "non-comedogenic" labels:</strong> There's no FDA regulation for this term. Brands use it freely even when products contain pore-clogging ingredients. We screen every product against clinical research and comedogenicity databases so you can trust our recommendations.</p>
+        </div>
+        
+        <p style="font-size: 16px; font-weight: 400; color: #3E4E3D; margin-bottom: 24px;">Common acne triggers hiding in "acne-safe" products:</p>
+        
+        <div class="culprits-grid">
+            <div class="culprit">
+                <h4>Coconut Oil</h4>
+                <p>Widely used in natural skincare. Highly comedogenic despite appearing in products marketed for acne-prone skin.</p>
+            </div>
+            <div class="culprit">
+                <h4>Shea Butter</h4>
+                <p>Ubiquitous in moisturizers. Can clog pores despite its popularity in "clean" beauty products.</p>
+            </div>
+            <div class="culprit">
+                <h4>Algae Extract</h4>
+                <p>Trendy ingredient with high iodine levels that can trigger breakouts in acne-prone skin.</p>
+            </div>
+            <div class="culprit">
+                <h4>Laureth-4</h4>
+                <p>Found in 90% of benzoyl peroxide formulations—extremely comedogenic despite being in acne treatments.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="principles-section">
+        <div class="section-label">Our Approach</div>
+        <h2>Built on science and integrity</h2>
+        
+        <div class="principles-grid">
+            <div class="principle">
+                <div class="principle-icon">⚗</div>
+                <h3>Clinical Protocols</h3>
+                <p>Every recommendation follows evidence-based treatment frameworks verified against peer-reviewed dermatology research.</p>
+            </div>
+            <div class="principle">
+                <div class="principle-icon">🎯</div>
+                <h3>Truly Personalized</h3>
+                <p>Our AI analyzes your skin type, acne patterns, and barrier function to build a protocol specifically for you—not a one-size-fits-all solution.</p>
+            </div>
+            <div class="principle">
+                <div class="principle-icon">✓</div>
+                <h3>Brand Agnostic</h3>
+                <p>We curate the best acne-safe products across all brands and price points. No hidden affiliations—just what works for your skin.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features-section">
+        <div class="section-label">Features</div>
+        <h2>Everything you need for your clear skin journey</h2>
+        <p>Start free, upgrade when you're ready for advanced guidance</p>
+        
+        <div class="features-grid-main">
+            <div class="feature-card-large">
+                <div class="feature-badge">Free</div>
+                <h3>Personalized Routine</h3>
+                <p>Get your custom AM + PM acne-safe routine instantly. Tailored to your skin type, concerns, and budget—with clinically effective products screened for 400+ acne triggers.</p>
+            </div>
+            
+            <div class="feature-card-large">
+                <div class="feature-badge">Premium</div>
+                <h3>Ingredient Scanner</h3>
+                <p>Scan any product for acne-causing ingredients. Make sure everything in your routine—from cleanser to foundation—is truly acne-safe.</p>
+            </div>
+            
+            <div class="feature-card-large">
+                <div class="feature-badge">Premium</div>
+                <h3>Routine Coach</h3>
+                <p>Step-by-step guidance on introducing actives, personalized tips for your skin, and progress tracking so you know exactly what's working.</p>
+            </div>
+            
+            <div class="feature-card-large">
+                <div class="feature-badge">Premium</div>
+                <h3>Product Alternatives</h3>
+                <p>Customize your routine without compromising results. Access drugstore to luxury alternatives for every step—all verified acne-safe.</p>
+            </div>
+            
+            <div class="feature-card-large">
+                <div class="feature-badge">Premium</div>
+                <h3>Acne-Safe Marketplace</h3>
+                <p>Shop our curated marketplace of verified products, beauty essentials, and tools. Every item screened for comedogenic ingredients.</p>
+            </div>
+            
+            <div class="feature-card-large">
+                <div class="feature-badge">Premium</div>
+                <h3>Routine History</h3>
+                <p>Track what you've tried, note what worked, and build a clear picture of your skin's patterns over time.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta-section">
+        <div class="cta-pattern" id="ctaPattern"></div>
+        <div class="cta-content">
+            <h2>Ready to find your rhythm?</h2>
+            <p>Get your personalized acne treatment protocol instantly</p>
+            <p class="cta-note">Free forever. No email required. Takes under 2 minutes.</p>
+            <button class="cta-secondary">Start Your Free Routine</button>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <p>For educational purposes only. skin∙rhythm provides personalized skincare guidance, not medical treatment. Our ingredient screening and routine recommendations are for informational purposes only and do not constitute medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider or dermatologist before starting any new skincare regimen.</p>
+    </footer>
+    
+    <script>
+        // Generate pattern dots for hero
+        const heroPattern = document.getElementById('heroPattern');
+        const patternDots = [];
+        
+        for (let i = 0; i < 12; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'pattern-dot';
+            heroPattern.appendChild(dot);
+            patternDots.push(dot);
+        }
+        
+        // Generate pattern dots for CTA section
+        const ctaPattern = document.getElementById('ctaPattern');
+        const ctaDots = [];
+        
+        for (let i = 0; i < 15; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'cta-pattern-dot';
+            ctaPattern.appendChild(dot);
+            ctaDots.push(dot);
+        }
+        
+        // Scroll-based rhythm guide animation and dot transition
+        const guideDots = document.querySelectorAll('.guide-dot');
+        const sections = document.querySelectorAll('section');
+        const pulseDot = document.querySelector('.guide-pulse');
+        const rhythmGuide = document.querySelector('.rhythm-guide');
+        const hero = document.querySelector('.hero');
+        const ctaSection = document.querySelector('.cta-section');
+        
+        function updateGuide() {
+            const scrollPos = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+            const heroBottom = hero.offsetTop + hero.offsetHeight;
+            const scrollProgress = Math.min(scrollPos / (heroBottom * 0.7), 1);
+            
+            // TOP: Move hero dots to tracker
+            if (scrollPos > 0) {
+                const guideRect = rhythmGuide.getBoundingClientRect();
+                const heroPatternRect = heroPattern.getBoundingClientRect();
+                
+                patternDots.forEach((dot, index) => {
+                    dot.classList.add('transitioning');
+                    
+                    const targetX = guideRect.left - heroPatternRect.left + 26;
+                    const targetY = (guideRect.top - heroPatternRect.top) + (index * 40) + 100;
+                    
+                    const dotProgress = Math.max(0, Math.min(1, (scrollProgress - (index * 0.02)) * 1.1));
+                    const currentX = targetX * dotProgress;
+                    const currentY = targetY * dotProgress;
+                    const currentScale = 1 - (dotProgress * 0.4);
+                    const fadeOutOpacity = Math.max(0, 0.6 - (dotProgress * 0.6));
+                    
+                    dot.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
+                    dot.style.opacity = fadeOutOpacity;
+                });
+                
+                if (scrollProgress > 0.25) {
+                    rhythmGuide.style.opacity = (scrollProgress - 0.25) / 0.75;
+                    rhythmGuide.classList.add('visible');
+                } else {
+                    rhythmGuide.style.opacity = 0;
+                    rhythmGuide.classList.remove('visible');
+                }
+            } else {
+                rhythmGuide.style.opacity = 0;
+                rhythmGuide.classList.remove('visible');
+                
+                patternDots.forEach((dot) => {
+                    dot.classList.remove('transitioning');
+                    dot.style.transform = '';
+                    dot.style.opacity = '';
+                });
+            }
+            
+            // BOTTOM: Reverse effect - tracker to CTA dots
+            const ctaSectionTop = ctaSection.offsetTop;
+            const ctaSectionHeight = ctaSection.offsetHeight;
+            const scrollFromCta = scrollPos - (ctaSectionTop - windowHeight);
+            const ctaProgress = Math.max(0, Math.min(1, scrollFromCta / (windowHeight * 0.5)));
+            
+            if (ctaProgress > 0) {
+                // Fade out tracker
+                const trackerFade = Math.max(0, 1 - (ctaProgress * 2));
+                rhythmGuide.style.opacity = trackerFade;
+                
+                // Animate dots from left to surround CTA content
+                const ctaRect = ctaSection.getBoundingClientRect();
+                const guideRect = rhythmGuide.getBoundingClientRect();
+                
+                ctaDots.forEach((dot, index) => {
+                    const angle = (index / ctaDots.length) * Math.PI * 2;
+                    const radius = 200 + (index % 3) * 80;
+                    
+                    // Start from guide position
+                    const startX = guideRect.left - ctaRect.left;
+                    const startY = guideRect.top - ctaRect.top + (index * 30);
+                    
+                    // End position: scattered around center
+                    const endX = (ctaRect.width / 2) + Math.cos(angle) * radius;
+                    const endY = (ctaRect.height / 2) + Math.sin(angle) * radius;
+                    
+                    const dotDelay = index * 0.03;
+                    const dotProgress = Math.max(0, Math.min(1, (ctaProgress - dotDelay) * 1.2));
+                    
+                    const currentX = startX + (endX - startX) * dotProgress;
+                    const currentY = startY + (endY - startY) * dotProgress;
+                    const currentOpacity = dotProgress * 0.6;
+                    const size = 8 + (index % 4) * 3;
+                    
+                    dot.style.left = currentX + 'px';
+                    dot.style.top = currentY + 'px';
+                    dot.style.width = size + 'px';
+                    dot.style.height = size + 'px';
+                    dot.style.opacity = currentOpacity;
+                    dot.style.transform = `scale(${0.5 + dotProgress * 0.5})`;
+                });
+            } else {
+                // Reset CTA dots
+                ctaDots.forEach(dot => {
+                    dot.style.opacity = 0;
+                });
+            }
+            
+            // Update active section
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPos >= sectionTop - windowHeight / 2 && 
+                    scrollPos < sectionTop + sectionHeight - windowHeight / 2) {
+                    guideDots.forEach(dot => dot.classList.remove('active'));
+                    if (guideDots[index]) {
+                        guideDots[index].classList.add('active');
+                        
+                        const dotRect = guideDots[index].getBoundingClientRect();
+                        const guideRect = rhythmGuide.getBoundingClientRect();
+                        pulseDot.style.top = (dotRect.top - guideRect.top) + 'px';
+                    }
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateGuide);
+        updateGuide();
+    </script>
+</body>
+</html>
