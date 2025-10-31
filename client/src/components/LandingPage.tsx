@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, ArrowRight, Shield, Sparkles, FlaskConical, Heart } from "lucide-react";
 import { Link } from "wouter";
+import { ScrollingDots } from "@/components/ScrollingDots";
 
 import moleculeImg from "@assets/molecule_1761251136047.png";
 import bpoCardImg from "@assets/BPO Information Card-1_1761251136060.png";
@@ -18,11 +19,8 @@ export function LandingPage({ onStartQuiz }: LandingPageProps) {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* Molecule background - semi-transparent on the right side */}
-        <div 
-          className="absolute right-0 top-0 bottom-0 w-1/2 lg:w-2/5 opacity-20 dark:opacity-10 bg-contain bg-right bg-no-repeat"
-          style={{ backgroundImage: `url(${moleculeImg})` }}
-        />
+        {/* Scrolling Dots Animation */}
+        <ScrollingDots />
         
         <div className="relative z-10 w-full">
           <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-24">
