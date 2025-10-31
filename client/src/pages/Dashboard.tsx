@@ -800,8 +800,13 @@ export default function Dashboard() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <h1 className="font-serif text-3xl md:text-4xl text-foreground">
-                  {currentRoutine.name ? `${currentRoutine.name}` : ''}'s Routine
+                <h1 className="text-[32px] md:text-[42px]" style={{
+                  fontWeight: 300,
+                  color: '#1A1512',
+                  letterSpacing: '-1px',
+                  lineHeight: '1.1'
+                }}>
+                  {currentRoutine.name ? `${currentRoutine.name}'s Routine` : 'Your Routine'}
                 </h1>
                 {isPremium && (
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
@@ -809,19 +814,29 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
-              <div className="text-muted-foreground text-sm">
+              <div className="text-[16px]" style={{
+                fontWeight: 300,
+                color: '#3E4E3D',
+                letterSpacing: '0.3px'
+              }}>
                 {currentRoutine.skinType} skin â€¢ {currentRoutine.acneTypes && currentRoutine.acneTypes.length > 0 
                   ? currentRoutine.acneTypes.map(type => type.replace('-', ' ')).join(', ') 
                   : 'acne'} ({currentRoutine.acneSeverity})
               </div>
               
-              {/* Budget/Premium Toggle - Now under username */}
+              {/* Budget/Premium Toggle */}
               {canAccessProductAlternatives && (
                 <div className="flex gap-2">
-                  <Button
-                    variant={routineMode === 'basic' ? 'default' : 'outline'}
-                    size="sm"
-                    className="h-7 px-3 text-xs gap-1.5"
+                  <button
+                    className="h-8 px-4 text-xs gap-1.5 flex items-center transition-all"
+                    style={{
+                      background: routineMode === 'basic' ? 'rgba(212, 165, 154, 0.1)' : 'transparent',
+                      border: '1px solid rgba(212, 165, 154, 0.2)',
+                      borderRadius: '20px',
+                      color: '#3E4E3D',
+                      fontWeight: 400,
+                      cursor: 'pointer'
+                    }}
                     onClick={() => {
                       if (routineMode !== 'basic') {
                         routineModeMutation.mutate('basic');
@@ -832,11 +847,17 @@ export default function Dashboard() {
                   >
                     <DollarSign className="h-3 w-3" />
                     Budget
-                  </Button>
-                  <Button
-                    variant={routineMode === 'premium' ? 'default' : 'outline'}
-                    size="sm"
-                    className="h-7 px-3 text-xs gap-1.5"
+                  </button>
+                  <button
+                    className="h-8 px-4 text-xs gap-1.5 flex items-center transition-all"
+                    style={{
+                      background: routineMode === 'premium' ? 'rgba(62, 78, 61, 0.1)' : 'transparent',
+                      border: routineMode === 'premium' ? '1px solid rgba(62, 78, 61, 0.2)' : '1px solid rgba(212, 165, 154, 0.2)',
+                      borderRadius: '20px',
+                      color: '#3E4E3D',
+                      fontWeight: 400,
+                      cursor: 'pointer'
+                    }}
                     onClick={() => {
                       if (routineMode !== 'premium') {
                         routineModeMutation.mutate('premium');
@@ -847,22 +868,38 @@ export default function Dashboard() {
                   >
                     <Sparkles className="h-3 w-3" />
                     Premium
-                  </Button>
+                  </button>
                 </div>
               )}
             </div>
             
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2"
+              <button
+                className="gap-2 flex items-center transition-all hover:-translate-y-0.5"
+                style={{
+                  background: 'transparent',
+                  color: '#C4958A',
+                  border: '1.5px solid #C4958A',
+                  padding: '10px 24px',
+                  fontSize: '13px',
+                  fontWeight: 400,
+                  letterSpacing: '0.5px',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#C4958A';
+                  e.currentTarget.style.color = '#FFF9F0';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#C4958A';
+                }}
                 onClick={handleRetakeQuiz}
                 data-testid="button-retake-quiz"
               >
                 <RefreshCw className="h-4 w-4" />
                 Retake Quiz
-              </Button>
+              </button>
             </div>
           </div>
 
