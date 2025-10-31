@@ -169,7 +169,7 @@ function extractProductNameFromURL(url: string): string {
 }
 
 export function enrichProductLibraryFromCSV() {
-  const csvPath = path.join(process.cwd(), 'attached_assets', 'AcneSafe_Products_Combined 10-30-25.xlsx - Routine Products (1)_1761865518058.csv');
+  const csvPath = path.join(process.cwd(), 'attached_assets', 'AcneSafe_Products_Combined 10-30-25.xlsx - Routine Products (2)_1761906468926.csv');
   
   if (!fs.existsSync(csvPath)) {
     console.error('Combined products CSV not found at:', csvPath);
