@@ -13,11 +13,6 @@ export function ScrollingDots() {
       
       const progress = Math.min(scrollPos / (heroBottom * 0.7), 1);
       setScrollProgress(progress);
-      
-      // Debug logging
-      if (scrollPos > 0) {
-        console.log('Scroll Progress:', progress, 'ScrollY:', scrollPos);
-      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -46,22 +41,35 @@ export function ScrollingDots() {
 
   const isTransitioning = scrollProgress > 0;
   
-  // Make guide visible from start for testing
-  const guideOpacity = 1;
+  // Tracker fades in as dots move (same progress, opposite direction)
+  const guideOpacity = scrollProgress;
+  
+  // Calculate which tracker dot should be active based on scroll
+  const activeTrackerDot = Math.floor(scrollProgress * 6);
 
   return (
     <>
-      {/* Hero Pattern Dots - Right Side - ALWAYS VISIBLE */}
+      {/* Hero Pattern Dots - Right Side */}
       <div className="absolute right-4 md:right-20 lg:right-32 top-1/2 -translate-y-1/2 w-[300px] md:w-[400px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px] pointer-events-none z-[50]">
         {patternDots.map((dot, index) => {
           const dotProgress = Math.max(0, Math.min(1, (scrollProgress - (index * 0.02)) * 1.1));
           
-          // Calculate movement: dots slide to the left (negative X) as user scrolls
-          const moveX = -window.innerWidth * 0.4 * dotProgress;
+          // Move dots across the entire viewport width (from right side to left)
+          // The dots start on the right, need to travel the full width
+          const fullWidth = typeof window !== 'undefined' ? window.innerWidth : 1440;
+          const moveX = -fullWidth * dotProgress; // Travel full width left
           const scale = 1 - (dotProgress * 0.4);
-          const fadeOpacity = isTransitioning 
-            ? Math.max(0, 0.6 - (dotProgress * 0.6))
-            : 0.6; // Always visible when not scrolling
+          
+          // Fade out in the last 20% of movement (when dotProgress > 0.8)
+          let fadeOpacity: number;
+          if (!isTransitioning) {
+            fadeOpacity = 0.6; // Always visible when not scrolling
+          } else if (dotProgress > 0.8) {
+            // Fade out in last 20% of movement
+            fadeOpacity = (1 - dotProgress) / 0.2; // Goes from 1 to 0 as progress goes 0.8 to 1
+          } else {
+            fadeOpacity = 0.6; // Visible during first 80% of movement
+          }
 
           return (
             <div
@@ -85,7 +93,7 @@ export function ScrollingDots() {
         })}
       </div>
 
-      {/* Rhythm Guide - Left Side Tracker - ALWAYS VISIBLE FOR TESTING */}
+      {/* Rhythm Guide - Left Side Tracker */}
       <div
         className="fixed left-8 md:left-16 lg:left-20 top-1/2 -translate-y-1/2 w-[60px] h-[300px] z-[100] pointer-events-none"
         style={{
@@ -94,25 +102,34 @@ export function ScrollingDots() {
         }}
       >
         <div className="relative flex flex-col gap-[45px] items-center">
-          {[0, 1, 2, 3, 4, 5].map((index) => (
-            <div
-              key={index}
-              className="w-2 h-2 rounded-full"
-              style={{
-                backgroundColor: '#D4A59A',
-                opacity: 0.5,
-              }}
-            />
-          ))}
-          
-          {/* Pulse ring animation on first dot */}
-          <div
-            className="absolute w-6 h-6 border-2 rounded-full top-0 left-1/2 -translate-x-1/2"
-            style={{
-              borderColor: '#D4A59A',
-              animation: 'pulse-ring 2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
-            }}
-          />
+          {[0, 1, 2, 3, 4, 5].map((index) => {
+            const isActive = index === activeTrackerDot;
+            
+            return (
+              <div
+                key={index}
+                className="w-2 h-2 rounded-full relative"
+                style={{
+                  backgroundColor: '#D4A59A',
+                  opacity: isActive ? 1 : 0.3,
+                  transform: isActive ? 'scale(1.5)' : 'scale(1)',
+                  boxShadow: isActive ? '0 0 20px rgba(212, 165, 154, 0.5)' : 'none',
+                  transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              >
+                {/* Pulse ring on active dot */}
+                {isActive && (
+                  <div
+                    className="absolute w-6 h-6 border-2 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                    style={{
+                      borderColor: '#D4A59A',
+                      animation: 'pulse-ring 2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+                    }}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -131,14 +148,14 @@ export function ScrollingDots() {
         @keyframes pulse-ring {
           0% {
             opacity: 0;
-            transform: translateX(-50%) scale(0.5);
+            transform: translate(-50%, -50%) scale(0.5);
           }
           50% {
             opacity: 0.8;
           }
           100% {
             opacity: 0;
-            transform: translateX(-50%) scale(2);
+            transform: translate(-50%, -50%) scale(2);
           }
         }
       `}</style>
