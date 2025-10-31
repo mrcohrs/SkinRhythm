@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* LIGHT MODE - SkinRhythm Clinical Palette */
+/* LIGHT MODE - skin∙rhythm Brand Palette */
 :root {
   --button-outline: rgba(0,0,0, .10);
   --badge-outline: rgba(0,0,0, .05);
@@ -14,91 +14,91 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  /* Paper White - Gentle off-white base */
-  --background: 45deg 100% 98.43%;
+  /* Cream - Warm off-white base */
+  --background: 40 100% 97%;  /* #FFF9F0 */
 
-  /* Graphite Ink - Deep gray with trace of blue for text */
-  --foreground: 206.67deg 20.93% 8.43%;
+  /* Olive Green - Primary text color */
+  --foreground: 100 10% 26%;  /* #3E4E3D */
 
-  /* Subtle border color */
-  --border: 30deg 10.98% 67.84%;
+  /* Subtle border color - light terracotta */
+  --border: 14 20% 85%;
 
-  /* Card backgrounds use Paper White */
-  --card: 0deg 0% 100%;
+  /* Card backgrounds use pure cream */
+  --card: 40 100% 98%;
 
-  --card-foreground: 206.67deg 20.93% 8.43%;
+  --card-foreground: 100 10% 26%;
 
-  --card-border: 174 20% 92%;
+  --card-border: 14 15% 90%;
 
-  /* Sidebar using Hydro Mist */
-  --sidebar: 174 35% 95%;
+  /* Sidebar using light cream */
+  --sidebar: 40 80% 96%;
 
-  --sidebar-foreground: 206 18% 22%;
+  --sidebar-foreground: 100 10% 26%;
 
-  --sidebar-border: 174 20% 88%;
+  --sidebar-border: 14 15% 88%;
 
-  /* Clearwater Blue for sidebar primary */
-  --sidebar-primary: 185 55% 61%;
+  /* Terracotta for sidebar primary */
+  --sidebar-primary: 14 34% 72%;  /* #D4A59A */
 
-  --sidebar-primary-foreground: 206 18% 22%;
+  --sidebar-primary-foreground: 100 10% 26%;
 
-  /* Light Hydro Mist for sidebar accent */
-  --sidebar-accent: 174 35% 92%;
+  /* Light cream for sidebar accent */
+  --sidebar-accent: 40 60% 94%;
 
-  --sidebar-accent-foreground: 206 18% 22%;
+  --sidebar-accent-foreground: 100 10% 26%;
 
-  --sidebar-ring: 185 55% 61%;
+  --sidebar-ring: 14 34% 72%;
 
-  --popover: 50deg 12% 90.2%;
+  --popover: 40 90% 95%;
 
-  --popover-foreground: 206.67deg 20.93% 8.43%;
+  --popover-foreground: 100 10% 26%;
 
-  --popover-border: 174 20% 92%;
+  --popover-border: 14 15% 90%;
 
-  /* Primary: Clearwater Blue - A light blue-green for clarity and freshness */
-  --primary: 180deg 100% 32.55%;
+  /* Primary: Terracotta - the core brand color */
+  --primary: 14 34% 72%;  /* #D4A59A */
 
-  --primary-foreground: 0deg 0% 100%;
+  --primary-foreground: 40 100% 97%;
 
-  /* Primary Text: Darker Clearwater Blue for accessible text contrast */
-  --primary-text: 185 55% 40%;
+  /* Primary Text: Darker Terracotta for emphasis */
+  --primary-text: 14 30% 66%;  /* #C4958A */
 
-  /* Secondary: Restorative Peach - Soft, skin-inspired neutral */
-  --secondary: 329.41deg 57.3% 34.9%;
+  /* Secondary: Olive Green - primary text and headers */
+  --secondary: 100 10% 26%;  /* #3E4E3D */
 
-  --secondary-foreground: 0deg 0% 100%;
+  --secondary-foreground: 40 100% 97%;
 
-  /* Muted: Hydro Mist - Pale bluish green for cards and backgrounds */
-  --muted: 77.14deg 18.92% 92.75%;
+  /* Muted: Light warm gray - soft backgrounds */
+  --muted: 36 20% 88%;
 
-  --muted-foreground: 225deg 5.56% 28.24%;
+  --muted-foreground: 36 10% 34%;  /* #5A4F45 secondary text */
 
-  /* Accent: Soft Apricot - Human touch highlights */
-  --accent: 177.86deg 100% 43.92%;
+  /* Accent: Darker Terracotta - CTAs and interactive states */
+  --accent: 14 30% 66%;  /* #C4958A */
 
-  --accent-foreground: 206.67deg 20.93% 8.43%;
+  --accent-foreground: 40 100% 97%;
 
-  /* Destructive: Clinical Red - Softened red for warnings */
-  --destructive: 345.61deg 100% 61.57%;
+  /* Destructive: Clinical Red - errors and warnings */
+  --destructive: 2 80% 60%;
 
-  --destructive-foreground: 0deg 0% 100%;
+  --destructive-foreground: 40 100% 97%;
 
-  /* Success: Verdant Calm - Muted sage for verified/approved */
-  --success: 145 38% 67%;
+  /* Success: Verdant Calm - success states */
+  --success: 145 45% 55%;
 
-  --success-foreground: 206 18% 22%;
+  --success-foreground: 40 100% 97%;
 
-  --input: 0deg 0% 100%;
-  --ring: 180deg 100% 32.55%;
-  --chart-1: 180deg 100% 32.55%;
-  --chart-2: 222.9deg 100% 59.41%;
-  --chart-3: 177.86deg 100% 43.92%;
-  --chart-4: 14.17deg 100% 75.1%;
-  --chart-5: 208deg 15.79% 37.25%;
+  --input: 40 100% 98%;
+  --ring: 14 34% 72%;
+  --chart-1: 14 34% 72%;
+  --chart-2: 14 30% 66%;
+  --chart-3: 100 10% 26%;
+  --chart-4: 36 10% 34%;
+  --chart-5: 145 45% 55%;
 
-  --font-sans: 'Raleway', sans-serif;
-  --font-serif: 'Manrope', sans-serif;
-  --font-mono: 'Ubuntu Mono', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   --radius: 0rem; /* 8px */
   --shadow-2xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.04);
   --shadow-xs: 0px 1px 2px 0px hsl(220 15% 20% / 0.06);
@@ -134,91 +134,100 @@
   --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
-/* DARK MODE - Adapted SkinRhythm Palette */
+/* DARK MODE - Adapted skin∙rhythm Palette */
 .dark {
   --button-outline: rgba(255,255,255, .10);
   --badge-outline: rgba(255,255,255, .05);
   --elevate-1: rgba(255,255,255, .03);
   --elevate-2: rgba(255,255,255, .10);
 
-  /* Dark background - deep version of Graphite Ink */
-  --background: 206 20% 12%;
+  /* Dark background - deep olive */
+  --background: 100 15% 15%;
 
-  /* Light text */
-  --foreground: 210 15% 92%;
+  /* Light cream text */
+  --foreground: 40 60% 90%;
 
-  --border: 206 15% 20%;
+  --border: 100 10% 25%;
 
-  --card: 206 18% 15%;
+  --card: 100 12% 18%;
 
-  --card-foreground: 210 15% 92%;
+  --card-foreground: 40 60% 90%;
 
-  --card-border: 206 15% 18%;
+  --card-border: 100 10% 22%;
 
-  --sidebar: 206 20% 10%;
+  --sidebar: 100 15% 12%;
 
-  --sidebar-foreground: 210 15% 92%;
+  --sidebar-foreground: 40 60% 90%;
 
-  --sidebar-border: 206 15% 18%;
+  --sidebar-border: 100 10% 20%;
 
-  /* Clearwater Blue brightened for dark mode */
-  --sidebar-primary: 185 55% 65%;
+  /* Terracotta brightened for dark mode */
+  --sidebar-primary: 14 40% 75%;
 
-  --sidebar-primary-foreground: 206 20% 12%;
+  --sidebar-primary-foreground: 100 15% 15%;
 
-  --sidebar-accent: 206 18% 18%;
+  --sidebar-accent: 100 12% 20%;
 
-  --sidebar-accent-foreground: 210 15% 92%;
+  --sidebar-accent-foreground: 40 60% 90%;
 
-  --sidebar-ring: 185 55% 65%;
+  --sidebar-ring: 14 40% 75%;
 
-  --popover: 206 18% 15%;
+  --popover: 100 12% 18%;
 
-  --popover-foreground: 210 15% 92%;
+  --popover-foreground: 40 60% 90%;
 
-  --popover-border: 206 15% 18%;
+  --popover-border: 100 10% 22%;
 
-  /* Primary: Clearwater Blue - slightly brighter for dark mode */
-  --primary: 185 55% 65%;
+  /* Primary: Terracotta - slightly brighter for dark mode */
+  --primary: 14 40% 75%;
 
-  --primary-foreground: 206 20% 12%;
+  --primary-foreground: 100 15% 15%;
 
-  /* Primary Text: Brighter Clearwater Blue for dark mode text contrast */
-  --primary-text: 185 55% 70%;
+  /* Primary Text: Brighter Terracotta for dark mode text contrast */
+  --primary-text: 14 45% 78%;
 
-  /* Secondary: Restorative Peach - adjusted for dark mode */
-  --secondary: 23 80% 70%;
+  /* Secondary: Lighter olive - adjusted for dark mode */
+  --secondary: 100 15% 70%;
 
-  --secondary-foreground: 206 20% 12%;
+  --secondary-foreground: 100 15% 15%;
 
-  /* Muted: Darker version of Hydro Mist */
-  --muted: 174 20% 25%;
+  /* Muted: Darker warm gray */
+  --muted: 36 15% 30%;
 
-  --muted-foreground: 210 15% 70%;
+  --muted-foreground: 36 10% 65%;
 
-  /* Accent: Soft Apricot - adjusted */
-  --accent: 23 85% 75%;
+  /* Accent: Brighter Terracotta */
+  --accent: 14 45% 78%;
 
-  --accent-foreground: 206 20% 12%;
+  --accent-foreground: 100 15% 15%;
 
   /* Destructive: Clinical Red - brightened */
   --destructive: 2 75% 68%;
 
-  --destructive-foreground: 210 15% 98%;
+  --destructive-foreground: 40 60% 90%;
 
   /* Success: Verdant Calm */
   --success: 145 40% 65%;
 
-  --success-foreground: 206 20% 12%;
+  --success-foreground: 100 15% 15%;
 
-  --input: 206 15% 25%;
-  --ring: 185 55% 65%;
+  --input: 100 12% 20%;
+  --ring: 14 40% 75%;
 }
 
 @layer base {
-  /* Typography: 2% letter-spacing for all headings and body text */
+  /* Typography: Lighter letter-spacing for Inter's modern look */
   h1, h2, h3, h4, h5, h6, p, body {
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
+  }
+
+  /* Specific adjustments for headers */
+  h1, h2, h3 {
+    font-weight: 300;
+  }
+
+  h4, h5, h6 {
+    font-weight: 400;
   }
 }
 
